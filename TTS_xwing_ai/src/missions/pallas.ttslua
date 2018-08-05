@@ -1,0 +1,306 @@
+        if mission == "Pallas Trouble" then
+            campaign = "PALLAS"
+            turns = 10
+            num_asteroids = 6
+            rule_page = 46
+            table.insert(missionsquads, {name="Bandit",turn=0,vector=7,ai="attack",type="ZBAN",count={1,1,0,1,0,1}, elite=false, isHostile=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TFO",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,v._0730}
+        end
+
+        haspallas = false
+        if mission == "Attack on the Pallas S1" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Attack on the Pallas S2" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={2,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Attack on the Pallas S3" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TFO",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={3,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Retrieve the T70 prototype" then
+            campaign = "PALLAS"
+            turns = 99 --TODO: No Turn Limit?
+            haspallas = true
+            --TODO: Spawn Pallas
+            --TODO: Spawn T70
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d8",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d8",ai="strike",type="BOM",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector="1d8",ai="attack",type="TAP",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="1d8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="TSF",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+            --TODO: Handle multiple squad entries spawning in 1 location?
+        end
+        if mission == "Retrieve the K-Wing prototype" then
+            campaign = "PALLAS"
+            turns = 20 --TODO: No Turn Limit?
+            haspallas = true
+            --TODO: Spawn U-Wing Blue Squadron Pathfinder
+            --TODO: Spawn T70
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="?",ai="attack",type="PUN",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="?",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={1,-1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=2,ai="strike",type="INT",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+            --TODO: STEFAN Who is Zeta?
+            --TODO: STEFAN What vector for Alpha/Beta? (special?)
+        end
+        if mission == "Win the E-Wing prototype" then
+            campaign = "PALLAS"
+            turns = 99
+            --strike race AI?
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="*",ai="flee",type="EBLM",count={1,0,0,0,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "YT-1300 Combat Refit" then
+            campaign = "PALLAS"
+            haspallas = true
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn="*",vector="1d8",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="ADV",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+
+        end
+        if mission == "Earn the YT-2400" then
+            campaign = "PALLAS"
+            turns = 10
+            --TODO: Add Cargo
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+
+        if mission == "Flying School" then
+            campaign = "PALLAS"
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector=4,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "Covert Ops" then
+            campaign = "PALLAS"
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=3,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="INT",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930,
+                {x=2,y=2,rot=180}} --TODO: Verify docking bay location
+        end
+        if mission == "Escape" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=3,vector=7,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={4,5,6,7},ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "Meeting" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=2,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIEE",count={0,1,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+            --setup ion clouds
+        end
+        if mission == "Arms race" then
+            campaign = "PALLAS"
+            turns = 15
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=1,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            --spawn blue squadron pathfinder
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+        end
+        if mission == "Resources" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="INT",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=2,vector=2,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="*",ai="strike",type="*",count={1,0,1,0,0,0}, elite=false})
+            --spawn transport
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000, {x=0,y=2,315}}
+        end
+        if mission == "Babysitters" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            epic = true
+            img_index = IMG_EPIC_BLUE_PLANET
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,8},ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={7,8},ai="strike",type="ADV",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="BetaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector="copy",ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector={2,7},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="DeltaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Zeta",turn="*",vector={4,5},ai="attack",type="*",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Zeta",turn="*",vector="copy",ai="attack",type="*",count={0,1,0,1,0,0}, elite=true})
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0230,v._0330,
+                              v._0500,v._0600,v._0700,v._0830,v._0930}
+            y = 1
+            y_layer_2 = 1.1
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16,y,6.09},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.28,y,2.21},rot={0,150,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16,y,3.16},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.09,y,1.99},rot={0,30,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_6,pos={21.84,y,-0.11},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.17,y,-2.26},rot={0,150,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16.1,y,-3.41},rot={0,90,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.41,y,-2.47},rot={0,210,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16.1,y,-6.3},rot={0,180,0}})
+
+            striketarget[2] = {}
+            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.3,y_layer_2,6.47},rot={0,270,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.63,y_layer_2,6.5},rot={0,0,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={13.92,y_layer_2,1.91},rot={0,60,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.16,y_layer_2,2.1},rot={0,30,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={22.81,y_layer_2,0.51},rot={0,60,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_SENSOR_ARRAY,pos={21.75,y_layer_2,-1.28},rot={0,180,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_SHIELD_GENERATOR,pos={20.81,y_layer_2,0.55},rot={0,120,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.3,y_layer_2,-2.34},rot={0,150,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={14.01,y_layer_2,-2.21},rot={0,120,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.86,y_layer_2,-6.68},rot={0,90,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.4,y_layer_2,-6.66},rot={0,90,0},desc='ai addtarget 2'})
+
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={25.96,y,-6.90},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,-7.23},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,7.78},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={26.13,y,7.26},rot={0,0,0}})
+
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={3.03,2,-16.79},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={-3.03,2,-16.79},rot={0,0,0}})
+        end
+        if mission == "Assassination games" then
+            campaign = "PALLAS"
+            turns = 8
+            num_debris = 3
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={0,0,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,0,1,0,0}, elite=false})
+            missionvectors = {{x=0,y=0,rot=180},{x=0.5,y=0,rot=180}}
+        end
+        if mission == "Traitor Hunt" then
+            campaign = "PALLAS"
+            turns = 7
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="XRED",count={1,0,0,0,0,0}, elite=false})
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+            y = 1
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_1_BIRD_OF_PREY ,pos={10.2,y,-1.82},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_2_CLAW ,pos={-9.72,y,-12.9},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_3_FISH ,pos={-1.02,y,7.26},rot={0,195,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_4_FACE ,pos={10.49,y,-9.78},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_5_OCARINA ,pos={0.63,y,-9.03},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_6_LONG ,pos={-3.97,y,0.21},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_1_DRAGON ,pos={14.37,y,9.13},rot={0,90,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_2_STAR ,pos={0.13,y,14.41},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_3_GLOVE ,pos={-13.89,y,-2.94},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_4_LONG ,pos={-13.62,y,10.27},rot={0,180,0}})
+        end
+        if mission == "Attack on the mining station" then
+            campaign = "PALLAS"
+            turns = 99
+            num_asteroids = 6
+            epic = true
+            asteroid_min_x = -9.2-r1*2.5
+            asteroid_max_x = 9.2-r1*2.5
+            asteroid_min_y = -9.2
+            asteroid_max_y = 9.2
+            img_index = IMG_EPIC_DEATH_STAR_2
+            missionvectors = {v._1100,v._1120,v._1140,v._0020,v._0040,v._0100,
+                              v._0200,v._0240,v._0320,v._0400,
+                              v._0500,v._0520,v._0540,v._0620,v._0640,v._0700,
+                              v._0800,v._0840,v._0920,v._1000,
+                              {x=1.222,y=2.4,rot=120}, --dock 1 (21)
+                              {x=1.25,y=-2.5,rot=60}, --dock 2 (22)
+                              {x=3.29,y=0,rot=240}, -- cargo dock (23)
+                              {x=-1.5,y=0,rot=90} -- Smuggler (24)
+                             }
+            table.insert(missionsquads, {name="Alpha",turn=2,vector=21,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=24,ai="flee e",type="ORS",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="BOM",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="PHA",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="DEF",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 9})
+            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false, temp_round_pos = 10})
+            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true, temp_round_pos = 10})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false, temp_round_pos = 11})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true, temp_round_pos = 11})
+
+        end

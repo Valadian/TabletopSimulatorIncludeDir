@@ -1,0 +1,299 @@
+        if mission == "Local Trouble" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            rule_page = 46
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
+            --            table.insert(missionvectors, {x=-4.5, y=-1.5, rot=90})
+            --            table.insert(missionvectors, {x=-4.5, y= 1.5, rot=90})
+            --            table.insert(missionvectors, {x=-1.5, y= 4.5, rot=180})
+            --            table.insert(missionvectors, {x= 1.5, y= 4.5, rot=180})
+            --            table.insert(missionvectors, {x= 4.5, y= 1.5, rot=-90})
+            --            table.insert(missionvectors, {x= 4.5, y=-1.5, rot=-90})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+        end
+        if mission == "Rescue Rebel Operatives" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="INT",count={0,8,0,6,0,0}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1030S, v._0130S,v._0230,v._0330}
+            --TODO implement spawning HWK-290
+        end
+        if mission == "Disable Sensor Net" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 12
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Patrol",turn=1,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement spawning Sensor Beacons
+            --TODO implement spawning HWK-290
+        end
+
+        if mission == "Capture Refueling Station" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 - r1*3
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="INT",count={0,8,0,6,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="bay2",ai="attack",type="INT",count={0,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="ADV",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=5,vector="bay2",ai="attack",type="BOM",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=8,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            missionvectors = {v._0800,v._0900, v._1000, v._0200,v._0300,v._0400, bay1 = v.bay1, bay2 = v.bay2}
+            --TODO: implement spawning refueling station
+
+        end
+        if mission == "Tread Softly" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Minelayer",turn=0,vector=3,ai="attack",type="BOM",count={1,8,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=5,vector="1d6",ai="attack",type="BOM",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=7,vector="1d6",ai="attack",type="TIE",count={1,1,8,1,6,1}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement minefield spawning
+
+        end
+        if mission == "Imperial Entanglements" then
+            campaign = "HOTAC"
+            turns = 10
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={1,0,6,1,0,4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=3,vector="1d3",ai="strike",type="BOM",count={1,0,1,8,1,0}, elite=false})
+            table.insert(missionsquads, {name="Decimator",turn=6,vector="c",ai="strike",type="DEC",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="TIE",count={8,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="*",count={0,0,1,0,1,0}, elite=false})
+
+            missionvectors = {v._0630, v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,c = v._0730}
+            --TODO: implement minefield spawning
+            --TODO: implement Transport spawning
+            --TODO: implement Decimator spawning
+            --TODO: implement spawning Ion Pulse Missile
+        end
+        if mission == "Care Package" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 12
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,-8,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="INT",count={0,0,8,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Assault1",turn=3,vector="*",ai="strike",type="BOM",count={1,8,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="INT",count={0,8,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Assault2",turn=6,vector="*",ai="srike",type="BOM",count={6,1,0,1,0,1}, elite=false})
+            missionvectors = {v._0600, v._0730,v._0900, v._1200, v._0130,v._0300}
+            --TODO: implement Transport spawning
+            --TODO: implement spawning proton torpedo
+        end
+        if mission == "Needle in a Haystack" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="strike",type="*",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Phantom",turn=13,vector="1d6",ai="attack",type="PHA",count={1,0,0,1,0,0}, elite=false})
+
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement ion storm spawning
+            --TODO: implement tracking token spawning
+            --TODO: implement Assault Ship spawning
+        end
+        if mission == "Bait" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-8}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="*",count={0,0,0,4,0,8}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="SupportA",turn=3,vector="1d6",ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="SupportB",turn=3,vector="*",ai="attack",type="SHU",count={0,0,0,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=4,vector="1d12",ai="*",type="PHA",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="*",count={0,0,6,0,4,0}, elite=false})
+            --TODO: implement random filtering (not shuttle/phantom)
+            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130, v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630}
+            --TODO: implement Transport spawning
+            --TODO: implement starting cloaked
+            --TODO: implement spawning shuttle abilities
+        end
+        if mission == "Cloak and Dagger" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="PHA",count={1,8,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,1,-6,1,-8,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,0,6,0,8,0}, elite=false})
+            --TODO: implement random filtering (not shuttle/phantom)
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,0,0,4,0,6}, elite=false})
+
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement ion storm spawning
+            --TODO: implement spawning partial stations on side
+        end
+        if mission == "Revenge" then
+            campaign = "HOTAC"
+            turns = 10
+            table.insert(missionsquads, {name="Aces",turn=1,vector="1d12",ai="strike",type="INT",count={1,1,1,1,1,1}, elite=true})
+            --TODO: implement ion storm spawning
+            --TODO: elites match player PS
+            --TODO: implement multistrike
+        end
+        if mission == "Capture Officer" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Shuttle",turn=0,vector=7,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="ADV",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-4,1,-6,1,-8}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,4,0,6,0,8}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=11,vector="1d6",ai="attack",type="INT",count={1,1,0,1,0,1}, elite=false})
+            missionvectors = {v._0530,v._0630,v._0930, v._1130, v._0030,v._0230, {x=0, y=-1,rot=180}}
+        end
+        if mission == "Nobody Home" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            num_debris = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Obstacle",turn=0,vector=6,ai="stiketarget",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="strike",type="INT",count={1,0,0,8,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=2,ai="strike",type="INT",count={0,6,1,0,0,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="TIE",count={1,1,-4,1,-8,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="*",count={0,0,4,0,8,0}, elite=false})
+            table.insert(missionsquads, {name="Command",turn=0,vector=4,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
+            missionvectors = {v._1100,v._1120,v._0020, v._0040, v._0100, {x=0, y=-2,rot=180}}
+        end
+        if mission == "Miners' Strike" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Cargo",turn=0,vector=7,ai="flee",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Cargo",turn=0,vector=8,ai="flee",type="SHU",count={0,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})--2/3?
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})--4/5?
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-4,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,4,0,6}, elite=false})
+
+            --TODO: spawn station components
+            missionvectors = {v._0630,v._0830,v._0930, v._1130, v._0030,v._0230,{x=0,y=3,rot=180},{x=2,y=2,rot=270}}
+        end
+        if mission == "Secure Holonet Receiver" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={8,0,4,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="INT",count={0,0,1,8,1,6}, elite=false})
+            --TODO: Spawn Satellite Relays
+            --TODO: Spawn Station
+            --TODO: spawn HWK-290
+            missionvectors = {v._0600,v._0730,v._0900, v._0000,v._0130,v._0300}
+        end
+        if mission == "Defector" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            table.insert(missionsquads, {name="Prototype",turn=0,vector=4,ai="attack",type="DEF",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={0,0,1,6,1,4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,6,0,4}, elite=false})
+            --TODO: implement random filters
+            missionvectors = {v._0920,v._1030S,v._1130,v._0030,v._0130S,v._0240}
+
+        end
+        if mission == "Pride of the Empire" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            -- c = 13, d = 14, e = 15, f = 16, center = 17
+            table.insert(missionsquads, {name="Instructor",turn=0,vector=17,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="DEF",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="TIE",count={0,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="DEF",count={0,0,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="TIE",count={1,1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="TIE",count={1,0,0,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="DEF",count={0,0,0,0,0,1}, elite=true})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="INT",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="TIE",count={0,8,0,6,0,4}, elite=false})
+            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130,v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630,
+                {x=-1.5, y=1.5,rot=270}, --C
+                {x=-1.5, y=-1.5,rot=180}, --D
+                {x=1.5,y=-1.5,rot=90}, --E
+                {x=1.5,y=1.5,rot=0}, --F
+                {x=0,y=0,rot=180}    --center
+            }
+        end
