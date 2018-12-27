@@ -1,0 +1,281 @@
+function Log.onSave(item)
+    local data = {}
+    data["type"] = 'log'
+    data["primary"] = Log.GetPrimary(item) and Log.GetPrimary(item).getGUID() or nil
+    data["secondary"] = Log.GetSecondary(item) and Log.GetSecondary(item).getGUID() or nil
+    data["ship"] = Log.GetShip(item) and Log.GetShip(item).getGUID() or nil
+    data["deckName"] = Log.GetDeckName(item)
+    data["abackRight"] = Log.GetAbackRight(item) and Log.GetAbackRight(item).getGUID() or nil
+    data["abackStraight"] = Log.GetAbackStraight(item) and Log.GetAbackStraight(item).getGUID() or nil
+    data["abackLeft"] = Log.GetAbackLeft(item) and Log.GetAbackLeft(item).getGUID() or nil
+end
+function Log.onLoad(item, data)
+    --printToAll("Loading log: "..guid,{1,1,1})
+    if data["primary"] then
+        Log.SetPrimary(item,getObjectFromGUID(data["primary"]))
+    end
+    if data["secondary"] then
+        Log.SetSecondary(item,getObjectFromGUID(data["secondary"]))
+    end
+    if data["ship"] then
+        Log.SetShip(item,getObjectFromGUID(data["ship"]))
+    end
+    Log.SetDeckName(item,data["deckName"])
+    if data["abackRight"] then
+        Log.SetAbackRight(item,getObjectFromGUID(data['abackRight']))
+    end
+    if data["abackStraight"] then
+        Log.SetAbackStraight(item,getObjectFromGUID(data['abackStraight']))
+    end
+    if data["abackLeft"] then
+        Log.SetAbackLeft(item,getObjectFromGUID(data['abackLeft']))
+    end
+end
+function isLog(log)
+    return log.getDescription() == "Ship Log" -- and isInPlay(ship)
+end
+
+PRIMARY_OFFSET = {-2.77,0,10.36}
+SECONDARY_OFFSET = {-10.09,0,10.36}
+function Log.SetNextCard(log, card)
+    if Log.GetPrimary(log)==nil then
+        Log.SetPrimary(log, card)
+        Log.PositionCard(log, card, PRIMARY_OFFSET)
+    elseif Log.GetSecondary(log)==nil then
+        Log.SetSecondary(log, card)
+        Log.PositionCard(log, card, SECONDARY_OFFSET)
+    end
+    UpdateNote()
+end
+function Log.SetPrimary(log, card) log.setVar('primary',card) end
+function Log.GetPrimary(log) return log.getVar('primary') end
+function Log.SetSecondary(log, card) log.setVar('secondary',card) end
+function Log.GetSecondary(log) return log.getVar('secondary') end
+function Log.SetShip(log,ship) log.setVar('ship',ship) end
+function Log.GetShip(log) return log.getVar('ship') end
+function Log.SetDeckName(log,deckName) log.setVar('deckName',deckName) end
+function Log.GetDeckName(log) return log.getVar('deckName') end
+function Log.SetAbackRight(log,card) log.setVar('abackRight',card) end
+function Log.SetAbackStraight(log,card) log.setVar('abackStraight',card) end
+function Log.SetAbackLeft(log,card) log.setVar('abackLeft',card) end
+function Log.GetAbackRight(log) return log.getVar('abackRight') end
+function Log.GetAbackStraight(log) return log.getVar('abackStraight') end
+function Log.GetAbackLeft(log) return log.getVar('abackLeft') end
+function Log.SetReady(log,ready)
+    log.setVar('ready',ready)
+    CheckReady()
+    UpdateNote()
+    Log.drawButtons(log)
+end
+function Log.GetReady(log) return log.getVar('ready') end
+
+
+function Log.PositionCard(log, card, offset)
+    card.setPositionSmooth(vector.add(log.getPosition(), vector.rotate(offset,log.getRotation()[2])), false, false)
+    card.setRotationSmooth({0,log.getRotation()[2],180},false,false)
+    card.setScale({2.24,1,2.24*7.5/7},false,false)
+    card.clearButtons()
+    card.lock()
+end
+function Log.PromoteSecondary(log)
+    if Log.GetPrimary(log)~=nil then
+        printToAll("Trying to Promote Secondary but Primary is not null",{1,0,0})
+        return
+    end
+    if Log.GetSecondary(log)~=nil then
+        local card = Log.GetSecondary(log)
+        Log.SetPrimary(log, card)
+        Log.SetSecondary(log, nil)
+        Log.PositionCard(log, card, PRIMARY_OFFSET)
+    end
+end
+function Log.drawButtons(log)
+    log.clearButtons()
+    local ship = Log.GetShip(log)
+    local desc = ""
+    if ship~=nil then
+        local color = WHITE
+        local font_color = BLACK
+        if Ship.GetSpeed(ship)=='Full' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Full', ['label'] = 'Full', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.14, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Battle' then color = {18/255, 88/255, 220/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Battle', ['label'] = 'Battle', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.57, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Backing' then color = {99/255, 149/255, 242/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Backing', ['label'] = 'Backing', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.99, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Anchored' then color = {9/255, 24/255, 52/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Anchored', ['label'] = 'Struck', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.41, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+
+        if Ship.GetBrokeMast(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_BrokenMast', ['label'] = 'Broke Mast', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.65, 0.4, 0.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1700, ['height'] = 600, ['font_size'] = 250})
+
+        if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2, 0.4, 1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+
+        desc = ship.getName()
+
+    end
+    log.createButton({['click_function'] = 'Action_ClearShip', ['label'] = desc, ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.6, 0.4, -1.3}, ['width'] = 3500, ['height'] = 400, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_ClearDeck', ['label'] = Log.GetDeckName(log) or "", ['scale'] = {0.18,0.18,0.18}, ['position'] = {-0.4, 0.4, -1.3}, ['width'] = 1700, ['height'] = 400, ['font_size'] = 250})
+
+    if Log.GetPrimary(log) then
+        log.createButton({['click_function'] = 'Action_CardPlay', ['label'] = 'Play', ['scale'] = {0.35,0.35,0.35}, ['position'] = {0.51, 0.4, 1.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+        log.createButton({['click_function'] = 'Action_CardPrimaryUndo', ['label'] = 'Undo', ['scale'] = {0.35,0.35,0.35}, ['position'] = {0.51, 0.4, 2.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+    end
+
+    if Log.GetSecondary(log) then
+        log.createButton({['click_function'] = 'Action_CardSecondaryUndo', ['label'] = 'Undo', ['scale'] = {0.35,0.35,0.35}, ['position'] = {1.84, 0.4, 2.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+    end
+
+    log.createButton({['click_function'] = 'Action_SetStart', ['label'] = 'Start', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.5}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetPlanning', ['label'] = 'Planning', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.3}, ['color'] = {1,0.5,0.5}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetAction', ['label'] = 'Action', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.1}, ['color'] = {0.5,1,0.5}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetMovement', ['label'] = 'Move', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.1}, ['color'] = {0.5,0.5,1}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.3}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+end
+function Action_SetStart()
+    current_phase = "start"
+    ResetReady()
+end
+function Action_SetPlanning()
+    current_phase = "planning"
+    ResetReady()
+end
+function Action_SetAction()
+    current_phase = "action"
+    ResetReady()
+end
+function Action_SetMovement()
+    current_phase = "move"
+    ResetReady()
+end
+function Action_SetCombat()
+    current_phase = "combat"
+    ResetReady()
+end
+function Action_SetReloading()
+    current_phase = "reload"
+    ResetReady()
+end
+function CheckReady()
+    local ready= true
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            ready = ready and Log.GetReady(log)
+        end
+    end
+    if ready then
+        if current_phase == "start" then
+            current_phase = "planning"
+        elseif current_phase == "planning" then
+            current_phase = "action"
+        elseif current_phase == "action" then
+            current_phase = "move"
+        elseif current_phase == "move" then
+            current_phase = "combat"
+        elseif current_phase == "combat" then
+            current_phase = "reload"
+        elseif current_phase == "reload" then
+            current_phase = "start"
+        end
+        ResetReady()
+        UpdateNote()
+    end
+end
+function ResetReady()
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.SetReady(log,false)
+            Log.drawButtons(log)
+        end
+    end
+    UpdateNote()
+end
+function Action_SetLog_Ready(log)
+    Log.SetReady(log,not Log.GetReady(log))
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_ClearShip(log)
+    Log.SetShip(log, nil)
+    Log.drawButtons(log)
+end
+function Action_ClearDeck(log)
+    Log.SetDeckName(log, nil)
+    Log.drawButtons(log)
+end
+function Action_CardPlay(log)
+    local card = Log.GetPrimary(log)
+    if card~=nil then
+        local success = Log.PlayToShip(log, card)
+        if success then
+            Log.SetPrimary(log,nil)
+            Log.PromoteSecondary(log)
+        end
+        Log.drawButtons(log)
+    end
+end
+function Log.PlayToShip(log, card)
+    local ship = Log.GetShip(log)
+    if Ship.GetCard(ship)~=nil then
+        printToAll("Ship already has a card",{1,0,0})
+        return false
+    end
+    success = positionCard(card, ship)
+    if success then
+        Ship.SetReadyToMove(ship,true)
+        Ship.SetCard(ship, card)
+        Ship.drawButtons(ship)
+    end
+    Log.drawButtons(log)
+    return success
+end
+function Action_CardPrimaryUndo(log)
+    local card = Log.GetPrimary(log)
+    Card.reset(card)
+    Log.SetPrimary(log,nil)
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_CardSecondaryUndo(log)
+    local card = Log.GetSecondary(log)
+    Card.reset(card)
+    Log.SetSecondary(log,nil)
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_SetLog_Full(log)
+    Log.SetSpeed(log, 'Full')
+    UpdateNote()
+end
+function Action_SetLog_Battle(log)
+    Log.SetSpeed(log, 'Battle')
+    UpdateNote()
+end
+function Action_SetLog_Backing(log)
+    Log.SetSpeed(log, 'Backing')
+    UpdateNote()
+end
+function Action_SetLog_Anchored(log)
+    Log.SetSpeed(log, 'Anchored')
+    UpdateNote()
+end
+function Log.SetSpeed(log, speed)
+    local ship = Log.GetShip(log)
+    Ship.SetSpeed(ship, speed)
+    Log.UpdateShipVars(log)
+end
+function Log.UpdateShipVars(log)
+    local ship = Log.GetShip(log)
+    Log.drawButtons(log)
+    local card = Ship.GetCard(ship)
+    if card~=nil then
+        positionCard(card,ship)
+        Ship.drawButtons(ship)
+    end
+end
+function Action_SetLog_BrokenMast(log)
+    local ship = Log.GetShip(log)
+    Ship.SetBrokeMast(ship, not Ship.GetBrokeMast(ship))
+    Log.UpdateShipVars(log)
+end

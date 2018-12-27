@@ -1,0 +1,14 @@
+
+function drawWindButtons()
+    local color = WHITE
+    local font_color = BLACK
+    if world_wind=='Low' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetLowWind', ['label'] = 'Low', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {-0.75, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+    if world_wind=='Mid' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetMidWind', ['label'] = 'Mid', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {0, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+    if world_wind=='High' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetHighWind', ['label'] = 'High', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {0.75, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+end
+function Action_SetLowWind() world_wind='Low'; drawWindButtons() end
+function Action_SetMidWind() world_wind='Mid'; drawWindButtons() end
+function Action_SetHighWind() world_wind='High'; drawWindButtons() end
