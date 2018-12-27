@@ -1,0 +1,1003 @@
+--[[ Lua code. See documentation: https://api.tabletopsimulator.com/ --]]
+
+Log = {}
+Deck = {}
+Card = {}
+Ship = {}
+CARDS = {}
+wind_dir_guid = '9c666a'
+wind_speed_guid = '9b304d'
+wind_dir = nil
+
+ARCS = {}
+ARCS['DEF'] = 'https://paste.ee/p/GrUc9'
+ARCS['COU'] = 'https://paste.ee/p/L6pmN'
+ARCS['TER'] = 'https://paste.ee/p/PMxwq'
+ARCS['GEN'] = 'https://paste.ee/p/r6YkZ'
+ARC_COLLIDER = 'https://paste.ee/p/7n7Kt'
+
+local world_wind = "Mid"
+local GREEN ={r=0, g=1, b=0}
+local ORANGE ={r=1, g=0.5, b=0}
+local RED ={r=1, g=0, b=0}
+local WHITE ={r=1, g=1, b=1}
+local BLACK ={r=0, g=0, b=0}
+--[[ The onLoad event is called after the game save finishes loading. --]]
+function onload(saveData)
+    wind_dir = getObjectFromGUID(wind_dir_guid)
+    wind_speed = getObjectFromGUID(wind_speed_guid)
+    if saveData~="" then
+        local save = JSON.decode(saveData)
+        for guid, data in pairs(save) do
+            local item = getObjectFromGUID(guid)
+            local type = data["type"]
+            if type=='ship' then
+                --printToAll("Loading ship: "..guid,{1,1,1})
+                Ship.SetWind(item,data["wind"])
+                Ship.SetSpeed(item,data["speed"])
+                if data["card"] then
+                    Ship.SetCard(item,getObjectFromGUID(data["card"]))
+                end
+                Ship.SetBrokeMast(item,data["broke_mast"])
+                Ship.SetReadyToMove(item,data["ready"])
+                Ship.SetIsBacking(item,data["backing"])
+                if data["arc"] then
+                    Ship.SetArc(item,getObjectFromGUID(data["arc"]))
+                end
+                Ship.drawButtons(item)
+            elseif type=='log' then
+                --printToAll("Loading log: "..guid,{1,1,1})
+                if data["primary"] then
+                    Log.SetPrimary(item,getObjectFromGUID(data["primary"]))
+                end
+                if data["secondary"] then
+                    Log.SetSecondary(item,getObjectFromGUID(data["secondary"]))
+                end
+                if data["ship"] then
+                    Log.SetShip(item,getObjectFromGUID(data["ship"]))
+                end
+                Log.SetDeckName(item,data["deckName"])
+                if data["abackRight"] then
+                    Log.SetAbackRight(item,getObjectFromGUID(data['abackRight']))
+                end
+                if data["abackStraight"] then
+                    Log.SetAbackStraight(item,getObjectFromGUID(data['abackStraight']))
+                end
+                if data["abackLeft"] then
+                    Log.SetAbackLeft(item,getObjectFromGUID(data['abackLeft']))
+                end
+                Log.drawButtons(item)
+            elseif type=='card' then
+                --printToAll("Loading card: "..guid,{1,1,1})
+                if data["shiplog"] then
+                    Card.SetLog(item,getObjectFromGUID(data["shiplog"]))
+                end
+                Card.SetOriginalPos(item,data["orig_pos"])
+                Card.SetOriginalRot(item,data["orig_rot"])
+                Card.drawButtons(item)
+            end
+        end
+        for i, item in ipairs(getAllObjects()) do
+            if isLog(item) then
+                Log.drawButtons(item)
+            end
+        end
+        world_wind = save['wind'] or "Mid"
+    end
+    drawWindButtons(wind_speed)
+    -- local desc = "CBM4R"
+    -- printToAll("match: "..(desc:match '%u(B?M?%d*%u2?)'),{1,1,1})
+end
+function onSave()
+    local save = {}
+    for i, item in ipairs(getAllObjects()) do
+        if isShip(item) then
+            local data = {}
+            data["type"] = 'ship'
+            data["wind"] = Ship.GetWind(item)
+            data["speed"] = Ship.GetSpeed(item)
+            data["card"] = Ship.GetCard(item) and Ship.GetCard(item).getGUID() or nil
+            data["broke_mast"] = Ship.GetBrokeMast(item)
+            data["ready"] = Ship.GetReadyToMove(item)
+            data["backing"] = Ship.GetIsBacking(item)
+            data["arc"] = Ship.GetArc(item) and Ship.GetArc(item).getGUID() or nil
+            save[item.getGUID()] = data
+        elseif isLog(item) then
+            local data = {}
+            data["type"] = 'log'
+            data["primary"] = Log.GetPrimary(item) and Log.GetPrimary(item).getGUID() or nil
+            data["secondary"] = Log.GetSecondary(item) and Log.GetSecondary(item).getGUID() or nil
+            data["ship"] = Log.GetShip(item) and Log.GetShip(item).getGUID() or nil
+            data["deckName"] = Log.GetDeckName(item)
+            data["abackRight"] = Log.GetAbackRight(item) and Log.GetAbackRight(item).getGUID() or nil
+            data["abackStraight"] = Log.GetAbackStraight(item) and Log.GetAbackStraight(item).getGUID() or nil
+            data["abackLeft"] = Log.GetAbackLeft(item) and Log.GetAbackLeft(item).getGUID() or nil
+            save[item.getGUID()] = data
+        elseif item.tag=='Card' then
+            local data = {}
+            data["type"] = 'card'
+            data["shiplog"] = Card.GetLog(item) and Card.GetLog(item).getGUID() or nil
+            data["orig_pos"] = Card.GetOriginalPos(item)
+            data["orig_rot"] = Card.GetOriginalRot(item)
+            save[item.getGUID()] = data
+        end
+    end
+    save['wind']=world_wind
+    save_string = JSON.encode(save)
+    return save_string
+end
+function drawWindButtons()
+    local color = WHITE
+    local font_color = BLACK
+    if world_wind=='Low' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetLowWind', ['label'] = 'Low', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {-0.75, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+    if world_wind=='Mid' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetMidWind', ['label'] = 'Mid', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {0, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+    if world_wind=='High' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+    wind_speed.createButton({['click_function'] = 'Action_SetHighWind', ['label'] = 'High', ['scale'] = {0.5,0.5,0.5}, ['color'] = color, ['font_color'] = font_color, ['position'] = {0.75, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 600, ['height'] = 300, ['font_size'] = 250})
+end
+function Action_SetLowWind() world_wind='Low'; drawWindButtons() end
+function Action_SetMidWind() world_wind='Mid'; drawWindButtons() end
+function Action_SetHighWind() world_wind='High'; drawWindButtons() end
+--[[ The onUpdate event is called once per frame. --]]
+function onUpdate()
+    --[[ print('onUpdate loop!') --]]
+end
+function onObjectDrop(player_color, dropped_object)
+    --printToAll("dropped: '"..dropped_object.getDescription().."'", {1,1,1})
+    --printToAll("CARDS"..tostring('ABM2L'==dropped_object.getDescription()),{1,1,1})
+    -- card = CARDS['ABM2L']
+    -- speed = card.BrokenMast
+    -- wind = speed.Reaching
+    -- rot = wind.rotation
+    -- printToAll("CARDS"..rot,{1,1,1})
+    if(CARDS[dropped_object.getDescription()]~=nil) then
+        -- printToAll("dropped card: "..dropped_object.getDescription(), {1,1,1})
+        -- local ship = findNearestShip(dropped_object.getPosition())
+        -- if vector.length(vector.sub(dropped_object.getPosition(),ship.getPosition()))<11 then
+        --     printToAll("found ship: "..ship.getName(), {1,1,1})
+        --     ship.setVar('card', dropped_object)
+        --     Ship.drawButtons(ship)
+        --     positionCard(dropped_object,ship)
+        -- end
+        Card.drawReturnButton(dropped_object)
+    end
+    if isShip(dropped_object) then
+        printToAll("dropped ship: "..dropped_object.getName(), {1,1,1})
+        -- lprintToAll('x: '..dropped_object.getPosition()[1]..', y: '..dropped_object.getPosition()[2]..', z: '..dropped_object.getPosition()[3],{1,1,1})
+        local log = findNearestLog(dropped_object.getPosition())
+        if log~=nil and vector.length(vector.sub(log.getPosition(),dropped_object.getPosition()))<16 then
+            if Log.GetShip(log)~=nil then
+                printToAll("ShipLog: "..log.getName().." already has a ship.",{1,0,0})
+            else
+                Log.SetShip(log,dropped_object)
+                log.setName(dropped_object.getName())
+                Log.drawButtons(log)
+            end
+        end
+        Ship.drawButtons(dropped_object)
+    end
+    if isDeck(dropped_object) then
+        local log = findNearestLog(dropped_object.getPosition())
+        if log~=nil and vector.length(vector.sub(log.getPosition(),dropped_object.getPosition()))<16 then
+            Log.SetDeckName(log, dropped_object.getName())
+            Log.drawButtons(log)
+            Deck.SetLog(dropped_object,log)
+            dropped_object.clearButtons()
+            dropped_object.createButton({['click_function'] = 'Action_Layout', ['label'] = 'Layout', ['position'] = {0, 0.3, 2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 250})
+        end
+    end
+end
+-- table.index = int index
+-- table.nickname = string nickname
+-- table.description = string description
+-- table.guid = string guid
+-- table.lua_script = string lua_script
+CARD_OFFSETS = {['0L'] = -6, ['1L'] = -5,['2L'] = -4,['3L'] = -3,['4L'] = -2,
+                ['5L'] = -1, ['5S'] = 0, ['5R'] = 1,
+                ['6R'] = 2, ['7R'] = 3,['8R'] = 4,['9R'] = 5,['10R'] = 6,
+                ['BM1L'] = -4, ['BM2L'] = -3, ['BM3R'] = -2, ['BM4R'] = -1,
+                ['BM5L2'] = 1, ['BM6L2'] = 2, ['BM7R2'] = 3, ['BM8R2'] = 4,
+                ['Aback4'] = -1, ['Aback5'] = 0, ['Aback6'] = 1 }
+cardToMove = nil
+function Action_Layout(deck)
+    --printToAll('Deck==nil: '..tostring(Card.GetLog(deck)==nil),{1,1,1})
+    --printToAll('Deck: '..tostring(Card.GetLog(deck)),{1,1,1})
+    local log = Deck.GetLog(deck)
+    if not log then
+        printToAll('Drop deck on ship log before layout',{1,0,0})
+        return
+    end
+    local veers = {}
+    local deckSize = #deck.getObjects()
+    for i,card in ipairs(deck.getObjects()) do
+        local desc = card.description
+        --printToAll("Desc: '"..desc.."'",{0.5,0.75,1})
+        local veer = desc:match '%u(B?M?A?b?a?c?k?%d+%u?2?)'
+        --printToAll("Veer:"..tostring(veer),{1,1,1})
+        if veer then
+            local i_x_off = CARD_OFFSETS[veer]
+            local i_y_off = 3
+            if veers[veer]~=nil then i_y_off = 2 end
+            if veer:match 'BM.*' then i_y_off = 1 end
+            if veer:match 'Aback.' then i_y_off = 0 end
+            local offset = {i_x_off*-5/2, 0, i_y_off*-7.5/2}
+            offset = vector.rotate(offset,deck.getRotation()[2])
+            veers[veer] = 1
+            local new_pos = vector.add(deck.getPosition(), offset)
+            --printToAll("placing card: "..card.guid,{1,1,1})
+            local parameters = {}
+            parameters.position = new_pos
+            --parameters.scale = {1.12,0,1.12}
+            parameters.guid = card.guid
+            parameters.smooth = true
+            parameters.callback = 'callback_Card_AssignLogFromParams'--'Log.SetCard'--'CardSetLog'
+            parameters.callback_owner = Global
+            parameters.params = {['log']=log, ['pos']=new_pos, ['rot']=deck.getRotation()[2]}
+            deck.takeObject(parameters)
+        end
+    end
+    deck.destruct()
+end
+
+function callback_Card_AssignLogFromParams(card, params)
+    Card.SetLog(card,params.log)
+    local desc = card.getDescription()
+    local abackVeer = desc:match '.(Aback.)'
+    if abackVeer~=nil then
+        if abackVeer=="Aback4" then
+            Log.SetAbackLeft(params.log,card)
+        elseif abackVeer=="Aback5" then
+            Log.SetAbackStraight(params.log,card)
+        elseif abackVeer=="Aback6" then
+            Log.SetAbackRight(params.log,card)
+        end
+    end
+    Card.SetOriginalPos(card,params.pos)
+    Card.SetOriginalRot(card,params.rot)
+    --card.setScale({1.12,1,1.12})
+    --Card.drawButtons(card,true)
+    --card.lock()
+    Card.reset(card)
+end
+function Deck.SetLog(deck, log) deck.setVar('shiplog',log) end
+function Deck.GetLog(deck) return deck.getVar('shiplog') end
+
+function Card.SetLog(card, log) card.setVar('shiplog',log) end
+function Card.GetLog(card) return card.getVar('shiplog') end
+function Card.SetOriginalPos(card, pos) card.setTable('orig_pos',pos) end
+function Card.GetOriginalPos(card) return card.getTable('orig_pos') end
+function Card.SetOriginalRot(card, rot) card.setVar('orig_rot',rot) end
+function Card.GetOriginalRot(card) return card.getVar('orig_rot') end
+
+function Card.SwapAback(card)
+    local log = Card.GetLog(card)
+    local aback_card = nil
+    local desc = card.getDescription()
+    if desc:match '.(BM.*)' then
+        local rand = math.random(3)
+        -- printToAll("Rand: "..tostring(rand),{1,1,1})
+        if rand==1 then
+            aback_card = Log.GetAbackLeft(log)
+        elseif rand==2 then
+            aback_card = Log.GetAbackStraight(log)
+        elseif rand==3 then
+            aback_card = Log.GetAbackRight(log)
+        end
+    else
+        local veer_num = tonumber(desc:match '%B?M?A?b?a?c?k?(%d+)%u?2?')
+        if veer_num<5 then
+            aback_card = Log.GetAbackLeft(log)
+        elseif veer_num>5 then
+            aback_card = Log.GetAbackRight(log)
+        else
+            aback_card = Log.GetAbackStraight(log)
+        end
+    end
+    if aback_card~=nil then
+        Card_Action_Reset(card)
+        Log.PlayToShip(log, aback_card)
+    end
+end
+function Card.drawButtons(card, reset)
+    card.clearButtons()
+    local desc = card.getDescription()
+    if not desc:match '.Aback.' then
+        card.createButton({['click_function'] = 'Card_Action_Plan', ['label'] = 'Plan', ['scale'] = {0.6,0.6,0.6}, ['position'] = {0, 0.3, -1.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+    end
+end
+function Card.drawReturnButton(card)
+    card.clearButtons()
+    card.createButton({['click_function'] = 'Card_Action_Reset', ['label'] = 'Reset', ['scale'] = {0.6,0.6,0.6}, ['position'] = {0, 0.3, 1.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+end
+function Card.isBrokenMastCard(card)
+    local desc = card.getDescription()
+    return (desc:match '.BM.*')~=nil
+end
+function Card.reset(card)
+    local orig_pos = Card.GetOriginalPos(card)
+    local orig_rot = Card.GetOriginalRot(card) or 180
+    card.lock()
+    card.setScale({1.12,1,1.12*7.5/7},false,false)
+    card.setPositionSmooth(orig_pos, false, false)
+    card.setRotationSmooth({0,orig_rot,0},false,false)
+    --card.unlock()
+    Card.drawButtons(card,true)
+end
+
+function Card_Action_Plan(card)
+    local log = Card.GetLog(card)
+    local ship = Log.GetShip(log)
+    -- printToAll('Card.isBrokenMastCard: '..tostring(Card.isBrokenMastCard(card)),{1,1,1})
+    -- printToAll('Ship.GetBrokeMast(ship): '..tostring(Ship.GetBrokeMast(ship)),{1,1,1})
+    if Card.isBrokenMastCard(card)==Ship.GetBrokeMast(ship) then
+        Log.SetNextCard(log,card)
+        Log.drawButtons(log)
+    else
+        if Ship.GetBrokeMast(ship) then
+            printToAll("Your mast is broken, you must plan a broken mast card",{1,0,0})
+        else
+            printToAll("You mast is not broken, plan a regular numbered card",{1,0,0})
+        end
+    end
+end
+function Card_Action_Reset(card)
+    local log = Card.GetLog(card)
+    local ship = Log.GetShip(log)
+    Card.reset(card)
+    if ship~=nil then
+        Ship.SetCard(ship, nil)
+        Ship.drawButtons(ship)
+    end
+end
+
+PRIMARY_OFFSET = {-2.77,0,10.36}
+SECONDARY_OFFSET = {-10.09,0,10.36}
+function Log.SetNextCard(log, card)
+    if Log.GetPrimary(log)==nil then
+        Log.SetPrimary(log, card)
+        Log.PositionCard(log, card, PRIMARY_OFFSET)
+    elseif Log.GetSecondary(log)==nil then
+        Log.SetSecondary(log, card)
+        Log.PositionCard(log, card, SECONDARY_OFFSET)
+    end
+    UpdateNote()
+end
+function Log.SetPrimary(log, card) log.setVar('primary',card) end
+function Log.GetPrimary(log) return log.getVar('primary') end
+function Log.SetSecondary(log, card) log.setVar('secondary',card) end
+function Log.GetSecondary(log) return log.getVar('secondary') end
+function Log.SetShip(log,ship) log.setVar('ship',ship) end
+function Log.GetShip(log) return log.getVar('ship') end
+function Log.SetDeckName(log,deckName) log.setVar('deckName',deckName) end
+function Log.GetDeckName(log) return log.getVar('deckName') end
+function Log.SetAbackRight(log,card) log.setVar('abackRight',card) end
+function Log.SetAbackStraight(log,card) log.setVar('abackStraight',card) end
+function Log.SetAbackLeft(log,card) log.setVar('abackLeft',card) end
+function Log.GetAbackRight(log) return log.getVar('abackRight') end
+function Log.GetAbackStraight(log) return log.getVar('abackStraight') end
+function Log.GetAbackLeft(log) return log.getVar('abackLeft') end
+function Log.SetReady(log,ready)
+    log.setVar('ready',ready)
+    CheckReady()
+    UpdateNote()
+    Log.drawButtons(log)
+end
+function Log.GetReady(log) return log.getVar('ready') end
+
+
+function Log.PositionCard(log, card, offset)
+    card.setPositionSmooth(vector.add(log.getPosition(), vector.rotate(offset,log.getRotation()[2])), false, false)
+    card.setRotationSmooth({0,log.getRotation()[2],180},false,false)
+    card.setScale({2.24,1,2.24*7.5/7},false,false)
+    card.clearButtons()
+    card.lock()
+end
+function Log.PromoteSecondary(log)
+    if Log.GetPrimary(log)~=nil then
+        printToAll("Trying to Promote Secondary but Primary is not null",{1,0,0})
+        return
+    end
+    if Log.GetSecondary(log)~=nil then
+        local card = Log.GetSecondary(log)
+        Log.SetPrimary(log, card)
+        Log.SetSecondary(log, nil)
+        Log.PositionCard(log, card, PRIMARY_OFFSET)
+    end
+end
+function API_UPDATE_ALL_BUTTONS()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Ship.drawButtons(ship)
+        end
+    end
+end
+function Log.drawButtons(log)
+    log.clearButtons()
+    local ship = Log.GetShip(log)
+    local desc = ""
+    if ship~=nil then
+        local color = WHITE
+        local font_color = BLACK
+        if Ship.GetSpeed(ship)=='Full' then color = {10/255, 51/255, 127/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Full', ['label'] = 'Full', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.14, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Battle' then color = {18/255, 88/255, 220/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Battle', ['label'] = 'Battle', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.57, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Backing' then color = {99/255, 149/255, 242/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Backing', ['label'] = 'Backing', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.99, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetSpeed(ship)=='Anchored' then color = {9/255, 24/255, 52/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Anchored', ['label'] = 'Struck', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.41, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+
+        if Ship.GetBrokeMast(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_BrokenMast', ['label'] = 'Broke Mast', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.65, 0.4, 0.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1700, ['height'] = 600, ['font_size'] = 250})
+
+        if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2, 0.4, 1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+
+        desc = ship.getName()
+
+    end
+    log.createButton({['click_function'] = 'Action_ClearShip', ['label'] = desc, ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.6, 0.4, -1.3}, ['width'] = 3500, ['height'] = 400, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_ClearDeck', ['label'] = Log.GetDeckName(log) or "", ['scale'] = {0.18,0.18,0.18}, ['position'] = {-0.4, 0.4, -1.3}, ['width'] = 1700, ['height'] = 400, ['font_size'] = 250})
+
+    if Log.GetPrimary(log) then
+        log.createButton({['click_function'] = 'Action_CardPlay', ['label'] = 'Play', ['scale'] = {0.35,0.35,0.35}, ['position'] = {0.51, 0.4, 1.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+        log.createButton({['click_function'] = 'Action_CardPrimaryUndo', ['label'] = 'Undo', ['scale'] = {0.35,0.35,0.35}, ['position'] = {0.51, 0.4, 2.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+    end
+
+    if Log.GetSecondary(log) then
+        log.createButton({['click_function'] = 'Action_CardSecondaryUndo', ['label'] = 'Undo', ['scale'] = {0.35,0.35,0.35}, ['position'] = {1.84, 0.4, 2.4}, ['width'] = 800, ['height'] = 300, ['font_size'] = 250})
+    end
+
+    log.createButton({['click_function'] = 'Action_SetStart', ['label'] = 'Start', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.5}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetPlanning', ['label'] = 'Planning', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.3}, ['color'] = {1,0.5,0.5}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetAction', ['label'] = 'Action', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, -0.1}, ['color'] = {0.5,1,0.5}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetMovement', ['label'] = 'Move', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.1}, ['color'] = {0.5,0.5,1}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.3}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+    log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2.8, 0.4, 0.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+end
+current_phase = "planning"
+function Action_SetStart()
+    current_phase = "start"
+    ResetReady()
+end
+function Action_SetPlanning()
+    current_phase = "planning"
+    ResetReady()
+end
+function Action_SetAction()
+    current_phase = "action"
+    ResetReady()
+end
+function Action_SetMovement()
+    current_phase = "move"
+    ResetReady()
+end
+function Action_SetCombat()
+    current_phase = "combat"
+    ResetReady()
+end
+function Action_SetReloading()
+    current_phase = "reload"
+    ResetReady()
+end
+function CheckReady()
+    local ready= true
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            ready = ready and Log.GetReady(log)
+        end
+    end
+    if ready then
+        if current_phase == "start" then
+            current_phase = "planning"
+        elseif current_phase == "planning" then
+            current_phase = "action"
+        elseif current_phase == "action" then
+            current_phase = "move"
+        elseif current_phase == "move" then
+            current_phase = "combat"
+        elseif current_phase == "combat" then
+            current_phase = "reload"
+        elseif current_phase == "reload" then
+            current_phase = "start"
+        end
+        ResetReady()
+        UpdateNote()
+    end
+end
+function ResetReady()
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.SetReady(log,false)
+            Log.drawButtons(log)
+        end
+    end
+    UpdateNote()
+end
+function Action_SetPlanning()
+    current_phase = "planning"
+    ResetReady()
+end
+function UpdateNote()
+    noteString = ""
+    if current_phase == "start" then
+        noteString="***Start Phase ***\nUpdate [A0A0FF]Wind[-]\nFire Spreads\nWater Leaks"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF0000] Damaging[-] "
+                if Log.GetReady(log) then
+                    status = "[8080FF]        Done[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    elseif current_phase == "planning" then
+        noteString="***[FF80FF]Planning Phase[-] ***"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF8000]    Plan[-] "
+                local ship = Log.GetShip(log)
+                if ship~=nil and Ship.GetSpeed(ship)=="Anchored" and Log.GetReady(log) then
+                    status = "[FF0000] Struck[-] "
+                elseif Log.GetPrimary(log)~=nil and Log.GetSecondary(log)~=nil and Log.GetReady(log) then
+                    status = "[8080FF] Ready[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    elseif current_phase == "action" then
+        noteString="***[80FF80]Action Phase[-] ***\nPerform Standard Actions"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF0000] Acting[-] "
+                if Log.GetReady(log) then
+                    status = "[8080FF]      Done[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    elseif current_phase == "move" then
+        noteString="***[8080FF]Move Phase[-] ***"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF0000] Moving[-] "
+                if Log.GetReady(log) then
+                    status = "[8080FF]      Done[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    elseif current_phase == "combat" then
+        noteString="***[FF0000]Combat Phase[-] ***"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF0000] Shooting[-] "
+                if Log.GetReady(log) then
+                    status = "[8080FF]      Done[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    elseif current_phase == "reload" then
+        noteString="***[FF8000]Reload Phase[-] ***"
+        for i,log in ipairs(getAllObjects()) do
+            if isLog(log) then
+                local status = "[FF0000] Reloading[-] "
+                if Log.GetReady(log) then
+                    status = "[8080FF]      Done[-] "
+                end
+                noteString=noteString.."\n"..log.getName()..status
+            end
+        end
+    end
+    setNotes(noteString)
+end
+function Action_SetLog_Ready(log)
+    Log.SetReady(log,not Log.GetReady(log))
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_ClearShip(log)
+    Log.SetShip(log, nil)
+    Log.drawButtons(log)
+end
+function Action_ClearDeck(log)
+    Log.SetDeckName(log, nil)
+    Log.drawButtons(log)
+end
+function Action_CardPlay(log)
+    local card = Log.GetPrimary(log)
+    if card~=nil then
+        local success = Log.PlayToShip(log, card)
+        if success then
+            Log.SetPrimary(log,nil)
+            Log.PromoteSecondary(log)
+        end
+        Log.drawButtons(log)
+    end
+end
+function Log.PlayToShip(log, card)
+    local ship = Log.GetShip(log)
+    if Ship.GetCard(ship)~=nil then
+        printToAll("Ship already has a card",{1,0,0})
+        return false
+    end
+    success = positionCard(card, ship)
+    if success then
+        Ship.SetReadyToMove(ship,true)
+        Ship.SetCard(ship, card)
+        Ship.drawButtons(ship)
+    end
+    Log.drawButtons(log)
+    return success
+end
+function Action_CardPrimaryUndo(log)
+    local card = Log.GetPrimary(log)
+    Card.reset(card)
+    Log.SetPrimary(log,nil)
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_CardSecondaryUndo(log)
+    local card = Log.GetSecondary(log)
+    Card.reset(card)
+    Log.SetSecondary(log,nil)
+    Log.drawButtons(log)
+    UpdateNote()
+end
+function Action_SetLog_Full(log)
+    Log.SetSpeed(log, 'Full')
+    UpdateNote()
+end
+function Action_SetLog_Battle(log)
+    Log.SetSpeed(log, 'Battle')
+    UpdateNote()
+end
+function Action_SetLog_Backing(log)
+    Log.SetSpeed(log, 'Backing')
+    UpdateNote()
+end
+function Action_SetLog_Anchored(log)
+    Log.SetSpeed(log, 'Anchored')
+    UpdateNote()
+end
+function Log.SetSpeed(log, speed)
+    local ship = Log.GetShip(log)
+    Ship.SetSpeed(ship, speed)
+    Log.UpdateShipVars(log)
+end
+function Log.UpdateShipVars(log)
+    local ship = Log.GetShip(log)
+    Log.drawButtons(log)
+    local card = Ship.GetCard(ship)
+    if card~=nil then
+        positionCard(card,ship)
+        Ship.drawButtons(ship)
+    end
+end
+function Action_SetLog_BrokenMast(log)
+    local ship = Log.GetShip(log)
+    Ship.SetBrokeMast(ship, not Ship.GetBrokeMast(ship))
+    Log.UpdateShipVars(log)
+end
+
+function Ship.SetWind(ship, wind) ship.setVar('wind', wind) end
+function Ship.GetWind(ship) return ship.getVar('wind') end
+function Ship.SetSpeed(ship, speed) ship.setVar('speed', speed) end
+function Ship.GetSpeed(ship) return ship.getVar('speed') end
+function Ship.SetCard(ship, card) ship.setVar('card', card) end
+function Ship.GetCard(ship) return ship.getVar('card') end
+function Ship.SetBrokeMast(ship, bool) ship.setVar('broke_mast',bool) end
+function Ship.GetBrokeMast(ship) return ship.getVar('broke_mast') or false end
+function Ship.SetReadyToMove(ship, ready) ship.setVar('ready',ready) end
+function Ship.GetReadyToMove(ship) return ship.getVar('ready') end
+function Ship.SetIsBacking(ship,backing) ship.setVar('backing',backing) end
+function Ship.GetIsBacking(ship) return ship.getVar('backing') end
+function Ship.SetArc(ship, arc) ship.setVar('arc',arc) end
+function Ship.GetArc(ship) return ship.getVar('arc') end
+
+function Ship.GetEffectiveSpeed(ship)
+    local speed = Ship.GetSpeed(ship)
+    if world_wind == "Low" then
+        if speed=="Full" then return "Battle" end
+        if speed=="Battle" then return "Backing" end
+        if speed=="Backing" then return "Anchored" end
+        if speed=="Anchored" then return "Anchored" end
+    elseif world_wind == "High" then
+        if speed=="Full" then return "Full" end
+        if speed=="Battle" then return "Full" end
+        if speed=="Backing" then return "Battle" end
+        if speed=="Anchored" then return "Anchored" end
+    else
+        return speed
+    end
+end
+
+function Ship.ToggleArc(ship)
+    if Ship.GetArc(ship)~=nil then
+        Ship.GetArc(ship).destruct()
+        Ship.SetArc(ship,nil)
+    else
+        local desc = ship.getDescription()
+        local type = desc:match '(%u*):ship'
+        if ARCS[type]~=nil then
+            ship.lock()
+            local obj_parameters = {}
+            obj_parameters.type = 'Custom_Model'
+            obj_parameters.position = ship.getPosition()
+            obj_parameters.rotation = ship.getRotation()
+            local newruler = spawnObject(obj_parameters)
+            local custom = {}
+            custom.mesh = ARCS[type]
+            custom.collider = ARC_COLLIDER
+            newruler.setCustomObject(custom)
+            newruler.lock()
+            Ship.SetArc(ship,newruler)
+        end
+    end
+end
+function Ship.drawButtons(ship, y_rot_override)
+    ship.clearButtons()
+
+    --draw wind indicator
+    local pos = {3, 0.2, 0}
+    local rot = wind_dir.getRotation()[2]-(y_rot_override or ship.getRotation()[2])
+    pos = vector.rotate(pos,-rot)
+    ship.createButton({['click_function'] = 'Action_DoNothing', ['label'] = '', ['position'] = pos, ['color'] = {0,0,0},['function_owner'] = self, ['rotation'] =  {0, rot, 0}, ['width'] = 1600, ['height'] = 10, ['font_size'] = 10})
+
+    if Ship.GetCard(ship)~=nil then
+        if Ship.GetReadyToMove(ship) then
+            if not Ship.GetIsBacking(ship) then
+                ship.createButton({['click_function'] = 'Action_SetReaching', ['label'] = 'Reach', ['position'] = {-3.5, 0.5, -3}, ['color'] = GREEN, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_SetBeating', ['label'] = 'Beat', ['position'] = {-3.5, 0.5, -2}, ['color'] = ORANGE, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            end
+            ship.createButton({['click_function'] = 'Action_SetAback', ['label'] = 'Aback', ['position'] = {-3.5, 0.5, -1}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_SetAback2', ['label'] = 'Aback x2', ['position'] = {-3.5, 0.5, -0}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        end
+        ship.createButton({['click_function'] = 'Action_Done', ['label'] = 'Done', ['position'] = {0, 0.5, -3}, ['color'] = GREEN, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 400, ['font_size'] = 350})
+    else
+        -- no card? Add Fire buttons
+        ship.createButton({['click_function'] = 'Action_Fire', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_Fire', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+    end
+    -- ship.createButton({['click_function'] = 'Action_SetFull', ['label'] = '(3) Full', ['position'] = {4.5, 0.5, -3}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
+    -- ship.createButton({['click_function'] = 'Action_SetBattle', ['label'] = '(2) Battle', ['position'] = {4.5, 0.5, -2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
+    -- ship.createButton({['click_function'] = 'Action_SetBacking', ['label'] = '(1) Battle', ['position'] = {4.5, 0.5, -1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
+    -- ship.createButton({['click_function'] = 'Action_SetBrokeMast', ['label'] = '(-1) Broke Mast', ['position'] = {4.5, 0.5, 1}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
+    -- ship.createButton({['click_function'] = 'Action_SetBrokenMasts', ['label'] = '(-2) Broken Masts', ['position'] = {4.5, 0.5, 2}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
+    if ship.getTable('undoPos')~=nil and #ship.getTable('undoPos')>0 then
+        ship.createButton({['click_function'] = 'Action_Undo', ['label'] = 'Undo', ['position'] = {0, 0.5, 4}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+    end
+end
+function Action_Fire(ship)
+    Ship.ToggleArc(ship)
+end
+function Action_DoNothing() end
+function positionCard(card_obj, ship)
+    -- local backing = Ship.GetWind(ship)=="Aback" or Ship.GetWind(ship)=="AbackTwice"
+    -- if Ship.GetSpeed(ship)==nil and not backing then
+    --     printToAll('Speed is nil',{1,0.5,0.5})
+    --     return
+    -- end
+    -- printToAll('speed: '..ship.getVar('speed'),{1,1,1})
+    local card = CARDS[card_obj.getDescription()]
+    local move = nil
+    local speed = Ship.GetEffectiveSpeed(ship)
+    if speed=="Anchored" then
+        speed="Backing"
+    end
+    local wind = Ship.GetWind(ship)
+    if card[wind]~=nil then
+        --printToAll('found wind: '..Ship.GetWind(ship),{1,1,1})
+        move = card[wind]
+    -- elseif Ship.GetBrokeMast(ship) then
+    --     if card['BrokenMast'] then
+    elseif card['BrokenMast'] then
+            --printToAll('found brokemast',{1,1,1})
+        move = card['BrokenMast']
+        --end
+    elseif card[speed]~=nil then
+        --printToAll('found speed: '..Ship.GetSpeed(ship),{1,1,1})
+        move = card[speed]
+    end
+    if move~=nil then
+        local off = vector.rotate(move.Start,ship.getRotation()[2])
+        ship.lock()
+        card_obj.setPositionSmooth(vector.add(ship.getPosition(),off),false,false)
+        card_obj.setRotationSmooth({0,ship.getRotation()[2],0},false,false)
+        card_obj.setScale({2.24,1,2.24*7.5/7})
+        card_obj.lock()
+        -- if move[ship.getVar('wind')] then
+        --
+        --     printToAll('found speed: '..ship.getVar('speed'),{1,1,1})
+        -- end
+        return true
+    else
+        printToAll('No move matching to speed, wind, or broke mast',{1,0.5,0.5})
+        return false
+    end
+end
+function Action_Done(ship)
+    Ship.SetIsBacking(ship,false)
+    local card = Ship.GetCard(ship)
+    Card.reset(card)
+    Ship.SetCard(ship, nil)
+    Ship.drawButtons(ship)
+    local log = Card.GetLog(card)
+    Log.SetReady(log,true)
+end
+function Action_Undo(ship)
+    local undoPos = ship.getTable('undoPos')
+    local undoRot = ship.getTable('undoRot')
+    if #undoPos>0 then
+        Ship.SetReadyToMove(ship,true)
+        ship.setPositionSmooth(undoPos[#undoPos], bool, bool)
+        ship.setRotationSmooth(undoRot[#undoRot], bool, bool)
+        Ship.drawButtons(ship,undoRot[#undoRot][2])
+        table.remove(undoPos)
+        table.remove(undoRot)
+        ship.setTable('undoPos',undoPos)
+        ship.setTable('undoRot',undoRot)
+    end
+end
+function Action_SetReaching(ship)
+    PerformMove(ship, 'Reaching')
+end
+function Action_SetBeating(ship)
+    PerformMove(ship, 'Beating')
+end
+function Action_SetAback(ship)
+    if Ship.GetIsBacking(ship) then
+        if Ship.GetWind(ship)=='Aback' then
+            PerformMove(ship, 'Aback')
+        else
+            local card = Ship.GetCard(ship)
+            Ship.SetWind(ship, 'Aback')
+            if card~=nil then
+                positionCard(card,ship)
+            end
+        end
+    else
+        Ship.SetIsBacking(ship,true)
+        local card = Ship.GetCard(ship)
+        Ship.SetWind(ship, 'Aback')
+        Card.SwapAback(card)
+    end
+    -- if card~=nil then
+    --     positionCard(card,ship)
+    -- end
+ end
+function Action_SetAback2(ship)
+    if Ship.GetIsBacking(ship) then
+        if Ship.GetWind(ship)=='AbackTwice' then
+            PerformMove(ship, 'AbackTwice')
+        else
+            local card = Ship.GetCard(ship)
+            Ship.SetWind(ship, 'AbackTwice')
+            if card~=nil then
+                positionCard(card,ship)
+            end
+        end
+    else
+        Ship.SetIsBacking(ship,true)
+        local card = Ship.GetCard(ship)
+        Ship.SetWind(ship, 'AbackTwice')
+        Card.SwapAback(card)
+    end
+    -- if Ship.GetWind(ship)=='AbackTwice' then
+    --     PerformMove(ship, 'AbackTwice')
+    -- end
+    -- Ship.SetWind(ship, 'AbackTwice')
+    -- local card = Ship.GetCard(ship)
+    -- Card.SwapAback(card)
+    -- if card~=nil then
+    --     positionCard(card,ship)
+    -- end
+end
+
+function PerformMove(ship, wind)
+    if Ship.GetCard(ship)==nil then
+        printToAll("No card assigned",{1,0.5,0.5})
+    else
+        local card_obj = Ship.GetCard(ship)
+        local card = CARDS[card_obj.getDescription()]
+        --wind = ship.getVar('wind')
+        -- printToAll("wind: "..wind, {1,1,1})
+        local speed = Ship.GetEffectiveSpeed(ship)
+        if speed=="Anchored" then
+            speed="Backing"
+        end
+        -- printToAll("speed: "..tostring(speed), {1,1,1})
+        local move = card[speed] or card[wind] or card['BrokenMast']
+        if move==nil then
+            printToAll("No speed: "..speed.." on card",{1,0.5,0.5})
+        -- elseif move.offset==nil then
+        --     printToAll("move.offset==nil",{1,0.5,0.5})
+        else
+            local transform = move[wind]
+            if transform==nil then
+                printToAll("No wind: "..wind.." on card",{1,0.5,0.5})
+            else
+
+                Ship.SetReadyToMove(ship,false)
+                local direction = 1
+                if transform.offset[3]>0 then
+                    direction = -1
+                end
+                local offset = vector.rotate(vector.add({0,0,-3.75*direction},transform.offset),ship.getRotation()[2])
+                local new_y_rot = ship.getRotation()[2]+transform.rotation
+                local back = vector.rotate({0,0,-3.75}, new_y_rot)
+                local undoPos = ship.getTable('undoPos') or {}
+                local undoRot = ship.getTable('undoRot') or {}
+                table.insert(undoPos,ship.getPosition())
+                table.insert(undoRot,ship.getRotation())
+                ship.setTable('undoPos',undoPos)
+                ship.setTable('undoRot',undoRot)
+                ship.setPositionSmooth(vector.add(ship.getPosition(),vector.add(offset,back)),false,false)
+                ship.setRotationSmooth({0,new_y_rot,0},false,false)
+                Ship.drawButtons(ship, new_y_rot)
+            end
+        end
+    end
+end
+function findNearestShip(pos)
+    local nearest
+    local minDist = 999999
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            local distance = distance(pos[1],pos[3],ship.getPosition()[1],ship.getPosition()[3])
+            if distance<minDist then
+                minDist = distance
+                nearest = ship
+            end
+        end
+    end
+    return nearest
+end
+function findNearestLog(pos)
+    local nearest
+    local minDist = 999999
+    for i,ship in ipairs(getAllObjects()) do
+        if isLog(ship) then
+            local distance = distance(pos[1],pos[3],ship.getPosition()[1],ship.getPosition()[3])
+            if distance<minDist then
+                minDist = distance
+                nearest = ship
+            end
+        end
+    end
+    return nearest
+end
+function distance(x,y,a,b)
+    x = (x-a)*(x-a)
+    y = (y-b)*(y-b)
+    return math.sqrt(math.abs((x+y)))
+end
+function isLog(ship)
+    return ship.getDescription() == "Ship Log" -- and isInPlay(ship)
+end
+function isShip(ship)
+    return ship.tag == 'Figurine' and ship.name ~= '' and (ship.getDescription():match '.*(ship)')=="ship" -- and isInPlay(ship)
+end
+function isDeck(deck)
+    return deck.tag == 'Deck' -- and isInPlay(ship)
+end
+function getWind(ship)
+    return ship.getVar('wind')
+end
+-- Card = {
+--     Aback=nil,
+--     AbackTwice=nil,
+--     Backing = nil,
+--     Battle = nil,
+--     Full = nil
+-- }
+-- Move = {
+--     Start=nil,
+--     Beating = nil,
+--     Reaching = nil,
+--     TakenAback=nil
+-- }
+#include card_db
+#include ../util/vector
