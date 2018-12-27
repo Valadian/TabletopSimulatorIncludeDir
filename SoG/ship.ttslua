@@ -1,3 +1,10 @@
+function API_UPDATE_ALL_BUTTONS()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Ship.drawButtons(ship)
+        end
+    end
+end
 function Ship.onObjectDrop(dropped_object)
     printToAll("dropped ship: "..dropped_object.getName(), {1,1,1})
     -- lprintToAll('x: '..dropped_object.getPosition()[1]..', y: '..dropped_object.getPosition()[2]..', z: '..dropped_object.getPosition()[3],{1,1,1})

@@ -86,13 +86,6 @@ end
 #include log
 #include note
 #include ship
-function API_UPDATE_ALL_BUTTONS()
-    for i,ship in ipairs(getAllObjects()) do
-        if isShip(ship) then
-            Ship.drawButtons(ship)
-        end
-    end
-end
 
 function findNearestShip(pos)
     local nearest
