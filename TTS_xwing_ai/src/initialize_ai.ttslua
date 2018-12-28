@@ -620,16 +620,18 @@ function initialize_ai()
     }
     --TODO: XROO
 
-    AI_DEFS["DOTE"]["EBLM"] = FriendlyAiDefinition:new{ --E-Wing Knave
+    --TODO: EKNA
+    --Note: K2 and k3 are wrong. tr3 are shown incorrectly red.
+    --TODO: verify Far 4:30 tl3 is not k3*
+    AI_DEFS["PALLAS"]["EKNA"] = FriendlyAiDefinition:new{ --E-Wing Knave
         mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/",
         diffuse = "http://i.imgur.com/TItm60V.jpg",
         collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
         typeColor = "FF8080",
         hasFreeTargetLock = true,
-        hasFreeEvade = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
-        elitePilotSkills = {3,nil,nil,nil,nil},
+        elitePilotSkills = {11,nil,nil,nil,nil},
         elitePilotSkillDeckEntries = 0,
         closeMoves =   {{'bl1','br1','s1','s1','k4*','k4*'},
                         {'k3*','s1','br1','br1','k4*','k4*'},
@@ -655,7 +657,12 @@ function initialize_ai()
                         ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3"}},
         hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
     }
-    --TODO: EKNA
+    AI_DEFS["DOTE"]["EKNA"]= HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["EKNA"]))
+    AI_DEFS["DOTE"]["EKNA"].elitePilotSkills = {1,nil,nil,nil,nil} --Matches players
+
+    AI_DEFS["DOTE"]["EBLM"]= HostileAiDefinition:new(table.shallowcopy(AI_DEFS["DOTE"]["EKNA"]))
+    AI_DEFS["DOTE"]["EBLM"].elitePilotSkills = {3,nil,nil,nil,nil}
+    AI_DEFS["DOTE"]["EBLM"].hasFreeEvade = true
 
     --TODO: KWAR
     --TODO: KGUA

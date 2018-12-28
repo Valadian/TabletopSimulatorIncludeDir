@@ -1,0 +1,199 @@
+SHIPS = {}
+SHIPS["British"] = {}
+SHIPS["French"] = {}
+
+LOG_BORDER = "http://i.imgur.com/QVS6UBX.png"
+
+-- Log: 3.4 scale
+-- Card: 1.7 scale
+SHIPS["British"]["HMS Defence"] = {
+    Name = "HMS Defence",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341168381338/BCCF5FCA92562527B96E4FD9AE716D3BA17D8453/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190329969/1B7557469AA0868F4EE1671B12649D7BFF041A17/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/958586631008597826/7E17FADE447AA69954E82824DEC27EB3327F1852/",
+    Arc = "DEF",
+    Burden = 5,
+    Deck = "D",
+    Veer = 5,
+    PV = 135,
+    Rate = 3
+}
+SHIPS["British"]["HMS Vanguard"] = {
+    Name = "HMS Vanguard",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341168383415/DFEB2FCB4F8C1ED6A581E3C4DCA17CE480D858C3/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190444198/817AE58697AB5E75A13E4000C51EAF8E9D5BFA62/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240052638428/8807193C2DD5E93B71128CF5E08DFD8FB1936879/",
+    Arc = "DEF",
+    Burden = 5,
+    Deck = "D",
+    Veer = 5,
+    PV = 135,
+    Rate = 3
+}
+SHIPS["British"]["HMS Cleopatra"] = {
+    Name = "HMS Cleopatra",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190325314/35711D758E573847E664752491889A4A033B78AC/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931562843182940499/8FEB4E9F3DB82F1CBD767F378E76F5AF096C7049/",
+    Arc = "TER",
+    Burden = 3,
+    Deck = "C",
+    Veer = 8,
+    PV = 68,
+    Rate = 5
+}
+SHIPS["British"]["HMS Iphigenia"] = {
+    Name = "HMS Iphigenia",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190338915/3B82BF94CC8A915F02C8A6968796EA6F73E44757/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240052632657/2BBE9A33991BE8A1BBB8DF8DEB639E8973F26CA8/",
+    Arc = "TER",
+    Burden = 2,
+    Deck = "C",
+    Veer = 8,
+    PV = 68,
+    Rate = 5
+}
+SHIPS["British"]["HMS Meleager"] = {
+    Name = "HMS Meleager",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166849851/03B97E5E69FEBFBD605B499F999CBB372482E3B7/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190340351/8F553EB5BEC797F21E94483FC68C5E349A1A46B7/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/930437577137112816/FBC4D49646911E293F11B0427B07486AD1B1A5ED/",
+    Arc = "TER",
+    Burden = 2,
+    Deck = "C",
+    Veer = 8,
+    PV = 69,
+    Rate = 5
+}
+SHIPS["British"]["HMS Terpsichore"] = {
+    Name = "HMS Terpsichore",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190440223/F2F060100F6C1227A224F6EE357F90480B216E9F/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240049685339/67DABA63ABD24D64ACCA231BDF413CE05D4B0665/",
+    Arc = "TER",
+    Burden = 2,
+    Deck = "C",
+    Veer = 8,
+    PV = 68,
+    Rate = 5
+}
+SHIPS["British"]["HMS Orpheus"] = {
+    Name = "HMS Orpheus",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166854095/FC7B9B96EDC81E499895FFB4DC7F84056CC3D121/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/958586631005417582/AC00F1BC356D6744BE626B44E4C3BCDEF92EFD3E/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/930437577137119855/A9187DF67404BBD8C69970A8AA170B030D07BA0C/",
+    Arc = "TER",
+    Burden = 2,
+    Deck = "C",
+    Veer = 8,
+    PV = 69,
+    Rate = 5
+}
+SHIPS["British"]["HMS Adamant"] = {
+    Name = "HMS Adamant",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166843462/9B6C37DA9506909DD65210D468854FFEC467D526/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/930437577137277937/F6CCAE6D4400C819FA747C609491C6AE508ABFD6/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931562843191813973/F9554C326022316E4398DA3536ABBE64713A4346/",
+    Arc = "COU",
+    Burden = 4,
+    Deck = "D",
+    Veer = 7,
+    PV = 96,
+    Rate = 4
+}
+SHIPS["British"]["HMS Unite"] = {
+    Name = "HMS Unite",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166843462/9B6C37DA9506909DD65210D468854FFEC467D526/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190441413/2FC3BFE432479611E2568B5DE3C787984276E854/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240052636837/52C2C25E6F47A12CA4B1975DA77EBF16255B97E5/",
+    Arc = "COU",
+    Burden = 3,
+    Deck = "A",
+    Veer = 7,
+    PV = 76,
+    Rate = 5
+}
+SHIPS["French"]["Aquilon"] = {
+    Name = "Aquilon",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166846543/C597CFDB2463753867930AED09F1325020E4DBAA/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190267882/275F0A32B2C216085960B112C409E7E3D12E398E/",
+    Card = "",
+    Arc = "GEN",
+    Burden = 5,
+    Deck = "B",
+    Veer = 5,
+    PV = 144,
+    Rate = 3
+}
+SHIPS["French"]["Courageuse"] = {
+    Name = "Courageuse",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166848597/4C49A5D04D6322F63B085A796625294CDD7ACA3B/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190275911/17CCB08C9A7DDFFA8BEC5605422E09CE851CB121/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/930437577137106585/D599E353F5900AC91059FC18821AB9C70AF8EC5A/",
+    Arc = "COU",
+    Burden = 3,
+    Deck = "A",
+    Veer = 7,
+    PV = 74,
+    Rate = 5
+}
+SHIPS["French"]["Unite"] = {
+    Name = "Unite",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166842470/D9D81CAD296836A04B8A8F37216F0938631303FB/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190536278/3D45BEA9327A0E24D4FE4EAD9305058C12F2CC56/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240052634902/FF550FCF7D7053D88E40AE16B5E32FD77BC042DE/",
+    Arc = "COU",
+    Burden = 3,
+    Deck = "A",
+    Veer = 7,
+    PV = 72,
+    Rate = 5
+}
+SHIPS["French"]["Concorde"] = {
+    Name = "Concorde",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166851941/928B9E769878900647388970F4DA065B56465D1A/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190327661/F4EFC1AF11D9A0D7BE90D24B027ABAF83A33256A/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931562843182950389/F0999561C8406F2A7A16D0498155BB01FE1B7785/",
+    Arc = "COU",
+    Burden = 3,
+    Deck = "A",
+    Veer = 7,
+    PV = 72,
+    Rate = 5
+}
+SHIPS["French"]["Hermione"] = {
+    Name = "Hermione",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166851941/928B9E769878900647388970F4DA065B56465D1A/", --USES CONCORDE
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190286827/7B9B8A3D020CC33680087CE7DCD9F82AB1CE615B/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931563240052627392/C2D17C8B86939E9C00F89AB228560C5EFFECFF8E/",
+    Arc = "COU",
+    Burden = 3,
+    Deck = "A",
+    Veer = 7,
+    PV = 72,
+    Rate = 5
+}
+SHIPS["French"]["Genereux"] = {
+    Name = "Genereux",
+    Model = "http://cloud-3.steamusercontent.com/ugc/958586341166847552/78DF36C3AEC28142B3332B8643C7B4D06B2027BD/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190284939/A0D2D172F36A68435E880C9C6187EC481D833579/",
+    Card = "http://cloud-3.steamusercontent.com/ugc/931562843182883781/395FF4E6587A2FA1EB0DA9B14B2375374BFDA2DB/",
+    Arc = "GEN",
+    Burden = 5,
+    Deck = "B",
+    Veer = 5,
+    PV = 143,
+    Rate = 3
+}
+-- SHIPS["French"][""] = {
+--     Model = "",
+--     Log = "",
+--     Card = "",
+--     Arc = "",
+--     Burden = 0,
+--     Deck = "",
+--     Veer = 0,
+--     PV = 0,
+--     Rate = 0
+-- }

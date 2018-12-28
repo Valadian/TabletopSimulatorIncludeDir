@@ -1,0 +1,12 @@
+function math.round(x)
+    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
+end
+function math.round(num, idp)
+    if num == nil then return nil end
+    local mult = 10^(idp or 0)
+    if num >= 0 then return math.floor(num * mult + 0.5) / mult
+    else return math.ceil(num * mult - 0.5) / mult end
+end
+function math.imod(i,mod)
+    return i - math.floor((i-1)/mod)*mod --math.fmod(a,b)+1
+end

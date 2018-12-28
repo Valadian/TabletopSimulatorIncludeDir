@@ -1,0 +1,112 @@
+LOG_HEIGHT_Y = 2.73
+BUTTON_ROW_Z = {57,-57}
+LOG_ROW_Z = {43.7,-43.7}
+LOG_COLS_X = {146.7, 119.26,  91.82, 54.88, 27.44, 0}
+LOG_ROT = {0,180}
+spawner_guid = 'ac3fe2'
+spawner = nil
+#include ship_db
+function Spawner.onload()
+    spawner = getObjectFromGUID(spawner_guid)
+    Spawner.drawButtons()
+end
+function Spawner.drawButtons()
+    spawner.createButton({
+        ['click_function'] = 'Action_ClearButtons',
+        ['label'] = "Finish Spawning",
+        ['position'] = {-7,0,0},
+        ['width'] = 4000,
+        ['height'] = 1200,
+        ['font_size'] = 500
+        })
+    for i=1,12 do
+        spawner.createButton({
+            ['click_function'] = 'Action_Spawn_'..i,
+            ['label'] = "Spawn",
+            ['position'] = CalculateButtonOffset(i),
+            ['rotation'] =  CalculateButtonRotation(i),
+            ['width'] = 2200,
+            ['height'] = 1200,
+            ['font_size'] = 500
+            })
+    end
+end
+function Action_ClearButtons()
+    spawner.clearButtons()
+end
+function CalculateButtonOffset(i)
+    return {LOG_COLS_X[math.imod(i,6)], 0, BUTTON_ROW_Z[math.floor((i-1)/6)+1]}
+end
+function CalculateButtonRotation(i)
+    return {0,LOG_ROT[math.floor((i-1)/6+1)],0}
+end
+#include ../util/button
+#include ../util/table
+function Action_Spawn(i)
+    spawnbutton = CalculateButtonOffset(i)
+    yrotation = CalculateButtonRotation(i)
+    topleftpos = vector.add(spawnbutton,vector.rotate({-14,0,-15},yrotation[2]))
+    btns = T(SHIPS["British"]):Select(function(shipdef)
+        return {
+            ['click_function'] = 'Action_Spawn_'..(shipdef.Name:gsub(" ","_")),
+            ['label'] = shipdef.Name,
+            ['tooltip'] = shipdef.Burden.." Burden\n"..shipdef.Veer.." Veer",
+            -- ['position'] = vector.add(start,vector.rotate({-5-9*(i%2),0,-15+math.floor(i/2)*2.5},rot[2])),
+            -- ['rotation'] =  rot,
+            ['width'] = 4000,
+            ['height'] = 1200,
+            ['font_size'] = 500
+            }
+    end)
+    printToAll(#btns,{1,1,1})
+    Button.LayoutGrid(btns, spawner, topleftpos, yrotation[2], 2, 9, 2.5)
+
+    -- i = 0
+    -- for name,ship in pairs(SHIPS["British"]) do
+    --     spawner.createButton({
+    --         ['click_function'] = 'Action_DoNothing',
+    --         ['label'] = name,
+    --         ['position'] = vector.add(start,vector.rotate({-5-9*(i%2),0,-15+math.floor(i/2)*2.5},rot[2])),
+    --         ['rotation'] =  rot,
+    --         ['width'] = 4000,
+    --         ['height'] = 1200,
+    --         ['font_size'] = 500
+    --         })
+    --     i = i+1
+    -- end
+end
+function Spawn_Log(i)
+    offset = CalculateButtonOffset(i)
+    y_rotation = CalculateButtonRotation(i)[2]
+    log = SpawnCustomObject(LOG_BORDER, vector.add(spawner.getPosition(),offset),y_rotation, 5.52)
+    log.setDescription("Ship Log")
+    Log.drawButtons(log)
+end
+function SpawnCustomObject(url, pos, y_rotation, scale)
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Token'
+    obj_parameters.position = pos
+    obj_parameters.rotation = {0,y_rotation,0}
+    obj_parameters.scale = {scale,1,scale}
+    local tile = spawnObject(obj_parameters)
+    local custom = {}
+    custom.image = url
+    custom.thickness=0.2
+    custom.merge_distance=15
+    tile.setCustomObject(custom)
+    --ship.setName("")
+    tile.lock()
+    return tile
+end
+function Action_Spawn_1() Action_Spawn(1) end
+function Action_Spawn_2() Action_Spawn(2) end
+function Action_Spawn_3() Action_Spawn(3) end
+function Action_Spawn_4() Action_Spawn(4) end
+function Action_Spawn_5() Action_Spawn(5) end
+function Action_Spawn_6() Action_Spawn(6) end
+function Action_Spawn_7() Action_Spawn(7) end
+function Action_Spawn_8() Action_Spawn(8) end
+function Action_Spawn_9() Action_Spawn(9) end
+function Action_Spawn_10() Action_Spawn(10) end
+function Action_Spawn_11() Action_Spawn(11) end
+function Action_Spawn_12() Action_Spawn(12) end

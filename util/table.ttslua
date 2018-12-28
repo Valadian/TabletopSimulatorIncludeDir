@@ -1,0 +1,82 @@
+table.Sum = function(t)
+    local sum = 0
+    for k,v in pairs(t) do
+        sum = sum + v
+    end
+
+    return sum
+end
+table.removeByValue = function(table1, value)
+    for k,v in pairs(table1) do
+      if v == value then
+          table.remove(table1, k)
+          break
+      end
+    end
+end
+function table_to_csv(t)
+    local csv = ""
+    for i,val in ipairs(t) do
+        csv = csv..tostring(val)
+        if i!=#t then
+            csv = csv..","
+        end
+    end
+    return csv
+end
+-- table.OrderBy = function(t, selector)
+--
+-- end
+table.Select = function(t, selector)
+    local result = T{}
+    for _,value in pairs(t) do
+        table.insert(result, selector(value))
+    end
+    return result
+end
+
+table.Where = function(t, predicate)
+    local result = T{}
+    for _,value in ipairs(t) do
+        if predicate(value) then
+            table.insert(result, value)
+        end
+    end
+    return result
+end
+
+table.CountIf =function(t, predicate)
+    local result = 0
+    for _,value in ipairs(t) do
+        if predicate(value) then
+            result=result+1
+        end
+    end
+    return result
+end
+
+function T(t)
+    return setmetatable(t, {__index = table})
+end
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end

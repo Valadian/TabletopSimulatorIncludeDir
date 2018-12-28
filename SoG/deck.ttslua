@@ -10,7 +10,7 @@ function Deck.onObjectDrop(dropped_object)
 end
 
 function isDeck(deck)
-    return deck.tag == 'Deck' -- and isInPlay(ship)
+    return deck.tag == 'Deck' and deck.getDescription()=="maneuver" -- and isInPlay(ship)
 end
 function Deck.SetLog(deck, log) deck.setVar('shiplog',log) end
 function Deck.GetLog(deck) return deck.getVar('shiplog') end

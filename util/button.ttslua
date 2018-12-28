@@ -1,0 +1,21 @@
+Button = {}
+Button.DEFAULTS = {}
+function Button.SetDefaults(defaults)
+    Button.DEFAULTS = defaults
+end
+function Button.SetDefault(key, value)
+    Button.DEFAULTS[key] = value
+end
+function Button.LayoutGrid(buttons, parent, topleftpos, yrotation, colnum, colwidth, rowheight) --, direction
+
+    printToAll("Laying out grid",{1,1,1})
+    for i,btn in ipairs(buttons) do
+
+        coloffset = colwidth*((i-1)%colnum)
+        rowoffset = rowheight*(math.floor((i-1)/colnum))
+        offset = {coloffset, 0, rowoffset}
+        btn['position'] = vector.add(topleftpos, vector.rotate(offset, yrotation))
+        btn['rotation'] = {0,yrotation,0}
+        parent.createButton(btn)
+    end
+end

@@ -1,0 +1,92 @@
+
+#include ../util/table
+
+local HexTile = {}
+local EDGES = {} --2 RQ per tile. %2==0 is tile. %2==1 is edge
+local CORNERS = {} --3 RQ per tile. %3==0 is tile.
+
+local NIL = -1
+
+local edge_hex_dir = {
+           Hex.new( 1,  0), -- e
+           Hex.new( 1, -1), -- se
+           Hex.new( 0, -1), -- sw
+		   Hex.new(-1,  0), -- w
+		   Hex.new(-1,  1), -- nw
+		   Hex.new( 0,  1), -- ne
+		  }
+local corn_hex_dir = {Hex.new(1,  1), -- NE
+		        Hex.new(2,  -1), -- SE
+		        Hex.new( 1,  -2), -- S
+		        Hex.new( -1,  -1), -- SW
+		        Hex.new( -2, 1),  -- NW
+                Hex.new( -1, 2)-- N
+                }
+HexTile.__index = function(t,k)
+    return HexTile[k]
+end
+function HexTile.new(hex)
+	return setmetatable({ hex = hex or Hex:new(0,0), tiledefs={},tiles={}}, HexTile)
+end
+
+function HexTile:getEdgeHex(dir_i)
+    return (2*self.hex)+edge_hex_dir[dir_i]
+end
+function HexTile:getEdge(dir_i)
+    local value = EDGES[self:getEdgeHex(dir_i):hash()]
+    return value==nil and NIL or value
+end
+function HexTile:getEdges()
+    local edges = T{}
+    for i=1,6 do
+        table.insert(edges,self:getEdge(i))
+    end
+    return edges
+end
+
+function HexTile:setEdge(dir_i,value)
+    EDGES[self:getEdgeHex(dir_i):hash()] = value
+end
+
+
+function HexTile:getCornerHex(dir_i)
+    return (3*self.hex)+corn_hex_dir[dir_i]
+end
+
+function HexTile:getCorner(dir_i)
+    local value = CORNERS[self:getCornerHex(dir_i):hash()]
+    return value==nil and NIL or value
+end
+
+function HexTile:setCorner(dir_i,value)
+    CORNERS[self:getCornerHex(dir_i):hash()] = value
+end
+function HexTile:getCorners()
+    local corners = T{}
+    for i=1,6 do
+        table.insert(corners,self:getCorner(i))
+    end
+    return corners
+end
+
+function HexTile:print()
+    printToAll("HexTile: "..tostring(self.hex),{0,1,1})
+    printToAll("Corners: ["..table_to_csv(self:getCorners()).."]",{0,1,0})
+    printToAll("Edges  : ["..table_to_csv(self:getEdges()).."]",{0,1,0})
+end
+-- function HexTile:getCorners()
+--     local corners = {}
+--     for local i=1,6 do
+--         table.insert(corners,self:getCorner(i))
+--     end
+--     return corners
+-- end
+--
+-- function HexTile:getEdges()
+--     local edges = {}
+--     for local i=1,6 do
+--         table.insert(edges,self:getEdge(i))
+--     end
+--     return edges
+-- end
+setmetatable(HexTile, { __call = function(_, ...) return HexTile.new(...) end })
