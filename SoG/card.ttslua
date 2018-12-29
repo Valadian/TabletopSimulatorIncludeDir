@@ -76,7 +76,7 @@ function Card.reset(card)
     local orig_pos = Card.GetOriginalPos(card)
     local orig_rot = Card.GetOriginalRot(card) or 180
     card.lock()
-    card.setScale({1.12,1,1.12*7.5/7},false,false)
+    card.setScale({0.896,1,0.896*7.5/7},false,false) --1.12
     card.setPositionSmooth(orig_pos, false, false)
     card.setRotationSmooth({0,orig_rot,0},false,false)
     --card.unlock()

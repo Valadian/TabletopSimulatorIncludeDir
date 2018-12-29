@@ -5,9 +5,18 @@ LOG_COLS_X = {146.7, 119.26,  91.82, 54.88, 27.44, 0}
 LOG_ROT = {0,180}
 spawner_guid = 'ac3fe2'
 spawner = nil
+DECK_SOURCES = {['A'] = '5b2acc', ['B'] = '880d60', ['C'] = '9f3bbd', ['D'] = '1ba27a'}
 #include ship_db
 function Spawner.onload()
+    -- for faction,ships in pairs(SHIPS) do
+    --     for _,ship in pairs(ships) do
+    --         Global['Action_Log_Spawn_'..faction.."_"..ship]
+    --     end
+    -- end
     spawner = getObjectFromGUID(spawner_guid)
+    -- for i=1,12 do
+    --     _G['ActionSpawn_'..i] = function() Action_Spawn(i) end
+    -- end
     Spawner.drawButtons()
 end
 function Spawner.drawButtons()
@@ -21,7 +30,8 @@ function Spawner.drawButtons()
         })
     for i=1,12 do
         spawner.createButton({
-            ['click_function'] = 'Action_Spawn_'..i,
+            ['click_function'] = 'Action_Spawn_'..i,--|obj| Action_Spawn(i),
+            --['function_owner'] = spawner,
             ['label'] = "Spawn",
             ['position'] = CalculateButtonOffset(i),
             ['rotation'] =  CalculateButtonRotation(i),
@@ -30,6 +40,55 @@ function Spawner.drawButtons()
             ['font_size'] = 500
             })
     end
+end
+function Action_Log_Spawn_HMS_Vanguard(log) SpawnShip(log, "British", "HMS Vanguard") end
+function Action_Log_Spawn_HMS_Defence(log) SpawnShip(log, "British", "HMS Defence") end
+function Action_Log_Spawn_HMS_Adamant(log) SpawnShip(log, "British", "HMS Adamant") end
+function Action_Log_Spawn_HMS_Unite(log) SpawnShip(log, "British", "HMS Unite") end
+function Action_Log_Spawn_HMS_Orpheus(log) SpawnShip(log, "British", "HMS Orpheus") end
+function Action_Log_Spawn_HMS_Meleager(log) SpawnShip(log, "British", "HMS Meleager") end
+function Action_Log_Spawn_HMS_Cleopatra(log) SpawnShip(log, "British", "HMS Cleopatra") end
+function Action_Log_Spawn_HMS_Iphigenia(log) SpawnShip(log, "British", "HMS Iphigenia") end
+function Action_Log_Spawn_HMS_Terpsichore(log) SpawnShip(log, "British", "HMS Terpsichore") end
+function Action_Log_Spawn_Aquilon(log) SpawnShip(log, "French", "Aquilon") end
+function Action_Log_Spawn_Genereux(log) SpawnShip(log, "French", "Genereux") end
+function Action_Log_Spawn_Courageuse(log) SpawnShip(log, "French", "Courageuse") end
+function Action_Log_Spawn_Hermione(log) SpawnShip(log, "French", "Hermione") end
+function Action_Log_Spawn_Unite(log) SpawnShip(log, "French", "Unite") end
+function Action_Log_Spawn_Concorde(log) SpawnShip(log, "French", "Concorde") end
+function SpawnShip(log, faction, shipname)
+    log.clearButtons()
+    shipdef = SHIPS[faction][shipname]
+    if shipdef.Log!=nil then
+        pos = vector.add(log.getPosition(),vector.rotate({0,0,-3.5},log.getRotation()[2]))
+        customlog = SpawnCustomObject(shipdef.Log, pos, log.getRotation()[2], 3.4)
+        customlog.setName(shipdef.Name)
+    end
+    if shipdef.Card!=nil then
+        pos = vector.add(log.getPosition(),vector.rotate({8.7,0,9.3},log.getRotation()[2]))
+        customcard = SpawnCustomObject(shipdef.Card, pos, log.getRotation()[2], 1.7)
+        customcard.setName(shipdef.Name)
+    end
+    pos = vector.add(log.getPosition(),vector.rotate({8.7,1,9.3},log.getRotation()[2]))
+    ship = SpawnCustomAssetBundle(shipdef.Model, pos, log.getRotation()[2], 1)
+    ship.unlock()
+    ship.setDescription(shipdef.Arc..":ship")
+    ship.setName(shipdef.Name)
+    Log.drawButtons(log)
+    Ship.onObjectDrop(ship)
+    deck_source = getObjectFromGUID(DECK_SOURCES[shipdef.Deck])
+    deck_source.takeObject({
+        position = vector.add(log.getPosition(),{0,1,0}),
+        rotation = log.getRotation(),
+        callback_function = |obj| layout_deck(obj, log)
+    })
+end
+function layout_deck(deck,log)
+    Log.SetDeckName(log, deck.getName())
+    Action_SetLog_Full(log)
+    Deck.SetLog(deck, log)
+    deck.setPosition(vector.add(deck.getPosition(),vector.rotate({0,0,35},deck.getRotation()[2])))
+    Action_Layout(deck)
 end
 function Action_ClearButtons()
     spawner.clearButtons()
@@ -42,45 +101,75 @@ function CalculateButtonRotation(i)
 end
 #include ../util/button
 #include ../util/table
+rate = {"st", "nd", "rd", "th", "th"}
+logs = {}
 function Action_Spawn(i)
-    spawnbutton = CalculateButtonOffset(i)
-    yrotation = CalculateButtonRotation(i)
-    topleftpos = vector.add(spawnbutton,vector.rotate({-14,0,-15},yrotation[2]))
-    btns = T(SHIPS["British"]):Select(function(shipdef)
+    if logs[i]==nil then
+        logs[i] = Spawn_Log(i)
+        ShowFactionSelection(log)
+        --ShowShipSelection(logs[i], "British")
+    else
+        destroyObject(logs[i])
+        logs[i]=nil
+    end
+end
+function ShowFactionSelection(log)
+    factions = {}
+    for k,v in pairs(SHIPS) do
+        table.insert(factions, k)
+    end
+    btns = T(factions):Select(function(faction)
         return {
-            ['click_function'] = 'Action_Spawn_'..(shipdef.Name:gsub(" ","_")),
-            ['label'] = shipdef.Name,
-            ['tooltip'] = shipdef.Burden.." Burden\n"..shipdef.Veer.." Veer",
-            -- ['position'] = vector.add(start,vector.rotate({-5-9*(i%2),0,-15+math.floor(i/2)*2.5},rot[2])),
-            -- ['rotation'] =  rot,
-            ['width'] = 4000,
+            ['click_function'] = 'Action_Log_Faction_'..faction,
+            ['label'] = faction,
+            ['width'] = 5000,
+            ['height'] = 1200,
+            ['font_size'] = 500
+        }
+    end)
+    Button.LayoutGrid(btns, log,{0,1,-1}, 0, 0.18, 1, {11, 0, 2.5})
+end
+function Action_Log_Faction_British(log)
+    log.clearButtons()
+    ShowShipSelection(log, "British")
+end
+function Action_Log_Faction_French(log)
+    log.clearButtons()
+    ShowShipSelection(log, "French")
+end
+function ShowShipSelection(log, faction)
+
+    min_PV = 68
+    max_PV = 144
+    pastel = 0.5 --0 to 1
+    -- spawnbutton = CalculateButtonOffset(i)
+    -- yrotation = CalculateButtonRotation(i)
+    -- topleftpos = vector.add(spawnbutton,vector.rotate({-6,0,-15},yrotation[2]))
+    btns = T(SHIPS[faction]):OrderByDesc(function(def) return def.PV end):Select(function(shipdef)
+        return {
+            ['click_function'] = 'Action_Log_Spawn_'..(shipdef.Name:gsub(" ","_")),
+            ['label'] = shipdef.Name.." ("..shipdef.PV..")",
+            ['tooltip'] = shipdef.Rate..rate[shipdef.Rate].." Rate\n"..
+                          shipdef.Burden.." Burden\n"..
+                          shipdef.Deck.." Maneuver Deck\n"..
+                          shipdef.Veer.." Veer",
+            ['color'] = {r=(shipdef.PV-min_PV)/(max_PV-min_PV)*(1-pastel)+pastel, g=pastel, b = 1-(shipdef.PV-min_PV)/(max_PV-min_PV)*(1-pastel)},
+            ['width'] = 5000,
             ['height'] = 1200,
             ['font_size'] = 500
             }
     end)
-    printToAll(#btns,{1,1,1})
-    Button.LayoutGrid(btns, spawner, topleftpos, yrotation[2], 2, 9, 2.5)
-
-    -- i = 0
-    -- for name,ship in pairs(SHIPS["British"]) do
-    --     spawner.createButton({
-    --         ['click_function'] = 'Action_DoNothing',
-    --         ['label'] = name,
-    --         ['position'] = vector.add(start,vector.rotate({-5-9*(i%2),0,-15+math.floor(i/2)*2.5},rot[2])),
-    --         ['rotation'] =  rot,
-    --         ['width'] = 4000,
-    --         ['height'] = 1200,
-    --         ['font_size'] = 500
-    --         })
-    --     i = i+1
-    -- end
+    Button.LayoutGrid(btns, log, {-1,1,-1}, 0, 0.18, 2, {11, 0,2.5})
 end
 function Spawn_Log(i)
     offset = CalculateButtonOffset(i)
     y_rotation = CalculateButtonRotation(i)[2]
-    log = SpawnCustomObject(LOG_BORDER, vector.add(spawner.getPosition(),offset),y_rotation, 5.52)
+    btn_loc = vector.add(spawner.getPosition(),vector.scale(offset,{-1,1,1}))
+    log_loc = vector.add(btn_loc, vector.rotate({0,0,-13.36},y_rotation))
+    log = SpawnCustomObject(LOG_BORDER, log_loc, y_rotation, 5.52)
     log.setDescription("Ship Log")
-    Log.drawButtons(log)
+    --Log.drawButtons(log)
+    return log
 end
 function SpawnCustomObject(url, pos, y_rotation, scale)
     local obj_parameters = {}
@@ -93,6 +182,21 @@ function SpawnCustomObject(url, pos, y_rotation, scale)
     custom.image = url
     custom.thickness=0.2
     custom.merge_distance=15
+    tile.setCustomObject(custom)
+    --ship.setName("")
+    tile.lock()
+    return tile
+end
+function SpawnCustomAssetBundle(url, pos, y_rotation, scale)
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Assetbundle'
+    obj_parameters.position = pos
+    obj_parameters.rotation = {0,y_rotation,0}
+    obj_parameters.scale = {scale,1,scale}
+    local tile = spawnObject(obj_parameters)
+    local custom = {}
+    custom.assetbundle = url
+    custom.type = 1 -- Figurine
     tile.setCustomObject(custom)
     --ship.setName("")
     tile.lock()

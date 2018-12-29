@@ -6,16 +6,18 @@ end
 function Button.SetDefault(key, value)
     Button.DEFAULTS[key] = value
 end
-function Button.LayoutGrid(buttons, parent, topleftpos, yrotation, colnum, colwidth, rowheight) --, direction
-
-    printToAll("Laying out grid",{1,1,1})
+function Button.LayoutGrid(buttons, parent, topleftpos, yrotation, scale, colnum, cellsize) --, direction
+    createdButtons = {}
     for i,btn in ipairs(buttons) do
 
-        coloffset = colwidth*((i-1)%colnum)
-        rowoffset = rowheight*(math.floor((i-1)/colnum))
+        coloffset = cellsize[1]*((i-1)%colnum)*scale
+        rowoffset = cellsize[3]*(math.floor((i-1)/colnum))*scale
         offset = {coloffset, 0, rowoffset}
         btn['position'] = vector.add(topleftpos, vector.rotate(offset, yrotation))
         btn['rotation'] = {0,yrotation,0}
+        btn['scale'] = {scale,scale,scale}
         parent.createButton(btn)
+        table.insert(createdButtons,parent.getButtons()[#parent.getButtons()])
     end
+    return createdButtons
 end

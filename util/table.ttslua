@@ -27,9 +27,23 @@ end
 -- table.OrderBy = function(t, selector)
 --
 -- end
+table.OrderBy = function(t, selector)
+    function compare(a,b)
+        return selector(a)<selector(b)
+    end
+    table.sort(t, compare)
+    return t
+end
+table.OrderByDesc = function(t, selector)
+    function compare(a,b)
+        return selector(a)>selector(b)
+    end
+    table.sort(t, compare)
+    return t
+end
 table.Select = function(t, selector)
     local result = T{}
-    for _,value in pairs(t) do
+    for _,value in ipairs(t) do
         table.insert(result, selector(value))
     end
     return result
@@ -56,7 +70,13 @@ table.CountIf =function(t, predicate)
 end
 
 function T(t)
-    return setmetatable(t, {__index = table})
+    local tmp = {}
+    local i = 1
+    for _,val in pairs(t) do
+        tmp[i]=val
+        i=i+1
+    end
+    return setmetatable(tmp, {__index = table})
 end
 function spairs(t, order)
     -- collect the keys

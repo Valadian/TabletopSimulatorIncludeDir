@@ -6,7 +6,7 @@ function API_UPDATE_ALL_BUTTONS()
     end
 end
 function Ship.onObjectDrop(dropped_object)
-    printToAll("dropped ship: "..dropped_object.getName(), {1,1,1})
+    --printToAll("dropped ship: "..dropped_object.getName(), {1,1,1})
     -- lprintToAll('x: '..dropped_object.getPosition()[1]..', y: '..dropped_object.getPosition()[2]..', z: '..dropped_object.getPosition()[3],{1,1,1})
     local log = findNearestLog(dropped_object.getPosition())
     if log~=nil and vector.length(vector.sub(log.getPosition(),dropped_object.getPosition()))<16 then
@@ -152,6 +152,7 @@ function Action_Done(ship)
     Ship.drawButtons(ship)
     local log = Card.GetLog(card)
     Log.SetReady(log,true)
+    printToAll(ship.getName().." returns: "..card.getDescription(),{0,1,0})
 end
 function Action_Undo(ship)
     local undoPos = ship.getTable('undoPos')
