@@ -6,6 +6,8 @@ LOG_ROT = {0,180}
 spawner_guid = 'ac3fe2'
 spawner = nil
 DECK_SOURCES = {['A'] = '5b2acc', ['B'] = '880d60', ['C'] = '9f3bbd', ['D'] = '1ba27a'}
+ACTION_SOURCE_GUID = '009a16'
+AMMO_SOURCE_GUID = 'ba173b'
 #include ship_db
 function Spawner.onload()
     -- for faction,ships in pairs(SHIPS) do
@@ -63,6 +65,32 @@ function SpawnShip(log, faction, shipname)
         pos = vector.add(log.getPosition(),vector.rotate({0,0,-3.5},log.getRotation()[2]))
         customlog = SpawnCustomObject(shipdef.Log, pos, log.getRotation()[2], 3.4)
         customlog.setName(shipdef.Name)
+        customlog.setSnapPoints({
+            {position = {-3.27,0,-0.27}},
+            {position = {-2.77,0,-0.27}},
+            {position = {-2.27,0,-0.27}},
+            {position = {-1.77,0,-0.27}},
+            {position = {-1.27,0,-0.27}},
+            {position = {-0.77,0,-0.27}},
+            {position = {-0.27,0,-0.27}},
+            {position = {0.23,0,-0.27}},
+            {position = {0.73,0,-0.27}},
+            {position = {1.23,0,-0.27}},
+            {position = {1.73,0,-0.27}},
+            {position = {2.23,0,-0.27}},
+            {position = {-3.27,0,0.27}},
+            {position = {-2.77,0,0.27}},
+            {position = {-2.27,0,0.27}},
+            {position = {-1.77,0,0.27}},
+            {position = {-1.27,0,0.27}},
+            {position = {-0.77,0,0.27}},
+            {position = {-0.27,0,0.27}},
+            {position = {0.23,0,0.27}},
+            {position = {0.73,0,0.27}},
+            {position = {1.23,0,0.27}},
+            {position = {1.73,0,0.27}},
+            {position = {2.23,0,0.27}}
+        })
     end
     if shipdef.Card!=nil then
         pos = vector.add(log.getPosition(),vector.rotate({8.7,0,9.3},log.getRotation()[2]))
@@ -81,6 +109,34 @@ function SpawnShip(log, faction, shipname)
         position = vector.add(log.getPosition(),{0,1,0}),
         rotation = log.getRotation(),
         callback_function = |obj| layout_deck(obj, log)
+    })
+
+    action_source = getObjectFromGUID(ACTION_SOURCE_GUID)
+    action_source.takeObject({
+        position = vector.add(log.getPosition(),vector.rotate({-11,1,2},log.getRotation()[2])),
+        rotation = vector.add(log.getRotation(),{0,0,180})
+    })
+
+    ammo_source = getObjectFromGUID(AMMO_SOURCE_GUID)
+    ammo_source.takeObject({
+        position = vector.add(log.getPosition(),vector.rotate({2.1,1,4.5},log.getRotation()[2])),
+        rotation = vector.add(log.getRotation(),{0,0,180})
+    })
+    ammo_source.takeObject({
+        position = vector.add(log.getPosition(),vector.rotate({4.5,1,4.5},log.getRotation()[2])),
+        rotation = vector.add(log.getRotation(),{0,0,180})
+    })
+
+    log.setSnapPoints({
+        {position = {0.37,0,0.33}},
+        {position = {0.79,0,0.33}},
+        {position = {0.37,0,0.82}},
+        {position = {0.79,0,0.82}},
+
+        {position = {-0.15,0,0.9}},
+        {position = {-0.57,0,0.9}},
+        {position = {-0.99,0,0.9}},
+        {position = {-1.42,0,0.9}}
     })
 end
 function layout_deck(deck,log)
