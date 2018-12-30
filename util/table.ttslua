@@ -68,7 +68,39 @@ table.CountIf =function(t, predicate)
     end
     return result
 end
+table.Contains = function(tab, el)
+    for k,v in pairs(tab) do
+        if v == el then
+            return true
+        end
+    end
+    return false
+end
+-- Shallow table copy
+-- Does not include metatables
+table.ShallowCopy = function(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = orig_value
+        end
+    else
+        copy = orig
+    end
+    return copy
+end
+table.Keys = function(tbl)
+    local keyset={}
+    local n=0
 
+    for k,v in pairs(tbl) do
+      n=n+1
+      keyset[n]=k
+    end
+    return keyset
+end
 function T(t)
     local tmp = {}
     local i = 1

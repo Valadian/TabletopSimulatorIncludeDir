@@ -1,4 +1,4 @@
-#include ../util/math
+#include math
 
 vector = {}
 function vector.length(v)
@@ -30,6 +30,22 @@ end
 function vector.toangle(v)
     return math.atan2(-v[3],v[1])*180/math.pi - 90
 end
+function vector.angle2D(vec1, vec2)
+    if vec2 == nil then
+        vec2 = {1}
+        for k = 2, #vec1, 1 do
+            table.insert(vec2, 0)
+        end
+    end
+    local angle = ( math.atan2(vec2[3], vec2[1]) - math.atan2(vec1[3], vec1[1]) )
+    if angle>math.pi then
+        angle = angle - math.pi*2
+    end
+    if angle<-math.pi then
+        angle = angle + math.pi*2
+    end
+    return angle
+end
 function vector.eq(a,b)
     return double.eq(a[1],b[1]) and double.eq(a[2],b[2]) and double.eq(a[3],b[3])
 end
@@ -40,4 +56,7 @@ function vector.distance(v1,v2)
     x = (v1[1]-v2[1])*(v1[1]-v2[1])
     y = (v1[3]-v2[3])*(v1[3]-v2[3])
     return math.sqrt(math.abs((x+y)))
+end
+function vector.cross2D(u,v)
+    return u[3]*v[1]-u[1]*v[3]
 end

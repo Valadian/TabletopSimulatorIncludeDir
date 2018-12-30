@@ -182,792 +182,7 @@ function buildButton(label, def)
     if def.function_owner==nil then def.function_owner = self end
     return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size}
 end
-
-local AI_DEFS = {}
-local campaigns = {"HOTAC","PALLAS","DOTE"}
--- TODO: Meshes for other spawning
--- MESH= {
---     GR = "https://paste.ee/r/h5ND1",
---     YT = "https://paste.ee/r/kkPoB"
--- }
--- DIFFUSE = {
---     GR = "http://i.imgur.com/Nur18O2.jpg",
---     YT = "http://i.imgur.com/QiomPcM.jpg"
--- }
--- COLLIDER = {
---     GR = "https://paste.ee/r/qIaBu",
---     YT = "https://paste.ee/r/LIxnJ"
--- }
-
-local squad_types_deck = {}
-local pilot_card_offsets = {} --{TIE=0,INT=1,BOM=7,ADV=13, DEF=17, PHA=21, SHU=25 }
-local pilot_card_num = {} --{TIE=1,INT=6,BOM=6,ADV=4,DEF=4,PHA=4,SHU=4}
--- function getAI_DEFS()
---     return AI_DEFS[campaign]
--- end
-function initialize_ai()
-    for _,campaign in ipairs(campaigns) do
-	    AI_DEFS[campaign] = {}
-        pilot_card_offsets[campaign] = {}
-        pilot_card_num[campaign] = {}
-        squad_types_deck[campaign] = {}
-    end
-	-- AI_DEFS["HOTAC"] = {}
-	-- AI_DEFS["PALLAS"] = {}
-	-- AI_DEFS["DOTE"] = {}
-	HostileAiDefinition = {
-	    isHostile = true,
-	    isLargeShip = false,
-        ignoresHugeShips = false,
-	    mesh = "",
-	    diffuse = "",
-	    collider = "",
-	    typeColor = "FFFFFF",
-	    has360Turret = false,
-	    hasCloak = false,
-	    hasFreeFocus = false,
-	    hasFreeEvade = false,
-	    hasFreeTargetLock = false,
-	    hasFreeBarrelRoll = false,
-	    hasBoost = false,
-	    hasBarrelRoll = false,
-	    hasConditionalFocus = true,
-	    hasConditionalEvade = false,
-	    hasConditionalTargetLock = false,
-	    hasConditionalCloak = false,
-	    elitePilotSkills = {},
-	    elitePilotSkillDeckEntries = 0,
-	    closeMoves = {},
-	    farMoves = {},
-	    fleeMoves = {},
-	    swerves = {}
-	}
-	FriendlyAiDefinition = table.shallowcopy(HostileAiDefinition)
-	FriendlyAiDefinition.isHostile = false
-	FriendlyAiDefinition.fleeHealth = 2
-	FriendlyAiDefinition.hyperdriveMoves = {}
-	function HostileAiDefinition:new(o)
-	    o = o or {}
-	    setmetatable(o, HostileAiDefinition)
-	    HostileAiDefinition.__index = HostileAiDefinition
-	    return o
-	end
-	function FriendlyAiDefinition:new(o)
-	    o = o or {}
-	    setmetatable(o, FriendlyAiDefinition)
-	    FriendlyAiDefinition.__index = FriendlyAiDefinition
-	    return o
-	end
-    AI_DEFS["HOTAC"]["TIE"] = HostileAiDefinition:new{
-        ignoresHugeShips = true,
-        mesh = "https://paste.ee/r/Yz0kt",
-        diffuse = "http://i.imgur.com/otxKcUx.png",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "666666",
-        hasBarrelRoll = true,
-        hasConditionalEvade = true,
-        elitePilotSkills = {1, nil, nil, nil, nil},
-        elitePilotSkillDeckEntries = 1,
-        closeMoves = {{'bl2','br2','s2','s2','k4*','k4*'},
-                      {'s2','br2','br2','k4*','k4*','tr1'},
-                      {'tr1','tr1','tr2','tr2','k3*','k4*'},
-                      {'tr1','tr1','tr2','k3*','k4*','k4*'},
-                      {'k4*','k3*','k3*','tl3','tr3','s5'}},
-        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
-                      {'s3','br2','br3','br3','br3','tr3' },
-                      {'br3','tr3','br2','tr2','tr2','tr1'},
-                      {'k4*','k3*','k3*','tr2','tr2','tr1'},
-                      {'k3*','k3*','k3*','k3*','tl1','tr1'}},
-        fleeMoves =  {['tl1']='tl3', ['tl2']='tl3',
-                      ['bl2']='bl3',
-                      ['s2']='s5',['s3']='s5',['s4']='s5',
-                      ['br2']='br3',
-                      ['tr1']='tr3',['tr2']='tr3',
-                      ['k4*']='k3*'},
-        swerves =    {["tl1"] = {nil,"bl2"}, ["tl2"] = {nil,"bl2"}, ["tl3"] = {nil,"bl3"},
-                      ["bl2"] = {"tl2","s2"}, ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"}, ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
-                      ["br2"] = {"s2","tr2"}, ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" } }
-    }
-    AI_DEFS["PALLAS"]["TIE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["TIE"]))
-    AI_DEFS["PALLAS"]["TIEE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["TIE"]))
-    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkills = {2,4,5,7,9}
-    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkillDeckEntries = 4
-
-    AI_DEFS["HOTAC"]["INT"] = HostileAiDefinition:new{
-        ignoresHugeShips = true,
-        mesh = "https://paste.ee/r/JxWNX",
-        diffuse = "https://i.imgur.com/1pSXuxb.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "600000",
-        hasFreeFocus = true,
-        hasBoost = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = false,
-        hasConditionalEvade = true,
-        elitePilotSkills = {1,4, 6, 8, 10},
-        elitePilotSkillDeckEntries = 6,
-        closeMoves = {{'bl2','br2','s2','s2','k5*','k5*'},
-                      {'s2','br2','br2','k5*','k5*','tr1' },
-                      {'tr1','tr1','tr2','tr2','k3*','k5*'},
-                      {'tr1','tr1','tr2','k3*','k5*','k5*'},
-                      {'k5*','k3*','k3*','tl3','tr3','s5'}},
-        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
-                      {'s3','br2','br3','br3','br3','tr3' },
-                      {'br3','tr3','br2','tr2','tr2','tr1'},
-                      {'k5*','k3*','k3*','tr2','tr2','tr1'},
-                      {'k3*','k3*','k3*','k3*','tl1','tr1'}},
-        fleeMoves =  {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
-                      ['bl2'] = 'bl3',
-                      ['s2'] = 's5', ['s3'] = 's5', ['s4'] = 's5',
-                      ['br2'] = 'br3',
-                      ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
-                      ['k5*'] = 'k3*'},
-        swerves =    {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                      ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k3*"] = {"bl3","br3"}, ["k5*"] = {"bl3","br3" }}
-    }
-    AI_DEFS["PALLAS"]["INT"] = AI_DEFS["HOTAC"]["INT"]
-
-    AI_DEFS["HOTAC"]["BOM"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/5A0YG",
-        diffuse = "http://i.imgur.com/nYO1XwT.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "00FFFF",
-        hasFreeTargetLock = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {2,3, 5, 7, 9},
-        elitePilotSkillDeckEntries = 6,
-        closeMoves =   {{'bl1','br1','s1','s1','s1','k5*'},
-                        {'tr3','s1','br1','br1','br1','k5*' },
-                        {'br1','tr2*','tr2*','tr3','tr3','tr3'},
-                        {'k5*','k5*','k5*','tr3','tr3','tr2*'},
-                        {'k5*','k5*','k5*','k5*','tl3','tr3'}},
-        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
-                        {'s2','br2','br3','br3','br3','tr3' },
-                        {'br3','tr2*','tr2*','tr3','tr3','tr3'},
-                        {'k5*','k5*','tr2*','tr2*','tr3','tr3'},
-                        {'k5*','k5*','k5*','k5*','tl2*','tr2*'}},
-        fleeMoves =    {['tl2*'] = 'tl3',
-                        ['bl1'] = 'bl3',        ['bl2'] = 'bl3',
-                        ['s1'] = 's4',          ['s2'] = 's4',     ['s3'] = 's4',
-                        ['br1'] = 'br3',        ['br2'] = 'br3',
-                        ['tr2*'] = 'tr3'},
-        swerves =      {["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
-                        ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
-                        ["k5*"] = {"bl3","br3" }}
-    }
-    AI_DEFS["PALLAS"]["BOM"] = AI_DEFS["HOTAC"]["BOM"]
-
-    AI_DEFS["HOTAC"]["ADV"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/NeptF",
-        diffuse = "http://i.imgur.com/trxaCDg.jpg",
-        collider = "https://paste.ee/r/VAYqd",
-        typeColor = "c1440e",
-        hasFreeTargetLock = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        hasConditionalEvade = true,
-        elitePilotSkills = {2,4, 6, 8, 10},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves = {{'bl1','br1','s2','s2','k4*','k4*'},
-                      {'s2','br1','br1','br1','k4*','k4*' },
-                      {'br1','k4*','k4*','tr2','tr2','tr2'},
-                      {'k4*','k4*','k4*','tr2','tr2','br1'},
-                      {'k4*','k4*','k4*','k4*','tl3','tr3'}},
-        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
-                      {'s3','br2','br3','br3','br3','tr3' },
-                      {'br1','br2','tr2','tr2','tr3','tr3'},
-                      {'k4*','k4*','k4*','tr2','tr2','tr2'},
-                      {'k4*','k4*','k4*','k4*','tl2','tr2'}},
-        fleeMoves =  {['tl2'] = 'tl3',
-                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
-                        ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
-                        ['br1'] = 'br3',   ['br2'] = 'br3',
-                        ['tr2'] = 'tr3'},
-        swerves =    {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s2","tr2" }, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k4*"] = {"bl3","br3" }}
-    }
-    AI_DEFS["PALLAS"]["ADV"] = AI_DEFS["HOTAC"]["ADV"]
-
-    AI_DEFS["HOTAC"]["DEF"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/tIm5S",
-        diffuse = "http://i.imgur.com/0u5rtnX.jpg",
-        collider = "https://paste.ee/r/6jn13",
-        typeColor = "660066",
-        hasFreeTargetLock = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {1,3, 5, 7, 9},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves =   {{'bl1','br1','s2','s2','k4','k4'},
-                        {'s2','br1','br1','k4','k4','tr1*' },
-                        {'br1','k4','k4','tr2*','tr1*','tr1*'},
-                        {'k4','k4','k4','tr2*','tr2*','tr1*'},
-                        {'k4','k4','k4','k4','tl3','tr3'}},
-        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
-                        {'s3','br2','br3','br3','br3','tr3' },
-                        {'br1','br2','tr2*','tr3','tr3','tr3'},
-                        {'k4','k4','k4','tr2*','tr2*','tr1*'},
-                        {'k4','k4','k4','k4','tl1*','tr1*'}},
-        fleeMoves =    {['tl1*'] = 'tl3',  ['tl2*'] = 'tl3',
-                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
-                        ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
-                        ['br1'] = 'br3',   ['br2'] = 'br3',
-                        ['tr1*'] = 'tr3',  ['tr2*'] = 'tr3'},
-        swerves =      {["tl1*"] = {nil,"bl1"},  ["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl1*","s2"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s2","tr1*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
-                        ["tr1*"] = {"br1",nil }, ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
-                        ["k4"] = {"bl3","br3" }}
-    }
-    AI_DEFS["PALLAS"]["DEF"] = AI_DEFS["HOTAC"]["DEF"]
-
-    AI_DEFS["HOTAC"]["PHA"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/JN16g",
-        diffuse = "http://i.imgur.com/4bXBvZZ.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "2C75FF",
-        hasCloak = true,
-        hasFreeEvade = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        hasConditionalCloak = true,
-        elitePilotSkills = {3,3, 5, 7, 9},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves =   {{'bl2','br2','s2','k4*','k4*','k4*'},
-                        {'s2','br2','k4*','k4*','tr1','tr1' },
-                        {'tr1','tr1','tr1','tr2','tr2','k4*'},
-                        {'tr1','tr1','tr2','k3*','k4*','k4*'},
-                        {'k4*','k3*','k3*','tl3','tr3','s4'}},
-        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
-                        {'s3','br2','br3','br3','br3','tr3' },
-                        {'tr1','tr1','tr2','tr2','tr3','br2'},
-                        {'k4*','k3*','k3*','tr2','tr2','tr1'},
-                        {'k3*','k3*','k3*','k3*','tl1','tr1'}},
-        fleeMoves =    {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
-                        ['bl2'] = 'bl3',
-                        ['s2'] = 's4',     ['s3'] = 's4',
-                        ['br2'] = 'br3',
-                        ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
-                        ['k4*'] = 'k3*'},
-        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" }}
-    }
-    AI_DEFS["PALLAS"]["PHA"] = AI_DEFS["HOTAC"]["PHA"]
-
-    AI_DEFS["HOTAC"]["DEC"] = HostileAiDefinition:new{
-        isLargeShip = true,
-        mesh = "https://paste.ee/r/MJOFI",
-        diffuse = "http://i.imgur.com/atzM3rO.jpg",
-        collider = "https://paste.ee/r/JavTd",
-        typeColor = "808080",
-        has360Turret = true,
-        hasFreeTargetLock = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {3, nil, nil, nil, nil},
-        elitePilotSkillDeckEntries = 1,
-        closeMoves =   {{'s4','s4','bl3','br3','tl3','tr3'},
-                        {'br3','bl3','bl2','tl2','s4','s4' },
-                        {'br3','br3','tr3','br2','tr2','br1'},
-                        {'br3','br3','tr2','tr2','br2','br1'},
-                        {'tl3','tr3','tl2','tr2','bl1','br1'}},
-        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
-                        {'s4','br3','br3','br3','br2','tr3' },
-                        {'br3','tr3','tr3','tr2','tr2','br1'},
-                        {'tr2','tr2','tr2','tr3','tr3','br1'},
-                        {'tl2','tl2','tl2','tr2','tr2','tr2'}},
-        fleeMoves =    {['tl2'] = 'tl3',
-                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
-                        ['s1'] = 's4',     ['s2'] = 's4', ['s3'] = 's4',
-                        ['br1'] = 'br3',   ['br2'] = 'br3',
-                        ['tr2'] = 'tr3'},
-        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil }}
-    }
-    AI_DEFS["PALLAS"]["DEC"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["DEC"]))
-    AI_DEFS["PALLAS"]["DEC"].elitePilotSkills = {2,4,5,7,9}
-    AI_DEFS["PALLAS"]["DEC"].elitePilotSkillDeckEntries = 4
-
-    AI_DEFS["HOTAC"]["SHU"] = HostileAiDefinition:new{
-        isLargeShip = true,
-        mesh = "https://paste.ee/r/4uxZO",
-        diffuse = "http://i.imgur.com/rd9ZPz3.jpg",
-        collider = "https://paste.ee/r/xBpMo",
-        typeColor = "A0A0A0",
-        hasFreeTargetLock = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {2,4, 4, 6, 8},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves =   {{'s0*','s0*','s0*','s1','br1','bl1'},
-                        {'s0*','s1','br1','br1','br1','tr2*' },
-                        {'s0*','tr2*','tr2*','tr2*','br1','br2'},
-                        {'s0*','tr2*','tr2*','tr2*','br2','br3*'},
-                        {'s0*','*','tr2*','tl2*','br3*','bl3*'}},
-        farMoves =     {{'s3','s3','s3','s2','s2','s1'},
-                        {'s2','br3*','br2','br2','br2','tr2*' },
-                        {'tr2*','tr2*','tr2*','tr2*','br2','br3*'},
-                        {'tr2*','tr2*','tr2*','tr2*','br1','br1'},
-                        {'tl2*','tl2*','tl2*','tr2*','tr2*','tr2*'}},
-        fleeMoves =    {['bl1'] = 'bl3*',  ['bl2'] = 'bl3*',
-                        ['s1'] = 's3',     ['s2'] = 's3',
-                        ['br1'] = 'br3*',  ['br2'] = 'br3*'},
-        swerves =      {["s0*"] = {nil,nil},
-                        ["tr2*"] = {"br2",nil },
-                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3*"] = {"tl2*","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"},
-                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3*"] = {"s3","tr2*"},
-                        ["tl2*"] = {nil,"bl2"}}
-    }
-    AI_DEFS["PALLAS"]["SHU"] = AI_DEFS["HOTAC"]["SHU"]
-
-    AI_DEFS["PALLAS"]["TFO"] = HostileAiDefinition:new{
-        ignoresHugeShips = true,
-        mesh = "http://pastebin.com/jt2AzA8t",
-        diffuse = "http://i.imgur.com/z56FaVi.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "333333",
-        hasFreeFocus = true,
-        hasBarrelRoll = true,
-        hasConditionalEvade = true,
-        hasConditionalFocus = false,
-        hasConditionalTargetLock = true,
-        elitePilotSkills = {2, nil, nil, nil, nil},
-        elitePilotSkillDeckEntries = 1,
-        closeMoves =   {{'bl2','br2','s2','s2','k4*','k4*'},
-                        {'s2','br2','br2','k4*','k4*','tr1' },
-                        {'tr1','tr1','tr2','tr2','br2s*','br2s*'},
-                        {'tr1','tr1','tr2','br2s*','br2s*','k4*'},
-                        {'k4*','br2s*','bl2s*','tl3','tr3','s5'}},
-        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
-                        {'s3','br2','br3','br3','br3','tr3' },
-                        {'tr3','tr3','br2','br2','tr2','tr2'},
-                        {'br2s*','k4*','k4*','tr2','tr2','tr2'},
-                        {'k4*','k4*','br2s*','bl2s*','tl1','tr1'}},
-        fleeMoves =    {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
-                        ['bl2'] = 'bl3',
-                        ['s2'] = 's5',     ['s3'] = 's5', ['s4'] = 's5',
-                        ['br2'] = 'br3',
-                        ['tr1'] = 'tr3',   ['tr2'] = 'tr3'},
-        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["bl2s*"] = {"tl2","s2" },
-                        ["k4*"] = {"bl3","br3" },
-                        ["br2s*"] = {"tr2","s2" }}
-    }
-    AI_DEFS["PALLAS"]["TFOE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["TFO"]))
-    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkills = {2, 4, 5, 7, 9}
-    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkillDeckEntries = 4
-    --TODO: UPS Upsilon Shuttle
-    AI_DEFS["PALLAS"]["UPS"] = HostileAiDefinition:new{
-        isLargeShip = true,
-        mesh = "http://pastebin.com/nsHXF9XV",
-        diffuse = "http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
-        typeColor = "A0A0A0",
-        hasFreeTargetLock = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {2, nil, nil, nil, nil}, --UPS should be 2 not 1
-        elitePilotSkillDeckEntries = 0,
-        closeMoves = {{'s0*','s0*','s0*','s1','br1','bl1'},
-                      {'s0*','s1','br1','br1','br1','tr2'},
-                      {'s0*','tr2','tr2','tr2','br1','br2'},
-                      {'s0*','tr2','tr2','tr2','br2','br3'},
-                      {'s0*','s0*','tr1*','tl1*','br3','bl3'}},
-        farMoves = {{'s3','s3','s3','s2','s2','s1'},
-                    {'tr2','br3','br2','br2','br2','tr3*'},
-                    {'tr2','tr2','tr2','tr2','br2','br3'},
-                    {'tr2','tr2','tr2','tr2','br2','br2'},
-                    {'tl2','tl2','tl2','tr2','tr2','tr2'}},
-        fleeMoves = {['tl1*'] = 'tl3*', ['tl2'] = 'tl3*',
-                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                     ['s0*'] = 's3', ['s1'] = 's3', ['s2'] = 's3',
-                     ['br1'] = 'br3', ['br2'] = 'br3',
-                     ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
-        swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
-                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
-                   ["s0*"] = {"bl1","br1"},  ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
-                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
-                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil}}
-    }
-    --TODO: TAP TIE Adv. Prototype
-    AI_DEFS["PALLAS"]["TAP"] = HostileAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029089434/A4DA1AD96E4A6D65CC6AE4F745EDA966BA4EF85A/",
-        diffuse = "http://i.imgur.com/7vyhllx.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "91340b",
-        hasFreeBarrelRoll = true,
-        hasBoost = true,
-        hasConditionalFocus = true,
-        hasConditionalEvade = true,
-        hasConditionalTargetLock = true,
-        elitePilotSkills = {2,4,5,7,9},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves = {{'bl1','br1','s2','s2','k4*','k4*'},
-                      {'s2','tr2','tr2','k4*','k4*','tr1'},
-                      {'tr3','tr2','tr2','tr1','tr1','tr1'},
-                      {'k4*','k4*','k4*','tr1','tr1','tr2'},
-                      {'tr1','tr1','tl1','tl1','k4*','s5'}},
-        farMoves = {{'s5','s5','s5','s4','s4','s3'},
-                    {'s2','br2','br3','br3','br3','tr3'},
-                    {'br3','br2','tr3','tr3','tr2','tr1'},
-                    {'tr1','tr2','tr3','k4*','k4*','k4*'},
-                    {'k4*','k4*','k4*','k4*','tl1','tr1'}},
-        fleeMoves = {['tl1'] = 'tl3', ['tl2'] = 'tl3',
-                     ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
-                     ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
-                     ['br1'] = 'br3',   ['br2'] = 'br3',
-                     ['tr1'] = 'tr3',  ['tr2'] = 'tr3'},
-        swerves =    {["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl1","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                      ["br1"] = {"s2","tr1"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}}
-    }
-    --TODO: TSF TIE S/F
-    AI_DEFS["PALLAS"]["TSF"] = HostileAiDefinition:new{
-        mesh = "http://pastebin.com/LezDjunY",
-        diffuse = "http://i.imgur.com/x8NveGf.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "aa0000",
-        hasFreeTargetLock = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {3,nil,nil,nil,nil}, --TODO: TSF should be 3 not 2?
-        elitePilotSkillDeckEntries = 1,
-        closeMoves =   {{'s1','s1','br3','br3','bl3','bl3'},
-                        {'s1','bl3s*','bl3s*','tl3*','tl3*','tr2'},
-                        {'tr1*','tr1*','tr1*','bl3s*','bl3s*','tr2'},
-                        {'br1','br1','tr2','tr2','tr1*','bl3s*'},
-                        {'bl3s*','br3s*','tr2','tl2','br3','bl3'}},
-        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
-                        {'s2','tr3*','br3','br3','br2','br2'},
-                        {'br3','br2','tr3*','tr3*','tr2','tr2'},
-                        {'br2','tr2','tr3*','tr3*','bl3s*','bl3s*'},
-                        {'bl3s*','br3s*','tr2','tr2','tl2','tl2'}},
-        fleeMoves = {['tl1*'] = 'tl3*', ['tl2'] = 'tl3*',
-                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
-                     ['br1'] = 'br3', ['br2'] = 'br3',
-                     ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
-        swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
-                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
-                   ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
-                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
-                   ['bl3s*'] = {'tr3*', 's3'}, ['br3s*'] = {'s3','tr3*'}}
-    }
-    --TODO: PUN Punisher
-    AI_DEFS["PALLAS"]["PUN"] = HostileAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029073355/7A1507E4D88098D19C8EAFE4A763CC33A5EC35CB/",
-        diffuse = "http://i.imgur.com/r6bfxcV.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "008F8F",
-        hasFreeTargetLock = true,
-        hasBoost = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {2,4,5,7,9},
-        elitePilotSkillDeckEntries = 4,
-        closeMoves =   {{'bl1','br1','s1','s1','s1','k4*'},
-                        {'tr3','s1','br1','br1','br1','k5*'},
-                        {'br1','tr2*','tr2*','tr3','tr3','tr3'},
-                        {'k4*','k4*','k4*','tr3','tr3','tr2*'},
-                        {'k4*','k4*','k4*','k4*','tl3','tr3'}},
-        farMoves =     {{'s3','s3','s3','s3','s2','s2'},
-                        {'s2','br2','br3','br3','br3','tr3'},
-                        {'br3','tr2*','tr2*','tr3','tr3','tr3'},
-                        {'k4*','k4*','tr2*','tr2*','tr3','tr3'},
-                        {'k5*','k5*','k5*','k5*','tl2*','tr2*'}},
-        fleeMoves =    {['tl2*'] = 'tl3',
-                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                     ['s1'] = 's3', ['s2'] = 's3',
-                     ['br1'] = 'br3', ['br2'] = 'br3',
-                     ['tr2*'] = 'tr3'},
-        swerves =    {["tl2*"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl2*","s1"},  ["bl2"] = {"tl2*","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
-                      ["br1"] = {"s1","tr2*"},  ["br2"] = {"s2","tr2*"},  ["br3"] = {"s3","tr3"},
-                      ["tr2*"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}}
-    }
-    --TODO: BWI B-wing
-    AI_DEFS["PALLAS"]["BBLU"] = FriendlyAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/",
-        diffuse = "http://i.imgur.com/JihQH1r.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "0000FF",
-        hasFreeFocus = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = false,
-        hasConditionalTargetLock = true,
-        elitePilotSkills = {2,nil,nil,nil,nil},
-        elitePilotSkillDeckEntries = 0,
-        closeMoves =   {{'bl1','br1','s1','s1','s1','k2*'},
-                        {'tr1*','s1','br1','br1','br1','br2'},
-                        {'tr1*','tr1*','tr2','tr2','k2*','k2*'},
-                        {'k2*','k2*','k2*','tr2','tr2','tr1*'},
-                        {'tr1*','s3','tl1*','k2*','k2*','k2*'}},
-        farMoves =     {{'s3','s3','s3','s2','s2','s4*'},
-                        {'s2','br2','br2','tr2','tr2','br3*'},
-                        {'br3*','tr2','tr2','tr2','tr1*','tr1*'},
-                        {'k2*','k2*','tr2','tr2','tr2','tr1*'},
-                        {'k2*','k2*','k2*','k2*','tl2','tr2'}},
-        fleeMoves = {['tl1*'] = 'tl2',
-                     ['bl1'] = 'bl3*',['bl2'] = 'bl3*',
-                     ['s1'] = 's4*', ['s2'] = 's4*',['s3'] = 's4*',
-                     ['br1'] = 'br3*',['br2'] = 'br3*',
-                     ['tr1*'] = 'tr2'},
-        swerves =   {["tr1*"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
-                     ["bl1"] = {"tl1*","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3*"] = {"tl2","s3"},
-                     ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"}, ["s4*"] = {"bl3*","br3*"},
-                     ["br1"] = {"s1","tr1*"},  ["br2"] = {"s2","tr2"},  ["br3*"] = {"s3","tr2"},
-                     ["tr1*"] = {"br1",nil },  ["tr2"] = {"br2",nil },
-                     ["k2*"] = {"bl2","br2"}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
-    }
-    -- AI_DEFS["DOTE"]["BBLU"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["BBLU"]))
-    -- AI_DEFS["DOTE"]["BDAG"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["BBLU"]))
-    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkills = {4,5,6,8,10}
-    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkillDeckEntries = 2
-
-    AI_DEFS["PALLAS"]["ZBAN"] = FriendlyAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/",
-        diffuse = "http://i.imgur.com/hcCxX3n.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FFFF00",
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {2,nil,nil,nil,nil},
-        elitePilotSkillDeckEntries = 0,
-        closeMoves =   {{'bl1','br1','s1','s1','s1','k3*'},
-                        {'br2','s1','br1','br1','k3*','k3*'},
-                        {'br1','tr2','tr2','tr2','k3*','k3*'},
-                        {'k3*','k3*','k3*','tr2','tr2','tr3'},
-                        {'k3*','k3*','k3*','tl2','tr2','s4'}},
-        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
-                        {'s2','br2','br3','br3','br3','tr3'},
-                        {'br3','tr2','tr2','tr2','tr3','tr3'},
-                        {'k3*','k3*','tr2','tr2','tr2','tr3'},
-                        {'k3*','k3*','k3*','k3*','tl2','tr2'}},
-        fleeMoves =    {['tl2'] = 'tl3',
-                        ['bl1'] = 'bl3',['bl2'] = 'bl3',
-                        ['s1'] = 's4', ['s2'] = 's4',['s3'] = 's4',
-                        ['br1'] = 'br3',['br2'] = 'br3',
-                        ['tr2'] = 'tr3'},
-        swerves =      {["tr2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4*"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
-    }
-    -- AI_DEFS["DOTE"]["ZBAN"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["ZBAN"]))
-    -- AI_DEFS["DOTE"]["ZTAL"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["ZBAN"]))
-    --TODO: ZBIN Scum Binayre
-    --TODO: ZBLA Scum Black Sun
-
-    AI_DEFS["PALLAS"]["XRED"] = FriendlyAiDefinition:new{--x-wing T-65
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/",
-        diffuse = "http://i.imgur.com/3GxuDDz.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FF0000",
-        hasFreeFocus = true,
-        hasConditionalTargetLock = true,
-        elitePilotSkills = {4,nil,nil,nil,nil},
-        elitePilotSkillDeckEntries = 0,
-        closeMoves =   {{'bl1','br1','s1','s1','s1','k4*'},
-                        {'tr2','s1','br1','br1','k4*','k4*'},
-                        {'br1','tr2','tr2','tr3','k4*','k4*'},
-                        {'k4*','k4*','k4*','tr2','tr2','tr3'},
-                        {'k4*','k4*','k4*','tl2','tr2','s4'}},
-        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
-                        {'s2','br2','br3','br3','br3','tr3'},
-                        {'br3','tr2','tr2','tr2','tr3','tr3'},
-                        {'k4*','k4*','tr2','tr2','tr2','tr3'},
-                        {'k4*','k4*','k4*','k4*','tl2','tr2'}},
-        fleeMoves = {['tl2'] = 'tl3',
-                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
-                     ['br1'] = 'br3', ['br2'] = 'br3',
-                     ['tr2'] = 'tr3'},
-        swerves = {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
-                      ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
-    }
-    --TODO: XROO
-
-    AI_DEFS["PALLAS"]["EBLM"] = FriendlyAiDefinition:new{ --E-Wing Knave
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/",
-        diffuse = "http://i.imgur.com/TItm60V.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FF8080",
-        hasFreeTargetLock = true,
-        hasBarrelRoll = true,
-        hasConditionalFocus = true,
-        elitePilotSkills = {3,nil,nil,nil,nil},
-        elitePilotSkillDeckEntries = 0,
-        closeMoves =   {{'bl1','br1','s1','s1','k4*','k4*'},
-                        {'k3*','s1','br1','br1','k4*','k4*'},
-                        {'br1','tr1','tr1','tr1','k3*','k4*'},
-                        {'k3*','k3*','k3*','tr2','k4*','k4*'},
-                        {'k3*','k4*','k4*','tl3','tr3','s5'}},
-        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
-                        {'s2','br2','br3','br3','br3','tr3'},
-                        {'br3','tr2','tr2','tr2','tr3','tr3'},
-                        {'k4*','k4*','tr2','tr2','k3*','k3*'},
-                        {'k3*','k3*','k3*','k3*','tl3','tr3'}},
-        fleeMoves =    {['tl2'] = 'tl3',
-                        ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                        ['s1'] = 's5', ['s2'] = 's5', ['s3'] = 's5', ['s4'] = 's5',
-                        ['br1'] = 'br3', ['br2'] = 'br3',
-                        ['tr2'] = 'tr3',
-                        ['k4*'] = 'k3*'},
-        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3"}},
-        hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
-    }
-    --TODO: EKNA
-
-    --TODO: KWAR
-    --TODO: KGUA
-
-    --TODO: YGOL
-    --TODO: YGRE
-    --TODO: YSYN Scum Syndicate
-    --TODO: YHIR Scum Hired
-
-    --TODO: HWK Rebel
-    --TODO: HWKS Scum HWK Spice Runner
-
-    --TODO: ORS YT-1300 Outer Rim Smuggler
-    AI_DEFS["PALLAS"]["ORS"] = HostileAiDefinition:new{
-        isLargeShip = true,
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/",
-        diffuse = "http://i.imgur.com/QiomPcM.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
-        typeColor = "8080FF",
-	    has360Turret = true,
-	    hasFreeFocus = true,
-	    hasConditionalFocus = false,
-	    hasConditionalTargetLock = true,
-	    elitePilotSkills = {1,nil,nil,nil,nil},
-	    elitePilotSkillDeckEntries = 1,
-	    closeMoves = {{'s4','s4','bl3','br3','tr2','tl2'},
-                      {'br3','bl3','bl2','tl2','s4','s4'},
-                      {'br3','br3','br1','tr2','tr1','k4*'},
-                      {'tr2','tr2','tr1','tr1','k3*','k4*'},
-                      {'k4*','k4*','k4*','tl1','tr1','s1'}},
-	    farMoves = {{'s4','s4','s4','s3','s3','s2'},
-                    {'s4','br3','br3','br3','br2','tr2'},
-                    {'br3','br3','tr2','tr2','br1','tr1'},
-                    {'k4*','k3*','tr2','tr2','tr2','tr1'},
-                    {'k4*','k3*','k3*','k3*','tl1','tr1'}},
-	    fleeMoves = {['tl1'] = 'tl2',
-                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
-                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
-                     ['br1'] = 'br3', ['br2'] = 'br3',
-                     ['tr1'] = 'tr2',
-                     ['k4*'] = 'k3*' },
-	    swerves = { ["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
-                    ["bl1"] = {"tl1","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl2","s3"},
-                    ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
-                    ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr2"},
-                    ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },
-                    ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
-        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
-    }
-    --TODO: WSF YT-2400 Wild Space Fringer
-
-    --TODO: APRO
-    --TODO: AGRE
-
-    --TODO: HSCA Heavy Scyk Cartel
-    --TODO: HSTA Heavy Scyk Tansarii
-    --TODO: LSCA Light Scyk Cartel
-    --TODO: FIR
-    --TODO: PZER Protectorate Zealous
-    --TODO: PCON Protectorate Concord Dawn
-    --TODO: KZCA Scum Kihraxz Cartel
-    --TODO: KZBL Scum Kihraxz Black Sun
-    --TODO: SVEN Scum StarViper Black Sun Enforcer
-    --TODO: SVVI Scum StarViper Black Sun Vigo
-    --TODO: JUMP
-
-    for _,campaign_key in ipairs(campaigns) do
-        local offset = 0
-        for key,ai in pairs(AI_DEFS[campaign_key]) do
-            mirrorMoveTable(ai.closeMoves)
-            mirrorMoveTable(ai.farMoves)
-            -- pilot_card_offsets[campaign] = {}
-            pilot_card_offsets[campaign_key][key] = offset
-            offset = offset + ai.elitePilotSkillDeckEntries
-            -- pilot_card_num[campaign] = {}
-            pilot_card_num[campaign_key][key] = ai.elitePilotSkillDeckEntries
-            -- squad_types_deck[campaign] = {}
-            for i=1,ai.elitePilotSkillDeckEntries do
-                table.insert(squad_types_deck[campaign_key],key)
-            end
-        end
-    end
-    -- AI_DEFS["TEMP"] = HostileAiDefinition:new{
-    --     isLargeShip = false,
-    --     mesh = "",
-    --     diffuse = "",
-    --     collider = "",
-    --     typeColor = "FFFFFF",
-    --     has360Turret = false,
-    --     hasCloak = false,
-    --     hasFreeFocus = false,
-    --     hasFreeEvade = false,
-    --     hasFreeTargetLock = false,
-    --     hasFreeBarrelRoll = false,
-    --     hasBoost = false,
-    --     hasBarrelRoll = false,
-    --     hasConditionalFocus = true,
-    --     hasConditionalEvade = false,
-    --     hasConditionalTargetLock = false,
-    --     elitePilotSkills = {},
-    --     elitePilotSkillDeckEntries = 0,
-    --     closeMoves = {},
-    --     farMoves = {},
-    --     fleeMoves = {},
-    --     swerves = {}
-    -- }
-end
+#include ai_defs
 function mirrorMoveTable(tbl)
     mirrorRow(tbl,4,6)
     mirrorRow(tbl,3,7)
@@ -1162,7 +377,7 @@ function auto(guid)
             }
             local aiPos = ai.getPosition()
             local aiForward = getForwardVector(guid)
-            local tgtPos = add(ai.getPosition(), offsets[direction])
+            local tgtPos = vector.add(ai.getPosition(), offsets[direction])
             local offset = {tgtPos[1] - aiPos[1],0,tgtPos[3] - aiPos[3]}
             local angle = math.atan2(offset[3], offset[1]) - math.atan2(aiForward[3], aiForward[1])
             if angle < 0 then
@@ -1178,22 +393,22 @@ function auto(guid)
             local tgtPos = tgt.getPosition()
             local aiForward = getForwardVector(guid)
             local corners = findCorners(tgt)
-            -- printToAll("AI Pos: "..Vect.tostring(aiPos),{1,1,1})
+            -- printToAll("AI Pos: "..vector.tostring(aiPos),{1,1,1})
             minAngle = 999999
             maxAngle = -999999
             local offset = {tgtPos[1] - aiPos[1],0,tgtPos[3] - aiPos[3]}
-            local angleToTarget = Vect.Angle2D(offset,aiForward)
+            local angleToTarget = vector.angle2D(offset,aiForward)
             for i,corner in ipairs(corners) do
-                -- printToAll("  Corner: "..Vect.tostring(corner),{1,1,1})
+                -- printToAll("  Corner: "..vector.tostring(corner),{1,1,1})
                 local corn_offset = {corner[1] - aiPos[1],0,corner[3] - aiPos[3]}
-                -- printToAll("  Corner Offset: "..Vect.tostring(corn_offset),{1,1,1})
+                -- printToAll("  Corner Offset: "..vector.tostring(corn_offset),{1,1,1})
                 -- local angleToCorner = math.atan2(corn_offset[3], corn_offset[1])
                 local aiHeading = math.atan2(aiForward[3], aiForward[1])
                 local tgtHeading = math.atan2(offset[3], offset[1])
                 -- printToAll("  Corner Heading: "..tostring(angleToCorner),{1,1,1})
                 -- printToAll("  AI Heading: "..tostring(aiHeading),{1,1,1})
                 -- local angle = angleToCorner - aiHeading
-                local angle = Vect.Angle2D(corn_offset,aiForward)
+                local angle = vector.angle2D(corn_offset,aiForward)
                 -- printToAll("  Angle: "..tostring(angle),{1,1,1})
                 if angle < 0 and math.abs(angleToTarget)>math.pi/4 then
                     angle = angle + 2 * math.pi
@@ -1212,7 +427,7 @@ function auto(guid)
             -- printToAll("Min: "..tostring(minAngle),{1,1,1})
             -- printToAll("Max: "..tostring(maxAngle),{1,1,1})
             local tgtForward = getForwardVector(tgt.getGUID())
-            local cross = Vect.Cross2D(offset,tgtForward)
+            local cross = vector.cross2D(offset,tgtForward)
             local i_dir = 1
             local splittingLine = get_i_dir(minAngle) != get_i_dir(maxAngle)
             -- printToAll("Cross: "..tostring(cross),{1,1,1})
@@ -1444,7 +659,7 @@ function getMove(type, i_dir,range,far, flee)
 end
 function RotateVector(direction, yRotation)
 
-    local rotval = round(yRotation)
+    local rotval = math.round(yRotation)
     local radrotval = math.rad(rotval)
     local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
     --TODO: Valadian Verify
@@ -1561,7 +776,7 @@ function getTurnNumber()
     local turn = 1
     if turn_marker ~=nil then
         local pos = turn_marker.getPosition()
-        turn = round((pos[1]+39.84)/6.9075)
+        turn = math.round((pos[1]+39.84)/6.9075)
     else
         if not turn_marker_warning then
             printToAll("Add object with name 'Turn Marker' on Turn Track",{1,0,0})
@@ -1575,7 +790,7 @@ function getTotalTurns()
     local total = 12
     if end_marker ~=nil then
         local pos = end_marker.getPosition()
-        total = round((pos[1]+39.84)/6.9075)
+        total = math.round((pos[1]+39.84)/6.9075)
     else
         if not end_marker_warning then
             printToAll("Add object with name 'End Marker' on Turn Track",{1,0,0})
@@ -2264,7 +1479,7 @@ end
 function getForwardVector(guid)
     local this = getObjectFromGUID(guid)
     local direction = this.getRotation()
-    local rotval = round(direction[2])
+    local rotval = math.round(direction[2])
     local radrotval = math.rad(rotval)
     local xForward = math.sin(radrotval) * -1
     local zForward = math.cos(radrotval) * -1
@@ -2279,7 +1494,7 @@ function findNearestShip(pos)
     local minDist = 999999
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) then
-            local distance = distance(pos[1],pos[3],ship.getPosition()[1],ship.getPosition()[3])
+            local distance = vector.distance(pos, ship.getPosition())
             if distance<minDist then
                 minDist = distance
                 nearest = ship
@@ -2295,11 +1510,7 @@ function findNearestCorner(fromguid, toguid)
     local dist = 999999
     local closest_corner = nil
     for i,corner in ipairs(tocorners) do
-        x1 = corner[1]
-        y1 = corner[3]
-        x2 = from.getPosition()[1]
-        y2 = from.getPosition()[3]
-        corner_dist = distance(x1,y1,x2,y2)
+        corner_dist = vector.distance(corner, from.getPosition())
         if corner_dist<dist then
             dist = corner_dist
             closest_corner = corner
@@ -2326,7 +1537,7 @@ function findNearestPlayer(guid,strike)
         -- printToAll("opposite: "..tostring(oppositeTeam),{1,1,1})
         -- printToAll("isInPlay: "..tostring(isInPlay(ship)),{1,1,1})
         -- printToAll("AIstrike: "..tostring(strike==nil),{1,1,1})
-        -- printToAll(ship.getName().." strike: "..tostring(table.contains(striketarget,ship.getGUID())),{1,1,1})
+        -- printToAll(ship.getName().." strike: "..tostring(table.Contains(striketarget,ship.getGUID())),{1,1,1})
         local ignoredHugeShip = def.ignoresHugeShips and ship.getName():match ".*HUGE.*"
         if isInPlay(ship) and ((strike~=nil and isStrikeTarget(ai,ship)) or (strike==nil and isShip(ship) and oppositeTeam and not ignoredHugeShip))then
             --if ship.getDescription()~="ignore" or strike~=nil then
@@ -2400,7 +1611,7 @@ end
 function findCorners(object)
     local corners = findRelativeCorners(object)
     for i,corner in ipairs(corners) do
-        corners[i] = Vect.Sum(object.getPosition(),corner)
+        corners[i] = vector.add(object.getPosition(),corner)
     end
     return corners
 end
@@ -2419,7 +1630,7 @@ end
 function realDistance(guid1, guid2)
     local fromcorner = findNearestCorner(guid1,guid2)
     local tocorner = findNearestCorner(guid2,guid1)
-    local dist = distance(fromcorner[1],fromcorner[3],tocorner[1],tocorner[3])
+    local dist = vector.distance(fromcorner,tocorner)
     -- --TODO: Lazy calc to start. need to go from nearest corner to nearest corner
     -- local a  = getObjectFromGUID(guid1)
     -- local b  = getObjectFromGUID(guid2)
@@ -2427,7 +1638,7 @@ function realDistance(guid1, guid2)
     -- local apos = a.getPosition()
     -- local bpos = b.getPosition()
     -- if a == nil or b == nil then return nil end
-    -- local dist = distance(apos[1],apos[3],bpos[1],bpos[3])
+    -- local dist = vector.distance(apos,bpos)
     -- if isBigShip(a.getGUID()) then dist = dist - 2.1 else dist = dist - 1.1 end
     -- if isBigShip(b.getGUID()) then dist = dist - 2.1 else dist = dist - 1.1 end
     return dist
@@ -2467,7 +1678,7 @@ end
 function getAiType(ai)
     local type =  ai.getName():match '^%[%u*:?(%u*):?%d*].*'
     --local validTypes = {"TIE","TFO","INT","ADV","BOM","DEF","PHA","DEC","SHU" }
-    if contains(table.getKeys(AI_DEFS[campaign]),type) then
+    if contains(table.Keys(AI_DEFS[campaign]),type) then
         return type
     else
         -- printToAll("Error: "..ai.getName() .. " does not define valid type in format '[AI:{type}:{PS}] Name'",{1,0,0})
@@ -2486,7 +1697,7 @@ function isStrikeTarget(ai,target)
     if striketargetgroup[ai.getGUID()] == nil then
         return false
     else
-        return table.contains(getStrikeTargets(ai),target.getGUID())
+        return table.Contains(getStrikeTargets(ai),target.getGUID())
     end
 end
 function getSkill(ai)
@@ -2759,610 +1970,9 @@ function Action_setup(object)
         local rule_page
         local turns = 12
         printToAll("Setting up: "..mission, {0,1,0})
-        if mission == "Local Trouble" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 6
-            rule_page = 46
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
-            --            table.insert(missionvectors, {x=-4.5, y=-1.5, rot=90})
-            --            table.insert(missionvectors, {x=-4.5, y= 1.5, rot=90})
-            --            table.insert(missionvectors, {x=-1.5, y= 4.5, rot=180})
-            --            table.insert(missionvectors, {x= 1.5, y= 4.5, rot=180})
-            --            table.insert(missionvectors, {x= 4.5, y= 1.5, rot=-90})
-            --            table.insert(missionvectors, {x= 4.5, y=-1.5, rot=-90})
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
-        end
-        if mission == "Pallas Trouble" then
-            campaign = "PALLAS"
-            turns = 10
-            num_asteroids = 6
-            rule_page = 46
-            table.insert(missionsquads, {name="Bandit",turn=0,vector=7,ai="attack",type="ZBAN",count={1,1,0,1,0,1}, elite=false, isHostile=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TFO",count={1,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,v._0730}
-        end
-        if mission == "Rescue Rebel Operatives" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 6
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="INT",count={0,0,6,0,4,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="INT",count={0,8,0,6,0,0}, elite=false})
-            missionvectors = {v._0830,v._0930, v._1030S, v._0130S,v._0230,v._0330}
-            --TODO implement spawning HWK-290
-        end
-        if mission == "Disable Sensor Net" then
-            campaign = "HOTAC"
-            turns = 12
-            num_asteroids = 12
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Patrol",turn=1,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
-            --TODO: implement spawning Sensor Beacons
-            --TODO implement spawning HWK-290
-        end
-
-        if mission == "Capture Refueling Station" then
-            campaign = "HOTAC"
-            turns = 12
-            num_asteroids = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 - r1*3
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="INT",count={0,8,0,6,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector="bay2",ai="attack",type="INT",count={0,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="ADV",count={0,0,6,0,4,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=5,vector="bay2",ai="attack",type="BOM",count={1,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=8,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
-            missionvectors = {v._0800,v._0900, v._1000, v._0200,v._0300,v._0400, bay1 = v.bay1, bay2 = v.bay2}
-            --TODO: implement spawning refueling station
-
-        end
-        if mission == "Tread Softly" then
-            campaign = "HOTAC"
-            turns = 12
-            table.insert(missionsquads, {name="Minelayer",turn=0,vector=3,ai="attack",type="BOM",count={1,8,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=5,vector="1d6",ai="attack",type="BOM",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Beta",turn=7,vector="1d6",ai="attack",type="TIE",count={1,1,8,1,6,1}, elite=false})
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
-            --TODO: implement minefield spawning
-
-        end
-        if mission == "Imperial Entanglements" then
-            campaign = "HOTAC"
-            turns = 10
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={1,0,6,1,0,4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=3,vector="1d3",ai="strike",type="BOM",count={1,0,1,8,1,0}, elite=false})
-            table.insert(missionsquads, {name="Decimator",turn=6,vector="c",ai="strike",type="DEC",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="TIE",count={8,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="*",count={0,0,1,0,1,0}, elite=false})
-
-            missionvectors = {v._0630, v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,c = v._0730}
-            --TODO: implement minefield spawning
-            --TODO: implement Transport spawning
-            --TODO: implement Decimator spawning
-            --TODO: implement spawning Ion Pulse Missile
-        end
-        if mission == "Care Package" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 12
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,-8,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="INT",count={0,0,8,0,4,0}, elite=false})
-            table.insert(missionsquads, {name="Assault1",turn=3,vector="*",ai="strike",type="BOM",count={1,8,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="INT",count={0,8,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Assault2",turn=6,vector="*",ai="srike",type="BOM",count={6,1,0,1,0,1}, elite=false})
-            missionvectors = {v._0600, v._0730,v._0900, v._1200, v._0130,v._0300}
-            --TODO: implement Transport spawning
-            --TODO: implement spawning proton torpedo
-        end
-        if mission == "Needle in a Haystack" then
-            campaign = "HOTAC"
-            turns = 12
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="*",count={0,0,8,0,6,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="strike",type="*",count={1,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Phantom",turn=13,vector="1d6",ai="attack",type="PHA",count={1,0,0,1,0,0}, elite=false})
-
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
-            --TODO: implement ion storm spawning
-            --TODO: implement tracking token spawning
-            --TODO: implement Assault Ship spawning
-        end
-        if mission == "Bait" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-8}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="*",count={0,0,0,4,0,8}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
-            table.insert(missionsquads, {name="SupportA",turn=3,vector="1d6",ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="SupportB",turn=3,vector="*",ai="attack",type="SHU",count={0,0,0,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=4,vector="1d12",ai="*",type="PHA",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="*",count={0,0,6,0,4,0}, elite=false})
-            --TODO: implement random filtering (not shuttle/phantom)
-            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130, v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630}
-            --TODO: implement Transport spawning
-            --TODO: implement starting cloaked
-            --TODO: implement spawning shuttle abilities
-        end
-        if mission == "Cloak and Dagger" then
-            campaign = "HOTAC"
-            turns = 12
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="PHA",count={1,8,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,1,-6,1,-8,1}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,0,6,0,8,0}, elite=false})
-            --TODO: implement random filtering (not shuttle/phantom)
-            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-6}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,0,0,4,0,6}, elite=false})
-
-            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
-            --TODO: implement ion storm spawning
-            --TODO: implement spawning partial stations on side
-        end
-        if mission == "Revenge" then
-            campaign = "HOTAC"
-            turns = 10
-            table.insert(missionsquads, {name="Aces",turn=1,vector="1d12",ai="strike",type="INT",count={1,1,1,1,1,1}, elite=true})
-            --TODO: implement ion storm spawning
-            --TODO: elites match player PS
-            --TODO: implement multistrike
-        end
-        if mission == "Capture Officer" then
-            campaign = "HOTAC"
-            turns = 12
-            num_asteroids = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            table.insert(missionsquads, {name="Shuttle",turn=0,vector=7,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="ADV",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-4,1,-6,1,-8}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,4,0,6,0,8}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=11,vector="1d6",ai="attack",type="INT",count={1,1,0,1,0,1}, elite=false})
-            missionvectors = {v._0530,v._0630,v._0930, v._1130, v._0030,v._0230, {x=0, y=-1,rot=180}}
-        end
-        if mission == "Nobody Home" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 6
-            num_debris = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            table.insert(missionsquads, {name="Obstacle",turn=0,vector=6,ai="stiketarget",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="strike",type="INT",count={1,0,0,8,1,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=2,ai="strike",type="INT",count={0,6,1,0,0,1}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="TIE",count={1,1,-4,1,-8,1}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="*",count={0,0,4,0,8,0}, elite=false})
-            table.insert(missionsquads, {name="Command",turn=0,vector=4,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
-            missionvectors = {v._1100,v._1120,v._0020, v._0040, v._0100, {x=0, y=-2,rot=180}}
-        end
-        if mission == "Miners' Strike" then
-            campaign = "HOTAC"
-            turns = 12
-            table.insert(missionsquads, {name="Cargo",turn=0,vector=7,ai="flee",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Cargo",turn=0,vector=8,ai="flee",type="SHU",count={0,0,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})--2/3?
-            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})--4/5?
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-4,1,-6}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,4,0,6}, elite=false})
-
-            --TODO: spawn station components
-            missionvectors = {v._0630,v._0830,v._0930, v._1130, v._0030,v._0230,{x=0,y=3,rot=180},{x=2,y=2,rot=270}}
-        end
-        if mission == "Secure Holonet Receiver" then
-            campaign = "HOTAC"
-            turns = 12
-            num_asteroids = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={8,0,4,0,6,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="INT",count={0,0,1,8,1,6}, elite=false})
-            --TODO: Spawn Satellite Relays
-            --TODO: Spawn Station
-            --TODO: spawn HWK-290
-            missionvectors = {v._0600,v._0730,v._0900, v._0000,v._0130,v._0300}
-        end
-        if mission == "Defector" then
-            campaign = "HOTAC"
-            turns = 10
-            num_asteroids = 6
-            table.insert(missionsquads, {name="Prototype",turn=0,vector=4,ai="attack",type="DEF",count={1,1,0,1,0,1}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={0,0,1,6,1,4}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,6,0,4}, elite=false})
-            --TODO: implement random filters
-            missionvectors = {v._0920,v._1030S,v._1130,v._0030,v._0130S,v._0240}
-
-        end
-        if mission == "Pride of the Empire" then
-            campaign = "HOTAC"
-            turns = 12
-            num_asteroids = 6
-            asteroid_min_x = -9.2 - r1
-            asteroid_max_x = 9.2 + r1
-            asteroid_min_y = -9.2 - r1
-            asteroid_max_y = 9.2 + r1
-            -- c = 13, d = 14, e = 15, f = 16, center = 17
-            table.insert(missionsquads, {name="Instructor",turn=0,vector=17,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="DEF",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="TIE",count={0,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="DEF",count={0,0,0,1,0,0}, elite=true})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="TIE",count={1,1,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="TIE",count={1,0,0,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="DEF",count={0,0,0,0,0,1}, elite=true})
-            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="INT",count={1,0,1,0,1,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="TIE",count={0,8,0,6,0,4}, elite=false})
-            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130,v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630,
-                {x=-1.5, y=1.5,rot=270}, --C
-                {x=-1.5, y=-1.5,rot=180}, --D
-                {x=1.5,y=-1.5,rot=90}, --E
-                {x=1.5,y=1.5,rot=0}, --F
-                {x=0,y=0,rot=180}    --center
-            }
-        end
-        haspallas = false
-        if mission == "Attack on the Pallas S1" then
-            campaign = "PALLAS"
-            turns = 8
-            haspallas = true
-            --TODO: Spawn Pallas
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
-            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
-        end
-        if mission == "Attack on the Pallas S2" then
-            campaign = "PALLAS"
-            turns = 8
-            haspallas = true
-            --TODO: Spawn Pallas
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={2,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
-            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
-        end
-        if mission == "Attack on the Pallas S3" then
-            campaign = "PALLAS"
-            turns = 8
-            haspallas = true
-            --TODO: Spawn Pallas
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TFO",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="TIE",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={3,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
-            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
-        end
-        if mission == "Retrieve the T70 prototype" then
-            campaign = "PALLAS"
-            turns = 99 --TODO: No Turn Limit?
-            haspallas = true
-            --TODO: Spawn Pallas
-            --TODO: Spawn T70
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d8",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector="1d8",ai="strike",type="BOM",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=0,vector="1d8",ai="attack",type="TAP",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector="1d8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="TSF",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-            --TODO: Handle multiple squad entries spawning in 1 location?
-        end
-        if mission == "Retrieve the K-Wing prototype" then
-            campaign = "PALLAS"
-            turns = 20 --TODO: No Turn Limit?
-            haspallas = true
-            --TODO: Spawn U-Wing Blue Squadron Pathfinder
-            --TODO: Spawn T70
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="?",ai="attack",type="PUN",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector="?",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={1,-1,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,0,1,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn="*",vector=2,ai="strike",type="INT",count={1,1,1,1,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-            --TODO: STEFAN Who is Zeta?
-            --TODO: STEFAN What vector for Alpha/Beta? (special?)
-        end
-        if mission == "Win the E-Wing prototype" then
-            campaign = "PALLAS"
-            turns = 99
-            --strike race AI?
-            table.insert(missionsquads, {name="Alpha",turn=0,vector="*",ai="flee",type="EBLM",count={1,0,0,0,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-        end
-        if mission == "YT-1300 Combat Refit" then
-            campaign = "PALLAS"
-            haspallas = true
-            turns = 99
-            table.insert(missionsquads, {name="Alpha",turn="*",vector="1d8",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="ADV",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-
-        end
-        if mission == "Earn the YT-2400" then
-            campaign = "PALLAS"
-            turns = 10
-            --TODO: Add Cargo
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-        end
-
-        if mission == "Flying School" then
-            campaign = "PALLAS"
-            turns = 99
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=4,vector=4,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-        end
-        if mission == "Covert Ops" then
-            campaign = "PALLAS"
-            turns = 99
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=3,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="INT",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930,
-                {x=2,y=2,rot=180}} --TODO: Verify docking bay location
-        end
-        if mission == "Escape" then
-            campaign = "PALLAS"
-            turns = 10
-            haspallas = true
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=3,vector=7,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector={4,5,6,7},ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
-            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
-        end
-        if mission == "Meeting" then
-            campaign = "PALLAS"
-            turns = 10
-            haspallas = true
-            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=2,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIEE",count={0,1,0,1,0,0}, elite=true})
-            table.insert(missionsquads, {name="Epsilon",turn=6,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
-
-            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
-                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
-            --setup ion clouds
-        end
-        if mission == "Arms race" then
-            campaign = "PALLAS"
-            turns = 15
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=6,vector=1,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
-            --spawn blue squadron pathfinder
-
-            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
-                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
-        end
-        if mission == "Resources" then
-            campaign = "PALLAS"
-            turns = 10
-            haspallas = true
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="INT",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=2,vector=2,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=6,vector="*",ai="strike",type="*",count={1,0,1,0,0,0}, elite=false})
-            --spawn transport
-
-            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
-                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000, {x=0,y=2,315}}
-        end
-        if mission == "Babysitters" then
-            campaign = "PALLAS"
-            turns = 10
-            haspallas = true
-            epic = true
-            img_index = IMG_EPIC_BLUE_PLANET
-            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,8},ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector={7,8},ai="strike",type="ADV",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="BetaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn=0,vector="copy",ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Delta",turn=0,vector={2,7},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="DeltaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Zeta",turn="*",vector={4,5},ai="attack",type="*",count={1,-1,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Zeta",turn="*",vector="copy",ai="attack",type="*",count={0,1,0,1,0,0}, elite=true})
-
-            missionvectors = {v._1100,v._0000,v._0100,v._0230,v._0330,
-                              v._0500,v._0600,v._0700,v._0830,v._0930}
-            y = 1
-            y_layer_2 = 1.1
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16,y,6.09},rot={0,0,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.28,y,2.21},rot={0,150,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16,y,3.16},rot={0,270,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.09,y,1.99},rot={0,30,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_6,pos={21.84,y,-0.11},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.17,y,-2.26},rot={0,150,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16.1,y,-3.41},rot={0,90,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.41,y,-2.47},rot={0,210,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16.1,y,-6.3},rot={0,180,0}})
-
-            striketarget[2] = {}
-            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.3,y_layer_2,6.47},rot={0,270,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.63,y_layer_2,6.5},rot={0,0,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={13.92,y_layer_2,1.91},rot={0,60,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.16,y_layer_2,2.1},rot={0,30,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={22.81,y_layer_2,0.51},rot={0,60,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_SENSOR_ARRAY,pos={21.75,y_layer_2,-1.28},rot={0,180,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_SHIELD_GENERATOR,pos={20.81,y_layer_2,0.55},rot={0,120,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.3,y_layer_2,-2.34},rot={0,150,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={14.01,y_layer_2,-2.21},rot={0,120,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.86,y_layer_2,-6.68},rot={0,90,0},desc='ai addtarget 2'})
-            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.4,y_layer_2,-6.66},rot={0,90,0},desc='ai addtarget 2'})
-
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={25.96,y,-6.90},rot={0,0,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,-7.23},rot={0,0,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,7.78},rot={0,0,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={26.13,y,7.26},rot={0,0,0}})
-
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={3.03,2,-16.79},rot={0,0,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={-3.03,2,-16.79},rot={0,0,0}})
-        end
-        if mission == "Assassination games" then
-            campaign = "PALLAS"
-            turns = 8
-            num_debris = 3
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={0,0,1,-1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,0,1,0,0}, elite=false})
-            missionvectors = {{x=0,y=0,rot=180},{x=0.5,y=0,rot=180}}
-        end
-        if mission == "Traitor Hunt" then
-            campaign = "PALLAS"
-            turns = 7
-            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="XRED",count={1,0,0,0,0,0}, elite=false})
-            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
-                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
-            y = 1
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_1_BIRD_OF_PREY ,pos={10.2,y,-1.82},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_2_CLAW ,pos={-9.72,y,-12.9},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_3_FISH ,pos={-1.02,y,7.26},rot={0,195,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_4_FACE ,pos={10.49,y,-9.78},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_5_OCARINA ,pos={0.63,y,-9.03},rot={0,270,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_6_LONG ,pos={-3.97,y,0.21},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_1_DRAGON ,pos={14.37,y,9.13},rot={0,90,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_2_STAR ,pos={0.13,y,14.41},rot={0,180,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_3_GLOVE ,pos={-13.89,y,-2.94},rot={0,270,0}})
-            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_4_LONG ,pos={-13.62,y,10.27},rot={0,180,0}})
-        end
-        if mission == "Attack on the mining station" then
-            campaign = "PALLAS"
-            turns = 99
-            num_asteroids = 6
-            epic = true
-            asteroid_min_x = -9.2-r1*2.5
-            asteroid_max_x = 9.2-r1*2.5
-            asteroid_min_y = -9.2
-            asteroid_max_y = 9.2
-            img_index = IMG_EPIC_DEATH_STAR_2
-            missionvectors = {v._1100,v._1120,v._1140,v._0020,v._0040,v._0100,
-                              v._0200,v._0240,v._0320,v._0400,
-                              v._0500,v._0520,v._0540,v._0620,v._0640,v._0700,
-                              v._0800,v._0840,v._0920,v._1000,
-                              {x=1.222,y=2.4,rot=120}, --dock 1 (21)
-                              {x=1.25,y=-2.5,rot=60}, --dock 2 (22)
-                              {x=3.29,y=0,rot=240}, -- cargo dock (23)
-                              {x=-1.5,y=0,rot=90} -- Smuggler (24)
-                             }
-            table.insert(missionsquads, {name="Alpha",turn=2,vector=21,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
-            table.insert(missionsquads, {name="Beta",turn=0,vector=24,ai="flee e",type="ORS",count={1,0,0,0,0,0}, elite=false})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="BOM",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="PHA",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
-            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="DEF",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 9})
-            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false, temp_round_pos = 10})
-            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true, temp_round_pos = 10})
-            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false, temp_round_pos = 11})
-            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true, temp_round_pos = 11})
-
-        end
+        #include missions/hotac
+        #include missions/pallas
+        #include missions/dote
         if mission == "Test" then
             --            shipnum = 1
             --            Spawn_Squad(1,"TIE","Alpha",4, false)
@@ -3447,7 +2057,7 @@ function spawnAllAsteroidsCoroutine()
         end
         local type = "Core"
         if i_source==2 then type="TFA" end
-        printToAll("Spawned Asteroid ("..type..") at {"..round(params.position[1],2)..","..round(params.position[2],2)..","..round(params.position[3],2).."}",{0,1,0})
+        printToAll("Spawned Asteroid ("..type..") at {"..math.round(params.position[1],2)..","..math.round(params.position[2],2)..","..math.round(params.position[3],2).."}",{0,1,0})
         for i=1, 20, 1 do
             coroutine.yield(0)
         end
@@ -3468,7 +2078,7 @@ function spawnAllAsteroidsCoroutine()
         --callback_params['state'] = state
         --params.params = callback_params
         debris_source.takeObject(params) --asteroids[num_asteroids+i] =
-        printToAll("Spawned Asteroid (Debris "..i_roll..") at {"..round(params.position[1],2)..",0,"..round(params.position[3],2).."}",{0,1,0})
+        printToAll("Spawned Asteroid (Debris "..i_roll..") at {"..round(params.position[1],2)..",0,"..math.round(params.position[3],2).."}",{0,1,0})
         for i=1, 20, 1 do
             coroutine.yield(0)
         end
@@ -3519,7 +2129,7 @@ function isClear(pos)
     for i,asteroid in ipairs(getAllObjects()) do
         if asteroid.getName():match "Asteroid" or asteroid.getName():match "DebrisField" then
             local astpos = asteroid.getPosition()
-            if distance(pos[1],pos[3],astpos[1],astpos[3])<5 then return false end
+            if vector.distance(pos,astpos)<5 then return false end
         end
     end
     return true
@@ -3593,7 +2203,7 @@ function Spawn_Squad(squad, more_after_lgs)
         rotation = missionvectors[squad.vector].rot
         local adjustlookup = {0,0,1.875} --placement_offset[quantity]
         if quantity == 1 then
-            adjustlookup = add(adjustlookup, {-1.125,0,0})
+            adjustlookup = vector.add(adjustlookup, {-1.125,0,0})
         end
         adjust = RotateVector(adjustlookup,rotation)
     else
@@ -3602,7 +2212,7 @@ function Spawn_Squad(squad, more_after_lgs)
     for i,off in ipairs(squad_offsets) do
         if 5-i<=quantity then
             off = RotateVector(off,rotation)
-            Spawn_Ship(squad.hostile, squad.type, squad.name, squad.elite, squad.ai, card, add(add(position,adjust),off), rotation, add(temp_position,off))
+            Spawn_Ship(squad.hostile, squad.type, squad.name, squad.elite, squad.ai, card, vector.add(vector.add(position,adjust),off), rotation, vector.add(temp_position,off))
         end
     end
     squads[squad.turn+1] = squad
@@ -3633,7 +2243,7 @@ function calculateTempPosition(squad)
     if squads[squad.turn]~=nil and squads[squad.turn-1]~=nil then y = y+4.4 end
     local position = {-39.84-1.1+squad.turn*6.9075, 1, y }
     --if squad.turn == 0 then position = add(position,{0,0,-2.59}) end
-    if squads[squad.turn+1]~=nil then position = add(position, {5,0,0}) end
+    if squads[squad.turn+1]~=nil then position = vector.add(position, {5,0,0}) end
     return position
 end
 function countSquad(squad)
@@ -3643,12 +2253,6 @@ function countSquad(squad)
         if s<0 and s>=-mission_ps and i<=mission_players then number = number-1 end
     end
     return number
-end
-function add(pos, offset)
-    return {pos[1] + offset[1],pos[2] + offset[2],pos[3] + offset[3]}
-end
-function sub(pos, offset)
-    return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
 end
 function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, temp_pos)
     if isHostile==nil then
@@ -3700,7 +2304,7 @@ function Spawn_Obstacle(obsnum, guid, position, rotation,description)
     params = {}
     local offset = {obs_index,0,0}
     obs_index = obs_index+3
-    params.position = add({-30,5,50 },offset)
+    params.position = vector.add({-30,5,50 },offset)
     params.callback = 'drawObs'
     params.callback_owner = self
     params.params = {guid = guid, obsnum = obsnum, position = position, rotation = rotation, description=description }
@@ -3733,7 +2337,7 @@ function Spawn_Card(type, name, position, shipnum, card)
     -- params.position[2] = 5
     local offset = {col_index,0,0}
     col_index = (col_index + 1.5) % 50
-    params.position = add({-54,5,37 },offset)
+    params.position = vector.add({-54,5,37 },offset)
     params.callback = 'drawCard'
     params.callback_owner = self
     local index = pilot_card_offsets[campaign][type]+card-1 --math.random(pilot_card_num[type])-1
@@ -3743,7 +2347,7 @@ function Spawn_Card(type, name, position, shipnum, card)
 end
 function drawCard(object, params)
     local p = {}
-    p.position = add(params.position,{0,3,5}) --{22,5,14 }
+    p.position = vector.add(params.position,{0,3,5}) --{22,5,14 }
     p.index = params.index
     p.callback = 'updateCard'
     p.callback_owner = self
@@ -3755,12 +2359,6 @@ function updateCard(object, params)
     local card = cards[params.shipnum]
     printToAll("Drawing card "..params.name.."#"..tostring(params.shipnum),{0,1,0})
     card.setName(params.name.."#"..tostring(params.shipnum))
-end
-function string.starts(String,Start)
-    if String==nil then
-        return false
-    end
-    return string.sub(String,1,string.len(Start))==Start
 end
 function findObjectByName(name)
     for i,obj in ipairs(getAllObjects()) do
@@ -3799,87 +2397,7 @@ elseif move == 'action' then
         end
     end
 end
-function distance(x,y,a,b)
-    x = (x-a)*(x-a)
-    y = (y-b)*(y-b)
-    return math.sqrt(math.abs((x+y)))
-end
-
-function round(x)
-    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
-end
-
-function round(num, idp)
-    if num == nil then return nil end
-    local mult = 10^(idp or 0)
-    if num >= 0 then return math.floor(num * mult + 0.5) / mult
-    else return math.ceil(num * mult - 0.5) / mult end
-end
-function table.getKeys(tbl)
-    local keyset={}
-    local n=0
-
-    for k,v in pairs(tbl) do
-      n=n+1
-      keyset[n]=k
-    end
-    return keyset
-end
--- Shallow table copy
--- Does not include metatables
-table.shallowcopy = function(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in pairs(orig) do
-            copy[orig_key] = orig_value
-        end
-    else
-        copy = orig
-    end
-    return copy
-end
-table.contains = function(tab, el)
-    for k,v in pairs(tab) do
-        if v == el then
-            return true
-        end
-    end
-    return false
-end
-Vect = {}
-Vect.tostring = function(vect)
-    return "{"..tostring(round(vect[1],2))..","..tostring(round(vect[3],2)).."}"
-end
-Vect.Cross2D = function(u,v)
-    return u[3]*v[1]-u[1]*v[3]
-end
-Vect.Sum = function(vec1, vec2)
-    assert(type(vec1) == 'table', 'Vect.Sum: arg#1 not a table!')
-    assert(type(vec2) == 'table', 'Vect.Sum: arg#2 not a table!')
-    local out = {}
-    local k = 1
-    while vec1[k] ~= nil and vec2[k] ~= nil do
-        out[k] = vec1[k]+vec2[k]
-        k = k+1
-    end
-    return out
-end
--- returns result from -pi to pi
-Vect.Angle2D = function(vec1, vec2)
-    if vec2 == nil then
-        vec2 = {1}
-        for k = 2, #vec1, 1 do
-            table.insert(vec2, 0)
-        end
-    end
-    local angle = ( math.atan2(vec2[3], vec2[1]) - math.atan2(vec1[3], vec1[1]) )
-    if angle>math.pi then
-        angle = angle - math.pi*2
-    end
-    if angle<-math.pi then
-        angle = angle + math.pi*2
-    end
-    return angle
-end
+#include ../../util/string
+#include ../../util/math
+#include ../../util/table
+#include ../../util/vector
