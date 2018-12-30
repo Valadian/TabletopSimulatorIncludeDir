@@ -1,0 +1,3885 @@
+
+-- X-Wing AI Auto movement - Valadian, January 2018
+--Collider Infomation
+BigShipList = {'https://paste.ee/r/LIxnJ','https://paste.ee/r/v9OYL','https://paste.ee/r/XoXqn','https://paste.ee/r/oOjRN','https://paste.ee/r/v8OYL','https://paste.ee/r/xBpMo','https://paste.ee/r/k4DLM','https://paste.ee/r/JavTd','http://pastebin.com/Tg5hdRTM'}
+
+-- Auto Actions
+freshLock = nil
+enemy_target_locks = nil
+focus = nil --'beca0f'
+evade = nil --'4a352e'
+cloak = nil
+stress = nil --'a25e12'
+target = nil --'c81580'
+
+-- AI
+aitype = {}
+striketarget = {}
+striketargetgroup = {}
+-- aicardguid = '2d84be'
+squadleader = {}
+squadmove = {}
+squadposition = {}
+squadrotation = {}
+aimove = {}
+aiswerved = {}
+airollboosted = {}
+aitargets = {}
+aistressed = {}
+aidecloaked = {}
+-- Auto Setup
+missionzone = '8e9174'
+mission_ps = nil
+mission_players = nil
+players_up_next = {}
+players_up_next_delay = 0
+ai_stress = false
+ai_stress_delay = 0
+current = nil
+currentphase = nil
+turn_marker = nil
+end_marker = nil
+playmat = nil
+
+isEpicMap = false
+
+IMG_EPIC_BLUE_PLANET = 1
+IMG_EPIC_DEATH_STAR_2 = 2
+IMG_EPIC_SCARIF = 3
+IMG_EPIC_YAVIN = 4
+IMG_BESPIN = 5
+IMG_ENDOR = 6
+IMG_HOTH = 7
+IMG_JAKKU_STAR_DESTROYER_WRECKAGE = 8
+IMG_CORUSCANT = 9
+IMG_STARKILLER = 10
+IMG_MOLTEN = 11
+IMG_SCARIF = 12
+IMG_SARLACC = 13
+IMG_NEBULA_PURPLE = 14
+IMG_DEATH_STAR_SURFACE_FAR = 15
+IMG_YAVIN = 16
+IMG_DEATH_STAR_SURFACE = 17
+IMG_NEBULA_RED = 18
+IMG_NEBULA_BLUE = 19
+IMG_STAR_DESTROYER_TOP = 20
+IMG_STAR_DESTROYER_BOTTOM = 21
+
+campaign = "HOTAC"
+BTN_Y = 0.6
+function onload(save_string)
+    --load the following:
+
+    -- aitype = {}
+    -- striketarget = {}
+    -- striketargetgroup = {}
+    -- campaign
+    -- isEpicMap
+
+    enemy_target_locks = findObjectByNameAndType("Enemy Target Locks", "Infinite").getGUID()
+    focus = findObjectByNameAndType("Focus", "Infinite").getGUID()
+    evade = findObjectByNameAndType("Evade", "Infinite").getGUID()
+    cloak = findObjectByNameAndType("Cloak", "Infinite").getGUID()
+    stress = findObjectByNameAndType("Stress", "Infinite").getGUID()
+    target = findObjectByNameAndType("Target Locks", "Infinite").getGUID()
+    playmat = findObjectByName("Epic Playmat").getGUID()
+
+    if save_string~="" then
+        local data = JSON.decode(save_string)
+        aitype = data.aitype
+        striketarget = data.striketarget
+        striketargetgroup = data.striketargetgroup
+        campaign = data.campaign
+        isEpicMap = data.isEpicMap
+    end
+    Render_Menu_v2()
+    turn_marker = findObjectByName("Turn Marker")
+    end_marker = findObjectByName("End Marker")
+    initialize_ai()
+end
+function onSave()
+    local save = {}
+    save.aitype = aitype
+    save.striketarget = striketarget
+    save.striketargetgroup = striketargetgroup
+    save.campaign = campaign
+    save.isEpicMap = isEpicMap
+    local save_string = JSON.encode_pretty(save)
+    return save_string
+end
+function update()
+    for i,ship in ipairs(getAllObjects()) do
+        if ship~=nil and (ship.tag == 'Figurine' or string.starts(ship.getDescription(),"ai")) and ship.name ~= '' then
+            local shipguid = ship.getGUID()
+            --local shipname = ship.getName()
+            local shipdesc = ship.getDescription()
+            if ship.getVar('pendingMove')~=nil then
+                ship.setDescription(ship.getVar('pendingMove'))
+                ship.setVar('pendingMove', nil)
+            end
+            -- printToAll("[:89] "..tostring(shipguid)..tostring(shipdesc),{1,1,1})
+            -- printToAll(tostring(check_ai==nil),{1,1,1})
+            check_ai(shipguid,shipdesc)
+        end
+        if ship~=nil and string.starts(ship.getName(),"Turbolaser") and (ship.getDescription()=="r" or ship.getDescription()=="ruler" or ship.getDescription()=="a") then
+            Global.call('API_TOGGLE_RULER',{ship,'A'})
+            setpending(ship.getGUID())
+            -- ruler(ship.getGUID())
+        end
+    end
+    UpdatePlanningNote()
+end
+function onObjectLeaveScriptingZone(zone, object)
+    if zone.getGUID() == missionzone and object.tag == 'Card' and object.getName():match '^Mission: (.*)' then
+        object.clearButtons()
+    end
+end
+function onObjectEnterScriptingZone(zone, object)
+    if zone.getGUID() == missionzone and object~=nil and object.tag == 'Card' and object.getName():match '^Mission: (.*)' then
+        object.clearButtons()
+        local p = {['click_function'] = 'Action_presetup', ['function_owner'] = self, ['label'] = 'Pre-Setup', ['position'] = {0, 0.5, -1.0}, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 200, ['font_size'] = 180}
+        object.createButton(p)
+        local p = {['click_function'] = 'Action_setupclear', ['function_owner'] = self, ['label'] = 'Clear', ['position'] = {0, 0.5, -0.2}, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 200, ['font_size'] = 180}
+        object.createButton(p)
+    end
+end
+--Render Section
+function Render_Menu_v1()
+    self.createButton(buildMenuButton('Planning',{position={0,0.3,-1.5}}))
+    self.createButton(buildMenuButton('Activation',{position={0,0.3,-0.5}}))
+    self.createButton(buildMenuButton('Combat',{position={0,0.3,0.5}}))
+    self.createButton(buildMenuButton('End',{position={0,0.3,1.5}}))
+end
+function Render_Menu_v2()
+    self.createButton(buildMiniButton('Planning',{function_owner=self,position={-1.5,0.3,-1.5},rotation={0,-45,0}}))
+    self.createButton(buildMiniButton('Activation',{function_owner=self,position={0,0.3,-2.1}}))
+    self.createButton(buildMiniButton('Combat',{function_owner=self,position={1.5,0.3,-1.5},rotation={0,45,0}}))
+    self.createButton(buildButton('End',{function_owner=self,position={0,0.3,0},font_size=700,height=800,width=1200}))
+end
+function buildMiniButton(label, def)
+    def.width = 700
+    def.height = 300
+    def.font_size = 120
+    return buildButton(label, def)
+end
+function buildMenuButton(label, def)
+    def.width = 1200
+    def.height = 400
+    return buildButton(label, def)
+end
+function buildButton(label, def)
+    local DEFAULT_POSITION = {0,BTN_Y,0}
+    local DEFAULT_ROTATION = {0,0,0}
+    local DEFAULT_WIDTH_PER_CHAR = 125
+    local DEFAULT_HEIGHT = 530
+    local DEFAULT_FONT_SIZE = 250
+    if def.position==nil then def.position = DEFAULT_POSITION end
+    if def.rotation==nil then def.rotation = DEFAULT_ROTATION end
+    if def.width==nil then def.width = 100 + string.len(label)*DEFAULT_WIDTH_PER_CHAR end
+    if def.height==nil then def.height = DEFAULT_HEIGHT end
+    if def.font_size==nil then def.font_size = DEFAULT_FONT_SIZE end
+    if def.click_function==nil then def.click_function = 'Action_'..label end
+    if def.function_owner==nil then def.function_owner = self end
+    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size}
+end
+
+local AI_DEFS = {}
+local campaigns = {"HOTAC","PALLAS","DOTE"}
+-- TODO: Meshes for other spawning
+-- MESH= {
+--     GR = "https://paste.ee/r/h5ND1",
+--     YT = "https://paste.ee/r/kkPoB"
+-- }
+-- DIFFUSE = {
+--     GR = "http://i.imgur.com/Nur18O2.jpg",
+--     YT = "http://i.imgur.com/QiomPcM.jpg"
+-- }
+-- COLLIDER = {
+--     GR = "https://paste.ee/r/qIaBu",
+--     YT = "https://paste.ee/r/LIxnJ"
+-- }
+
+local squad_types_deck = {}
+local pilot_card_offsets = {} --{TIE=0,INT=1,BOM=7,ADV=13, DEF=17, PHA=21, SHU=25 }
+local pilot_card_num = {} --{TIE=1,INT=6,BOM=6,ADV=4,DEF=4,PHA=4,SHU=4}
+-- function getAI_DEFS()
+--     return AI_DEFS[campaign]
+-- end
+function initialize_ai()
+    for _,campaign in ipairs(campaigns) do
+	    AI_DEFS[campaign] = {}
+        pilot_card_offsets[campaign] = {}
+        pilot_card_num[campaign] = {}
+        squad_types_deck[campaign] = {}
+    end
+	-- AI_DEFS["HOTAC"] = {}
+	-- AI_DEFS["PALLAS"] = {}
+	-- AI_DEFS["DOTE"] = {}
+	HostileAiDefinition = {
+	    isHostile = true,
+	    isLargeShip = false,
+        ignoresHugeShips = false,
+	    mesh = "",
+	    diffuse = "",
+	    collider = "",
+	    typeColor = "FFFFFF",
+	    has360Turret = false,
+	    hasCloak = false,
+	    hasFreeFocus = false,
+	    hasFreeEvade = false,
+	    hasFreeTargetLock = false,
+	    hasFreeBarrelRoll = false,
+	    hasBoost = false,
+	    hasBarrelRoll = false,
+	    hasConditionalFocus = true,
+	    hasConditionalEvade = false,
+	    hasConditionalTargetLock = false,
+	    hasConditionalCloak = false,
+	    elitePilotSkills = {},
+	    elitePilotSkillDeckEntries = 0,
+	    closeMoves = {},
+	    farMoves = {},
+	    fleeMoves = {},
+	    swerves = {}
+	}
+	FriendlyAiDefinition = table.shallowcopy(HostileAiDefinition)
+	FriendlyAiDefinition.isHostile = false
+	FriendlyAiDefinition.fleeHealth = 2
+	FriendlyAiDefinition.hyperdriveMoves = {}
+	function HostileAiDefinition:new(o)
+	    o = o or {}
+	    setmetatable(o, HostileAiDefinition)
+	    HostileAiDefinition.__index = HostileAiDefinition
+	    return o
+	end
+	function FriendlyAiDefinition:new(o)
+	    o = o or {}
+	    setmetatable(o, FriendlyAiDefinition)
+	    FriendlyAiDefinition.__index = FriendlyAiDefinition
+	    return o
+	end
+    AI_DEFS["HOTAC"]["TIE"] = HostileAiDefinition:new{
+        ignoresHugeShips = true,
+        mesh = "https://paste.ee/r/Yz0kt",
+        diffuse = "http://i.imgur.com/otxKcUx.png",
+        collider = "https://paste.ee/r/1dx1C",
+        typeColor = "666666",
+        hasBarrelRoll = true,
+        hasConditionalEvade = true,
+        elitePilotSkills = {1, nil, nil, nil, nil},
+        elitePilotSkillDeckEntries = 1,
+        closeMoves = {{'bl2','br2','s2','s2','k4*','k4*'},
+                      {'s2','br2','br2','k4*','k4*','tr1'},
+                      {'tr1','tr1','tr2','tr2','k3*','k4*'},
+                      {'tr1','tr1','tr2','k3*','k4*','k4*'},
+                      {'k4*','k3*','k3*','tl3','tr3','s5'}},
+        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
+                      {'s3','br2','br3','br3','br3','tr3' },
+                      {'br3','tr3','br2','tr2','tr2','tr1'},
+                      {'k4*','k3*','k3*','tr2','tr2','tr1'},
+                      {'k3*','k3*','k3*','k3*','tl1','tr1'}},
+        fleeMoves =  {['tl1']='tl3', ['tl2']='tl3',
+                      ['bl2']='bl3',
+                      ['s2']='s5',['s3']='s5',['s4']='s5',
+                      ['br2']='br3',
+                      ['tr1']='tr3',['tr2']='tr3',
+                      ['k4*']='k3*'},
+        swerves =    {["tl1"] = {nil,"bl2"}, ["tl2"] = {nil,"bl2"}, ["tl3"] = {nil,"bl3"},
+                      ["bl2"] = {"tl2","s2"}, ["bl3"] = {"tl3","s3"},
+                      ["s2"] = {"bl2","br2"}, ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
+                      ["br2"] = {"s2","tr2"}, ["br3"] = {"s3","tr3"},
+                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                      ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" } }
+    }
+    AI_DEFS["PALLAS"]["TIE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["TIE"]))
+    AI_DEFS["PALLAS"]["TIEE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["TIE"]))
+    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkills = {2,4,5,7,9}
+    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkillDeckEntries = 4
+
+    AI_DEFS["HOTAC"]["INT"] = HostileAiDefinition:new{
+        ignoresHugeShips = true,
+        mesh = "https://paste.ee/r/JxWNX",
+        diffuse = "https://i.imgur.com/1pSXuxb.jpg",
+        collider = "https://paste.ee/r/1dx1C",
+        typeColor = "600000",
+        hasFreeFocus = true,
+        hasBoost = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = false,
+        hasConditionalEvade = true,
+        elitePilotSkills = {1,4, 6, 8, 10},
+        elitePilotSkillDeckEntries = 6,
+        closeMoves = {{'bl2','br2','s2','s2','k5*','k5*'},
+                      {'s2','br2','br2','k5*','k5*','tr1' },
+                      {'tr1','tr1','tr2','tr2','k3*','k5*'},
+                      {'tr1','tr1','tr2','k3*','k5*','k5*'},
+                      {'k5*','k3*','k3*','tl3','tr3','s5'}},
+        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
+                      {'s3','br2','br3','br3','br3','tr3' },
+                      {'br3','tr3','br2','tr2','tr2','tr1'},
+                      {'k5*','k3*','k3*','tr2','tr2','tr1'},
+                      {'k3*','k3*','k3*','k3*','tl1','tr1'}},
+        fleeMoves =  {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
+                      ['bl2'] = 'bl3',
+                      ['s2'] = 's5', ['s3'] = 's5', ['s4'] = 's5',
+                      ['br2'] = 'br3',
+                      ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
+                      ['k5*'] = 'k3*'},
+        swerves =    {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                      ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
+                      ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                      ["k3*"] = {"bl3","br3"}, ["k5*"] = {"bl3","br3" }}
+    }
+    AI_DEFS["PALLAS"]["INT"] = AI_DEFS["HOTAC"]["INT"]
+
+    AI_DEFS["HOTAC"]["BOM"] = HostileAiDefinition:new{
+        mesh = "https://paste.ee/r/5A0YG",
+        diffuse = "http://i.imgur.com/nYO1XwT.jpg",
+        collider = "https://paste.ee/r/1dx1C",
+        typeColor = "00FFFF",
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {2,3, 5, 7, 9},
+        elitePilotSkillDeckEntries = 6,
+        closeMoves =   {{'bl1','br1','s1','s1','s1','k5*'},
+                        {'tr3','s1','br1','br1','br1','k5*' },
+                        {'br1','tr2*','tr2*','tr3','tr3','tr3'},
+                        {'k5*','k5*','k5*','tr3','tr3','tr2*'},
+                        {'k5*','k5*','k5*','k5*','tl3','tr3'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','br2','br3','br3','br3','tr3' },
+                        {'br3','tr2*','tr2*','tr3','tr3','tr3'},
+                        {'k5*','k5*','tr2*','tr2*','tr3','tr3'},
+                        {'k5*','k5*','k5*','k5*','tl2*','tr2*'}},
+        fleeMoves =    {['tl2*'] = 'tl3',
+                        ['bl1'] = 'bl3',        ['bl2'] = 'bl3',
+                        ['s1'] = 's4',          ['s2'] = 's4',     ['s3'] = 's4',
+                        ['br1'] = 'br3',        ['br2'] = 'br3',
+                        ['tr2*'] = 'tr3'},
+        swerves =      {["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
+                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
+                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
+                        ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
+                        ["k5*"] = {"bl3","br3" }}
+    }
+    AI_DEFS["PALLAS"]["BOM"] = AI_DEFS["HOTAC"]["BOM"]
+
+    AI_DEFS["HOTAC"]["ADV"] = HostileAiDefinition:new{
+        mesh = "https://paste.ee/r/NeptF",
+        diffuse = "http://i.imgur.com/trxaCDg.jpg",
+        collider = "https://paste.ee/r/VAYqd",
+        typeColor = "c1440e",
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        elitePilotSkills = {2,4, 6, 8, 10},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves = {{'bl1','br1','s2','s2','k4*','k4*'},
+                      {'s2','br1','br1','br1','k4*','k4*' },
+                      {'br1','k4*','k4*','tr2','tr2','tr2'},
+                      {'k4*','k4*','k4*','tr2','tr2','br1'},
+                      {'k4*','k4*','k4*','k4*','tl3','tr3'}},
+        farMoves =   {{'s5','s5','s5','s4','s4','s3'},
+                      {'s3','br2','br3','br3','br3','tr3' },
+                      {'br1','br2','tr2','tr2','tr3','tr3'},
+                      {'k4*','k4*','k4*','tr2','tr2','tr2'},
+                      {'k4*','k4*','k4*','k4*','tl2','tr2'}},
+        fleeMoves =  {['tl2'] = 'tl3',
+                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
+                        ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
+                        ['br1'] = 'br3',   ['br2'] = 'br3',
+                        ['tr2'] = 'tr3'},
+        swerves =    {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl2","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
+                        ["br1"] = {"s2","tr2" }, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                        ["k4*"] = {"bl3","br3" }}
+    }
+    AI_DEFS["PALLAS"]["ADV"] = AI_DEFS["HOTAC"]["ADV"]
+
+    AI_DEFS["HOTAC"]["DEF"] = HostileAiDefinition:new{
+        mesh = "https://paste.ee/r/tIm5S",
+        diffuse = "http://i.imgur.com/0u5rtnX.jpg",
+        collider = "https://paste.ee/r/6jn13",
+        typeColor = "660066",
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {1,3, 5, 7, 9},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves =   {{'bl1','br1','s2','s2','k4','k4'},
+                        {'s2','br1','br1','k4','k4','tr1*' },
+                        {'br1','k4','k4','tr2*','tr1*','tr1*'},
+                        {'k4','k4','k4','tr2*','tr2*','tr1*'},
+                        {'k4','k4','k4','k4','tl3','tr3'}},
+        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
+                        {'s3','br2','br3','br3','br3','tr3' },
+                        {'br1','br2','tr2*','tr3','tr3','tr3'},
+                        {'k4','k4','k4','tr2*','tr2*','tr1*'},
+                        {'k4','k4','k4','k4','tl1*','tr1*'}},
+        fleeMoves =    {['tl1*'] = 'tl3',  ['tl2*'] = 'tl3',
+                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
+                        ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
+                        ['br1'] = 'br3',   ['br2'] = 'br3',
+                        ['tr1*'] = 'tr3',  ['tr2*'] = 'tr3'},
+        swerves =      {["tl1*"] = {nil,"bl1"},  ["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl1*","s2"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
+                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
+                        ["br1"] = {"s2","tr1*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
+                        ["tr1*"] = {"br1",nil }, ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
+                        ["k4"] = {"bl3","br3" }}
+    }
+    AI_DEFS["PALLAS"]["DEF"] = AI_DEFS["HOTAC"]["DEF"]
+
+    AI_DEFS["HOTAC"]["PHA"] = HostileAiDefinition:new{
+        mesh = "https://paste.ee/r/JN16g",
+        diffuse = "http://i.imgur.com/4bXBvZZ.jpg",
+        collider = "https://paste.ee/r/1dx1C",
+        typeColor = "2C75FF",
+        hasCloak = true,
+        hasFreeEvade = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        hasConditionalCloak = true,
+        elitePilotSkills = {3,3, 5, 7, 9},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves =   {{'bl2','br2','s2','k4*','k4*','k4*'},
+                        {'s2','br2','k4*','k4*','tr1','tr1' },
+                        {'tr1','tr1','tr1','tr2','tr2','k4*'},
+                        {'tr1','tr1','tr2','k3*','k4*','k4*'},
+                        {'k4*','k3*','k3*','tl3','tr3','s4'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s3','br2','br3','br3','br3','tr3' },
+                        {'tr1','tr1','tr2','tr2','tr3','br2'},
+                        {'k4*','k3*','k3*','tr2','tr2','tr1'},
+                        {'k3*','k3*','k3*','k3*','tl1','tr1'}},
+        fleeMoves =    {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
+                        ['bl2'] = 'bl3',
+                        ['s2'] = 's4',     ['s3'] = 's4',
+                        ['br2'] = 'br3',
+                        ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
+                        ['k4*'] = 'k3*'},
+        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
+                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" }}
+    }
+    AI_DEFS["PALLAS"]["PHA"] = AI_DEFS["HOTAC"]["PHA"]
+
+    AI_DEFS["HOTAC"]["DEC"] = HostileAiDefinition:new{
+        isLargeShip = true,
+        mesh = "https://paste.ee/r/MJOFI",
+        diffuse = "http://i.imgur.com/atzM3rO.jpg",
+        collider = "https://paste.ee/r/JavTd",
+        typeColor = "808080",
+        has360Turret = true,
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {3, nil, nil, nil, nil},
+        elitePilotSkillDeckEntries = 1,
+        closeMoves =   {{'s4','s4','bl3','br3','tl3','tr3'},
+                        {'br3','bl3','bl2','tl2','s4','s4' },
+                        {'br3','br3','tr3','br2','tr2','br1'},
+                        {'br3','br3','tr2','tr2','br2','br1'},
+                        {'tl3','tr3','tl2','tr2','bl1','br1'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s4','br3','br3','br3','br2','tr3' },
+                        {'br3','tr3','tr3','tr2','tr2','br1'},
+                        {'tr2','tr2','tr2','tr3','tr3','br1'},
+                        {'tl2','tl2','tl2','tr2','tr2','tr2'}},
+        fleeMoves =    {['tl2'] = 'tl3',
+                        ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
+                        ['s1'] = 's4',     ['s2'] = 's4', ['s3'] = 's4',
+                        ['br1'] = 'br3',   ['br2'] = 'br3',
+                        ['tr2'] = 'tr3'},
+        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
+                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil }}
+    }
+    AI_DEFS["PALLAS"]["DEC"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["HOTAC"]["DEC"]))
+    AI_DEFS["PALLAS"]["DEC"].elitePilotSkills = {2,4,5,7,9}
+    AI_DEFS["PALLAS"]["DEC"].elitePilotSkillDeckEntries = 4
+
+    AI_DEFS["HOTAC"]["SHU"] = HostileAiDefinition:new{
+        isLargeShip = true,
+        mesh = "https://paste.ee/r/4uxZO",
+        diffuse = "http://i.imgur.com/rd9ZPz3.jpg",
+        collider = "https://paste.ee/r/xBpMo",
+        typeColor = "A0A0A0",
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {2,4, 4, 6, 8},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves =   {{'s0*','s0*','s0*','s1','br1','bl1'},
+                        {'s0*','s1','br1','br1','br1','tr2*' },
+                        {'s0*','tr2*','tr2*','tr2*','br1','br2'},
+                        {'s0*','tr2*','tr2*','tr2*','br2','br3*'},
+                        {'s0*','*','tr2*','tl2*','br3*','bl3*'}},
+        farMoves =     {{'s3','s3','s3','s2','s2','s1'},
+                        {'s2','br3*','br2','br2','br2','tr2*' },
+                        {'tr2*','tr2*','tr2*','tr2*','br2','br3*'},
+                        {'tr2*','tr2*','tr2*','tr2*','br1','br1'},
+                        {'tl2*','tl2*','tl2*','tr2*','tr2*','tr2*'}},
+        fleeMoves =    {['bl1'] = 'bl3*',  ['bl2'] = 'bl3*',
+                        ['s1'] = 's3',     ['s2'] = 's3',
+                        ['br1'] = 'br3*',  ['br2'] = 'br3*'},
+        swerves =      {["s0*"] = {nil,nil},
+                        ["tr2*"] = {"br2",nil },
+                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3*"] = {"tl2*","s3"},
+                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"},
+                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3*"] = {"s3","tr2*"},
+                        ["tl2*"] = {nil,"bl2"}}
+    }
+    AI_DEFS["PALLAS"]["SHU"] = AI_DEFS["HOTAC"]["SHU"]
+
+    AI_DEFS["PALLAS"]["TFO"] = HostileAiDefinition:new{
+        ignoresHugeShips = true,
+        mesh = "http://pastebin.com/jt2AzA8t",
+        diffuse = "http://i.imgur.com/z56FaVi.png",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "333333",
+        hasFreeFocus = true,
+        hasBarrelRoll = true,
+        hasConditionalEvade = true,
+        hasConditionalFocus = false,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {2, nil, nil, nil, nil},
+        elitePilotSkillDeckEntries = 1,
+        closeMoves =   {{'bl2','br2','s2','s2','k4*','k4*'},
+                        {'s2','br2','br2','k4*','k4*','tr1' },
+                        {'tr1','tr1','tr2','tr2','br2s*','br2s*'},
+                        {'tr1','tr1','tr2','br2s*','br2s*','k4*'},
+                        {'k4*','br2s*','bl2s*','tl3','tr3','s5'}},
+        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
+                        {'s3','br2','br3','br3','br3','tr3' },
+                        {'tr3','tr3','br2','br2','tr2','tr2'},
+                        {'br2s*','k4*','k4*','tr2','tr2','tr2'},
+                        {'k4*','k4*','br2s*','bl2s*','tl1','tr1'}},
+        fleeMoves =    {['tl1'] = 'tl3',   ['tl2'] = 'tl3',
+                        ['bl2'] = 'bl3',
+                        ['s2'] = 's5',     ['s3'] = 's5', ['s4'] = 's5',
+                        ['br2'] = 'br3',
+                        ['tr1'] = 'tr3',   ['tr2'] = 'tr3'},
+        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
+                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                        ["bl2s*"] = {"tl2","s2" },
+                        ["k4*"] = {"bl3","br3" },
+                        ["br2s*"] = {"tr2","s2" }}
+    }
+    AI_DEFS["PALLAS"]["TFOE"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["TFO"]))
+    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkills = {2, 4, 5, 7, 9}
+    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkillDeckEntries = 4
+    --TODO: UPS Upsilon Shuttle
+    AI_DEFS["PALLAS"]["UPS"] = HostileAiDefinition:new{
+        isLargeShip = true,
+        mesh = "http://pastebin.com/nsHXF9XV",
+        diffuse = "http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
+        typeColor = "A0A0A0",
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {2, nil, nil, nil, nil}, --UPS should be 2 not 1
+        elitePilotSkillDeckEntries = 0,
+        closeMoves = {{'s0*','s0*','s0*','s1','br1','bl1'},
+                      {'s0*','s1','br1','br1','br1','tr2'},
+                      {'s0*','tr2','tr2','tr2','br1','br2'},
+                      {'s0*','tr2','tr2','tr2','br2','br3'},
+                      {'s0*','s0*','tr1*','tl1*','br3','bl3'}},
+        farMoves = {{'s3','s3','s3','s2','s2','s1'},
+                    {'tr2','br3','br2','br2','br2','tr3*'},
+                    {'tr2','tr2','tr2','tr2','br2','br3'},
+                    {'tr2','tr2','tr2','tr2','br2','br2'},
+                    {'tl2','tl2','tl2','tr2','tr2','tr2'}},
+        fleeMoves = {['tl1*'] = 'tl3*', ['tl2'] = 'tl3*',
+                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                     ['s0*'] = 's3', ['s1'] = 's3', ['s2'] = 's3',
+                     ['br1'] = 'br3', ['br2'] = 'br3',
+                     ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
+        swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
+                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
+                   ["s0*"] = {"bl1","br1"},  ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
+                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
+                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil}}
+    }
+    --TODO: TAP TIE Adv. Prototype
+    AI_DEFS["PALLAS"]["TAP"] = HostileAiDefinition:new{
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029089434/A4DA1AD96E4A6D65CC6AE4F745EDA966BA4EF85A/",
+        diffuse = "http://i.imgur.com/7vyhllx.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "91340b",
+        hasFreeBarrelRoll = true,
+        hasBoost = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {2,4,5,7,9},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves = {{'bl1','br1','s2','s2','k4*','k4*'},
+                      {'s2','tr2','tr2','k4*','k4*','tr1'},
+                      {'tr3','tr2','tr2','tr1','tr1','tr1'},
+                      {'k4*','k4*','k4*','tr1','tr1','tr2'},
+                      {'tr1','tr1','tl1','tl1','k4*','s5'}},
+        farMoves = {{'s5','s5','s5','s4','s4','s3'},
+                    {'s2','br2','br3','br3','br3','tr3'},
+                    {'br3','br2','tr3','tr3','tr2','tr1'},
+                    {'tr1','tr2','tr3','k4*','k4*','k4*'},
+                    {'k4*','k4*','k4*','k4*','tl1','tr1'}},
+        fleeMoves = {['tl1'] = 'tl3', ['tl2'] = 'tl3',
+                     ['bl1'] = 'bl3',   ['bl2'] = 'bl3',
+                     ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
+                     ['br1'] = 'br3',   ['br2'] = 'br3',
+                     ['tr1'] = 'tr3',  ['tr2'] = 'tr3'},
+        swerves =    {["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                      ["bl1"] = {"tl1","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
+                      ["br1"] = {"s2","tr1"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                      ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                      ["k4*"] = {"bl3","br3"}}
+    }
+    --TODO: TSF TIE S/F
+    AI_DEFS["PALLAS"]["TSF"] = HostileAiDefinition:new{
+        mesh = "http://pastebin.com/LezDjunY",
+        diffuse = "http://i.imgur.com/x8NveGf.png",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "aa0000",
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {3,nil,nil,nil,nil}, --TODO: TSF should be 3 not 2?
+        elitePilotSkillDeckEntries = 1,
+        closeMoves =   {{'s1','s1','br3','br3','bl3','bl3'},
+                        {'s1','bl3s*','bl3s*','tl3*','tl3*','tr2'},
+                        {'tr1*','tr1*','tr1*','bl3s*','bl3s*','tr2'},
+                        {'br1','br1','tr2','tr2','tr1*','bl3s*'},
+                        {'bl3s*','br3s*','tr2','tl2','br3','bl3'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','tr3*','br3','br3','br2','br2'},
+                        {'br3','br2','tr3*','tr3*','tr2','tr2'},
+                        {'br2','tr2','tr3*','tr3*','bl3s*','bl3s*'},
+                        {'bl3s*','br3s*','tr2','tr2','tl2','tl2'}},
+        fleeMoves = {['tl1*'] = 'tl3*', ['tl2'] = 'tl3*',
+                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
+                     ['br1'] = 'br3', ['br2'] = 'br3',
+                     ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
+        swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
+                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
+                   ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
+                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
+                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
+                   ['bl3s*'] = {'tr3*', 's3'}, ['br3s*'] = {'s3','tr3*'}}
+    }
+    --TODO: PUN Punisher
+    AI_DEFS["PALLAS"]["PUN"] = HostileAiDefinition:new{
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029073355/7A1507E4D88098D19C8EAFE4A763CC33A5EC35CB/",
+        diffuse = "http://i.imgur.com/r6bfxcV.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "008F8F",
+        hasFreeTargetLock = true,
+        hasBoost = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {2,4,5,7,9},
+        elitePilotSkillDeckEntries = 4,
+        closeMoves =   {{'bl1','br1','s1','s1','s1','k4*'},
+                        {'tr3','s1','br1','br1','br1','k5*'},
+                        {'br1','tr2*','tr2*','tr3','tr3','tr3'},
+                        {'k4*','k4*','k4*','tr3','tr3','tr2*'},
+                        {'k4*','k4*','k4*','k4*','tl3','tr3'}},
+        farMoves =     {{'s3','s3','s3','s3','s2','s2'},
+                        {'s2','br2','br3','br3','br3','tr3'},
+                        {'br3','tr2*','tr2*','tr3','tr3','tr3'},
+                        {'k4*','k4*','tr2*','tr2*','tr3','tr3'},
+                        {'k5*','k5*','k5*','k5*','tl2*','tr2*'}},
+        fleeMoves =    {['tl2*'] = 'tl3',
+                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                     ['s1'] = 's3', ['s2'] = 's3',
+                     ['br1'] = 'br3', ['br2'] = 'br3',
+                     ['tr2*'] = 'tr3'},
+        swerves =    {["tl2*"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                      ["bl1"] = {"tl2*","s1"},  ["bl2"] = {"tl2*","s2"},  ["bl3"] = {"tl3","s3"},
+                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
+                      ["br1"] = {"s1","tr2*"},  ["br2"] = {"s2","tr2*"},  ["br3"] = {"s3","tr3"},
+                      ["tr2*"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                      ["k4*"] = {"bl3","br3"}}
+    }
+    --TODO: BWI B-wing
+    AI_DEFS["PALLAS"]["BBLU"] = FriendlyAiDefinition:new{
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/",
+        diffuse = "http://i.imgur.com/JihQH1r.png",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "0000FF",
+        hasFreeFocus = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = false,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'bl1','br1','s1','s1','s1','k2*'},
+                        {'tr1*','s1','br1','br1','br1','br2'},
+                        {'tr1*','tr1*','tr2','tr2','k2*','k2*'},
+                        {'k2*','k2*','k2*','tr2','tr2','tr1*'},
+                        {'tr1*','s3','tl1*','k2*','k2*','k2*'}},
+        farMoves =     {{'s3','s3','s3','s2','s2','s4*'},
+                        {'s2','br2','br2','tr2','tr2','br3*'},
+                        {'br3*','tr2','tr2','tr2','tr1*','tr1*'},
+                        {'k2*','k2*','tr2','tr2','tr2','tr1*'},
+                        {'k2*','k2*','k2*','k2*','tl2','tr2'}},
+        fleeMoves = {['tl1*'] = 'tl2',
+                     ['bl1'] = 'bl3*',['bl2'] = 'bl3*',
+                     ['s1'] = 's4*', ['s2'] = 's4*',['s3'] = 's4*',
+                     ['br1'] = 'br3*',['br2'] = 'br3*',
+                     ['tr1*'] = 'tr2'},
+        swerves =   {["tr1*"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
+                     ["bl1"] = {"tl1*","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3*"] = {"tl2","s3"},
+                     ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"}, ["s4*"] = {"bl3*","br3*"},
+                     ["br1"] = {"s1","tr1*"},  ["br2"] = {"s2","tr2"},  ["br3*"] = {"s3","tr2"},
+                     ["tr1*"] = {"br1",nil },  ["tr2"] = {"br2",nil },
+                     ["k2*"] = {"bl2","br2"}},
+        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
+    }
+    -- AI_DEFS["DOTE"]["BBLU"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["BBLU"]))
+    -- AI_DEFS["DOTE"]["BDAG"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["BBLU"]))
+    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkills = {4,5,6,8,10}
+    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkillDeckEntries = 2
+
+    AI_DEFS["PALLAS"]["ZBAN"] = FriendlyAiDefinition:new{
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/",
+        diffuse = "http://i.imgur.com/hcCxX3n.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "FFFF00",
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'bl1','br1','s1','s1','s1','k3*'},
+                        {'br2','s1','br1','br1','k3*','k3*'},
+                        {'br1','tr2','tr2','tr2','k3*','k3*'},
+                        {'k3*','k3*','k3*','tr2','tr2','tr3'},
+                        {'k3*','k3*','k3*','tl2','tr2','s4'}},
+        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
+                        {'s2','br2','br3','br3','br3','tr3'},
+                        {'br3','tr2','tr2','tr2','tr3','tr3'},
+                        {'k3*','k3*','tr2','tr2','tr2','tr3'},
+                        {'k3*','k3*','k3*','k3*','tl2','tr2'}},
+        fleeMoves =    {['tl2'] = 'tl3',
+                        ['bl1'] = 'bl3',['bl2'] = 'bl3',
+                        ['s1'] = 's4', ['s2'] = 's4',['s3'] = 's4',
+                        ['br1'] = 'br3',['br2'] = 'br3',
+                        ['tr2'] = 'tr3'},
+        swerves =      {["tr2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4*"] = {"bl3","br3"},
+                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                        ["k3*"] = {"bl3","br3"}},
+        hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
+    }
+    -- AI_DEFS["DOTE"]["ZBAN"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["ZBAN"]))
+    -- AI_DEFS["DOTE"]["ZTAL"] = HostileAiDefinition:new(table.shallowcopy(AI_DEFS["PALLAS"]["ZBAN"]))
+    --TODO: ZBIN Scum Binayre
+    --TODO: ZBLA Scum Black Sun
+
+    AI_DEFS["PALLAS"]["XRED"] = FriendlyAiDefinition:new{--x-wing T-65
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/",
+        diffuse = "http://i.imgur.com/3GxuDDz.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "FF0000",
+        hasFreeFocus = true,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {4,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'bl1','br1','s1','s1','s1','k4*'},
+                        {'tr2','s1','br1','br1','k4*','k4*'},
+                        {'br1','tr2','tr2','tr3','k4*','k4*'},
+                        {'k4*','k4*','k4*','tr2','tr2','tr3'},
+                        {'k4*','k4*','k4*','tl2','tr2','s4'}},
+        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
+                        {'s2','br2','br3','br3','br3','tr3'},
+                        {'br3','tr2','tr2','tr2','tr3','tr3'},
+                        {'k4*','k4*','tr2','tr2','tr2','tr3'},
+                        {'k4*','k4*','k4*','k4*','tl2','tr2'}},
+        fleeMoves = {['tl2'] = 'tl3',
+                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
+                     ['br1'] = 'br3', ['br2'] = 'br3',
+                     ['tr2'] = 'tr3'},
+        swerves = {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                      ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
+                      ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                      ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                      ["k4*"] = {"bl3","br3"}},
+        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
+    }
+    --TODO: XROO
+
+    AI_DEFS["PALLAS"]["EBLM"] = FriendlyAiDefinition:new{ --E-Wing Knave
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/",
+        diffuse = "http://i.imgur.com/TItm60V.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
+        typeColor = "FF8080",
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {3,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'bl1','br1','s1','s1','k4*','k4*'},
+                        {'k3*','s1','br1','br1','k4*','k4*'},
+                        {'br1','tr1','tr1','tr1','k3*','k4*'},
+                        {'k3*','k3*','k3*','tr2','k4*','k4*'},
+                        {'k3*','k4*','k4*','tl3','tr3','s5'}},
+        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
+                        {'s2','br2','br3','br3','br3','tr3'},
+                        {'br3','tr2','tr2','tr2','tr3','tr3'},
+                        {'k4*','k4*','tr2','tr2','k3*','k3*'},
+                        {'k3*','k3*','k3*','k3*','tl3','tr3'}},
+        fleeMoves =    {['tl2'] = 'tl3',
+                        ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                        ['s1'] = 's5', ['s2'] = 's5', ['s3'] = 's5', ['s4'] = 's5',
+                        ['br1'] = 'br3', ['br2'] = 'br3',
+                        ['tr2'] = 'tr3',
+                        ['k4*'] = 'k3*'},
+        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
+                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
+                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
+                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
+                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
+                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3"}},
+        hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
+    }
+    --TODO: EKNA
+
+    --TODO: KWAR
+    --TODO: KGUA
+
+    --TODO: YGOL
+    --TODO: YGRE
+    --TODO: YSYN Scum Syndicate
+    --TODO: YHIR Scum Hired
+
+    --TODO: HWK Rebel
+    --TODO: HWKS Scum HWK Spice Runner
+
+    --TODO: ORS YT-1300 Outer Rim Smuggler
+    AI_DEFS["PALLAS"]["ORS"] = HostileAiDefinition:new{
+        isLargeShip = true,
+        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/",
+        diffuse = "http://i.imgur.com/QiomPcM.jpg",
+        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
+        typeColor = "8080FF",
+	    has360Turret = true,
+	    hasFreeFocus = true,
+	    hasConditionalFocus = false,
+	    hasConditionalTargetLock = true,
+	    elitePilotSkills = {1,nil,nil,nil,nil},
+	    elitePilotSkillDeckEntries = 1,
+	    closeMoves = {{'s4','s4','bl3','br3','tr2','tl2'},
+                      {'br3','bl3','bl2','tl2','s4','s4'},
+                      {'br3','br3','br1','tr2','tr1','k4*'},
+                      {'tr2','tr2','tr1','tr1','k3*','k4*'},
+                      {'k4*','k4*','k4*','tl1','tr1','s1'}},
+	    farMoves = {{'s4','s4','s4','s3','s3','s2'},
+                    {'s4','br3','br3','br3','br2','tr2'},
+                    {'br3','br3','tr2','tr2','br1','tr1'},
+                    {'k4*','k3*','tr2','tr2','tr2','tr1'},
+                    {'k4*','k3*','k3*','k3*','tl1','tr1'}},
+	    fleeMoves = {['tl1'] = 'tl2',
+                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+                     ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
+                     ['br1'] = 'br3', ['br2'] = 'br3',
+                     ['tr1'] = 'tr2',
+                     ['k4*'] = 'k3*' },
+	    swerves = { ["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
+                    ["bl1"] = {"tl1","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl2","s3"},
+                    ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
+                    ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr2"},
+                    ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },
+                    ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
+    }
+    --TODO: WSF YT-2400 Wild Space Fringer
+
+    --TODO: APRO
+    --TODO: AGRE
+
+    --TODO: HSCA Heavy Scyk Cartel
+    --TODO: HSTA Heavy Scyk Tansarii
+    --TODO: LSCA Light Scyk Cartel
+    --TODO: FIR
+    --TODO: PZER Protectorate Zealous
+    --TODO: PCON Protectorate Concord Dawn
+    --TODO: KZCA Scum Kihraxz Cartel
+    --TODO: KZBL Scum Kihraxz Black Sun
+    --TODO: SVEN Scum StarViper Black Sun Enforcer
+    --TODO: SVVI Scum StarViper Black Sun Vigo
+    --TODO: JUMP
+
+    for _,campaign_key in ipairs(campaigns) do
+        local offset = 0
+        for key,ai in pairs(AI_DEFS[campaign_key]) do
+            mirrorMoveTable(ai.closeMoves)
+            mirrorMoveTable(ai.farMoves)
+            -- pilot_card_offsets[campaign] = {}
+            pilot_card_offsets[campaign_key][key] = offset
+            offset = offset + ai.elitePilotSkillDeckEntries
+            -- pilot_card_num[campaign] = {}
+            pilot_card_num[campaign_key][key] = ai.elitePilotSkillDeckEntries
+            -- squad_types_deck[campaign] = {}
+            for i=1,ai.elitePilotSkillDeckEntries do
+                table.insert(squad_types_deck[campaign_key],key)
+            end
+        end
+    end
+    -- AI_DEFS["TEMP"] = HostileAiDefinition:new{
+    --     isLargeShip = false,
+    --     mesh = "",
+    --     diffuse = "",
+    --     collider = "",
+    --     typeColor = "FFFFFF",
+    --     has360Turret = false,
+    --     hasCloak = false,
+    --     hasFreeFocus = false,
+    --     hasFreeEvade = false,
+    --     hasFreeTargetLock = false,
+    --     hasFreeBarrelRoll = false,
+    --     hasBoost = false,
+    --     hasBarrelRoll = false,
+    --     hasConditionalFocus = true,
+    --     hasConditionalEvade = false,
+    --     hasConditionalTargetLock = false,
+    --     elitePilotSkills = {},
+    --     elitePilotSkillDeckEntries = 0,
+    --     closeMoves = {},
+    --     farMoves = {},
+    --     fleeMoves = {},
+    --     swerves = {}
+    -- }
+end
+function mirrorMoveTable(tbl)
+    mirrorRow(tbl,4,6)
+    mirrorRow(tbl,3,7)
+    mirrorRow(tbl,2,8)
+end
+function mirrorRow(tbl,from,to)
+    tbl[to] = {}
+    for i,move in ipairs(tbl[from]) do
+        local newmove = string.gsub(string.gsub(string.gsub(move,"r","L"),"l","r"),"L","l")
+        table.insert(tbl[to], newmove)
+    end
+end
+function check_ai(guid, move)
+    if move~=nil and string.starts(move,"ai") then
+        -- AI Commands
+        if move == 'ai' then
+            Action_AiMove(getObjectFromGUID(guid))
+        elseif move:match 'ai strike%s?(%d*)$' then
+            local group = move:match "ai strike%s?(%d*)"
+            if group == "" then
+                group = 1
+            else
+                group = tonumber(group)
+            end
+            striketargetgroup[guid] = group
+            aitype[guid] = 'strike'
+            local ship = getObjectFromGUID(guid)
+            ship.highlightOn({1,0,0}, 6)
+            for _,guid in ipairs(striketarget[group] or {}) do
+                strikeobj = getObjectFromGUID(guid)
+                if strikeobj~=nil then
+                    strikeobj.highlightOn({0,0,1}, 6)
+                end
+            end
+            printToAll('AI Type For: ' .. ship.getName() .. ' set to STRIKE GROUP '..tostring(group),{0, 1, 0})
+            setpending(guid)
+        elseif move == 'ai attack' then
+            aitype[guid] = nil
+            local ship = getObjectFromGUID(guid)
+            printToAll('AI Type For: ' .. ship.getName() .. ' set to ATTACK',{0, 1, 0})
+            setpending(guid)
+        elseif move:match 'ai flee (%a)$' then
+            local direction = string.lower(move:match 'ai flee (%a)')
+            if contains({'e','s','n','w'},direction) then
+                aitype[guid] = 'flee_'..direction
+                local ship = getObjectFromGUID(guid)
+                printToAll('AI Type For: ' .. ship.getName() .. ' set to FLEE',{0, 1, 0})
+            else
+                printToAll("'"..direction.."' is invalid direction for AI FLEE command {e, s, w, n}",{1, 0, 0})
+            end
+            setpending(guid)
+        elseif move:match 'ai striketargetclear%s?(%d*)$' then
+            local group = move:match "ai striketargetclear%s?(%d*)" --or move:match 'ai target%s?(%d*)'
+            if group == "" then
+                group = 1
+            else
+                group = tonumber(group)
+            end
+            striketarget[group]= {}
+            printToAll('Group '..group..' Strike Target Cleared',{0.2, 0.2, 0.8})
+            setpending(guid)
+        elseif move:match 'ai striketarget%s?(%d*)$' then --or move:match 'ai target%s?(%d*)' then
+            local group = move:match "ai striketarget%s?(%d*)" or move:match 'ai target%s?(%d*)'
+            if group == "" then
+                group = 1
+            else
+                group = tonumber(group)
+            end
+            striketarget[group] = {guid}
+            local ship = getObjectFromGUID(guid)
+            for _,guid in ipairs(striketarget[group] or {}) do
+                print(guid)
+                getObjectFromGUID(guid).highlightOn({0,0,1}, 6)
+            end
+            printToAll('Group '..group..' Strike Target Set: ' .. ship.getName(),{0.2, 0.2, 0.8})
+            setpending(guid)
+        elseif move:match 'ai addstriketarget%s?(%d*)$' then --or move:match 'ai addtarget%s?(%d*)' then
+            local group = move:match "ai addstriketarget%s?(%d*)" or move:match 'ai addtarget%s?(%d*)'
+            -- setpending(guid)
+            if group == "" then
+                group = 1
+            else
+                group = tonumber(group)
+            end
+            -- print("#striketarget[group]: ".. #striketarget[group])
+            -- print("striketarget[group][1]: ".. striketarget[group][1])
+            if striketarget[group] == nil then
+                striketarget[group] = {}
+            end
+            -- print("before insert: "..guid)
+            table.insert(striketarget[group],guid)
+            -- print("striketarget[group][2]: ".. striketarget[group][2])
+            local ship = getObjectFromGUID(guid)
+            for _,guid in ipairs(striketarget[group] or {}) do
+                print(guid)
+                getObjectFromGUID(guid).highlightOn({0,0,1}, 6)
+            end
+            printToAll('Group '..group..' Strike Target Added: ' .. ship.getName(),{0.2, 0.2, 0.8})
+            setpending(guid)
+        elseif move:match "ai target (.*)$"~=nil then
+            local target = move:match "ai target (.*)"
+            if target == "clear" then
+                aitargets[guid] = nil
+                printToAll('Cleared target for AI',{0, 1, 0})
+            else
+                local players = {}
+                local ai = getObjectFromGUID(guid)
+                for i,ship in ipairs(getAllObjects()) do
+                    local matches = string.match(ship.getName(),target)
+                    --TODO: Validate this? Need to target other team
+                    if not areEnemies(ai,ship) and isShip(ship) and isInPlay(ship) and matches then
+                        table.insert(players, ship)
+                    end
+                end
+                if not empty(players) then
+                    aitargets[guid] = players[1]
+                    printToAll('Set target for AI to: ' .. players[1].getName(),{0, 1, 0})
+                end
+            end
+            if currentphase~=nil then
+                local currentGuid
+                if current~= nil then currentGuid = current.getGUID() end
+                UpdateNote(currentphase, currentGuid)
+            end
+            setpending(guid)
+        elseif move == "ai pos" then
+            local ship = getObjectFromGUID(guid)
+            printToAll('Position '..ship.getPosition()[1].." "..ship.getPosition()[2].." "..ship.getPosition()[3],{0,1,0})
+            setpending(guid)
+        elseif move == "ai next" then
+            if currentphase == MoveSort then
+                local ship = getObjectFromGUID(guid)
+                GoToNextMove(ship)
+            elseif currentphase == AttackSort then
+                Action_AiAttack(ship)
+            end
+            setpending(guid)
+        elseif move == "ai prev" then
+            if currentphase == MoveSort then
+                local ship = getObjectFromGUID(guid)
+                GoToPrevMove(ship)
+            -- elseif currentphase == AttackSort then
+            --     Action_AiAttack(ship)
+            end
+            setpending(guid)
+        elseif move == "ai stress true" or move == "ai stress" then
+            aistressed[guid] = true
+            setpending(guid)
+        elseif move == "ai stress false" or move == "ai stress clear" then
+            aistressed[guid] = nil
+            setpending(guid)
+        end
+    end
+    if string.starts(move,"q ") then
+        local nextmove = string.gsub(move,"q ","")
+        --Global.call('undo',{guid})
+        local obj = getObjectFromGUID(guid)
+        obj.setDescription("q")
+        obj.setVar('pendingMove',nextmove)
+        --executeMove(getObjectFromGUID(guid),nextmove)
+    end
+end
+function setpending(guid)
+    local obj = getObjectFromGUID(guid)
+    obj.setDescription("")
+end
+function auto(guid)
+    local ai = getObjectFromGUID(guid)
+    --local tgtGuid
+    local squad = getAiSquad(ai)
+    --    if aitype[guid] == 'strike' then
+    --        tgtGuid = striketarget
+    --        printToAll(ai.getName() .. " is STRIKE AI",{0,1,0})
+    --    else
+    --        tgtGuid = findNearestPlayer(guid)
+    --    end
+    local tgt = findAiTarget(guid)
+    -- printToAll("tgt guid"..tgt.getName(),{1,1,1})
+    if tgt == nil then
+        printToAll('Error: AI ' .. ai.getName() .. ' has no target',{0.2, 0.2, 0.8})
+        setpending(guid)
+    else
+        tgt.highlightOn({1,0,0}, 3)
+        local move
+        if aitype[guid]~=nil and aitype[guid]:match 'flee_(%a)' then
+            local direction = string.lower(aitype[guid]:match 'flee_(%a)')
+            local offsets = {
+                e = {12,0,0},
+                s = {0, 0, 12},
+                w = {-12, 0, 0},
+                n = {0, 0, -12}
+            }
+            local aiPos = ai.getPosition()
+            local aiForward = getForwardVector(guid)
+            local tgtPos = add(ai.getPosition(), offsets[direction])
+            local offset = {tgtPos[1] - aiPos[1],0,tgtPos[3] - aiPos[3]}
+            local angle = math.atan2(offset[3], offset[1]) - math.atan2(aiForward[3], aiForward[1])
+            if angle < 0 then
+                angle = angle + 2 * math.pi
+            end
+            move = getMove(getAiType(ai),get_i_dir(angle),12,true,true)
+        else
+            -- local tgt = getObjectFromGUID(tgtGuid)
+            -- aitargets[guid] = tgt
+            -- printToAll("--------------------------------------------------",{0,1,0})
+            printToAll(ai.getName().." declares target as [00FF00][u]" .. tgt.getName().."[/u][-]",{0,1,0})
+            local aiPos = ai.getPosition()
+            local tgtPos = tgt.getPosition()
+            local aiForward = getForwardVector(guid)
+            local corners = findCorners(tgt)
+            -- printToAll("AI Pos: "..Vect.tostring(aiPos),{1,1,1})
+            minAngle = 999999
+            maxAngle = -999999
+            local offset = {tgtPos[1] - aiPos[1],0,tgtPos[3] - aiPos[3]}
+            local angleToTarget = Vect.Angle2D(offset,aiForward)
+            for i,corner in ipairs(corners) do
+                -- printToAll("  Corner: "..Vect.tostring(corner),{1,1,1})
+                local corn_offset = {corner[1] - aiPos[1],0,corner[3] - aiPos[3]}
+                -- printToAll("  Corner Offset: "..Vect.tostring(corn_offset),{1,1,1})
+                -- local angleToCorner = math.atan2(corn_offset[3], corn_offset[1])
+                local aiHeading = math.atan2(aiForward[3], aiForward[1])
+                local tgtHeading = math.atan2(offset[3], offset[1])
+                -- printToAll("  Corner Heading: "..tostring(angleToCorner),{1,1,1})
+                -- printToAll("  AI Heading: "..tostring(aiHeading),{1,1,1})
+                -- local angle = angleToCorner - aiHeading
+                local angle = Vect.Angle2D(corn_offset,aiForward)
+                -- printToAll("  Angle: "..tostring(angle),{1,1,1})
+                if angle < 0 and math.abs(angleToTarget)>math.pi/4 then
+                    angle = angle + 2 * math.pi
+                end
+                if angle<minAngle then
+                    minAngle = angle
+                end
+                if angle>maxAngle then
+                    maxAngle = angle
+                end
+                -- printToAll(" ",{1,1,1})
+            end
+            if minAngle<math.pi/2 and maxAngle>math.pi*3/2 then
+                minAngle,maxAngle = maxAngle - math.pi * 2,minAngle
+            end
+            -- printToAll("Min: "..tostring(minAngle),{1,1,1})
+            -- printToAll("Max: "..tostring(maxAngle),{1,1,1})
+            local tgtForward = getForwardVector(tgt.getGUID())
+            local cross = Vect.Cross2D(offset,tgtForward)
+            local i_dir = 1
+            local splittingLine = get_i_dir(minAngle) != get_i_dir(maxAngle)
+            -- printToAll("Cross: "..tostring(cross),{1,1,1})
+            if cross<0 then
+                i_dir = get_i_dir(minAngle)
+                if splittingLine then
+                    printToAll("Splitting, choosing CCW i_dir: "..tostring(i_dir),{1,1,1})
+                end
+            else
+                i_dir = get_i_dir(maxAngle)
+                if splittingLine then
+                    printToAll("Splitting, choosing CW i_dir: "..tostring(i_dir),{1,1,1})
+                end
+            end
+
+            local fleeing = dot(offset,tgtForward)>0
+            move = getMove(getAiType(ai),i_dir,realDistance(guid,tgt.getGUID()),fleeing)
+            if squad ~= nil and squadmove[squad]==nil then
+                -- printToAll("Setting move for squad [".. squad.."] ".. move,{1,0,0})
+                squadleader[squad] = guid
+                squadmove[squad] = move
+                squadposition[squad] = aiPos
+                squadrotation[squad] = ai.getRotation()[2]
+            end
+        end
+        executeMove(ai, move)
+        --Render_Swerves(ai)
+    end
+end
+function findAiTarget(guid)
+    -- if aitargets[guid]~=nil then
+    --     return aitargets[guid]
+    -- end
+    local ai = getObjectFromGUID(guid)
+    local tgtGuid
+    if aitype[guid]~=nil and string.starts(aitype[guid],'strike') then
+        printToAll(ai.getName() .. " is STRIKE AI",{0,1,0})
+        --tgtGuid = striketarget
+        tgtGuid = findNearestPlayer(guid,true)
+    else
+        tgtGuid = findNearestPlayer(guid)
+    end
+    if tgtGuid ~= nil then
+        local tgt = getObjectFromGUID(tgtGuid)
+        aitargets[guid] = tgt
+        return tgt
+    else
+        return nil
+    end
+end
+
+function Action_AiSquad(ai)
+    local squad = getAiSquad(ai)
+    if squad == nil then
+        printToAll("No squad name found (Must be in format '[AI:INT:1] Tie Interceptor Alpha#1')",{1,0,0})
+        setpending(ai.getGUID())
+        return
+    end
+    if squad ~=nil and squadmove[squad] ~= nil then
+        -- printToAll("Found previous move for [".. squad.."] ".. squadmove[squad],{1,0,0})
+        executeMove(ai, squadmove[squad])
+        Render_Swerves(ai)
+        aitargets[ai.getGUID()] = aitargets[squadleader[squad]]
+    else
+        printToAll("No Squad Move Found for ".. squad,{1,0,0})
+        setpending(ai.getGUID())
+        return
+    end
+    GoToNextMove(ai)
+end
+function executeMove(ai, move)
+    if aiswerved[ai.getGUID()]~=true then
+        aimove[ai.getGUID()] = move
+    end
+    local movestripped = string.gsub(move,"*","")
+    ai.setDescription(movestripped)
+
+    if string.find(move,'*') then
+        aistressed[ai.getGUID()] = true
+        ai_stress = true
+        --        printToAll('[STRESS - No Action]',{1, 0, 0})
+    end
+end
+function Render_ButtonStateForNearest(objectguidtbl)
+    local objectGUID = objectguidtbl[1]
+    local object = getObjectFromGUID(objectGUID)
+    local ship = findNearestShip(object.getPosition())
+    Render_ButtonState(ship)
+end
+function Render_ButtonState(object)
+    if currentphase == MoveSort then
+        if isAi(object) then
+            local def = getAiDef(object)
+            object.clearButtons()
+            --printToAll("[:743] Render_ButtonState aimove: "..tostring(aimove[object.getGUID()]),{1,1,1})
+            if aimove[object.getGUID()]~=nil then
+                --printToAll("[:745] Render_ButtonState airollboosted: "..tostring(airollboosted[object.getGUID()]),{1,1,1})
+                if airollboosted[object.getGUID()] then
+                    Render_AiUndoBoostBarrel(object)
+                else
+                    Render_Undo(object)
+                end
+                Render_AiConditionalActions(object)
+
+                Render_Ruler(object)
+                if airollboosted[object.getGUID()]~=true then
+                    Render_Swerves(object)
+                    if def.hasBoost then
+                        Render_Boost(object)
+                    end
+
+                    if def.hasBarrelRoll then
+                        Render_BarrelRoll(object)
+                    end
+                end
+            else
+                local label = 'Move'
+                if not isAi(object) then label = 'Next' end
+                if isAi(object) then
+                    Render_AiFreeActions(object)
+                end
+                if getAiType(object)=="PHA" then
+                    Render_AiDecloak(object)
+                end
+                local movebutton = {['click_function'] = 'Action_AiMove', ['function_owner'] = self, ['label'] = label, ['position'] = {0, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 550, ['font_size'] = 250}
+                object.createButton(movebutton)
+                if isAi(object) and getAiSquad(object)~=nil and squadmove[getAiSquad(object)]~=nil then
+                    local squadbutton = {['click_function'] = 'Action_AiSquad', ['label'] = 'Squad', ['position'] = {0, BTN_Y, 0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 550, ['font_size'] = 250}
+                    object.createButton(squadbutton)
+                end
+                local skipbutton = {['click_function'] = 'Action_AiSkip', ['function_owner'] = self, ['label'] = "Skip", ['position'] = {0, BTN_Y, 1.5}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 350, ['font_size'] = 250}
+                object.createButton(skipbutton)
+            end
+        elseif object==current then
+            State_AIMove(object)
+        end
+    elseif currentphase == AttackSort then
+        Render_Ruler(object)
+        Render_AttackButton(object)
+    end
+end
+function Action_AiSkip(object)
+    object.setDescription("ai next")
+end
+function Render_Swerves(object)
+    --printToAll("[:791] Rendering Swerves",{1,1,1})
+    Render_SwerveLeft(object)
+    Render_NoSwerve(object)
+    Render_SwerveRight(object)
+end
+function Render_NoSwerve(object)
+    local move = aimove[object.getGUID()]
+    local noswerve = {['click_function'] = 'Action_NoSwerve', ['function_owner'] = self, ['label'] = move, ['position'] = {0, BTN_Y, 1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 450, ['height'] = 300, ['font_size'] = 300}
+    object.createButton(noswerve)
+end
+function Action_NoSwerve(object)
+    local move = aimove[object.getGUID()]
+    object.setDescription("q "..move)
+end
+function Render_SwerveLeft(object)
+    local move = aimove[object.getGUID()]
+    --printToAll("[:807] For: "..object.getGUID().." "..move,{1,1,1})
+    local def = AI_DEFS[campaign][getAiType(object)]
+    local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
+    --printToAll("[:810] Swerve is: "..tostring(swerves[1]).." "..tostring(swerves[2]),{1,1,1})
+    if swerves ~= nil and swerves[1] ~= nil then -- and aiswerved[object.getGUID()]~=true
+        --printToAll("[:812] Making Swerve Buton",{1,1,1})
+        local swerve = {['click_function'] = 'Action_SwerveLeft', ['function_owner'] = self, ['label'] = swerves[1], ['position'] = {-1.0, BTN_Y, 1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 450, ['height'] = 300, ['font_size'] = 300}
+        object.createButton(swerve)
+    end
+end
+function Action_SwerveLeft(object)
+    local move = aimove[object.getGUID()]
+    local def = AI_DEFS[campaign][getAiType(object)]
+    local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
+    aiswerved[object.getGUID()] = true
+    object.setDescription("q "..swerves[1])
+end
+function Render_SwerveRight(object)
+    local move = aimove[object.getGUID()]
+    local def = AI_DEFS[campaign][getAiType(object)]
+    local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
+    if swerves ~= nil and swerves[2] ~= nil then -- and aiswerved[object.getGUID()]~=true
+    local swerve = {['click_function'] = 'Action_SwerveRight', ['function_owner'] = self, ['label'] = swerves[2], ['position'] = {1.0, BTN_Y, 1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 450, ['height'] = 300, ['font_size'] = 300}
+    object.createButton(swerve)
+    end
+end
+function Action_SwerveRight(object)
+    local move = aimove[object.getGUID()]
+    local def = AI_DEFS[campaign][getAiType(object)]
+    local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
+    aiswerved[object.getGUID()] = true
+    object.setDescription("q "..swerves[2])
+end
+function get_i_dir(direction)
+    if direction<0 then
+        direction = direction + math.pi*2
+    end
+    local i_dir = math.ceil(direction / (math.pi/4) + 0.5)
+    if i_dir > 8 then i_dir = i_dir - 8 end
+    return i_dir
+end
+function getMove(type, i_dir,range,far, flee)
+    local i_range = range / 3.65
+    local chooseClosing = i_range<=1 or (i_range <=2 and not far)
+    local i_roll = math.random(6)
+
+    --TODO: Implement border crossing resolution.
+    -- Check corners, if different
+    -- take heading, compare to direction vector rotate towards pie slice in that direction.
+    local def = AI_DEFS[campaign][type]
+    local move = ""
+    if flee==true then
+        move = def.farMoves[i_dir][i_roll]
+        if def.fleeMoves[move]~=nil then
+            move = def.fleeMoves[move]
+        end
+    else
+        if chooseClosing then
+            move = def.closeMoves[i_dir][i_roll]
+            print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." close")
+        else
+            move = def.farMoves[i_dir][i_roll]
+            print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." far")
+        end
+    end
+
+    return move
+end
+function RotateVector(direction, yRotation)
+
+    local rotval = round(yRotation)
+    local radrotval = math.rad(rotval)
+    local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
+    --TODO: Valadian Verify
+    local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
+    --local zDistance = math.sin(radrotval) * direction[1] + math.cos(radrotval) * direction[3]
+    return {xDistance, direction[2], zDistance}
+end
+start_delay = ""
+function Action_Planning()
+    start_delay = ""
+    currentphase = PlanningSort
+    UpdatePlanningNote()
+end
+function Action_Activation()
+    printToAll("*****************************",{0,1,1})
+    printToAll("STARTING ACTIVATION PHASE",{0,1,1})
+    printToAll("*****************************",{0,1,1})
+    currentphase = MoveSort
+    squadleader = {}
+    squadmove = {}
+    squadposition = {}
+    squadrotation = {}
+    aimove = {}
+    aiswerved = {}
+    aitargets = {}
+    aistressed = {}
+    aidecloaked = {}
+    -- ListAis(MoveSort)
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) and isInPlay(ship) then
+            ship.clearButtons()
+            if AI_DEFS[campaign][getAiType(ship)].hasCloak then --getAiType(ship)=="PHA"
+                Render_AiDecloak(ship)
+            end
+            -- Set MOVE button
+            -- State_AIMove(ship)
+        end
+    end -- [end loop for all ships]
+
+    local first = FindNextAi(nil, MoveSort)
+    current = first
+    if first ~=nil then
+        findAiTarget(first.getGUID())
+        --State_AIMove(first)
+        Render_ButtonState(first)
+    end
+    UpdateNote(MoveSort, nil)
+end
+function Action_ClearAi()
+    for i,ship in ipairs(getAllObjects()) do
+        if isAi(ship) then
+            ship.clearButtons()
+        end
+    end -- [end loop for all ships]
+end
+function Action_Combat()
+    -- printToAll("**************************",{0,1,1})
+    -- printToAll("STARTING COMBAT PHASE",{0,1,1})
+    -- printToAll("**************************",{0,1,1})
+    currentphase = AttackSort
+    --UpdateNote(AttackSort, nil)
+    -- ListAis(AttackSort)
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            ship.clearButtons()
+            -- Render_Ruler(ship)
+        end
+    end -- [end loop for all ships]
+    Action_AiAttack(nil)
+end
+--function GoToNextAttack(ship)
+--    local first = FindNextAi(ship, AttackSort)
+--    current = first
+--    if first ~=nil then
+--        Render_Ruler(first)
+--        Render_AttackButton(first)
+--    end
+--end
+
+function Action_End()
+    --TODO: clear all buttons
+    for i,obj in ipairs(getAllObjects()) do
+        if isShip(obj) then
+            obj.clearButtons()
+        end
+        if isInPlay(obj) and isTemporary(obj) then
+            obj.destruct()
+        end
+    end
+    local note = "*** [FF0000]End Phase - Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()).."[-] ***\n"
+    local done = getTurnNumber()==getTotalTurns()
+    if done then
+        note = note.."[b]Mission Over[/b]"
+    else
+        note = note.."Auto-Cleaned up Focus/Evade/Etc\nMoved Turn Marker"
+        local pos = turn_marker.getPosition()
+        turn_marker.setPosition({pos[1]+6.9075,pos[2],pos[3]})
+
+    end
+    setNotes(note)
+    if not done then
+        startLuaCoroutine(self, 'delayPlanning')
+    end
+end
+function delayPlanning()
+    for i=1, 50, 1 do
+        coroutine.yield(0)
+    end
+    Action_Planning()
+    return true
+end
+turn_marker_warning = false
+function getTurnNumber()
+    local turn = 1
+    if turn_marker ~=nil then
+        local pos = turn_marker.getPosition()
+        turn = round((pos[1]+39.84)/6.9075)
+    else
+        if not turn_marker_warning then
+            printToAll("Add object with name 'Turn Marker' on Turn Track",{1,0,0})
+            turn_marker_warning = true
+        end
+    end
+    return turn
+end
+end_marker_warning = false
+function getTotalTurns()
+    local total = 12
+    if end_marker ~=nil then
+        local pos = end_marker.getPosition()
+        total = round((pos[1]+39.84)/6.9075)
+    else
+        if not end_marker_warning then
+            printToAll("Add object with name 'End Marker' on Turn Track",{1,0,0})
+            end_marker_warning = true
+        end
+    end
+    return total
+end
+function isTemporary(object)
+    local name = object.getName()
+    local desc = object.getDescription()
+    local tag = object.tag
+    return (name=="Evade" or name=="Focus" or name=="Weapon Disabled" or name=="Reinforce" or name=="Reinforce (fore)" or name=="Reinforce (aft)" or desc=="Red TL" or tag =="Dice") and desc~="keep"
+end
+function Render_AttackButton(object)
+
+    local attackbutton = {['click_function'] = 'Action_AiAttack', ['function_owner'] = self, ['label'] = 'Attack', ['position'] = {0, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 550, ['font_size'] = 250}
+    object.createButton(attackbutton)
+end
+function Action_AiAttack(object)
+    local guid
+    if object~=nil then
+        object.clearButtons()
+        guid = object.getGUID()
+    end
+    local next = FindNextAi(guid,AttackSort)
+    current = next
+    if next ~=nil then
+        Render_Ruler(next)
+        Render_AttackButton(next)
+        UpdateNote(AttackSort, next.getGUID())
+    else
+        UpdateNote(AttackSort, nil, true)
+    end
+end
+function UpdateNote(sort, next,complete)
+    local phasename = {}
+    phasename[MoveSort] = "Activation"
+    phasename[AttackSort] = "Combat"
+    local phasecolor = {}
+    phasecolor[MoveSort] = "00FF80"
+    phasecolor[AttackSort] = "FF8000"
+    local ai_string = ""
+    if currentphase ~= nil then
+        ai_string = "*** ["..phasecolor[currentphase].."]"..phasename[currentphase].." Phase - Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()).."[-] ***"
+    end
+    local ais = {}
+    local showPlayers = true
+    for i,ship in ipairs(getAllObjects()) do
+        if isInPlay(ship) and (isAi(ship) or (isShip(ship)  and showPlayers)) and getSkill(ship)~=nil then
+            table.insert(ais, ship)
+        end
+    end -- [end loop for all ships]
+    table.sort(ais,sort)
+    local first = true
+    for i,ship in ipairs(ais) do
+        local arrow = ''
+        local current = next == nil and not complete and  first or next == ship.getGUID()
+        if current then
+            arrow = "[0080FF][b]Current ---->[/b][-] "
+            first = false
+        end
+        ai_string = ai_string.."\n"..arrow..prettyString(ship,true)
+    end
+    if complete then
+        ai_string = ai_string.."\n".."[0080FF][b][Complete][/b][-]"
+    end
+    setNotes(ai_string)
+end
+activation_started = false
+function UpdatePlanningNote()
+    if currentphase == PlanningSort then
+        local ai_string = "*** [FF80FF]Planning Phase - Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()).."[-] ***"
+        local total = 0
+        local ready = 0
+        for i,ship in ipairs(getAllObjects()) do
+            if isShip(ship) and isInPlay(ship) and not isAi(ship) then
+                local status = "Waiting"
+                local statuscolor = "FF0000"
+                local found = ship.getVar('hasDial')
+                local maneuver = ""
+                --                for j,card in ipairs(getAllObjects()) do
+                --                    if isInPlay(card) and card.tag ~= 'Figurine' and card.getName()==ship.getName() then
+                --                        found = true
+                --                    end
+                --                end
+                total = total + 1
+                if found then
+                    status = "Ready"
+                    ready = ready + 1
+                    statuscolor = "00FF00"
+                    maneuver = " [101010]([-] "..ship.getVar('Maneuver'):gsub("e","l").." [101010])[-]"
+                end
+                ai_string = ai_string .."\n".. prettyString(ship, false)..maneuver.." [101010][[-]["..statuscolor.."]"..status.."[-][101010]][-]"
+            end
+        end
+        ai_string = ai_string .. "\n" .. start_delay
+        setNotes(ai_string)
+        if total>0 and total == ready and not activation_started==true then
+            activation_started=true
+            start_delay = " . . . . . . . . . ."
+            startLuaCoroutine(self, 'delayActivation')
+        end
+    end
+end
+function delayActivation()
+    --activation_started = true
+    for i=1, 10, 1 do
+        for i=1, 20, 1 do coroutine.yield(0) end
+        start_delay = string.sub(start_delay ,3)
+    end
+    local total = 0
+    local ready = 0
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) and isInPlay(ship) and not isAi(ship) then
+            printToAll("Found Ship: "..ship.getName(),{1,1,1})
+            local found = ship.getVar('hasDial')
+            total = total + 1
+            if found then
+                ready = ready + 1
+                printToAll("It is Ready",{1,1,1})
+            end
+        end
+    end
+    if total == ready then
+        printToAll("All Ships are ready",{0,1,0})
+        Action_Activation()
+    else
+        printToAll("All Ships are not ready",{1,0,0})
+    end
+    activation_started = false
+
+    return true
+end
+function ListAis(sort)
+    printToAll("Sorting AIs, Found:",{0,1,0})
+    local ais = {}
+    local showPlayers = true
+    for i,ship in ipairs(getAllObjects()) do
+        if (isAi(ship) or isShip(ship) and isInPlay(ship) and showPlayers and getSkill(ship)~=nil) then
+            table.insert(ais, ship)
+        end
+    end -- [end loop for all ships]
+    table.sort(ais,sort)
+    for i,ship in ipairs(ais) do
+        prettyPrint(ship)
+    end
+end
+function prettyString(ship,withtarget)
+    local skill_colors = {"666666","FF30FF","8030FF","3030FF","3080FF","30FFFF","30FF80","30FF30","80FF30","FFFF30","FF3030" }
+    --local type_colors = {TIE="666666",TFO="333333",INT="600000",ADV="c1440e",BOM="00FFFF",DEF="660066",PHA="2C75FF",DEC="808080",SHU="A0A0A0"}
+    local isAi = isAi(ship)
+    local isFriendly = isFriendlyAI(ship)
+    local skill = tostring(getSkill(ship))
+    local skill_color
+    if skill~="nil" then
+        skill_color = skill_colors[tonumber(skill)+1]
+    end
+    if skill_color==nil then skill_color="000000" end
+    if isAi then
+        local type = tostring(getAiType(ship))
+        local def = AI_DEFS[campaign][type]
+        local type_color = def.typeColor --type_colors[type]
+        if type_color == nil then type_color = "000000" end
+        local squad = getAiSquad(ship)
+        if squad == nil then squad = "" end
+        local number = tostring(getAiNumber(ship))
+        local target = ""
+        local stress = ""
+        local stress_end = ""
+        local friendly = ""
+        if isFriendly then
+            friendly = "[00B000]ALLY[-] "
+        end
+        if aistressed[ship.getGUID()]~=nil then
+            --stress = "[800000][*][-] "
+            stress = "[C02020]"
+            stress_end = "[-]"
+        end
+        if withtarget and aitargets[ship.getGUID()] then
+            local nops = stripPS(aitargets[ship.getGUID()].getName())
+            local nocolor = string.gsub(string.gsub(nops,"%[%w*%]",""),"%[%-%]","")
+            local short = string.sub(nocolor, 1,3)
+            local shortwithcolor = string.gsub(nops,nocolor,short)
+            --local stripped_colors = nops:match
+            target = " [101010][[-][u]"..shortwithcolor.."[/u][101010]][-]"
+        end
+        return stress.."PS["..skill_color.."]"..skill.."[-] "..friendly.."["..type_color.."]"..type.."[-] "..squad.."#"..number..stress_end..target --,{0,0,1}
+    else
+        return "PS["..skill_color.."]"..skill.."[-] "..stripPS(ship.getName()).."" --,{0,0,1}
+    end
+end
+function getSimpleAiName(ai)
+    local squad = getAiSquad(ai)
+    if squad == nil then squad = "" end
+    local number = tostring(getAiNumber(ai))
+    return squad.."#"..number
+end
+function stripPS(name)
+    return string.gsub(name,"%[%d+%]%s*","")
+end
+function prettyPrint(ship)
+    printToAll(prettyString(ship),{0.2, 0.2, 0.8})
+end
+function FindNextAi(guid, sort)
+    local ais = {}
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) and isInPlay(ship) then
+            table.insert(ais, ship)
+        end
+    end -- [end loop for all ships]
+    if guid~=nil then
+        local ai = getObjectFromGUID(guid)
+        if ai~=nil and not contains(ais, ai) then
+            table.insert(ais, ai)
+            -- printToAll("Added self",{0,1,0})
+        end
+    end
+    table.sort(ais,sort)
+    -- for i,ship in ipairs(ais) do
+    -- printToAll("Searching "..prettyString(ship),{1,1,1})
+    -- end
+    local selffound = false
+    for i,ship in ipairs(ais) do
+        if selffound or guid==nil then
+            if isAi(ship) then
+                -- printToAll("Found Next AI: "..prettyString(ship),{0,1,0})
+                return ship
+            else
+                -- printToAll("Found Next Player: "..prettyString(ship),{0,1,0})
+                table.insert(players_up_next,ship)
+                return ship
+            end
+        end
+        if ship.getGUID()==guid then
+            selffound = true
+            -- printToAll("Found Self: "..prettyString(ship),{0,1,0})
+        end
+    end
+end
+function FindPrevAi(guid, sort)
+    local ais = {}
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) and isInPlay(ship) then
+            table.insert(ais, ship)
+        end
+    end
+    if guid~=nil then
+        local ai = getObjectFromGUID(guid)
+        if ai~=nil and not contains(ais, ai) then
+            table.insert(ais, ai)
+        end
+    end
+    table.sort(ais,sort)
+    local prevship = nil
+    for i,ship in ipairs(ais) do
+        if guid == nil then
+            return ship
+        end
+        if ship.getGUID()==guid then
+            if prevship == nil then
+                return ship
+            end
+            if isAi(prevship) then
+                return prevship
+            else
+                table.insert(players_up_next,prevship)
+                return prevship
+            end
+        end
+        prevship = ship
+    end
+end
+function AttackSort(a, b)
+    local a_ps = tonumber(getSkill(a))
+    local a_num = tonumber(getAiNumber(a))
+    local b_ps = tonumber(getSkill(b))
+    local b_num = tonumber(getAiNumber(b))
+    if a_ps ~= b_ps then
+        if a_ps == nil or b_ps == nil then
+            return a_ps~=nil
+        end
+        return a_ps > b_ps
+    else
+        if areEnemies(a,b) then
+            return isHostileAI(a)
+        else
+            return a_num<b_num
+        end
+    end
+end
+function PlanningSort(a, b) end
+function MoveSort(a, b)
+    local a_ps = tonumber(getSkill(a))
+    local a_num = tonumber(getAiNumber(a))
+    local b_ps = tonumber(getSkill(b))
+    local b_num = tonumber(getAiNumber(b))
+    local a_huge = string.find(a.getName(),"HUGE")
+    local b_huge = string.find(b.getName(),"HUGE")
+    if a_huge~=b_huge then
+        return not a_huge
+    end
+    if a_ps ~= b_ps then
+        if a_ps == nil or b_ps == nil then
+            return a_ps~=nil
+        end
+        return a_ps < b_ps
+    else
+        if areEnemies(a,b) then
+            return isHostileAI(a)
+        else
+            return a_num<b_num
+        end
+    end
+end
+function State_AIMove(object)
+    -- Set MOVE button
+    local label = 'Move'
+    if not isAi(object) then label = 'Next' end
+    if isAi(object) then
+        Render_AiFreeActions(object)
+    end
+    local movebutton = {['click_function'] = 'Action_AiMove', ['function_owner'] = self, ['label'] = label, ['position'] = {0, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 550, ['font_size'] = 250}
+    object.createButton(movebutton)
+    if isAi(object) and getAiSquad(object)~=nil and squadmove[getAiSquad(object)]~=nil then
+        local squadbutton = {['click_function'] = 'Action_AiSquad', ['function_owner'] = self, ['label'] = 'Squad', ['position'] = {0, BTN_Y, 0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 750, ['height'] = 550, ['font_size'] = 250}
+        object.createButton(squadbutton)
+    end
+    --if getAiType(object) == "PHA" then
+    --    Render_AiDecloak(object)
+    --end
+end
+function Action_AiMove(object)
+    --object.setDescription("ai")
+
+    if isAi(object) then
+        auto(object.getGUID())
+    end
+    GoToNextMove(object)
+end
+function GoToNextMove(object)
+    if isAi(object) then
+        State_AIPostMove(object)
+    else
+        object.clearButtons()
+    end
+    local next = FindNextAi(object.getGUID(),MoveSort)
+    current = next
+    if next ~=nil then
+        next.highlightOn({0,0,1}, 5)
+        findAiTarget(next.getGUID())
+        State_AIMove(next)
+        UpdateNote(MoveSort, next.getGUID())
+    else
+        UpdateNote(MoveSort, nil, true)
+        Action_Combat()
+    end
+    for i,ship in ipairs(getAllObjects()) do
+        if isAi(ship) and ship.getGUID()~=object.getGUID() then
+            if next==nil or ship.getGUID()~=next.getGUID() then
+                ship.clearButtons()
+            end
+        end
+    end
+end
+function GoToPrevMove(object)
+    -- if isAi(object) then
+    --     State_AIPostMove(object)
+    -- else
+        -- object.clearButtons()
+    -- end
+
+    for i,ship in ipairs(getAllObjects()) do
+        if isAi(ship) then -- and ship.getGUID()~=object.getGUID()
+            -- if prev==nil or ship.getGUID()~=prev.getGUID() then
+            ship.clearButtons()
+            -- end
+        end
+    end
+    local prev = FindPrevAi(object.getGUID(),MoveSort)
+    current = prev
+    if prev ~=nil then
+        findAiTarget(prev.getGUID())
+        State_AIMove(prev)
+        UpdateNote(MoveSort, prev.getGUID())
+    else
+        UpdateNote(MoveSort, nil, true)
+        Action_Combat()
+    end
+end
+function State_AIPostMove(object)
+    local def = getAiDef(object)
+    object.clearButtons()
+    Render_Undo(object)
+
+    Render_AiConditionalActions(object)
+
+    Render_Ruler(object)
+
+    if def.hasBoost then
+        Render_Boost(object)
+    end
+
+    if def.hasBarrelRoll then
+        Render_BarrelRoll(object)
+    end
+    Render_Swerves(object)
+
+    Render_Clear(object)
+end
+function Render_Clear(object)
+    local undobutton = {['click_function'] = 'AiClearButtons', ['function_owner'] = self, ['label'] = 'CLEAR', ['position'] = {0, BTN_Y, 0.8}, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 350, ['font_size'] = 250}
+    object.createButton(undobutton)
+end
+function AiClearButtons(object)
+    object.clearButtons()
+end
+function Render_Undo(object)
+    local undobutton = {['click_function'] = 'AiUndoButton', ['function_owner'] = self, ['label'] = 'q', ['position'] = {-0.9, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+    object.createButton(undobutton)
+end
+function Render_AiUndoDecloak(object)
+    local undobutton = {['click_function'] = 'Action_AiUndoDecloak', ['function_owner'] = self, ['label'] = 'q', ['position'] = {-0.9, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+    object.createButton(undobutton)
+end
+function Action_AiUndoDecloak(object)
+    aidecloaked[object.getGUID()] = nil
+    object.setDescription("q")
+    Render_AiDecloak(object)
+
+end
+function AiUndoButton(object)
+    aiswerved[object.getGUID()] = nil
+    if squadleader[object.getGUID()]~=nil then
+        local squad = getAiSquad(object)
+        squadleader[squad] = nil
+        squadmove[squad] = nil
+        squadposition[squad] = nil
+        squadrotation[squad] = nil
+    end
+    object.clearButtons()
+    object.setDescription("q")
+
+    State_AIMove(object)
+end
+
+function Render_AiUndoBoostBarrel(object)
+    local undobutton = {['click_function'] = 'Action_AiUndoBoostBarrel', ['function_owner'] = self, ['label'] = 'q', ['position'] = {-0.9, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+    object.createButton(undobutton)
+end
+
+function Action_AiUndoBoostBarrel(object)
+
+    object.clearButtons()
+    object.setDescription("q")
+    airollboosted[object.getGUID()]=nil
+    Render_ButtonState(object)
+end
+
+function Render_Ruler(object)
+    local rulerbutton = {['click_function'] = 'RulerButton', ['function_owner'] = self, ['label'] = 'r', ['position'] = {-0.9, BTN_Y, 0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+    object.createButton(rulerbutton)
+end
+
+function RulerButton(object)
+    local def = getAiDef(object)
+    if def.has360Turret then
+        object.setDescription("at")
+    else
+        object.setDescription("a")
+    end
+end
+
+function Render_Boost(object)
+    local bl1button = {['click_function'] = 'Action_AiBoostLeft', ['function_owner'] = self, ['label'] = 'bl1', ['position'] = {-1.1, BTN_Y, -1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 330, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(bl1button)
+
+    local s1button = {['click_function'] = 'Action_AiBoostStraight', ['function_owner'] = self, ['label'] = 's1', ['position'] = {0, BTN_Y, -1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(s1button)
+
+    local br1button = {['click_function'] = 'Action_AiBoostRight', ['function_owner'] = self, ['label'] = 'br1', ['position'] = {1.1, BTN_Y, -1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 330, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(br1button)
+end
+
+function Render_AiDecloak(object)
+    if aidecloaked[object.getGUID()]==nil then
+        local decloak = {['click_function'] = 'Action_AiDecloak', ['function_owner'] = self, ['label'] = 'decloak', ['position'] = {0, BTN_Y, -1.9}, ['rotation'] =  {0, 0, 0}, ['width'] = 1000, ['height'] = 300, ['font_size'] = 250}
+        object.createButton(decloak)
+    end
+end
+
+function Action_AiDecloak(object)
+    local i_roll = math.random(3)
+    local options = {"ce","cs","cr" }
+    object.setDescription(options[i_roll])
+    aidecloaked[object.getGUID()]= true
+    removeButtonByName(object, "decloak")
+    Render_AiUndoDecloak(object)
+end
+
+function Action_AiBoostLeft(object)
+    object.setDescription("bl1")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+
+function Action_AiBoostStraight(object)
+    object.setDescription("s1")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+
+function Action_AiBoostRight(object)
+    object.setDescription("br1")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+
+function Render_BarrelRoll(object)
+
+    local xlbbutton = {['click_function'] = 'Action_AiBarrelRollLeftBack', ['function_owner'] = self, ['label'] = 'xlb', ['position'] = {-1.6, BTN_Y, 0.8}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xlbbutton)
+
+    local xlbutton = {['click_function'] = 'Action_AiBarrelRollLeft', ['function_owner'] = self, ['label'] = 'xl', ['position'] = {-1.6, BTN_Y, 0}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xlbutton)
+
+    local xlfbutton = {['click_function'] = 'Action_AiBarrelRollLeftFront', ['function_owner'] = self, ['label'] = 'xlf', ['position'] = {-1.6, BTN_Y, -0.8}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xlfbutton)
+
+    local xrbbutton = {['click_function'] = 'Action_AiBarrelRollRightBack', ['function_owner'] = self, ['label'] = 'xrb', ['position'] = {1.6, BTN_Y, 0.8}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xrbbutton)
+    local xrbutton = {['click_function'] = 'Action_AiBarrelRollRight', ['function_owner'] = self, ['label'] = 'xr', ['position'] = {1.6, BTN_Y, 0}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xrbutton)
+    local xrfbutton = {['click_function'] = 'Action_AiBarrelRollRightFront', ['function_owner'] = self, ['label'] = 'xrf', ['position'] = {1.6, BTN_Y, -0.8}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 300, ['font_size'] = 250}
+    object.createButton(xrfbutton)
+end
+
+function Action_AiBarrelRollLeftBack(object)
+    object.setDescription("xlb")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+function Action_AiBarrelRollLeft(object)
+    object.setDescription("xl")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+function Action_AiBarrelRollLeftFront(object)
+    object.setDescription("xlf")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+
+function Action_AiBarrelRollRightBack(object)
+    object.setDescription("xrb")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+function Action_AiBarrelRollRight(object)
+    object.setDescription("xr")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+function Action_AiBarrelRollRightFront(object)
+    object.setDescription("xrf")
+    object.clearButtons()
+    airollboosted[object.getGUID()]=true
+    Render_AiUndoBoostBarrel(object)
+    Render_Ruler(object)
+    Render_AiConditionalActions(object)
+end
+
+function Render_AiConditionalActions(object)
+    local def = getAiDef(object)
+    if def.hasConditionalFocus then
+        local focusbutton = {['click_function'] = 'Action_Focus', ['function_owner'] = self, ['label'] = 'F', ['position'] = {0.9, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(focusbutton)
+    end
+
+    if def.hasConditionalEvade then--type == "TIE" or type == "TFO" type=="INT" or type == "ADV" or type == "PHA" then
+        local evadebutton = {['click_function'] = 'Action_Evade', ['function_owner'] = self, ['label'] = 'E', ['position'] = {0.9, BTN_Y, 0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(evadebutton)
+    end
+    if def.hasConditionalTargetLock then--type == "TFO" then
+        local tlbutton = {['click_function'] = 'Action_TargetLock', ['function_owner'] = self, ['label'] = 'TL', ['position'] = {0, BTN_Y, -1.5}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(tlbutton)
+        -- local tlbutton = {['click_function'] = 'RulerButton', ['function_owner'] = self, ['label'] = 'R', ['position'] = {1.2, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 530, ['font_size'] = 250}
+        -- object.createButton(tlbutton)
+    end
+    if def.hasConditionalCloak then--type == "TFO" then
+        local tlbutton = {['click_function'] = 'Action_Cloak', ['function_owner'] = self, ['label'] = 'C', ['position'] = {0.9, BTN_Y, 0}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(tlbutton)
+    end
+end
+function Render_AiFreeActions(object)
+    local def = getAiDef(object)
+    if def.hasFreeFocus then
+        local focusbutton = {['click_function'] = 'Action_Focus', ['function_owner'] = self, ['label'] = 'F', ['position'] = {1.0, BTN_Y, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(focusbutton)
+    end
+    if def.hasFreeEvade then
+        local evadebutton = {['click_function'] = 'Action_Evade', ['function_owner'] = self, ['label'] = 'E', ['position'] = {1.0, BTN_Y, 0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(evadebutton)
+    end
+    if def.hasFreeTargetLock then
+        local tlbutton = {['click_function'] = 'Action_TargetLock', ['function_owner'] = self, ['label'] = 'TL', ['position'] = {0, BTN_Y, -1.5}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 530, ['font_size'] = 250}
+        object.createButton(tlbutton)
+        -- local tlbutton = {['click_function'] = 'RulerButton', ['function_owner'] = self, ['label'] = 'R', ['position'] = {1.2, 0.3, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 350, ['height'] = 530, ['font_size'] = 250}
+        -- object.createButton(tlbutton)
+    end
+    if def.hasFreeBarrelRoll then
+        Render_BarrelRoll(object)
+    end
+end
+
+function Action_TargetLock(object)
+    local target = findAiTarget(object.getGUID())
+    local dist = realDistance(target.getGUID(),object.getGUID())
+    if target~=nil and dist<10.95 then
+        take(enemy_target_locks, target.getGUID(),0.37,1,-0.37,true,"Red",getSimpleAiName(object))
+        notify(object.getGUID(),'action','acquires a target lock')
+    else
+        notify(object.getGUID(),'action','has no target')
+    end
+end
+function Action_Focus(object)
+    take(focus, object.getGUID(),-0.37,1,-0.37)
+    notify(object.getGUID(),'action','takes a focus token')
+end
+function Action_Evade(object)
+    take(evade, object.getGUID(),-0.37,1,0.37)
+    notify(object.getGUID(),'action','takes an evade token')
+end
+function Action_Cloak(object)
+    take(cloak, object.getGUID(),1,1,0)
+    notify(object.getGUID(),'action','takes a cloak token')
+end
+function take(parent, guid, xoff, yoff, zoff, TL, color, name)
+    local obj = getObjectFromGUID(guid)
+    local objp = getObjectFromGUID(parent)
+    local world = obj.getPosition()
+
+    --VALADIAN Rotate Take to be relative position
+    local offset = RotateVector({xoff, yoff, zoff}, obj.getRotation()[2])
+
+    local params = {}
+    params.position = {world[1]+offset[1], world[2]+offset[2], world[3]+offset[3]}
+    if TL == true then
+        local callback_params = {}
+        callback_params['player_color'] = color
+        callback_params['ship_name'] = name
+        params.callback = 'setNewLock'
+        params.callback_owner = self
+        params.params = callback_params
+    end
+    freshLock = objp.takeObject(params)
+end
+function setNewLock(object, params)
+    freshLock.call('manualSet', {color=params['player_color'], name=params['ship_name']})
+end
+
+function getForwardVector(guid)
+    local this = getObjectFromGUID(guid)
+    local direction = this.getRotation()
+    local rotval = round(direction[2])
+    local radrotval = math.rad(rotval)
+    local xForward = math.sin(radrotval) * -1
+    local zForward = math.cos(radrotval) * -1
+    -- log(guid .. " for x: "..round(xForward,2).." y: "..round(zForward,2))
+    return {xForward, 0, zForward}
+end
+function dot(a,b)
+    return a[3]*b[3] + a[1]*b[1]
+end
+function findNearestShip(pos)
+    local nearest
+    local minDist = 999999
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            local distance = distance(pos[1],pos[3],ship.getPosition()[1],ship.getPosition()[3])
+            if distance<minDist then
+                minDist = distance
+                nearest = ship
+            end
+        end
+    end
+    return nearest
+end
+function findNearestCorner(fromguid, toguid)
+    local from  = getObjectFromGUID(fromguid)
+    local to = getObjectFromGUID(toguid)
+    local tocorners = findCorners(to)
+    local dist = 999999
+    local closest_corner = nil
+    for i,corner in ipairs(tocorners) do
+        x1 = corner[1]
+        y1 = corner[3]
+        x2 = from.getPosition()[1]
+        y2 = from.getPosition()[3]
+        corner_dist = distance(x1,y1,x2,y2)
+        if corner_dist<dist then
+            dist = corner_dist
+            closest_corner = corner
+        end
+    end
+    return closest_corner
+end
+function findNearestPlayer(guid,strike)
+    local ai  = getObjectFromGUID(guid)
+    local def = getAiDef(ai)
+    local inarc = not getAiDef(ai).has360Turret -- ~= "DEC"
+    local hostile = isHostileAI(ai)--getAiDef(ai).isHostile
+    local distances = {}
+    local angles = {}
+
+    for i,ship in ipairs(getAllObjects()) do
+        -- if isShip(ship) then
+        --     log("Found ship: "..ship.getName())
+        --     log("    It is AI? "..isAi(ship))
+        --     log("    It is in play? "..isInPlay(ship))
+        -- end
+        local oppositeTeam = hostile != isHostileAI(ship)
+        -- printToAll("isShip:   "..tostring(isShip(ship)),{1,1,1})
+        -- printToAll("opposite: "..tostring(oppositeTeam),{1,1,1})
+        -- printToAll("isInPlay: "..tostring(isInPlay(ship)),{1,1,1})
+        -- printToAll("AIstrike: "..tostring(strike==nil),{1,1,1})
+        -- printToAll(ship.getName().." strike: "..tostring(table.contains(striketarget,ship.getGUID())),{1,1,1})
+        local ignoredHugeShip = def.ignoresHugeShips and ship.getName():match ".*HUGE.*"
+        if isInPlay(ship) and ((strike~=nil and isStrikeTarget(ai,ship)) or (strike==nil and isShip(ship) and oppositeTeam and not ignoredHugeShip))then
+            --if ship.getDescription()~="ignore" or strike~=nil then
+            local pos = ship.getPosition()
+            --log("Adding Target: "..ship.getName())
+            distances[ship.getGUID()] = realDistance(guid,ship.getGUID())
+
+            local aiPos = ai.getPosition()
+            local aiForward = getForwardVector(guid)
+            local tgtForward = getForwardVector(ship.getGUID())
+            local tgtCorners = findCorners(ship)
+            for i,corner in ipairs(tgtCorners) do
+                local offset = {corner[1] - aiPos[1],0,corner[3] - aiPos[3]}
+                local angle = math.atan2(offset[3], offset[1]) - math.atan2(aiForward[3], aiForward[1])
+                if angle < 0 then
+                    angle = angle + 2 * math.pi
+                end
+                if angles[ship.getGUID()] == nil then
+                    angles[ship.getGUID()] = angle
+                else
+                    local new_diff = angle
+                    if angle>math.pi then new_diff = math.pi*2 - angle end
+                    local old_diff = angles[ship.getGUID()]
+                    if angles[ship.getGUID()]>math.pi then new_diff = math.pi*2 - angles[ship.getGUID()] end
+                    if new_diff < old_diff then angles[ship.getGUID()] = angle end
+                end
+            end
+            local offset = {pos[1] - aiPos[1],0,pos[3] - aiPos[3]}
+            local angle = math.atan2(offset[3], offset[1]) - math.atan2(aiForward[3], aiForward[1])
+            if angle < 0 then
+                angle = angle + 2 * math.pi
+            end
+            angles[ship.getGUID()] = angle
+            --end
+        end -- [end checking distance to ship]
+
+    end -- [end loop for all ships]
+
+    local nearest
+    local minDist = 999999
+
+    if inarc then
+        local nearestInArc
+        minDist = 3.65 * 3 --3.7
+        for guid,dist in pairs(distances) do
+
+            local diff = angles[guid]
+            if diff>math.pi then diff = math.pi*2 - diff end
+            if diff<math.pi/4 and dist < minDist then
+                minDist = dist
+                nearestInArc = guid
+            end -- [end check for nearest]
+
+        end -- [end loop for each distance]
+        if nearestInArc ~= nil then return nearestInArc end
+    end
+    minDist = 999999
+    for guid,dist in pairs(distances) do
+
+        if dist < minDist then
+            minDist = dist
+            if minDist < 35 then
+                nearest = guid
+            end
+        end -- [end check for nearest]
+
+    end -- [end loop for each distance]
+
+    return nearest
+end
+function findCorners(object)
+    local corners = findRelativeCorners(object)
+    for i,corner in ipairs(corners) do
+        corners[i] = Vect.Sum(object.getPosition(),corner)
+    end
+    return corners
+end
+function findRelativeCorners(object)
+    local scalar = 0.75--0.85
+    if isBigShip(object.getGUID()) then scalar = 1.5 end --1.63
+    local forward = getForwardVector(object.getGUID())
+    local f = {forward[1] * scalar, 0, forward[3] * scalar}
+    local corners = {}
+    corners[1] = { f[1] - f[3], 0,  f[3] + f[1]}
+    corners[2] = { f[1] + f[3], 0,  f[3] - f[1]}
+    corners[3] = {-f[1] - f[3], 0, -f[3] + f[1]}
+    corners[4] = {-f[1] + f[3], 0, -f[3] - f[1] }
+    return corners
+end
+function realDistance(guid1, guid2)
+    local fromcorner = findNearestCorner(guid1,guid2)
+    local tocorner = findNearestCorner(guid2,guid1)
+    local dist = distance(fromcorner[1],fromcorner[3],tocorner[1],tocorner[3])
+    -- --TODO: Lazy calc to start. need to go from nearest corner to nearest corner
+    -- local a  = getObjectFromGUID(guid1)
+    -- local b  = getObjectFromGUID(guid2)
+    -- -- printToAll("realdistance from: "..guid1.." to: "..guid2,{1,1,1})
+    -- local apos = a.getPosition()
+    -- local bpos = b.getPosition()
+    -- if a == nil or b == nil then return nil end
+    -- local dist = distance(apos[1],apos[3],bpos[1],bpos[3])
+    -- if isBigShip(a.getGUID()) then dist = dist - 2.1 else dist = dist - 1.1 end
+    -- if isBigShip(b.getGUID()) then dist = dist - 2.1 else dist = dist - 1.1 end
+    return dist
+end
+function isBigShip(guid)
+    local obj = getObjectFromGUID(guid)
+    local Properties = obj.getCustomObject()
+    --printToAll('"'..Properties.collider..'"',{1,0,0})
+    for i,ship in pairs(BigShipList) do
+        if Properties.collider == ship then
+            return true
+        end
+    end
+    return false
+end
+function isShip(ship)
+    return ship.tag == 'Figurine' and ship.name ~= '' -- and isInPlay(ship)
+end
+function areEnemies(ship1,ship2)
+    return isHostileAI(ship1)!=isHostileAI(ship2)
+end
+function isAi(ai)
+    return isHostileAI(ai) or isFriendlyAI(ai)
+end
+function isHostileAI(ai)
+    local is_ai = ai.getName():match '^%[AI:?%u*:?%d*:?%w*].*'
+    return isShip(ai) and is_ai~=nil
+end
+function isFriendlyAI(ai)
+    local is_ai = ai.getName():match '^%[FR:?%u*:?%d*:?%w*].*'
+    return isShip(ai) and is_ai~=nil
+end
+function getAiDef(ai)
+    local type = getAiType(ai)
+    return AI_DEFS[campaign][type]
+end
+function getAiType(ai)
+    local type =  ai.getName():match '^%[%u*:?(%u*):?%d*].*'
+    --local validTypes = {"TIE","TFO","INT","ADV","BOM","DEF","PHA","DEC","SHU" }
+    if contains(table.getKeys(AI_DEFS[campaign]),type) then
+        return type
+    else
+        -- printToAll("Error: "..ai.getName() .. " does not define valid type in format '[AI:{type}:{PS}] Name'",{1,0,0})
+        -- printToAll("Error: Implemented Types are: TIE, INT, ADV, BOM, DEF, PHA, DEC, SHU",{1,0,0})
+        return "INT"
+    end
+end
+function getStrikeTargets(ai)
+    if striketargetgroup[ai.getGUID()] == nil then
+        return {}
+    else
+        return striketarget[striketargetgroup[ai.getGUID()]]
+    end
+end
+function isStrikeTarget(ai,target)
+    if striketargetgroup[ai.getGUID()] == nil then
+        return false
+    else
+        return table.contains(getStrikeTargets(ai),target.getGUID())
+    end
+end
+function getSkill(ai)
+    if ai == nil then return nil end
+    return ai.getName():match '^%[%a*:?%u*:?(%d*)].*'
+end
+function getAiSquad(ai)
+    --return name:match '(%a+)[#%s]?%d+$'
+    return ai.getName():match '(%a+)#'
+end
+function getAiNumber(ai)
+    local num = ai.getName():match '#(%d+)'
+    if num == nil then return "0" else return num end
+end
+function isInPlay(object)
+    local x_width = 17
+    if isEpicMap then
+        x_width = 34
+    end
+    return math.abs(object.getPosition()[1])<x_width and math.abs(object.getPosition()[3])<17
+end
+function contains(self, val)
+    for index, value in ipairs (self) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+--function containsByKey(self, val, key)
+--    for index, value in ipairs (self) do
+--        if value[key] == val[key] then
+--            return true
+--        end
+--    end
+--
+--    return false
+--end
+function empty (self)
+    for _, _ in pairs(self) do
+        return false
+    end
+    return true
+end
+function removeButtonByName(object, name)
+    for i,button in ipairs(object.getButtons()) do
+        if button.label == name then
+            object.removeButton(button.index)
+            return
+        end
+    end
+end
+function log(string)
+    printToAll("[" .. os.date("%H:%M:%S") .. "] " .. string,{0.2, 0.2, 0.8})
+end
+
+function Action_SetPlayer1() SetPlayers(1) end
+function Action_SetPlayer2() SetPlayers(2) end
+function Action_SetPlayer3() SetPlayers(3) end
+function Action_SetPlayer4() SetPlayers(4) end
+function Action_SetPlayer5() SetPlayers(5) end
+function Action_SetPlayer6() SetPlayers(6) end
+function SetPlayers(num) mission_players = num printToAll("Setting Number of Players to: "..num,{0,1,1}) end
+function Action_SetPS2() SetPS(2) end
+function Action_SetPS3() SetPS(3) end
+function Action_SetPS4() SetPS(4) end
+function Action_SetPS5() SetPS(5) end
+function Action_SetPS6() SetPS(6) end
+function Action_SetPS7() SetPS(7) end
+function Action_SetPS8() SetPS(8) end
+function Action_SetPS9() SetPS(9) end
+function Action_SetPS10() SetPS(10) end
+function SetPS(num) mission_ps = num printToAll("Setting Average Pilot Skill (PS) of Players to: "..num,{0,1,1}) end
+
+--ELITE_ICON = "http://i.imgur.com/n9dywTO.png"
+
+core_source = nil
+tfa_source = nil
+debris_source = nil
+r1 = 4.074
+v = {
+    _0000 = {x=0, y=4, rot=180}, --N
+    _0020 = {x=1, y=4, rot=180},
+    _0030 = {x= 1.5, y= 4, rot=180}, --v4 in Local Trouble
+    _0040 = {x=2, y=4, rot=180},
+    _0100 = {x=3, y=4, rot=180},
+    _0130 = {x= 4, y= 4, rot=225}, --upper right corner
+    _0130S = {x= 4, y= 4, rot=180}, --upper left corner facing south
+    _0200 = {x= 4, y= 3.0, rot=270},
+    _0230 = {x= 4, y= 1.5, rot=270}, --v5 in Local Trouble
+    _0240 = {x= 4, y= 1, rot=270},
+    _0300 = {x= 4, y= 0, rot=270}, --E
+    _0320 = {x= 4, y= -1, rot=270},
+    _0330 = {x= 4, y= -1.5, rot=270}, --v6 in Local Trouble
+    _0400 = {x= 4, y= -3.0, rot=270},
+    _0500 = {x=3, y=-4, rot = 0},
+    _0520 = {x=2, y=-4, rot = 0},
+    _0530 = {x=1.5, y=-4, rot = 0}, --Missing???
+    _0540 = {x=1, y=-4, rot = 0},
+    _0600 = {x= 0, y= -4, rot=0}, --S
+    _0620 = {x=-1, y=-4, rot = 0},
+    _0630 = {x=-1.5, y=-4, rot = 0}, --Missing???
+    _0640 = {x=-2, y=-4, rot = 0},
+    _0700 = {x=-3, y=-4, rot = 0},
+    _0730 = {x= -4, y= -4, rot=45},
+    _0800 = {x= -4, y= -3.0, rot=90},
+    _0830 = {x= -4, y= -1.5, rot=90}, --v1 in Local Trouble
+    _0840 = {x=-4, y=-1, rot = 90},
+    _0900 = {x= -4, y= 0, rot=90}, --W
+    _0920 = {x= -4, y= 1, rot=90},
+    _0930 = {x= -4, y= 1.5, rot=90}, --v2 in Local Trouble
+    _1000 = {x= -4, y= 3.0, rot=90},
+    _1030 = {x= -4, y= 4, rot=135}, --upper left corner
+    _1030S = {x= -4, y= 4, rot=180}, --upper left corner facing south
+    _1100 = {x = -3, y = 4, rot=180},
+    _1120 = {x = -2, y = 4, rot=180},
+    _1130 = {x= -1.5, y= 4, rot=180}, --v3 in Local Trouble
+    _1140 = {x= -1, y= 4, rot=180},
+    _1200 = {x=0, y=4, rot=180}, --N
+    bay1 = {x=-1, y=0, rot = 210},
+    bay2 = {x=1, y=3, rot = 30}
+}
+local squads = {}
+local missionsquads = {}
+local missionvectors = {}
+local decks = {}
+local cards = {}
+local shipnum = 1
+local asteroid_min_x = -9.2
+local asteroid_max_x = 9.2
+local asteroid_min_y = -9.2
+local asteroid_max_y = 9.2
+local num_asteroids = 6
+local num_debris = 0
+local card_to_clear
+function Action_presetup(object)
+    CountPlayers()
+    CalculatePlayerSkill()
+    --BAD
+    --object.clearButtons()
+
+    local offset = 0
+    for i,num in ipairs({1,2,3,4,5,6}) do
+        local p = {['click_function'] = 'Action_SetPlayer'..num, ['function_owner'] = self, ['label'] = num..'P', ['position'] = {-1.5, 0.5, -1.3 + offset}, ['rotation'] =  {0, 0, 0}, ['width'] = 250, ['height'] = 250, ['font_size'] = 200}
+        object.createButton(p)
+        offset = offset + 0.5
+    end
+    offset = 0
+    for i,num in ipairs({2,3,4,5,6,7,8,9,10}) do
+        local p = {['click_function'] = 'Action_SetPS'..num, ['function_owner'] = self, ['label'] = num..'PS', ['position'] = {1.5, 0.5, -1.3 + offset}, ['rotation'] =  {0, 0, 0}, ['width'] = 300, ['height'] = 200, ['font_size'] = 150}
+        object.createButton(p)
+        offset = offset + 0.3125
+    end
+    local p = {['click_function'] = 'Action_setup', ['function_owner'] = self, ['label'] = 'Setup', ['position'] = {0, 0.5, -0.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 200, ['font_size'] = 180}
+    object.createButton(p)
+end
+function CountPlayers()
+    local count = 0
+    for i,ship in ipairs(getAllObjects()) do
+        if ship.tag == 'Figurine' and not isAi(ship) and getSkill(ship) ~= nil and isInPlay(ship) and not ship.getName():match ".*HUGE.*" then
+            count = count + 1
+            printToAll("Found: "..ship.getName(),{0,1,1})
+        end
+    end
+    printToAll("Total Players: "..count,{0,1,1})
+    mission_players = count
+    return count
+end
+function CalculatePlayerSkill()
+    local count = 0
+    local ps = 0
+    for i,ship in ipairs(getAllObjects()) do
+        if ship.tag == 'Figurine' and not isAi(ship) and getSkill(ship) ~= nil and isInPlay(ship) and not ship.getName():match ".*HUGE.*" then
+            count = count + 1
+            ps = ps + tonumber(getSkill(ship))
+        end
+    end
+    local avg_ps = math.floor(ps/count)
+    printToAll("Average Pilot Skill: "..avg_ps,{0,1,1})
+    mission_ps = avg_ps
+    return avg_ps
+end
+function Action_setupclear(object)
+    local count = 0
+    for i,obj in ipairs(getAllObjects()) do
+        local pos = obj.getPosition()
+        --is in play or ai setup
+        local inPlayArea = pos[1]>-34 and pos[1]<34 and pos[3]>-16.5 and pos[3]<16.5 and pos[2]>0
+        local inSpawnArea = pos[1]>-55 and pos[1]<55 and pos[3]>27 and pos[3]<37 and pos[2]>0
+        if inPlayArea or inSpawnArea then
+            --is AI, card, or damage marker
+            if isAi(obj) or obj.tag=="Card" or obj.tag=="Deck" or obj.tag=="Chip" or
+               obj.getName():match "Asteroid" or obj.getName():match "Cloud" or obj.getName():match "Debrisfield" or
+               obj.getName()=="Minefield" or obj.getName()=="Refueling Station"  or obj.getName()=="Cargo Container" or
+               obj.getName()=="Fuel Tank" or obj.getName()=="Sensor Array" or obj.getName()=="Shield Generator" or obj.getName()=="Turbolaser" then
+                obj.destruct()
+                --is player
+            elseif not isAi(obj) and isShip(obj) and getSkill(obj)~=nil and not obj.getName():match ".*HUGE.*" then
+                count = count+1
+                local newpos = obj.getPosition()
+                obj.setPositionSmooth({newpos[1],newpos[2]+count*0.75,-15.56})
+                obj.setRotationSmooth({0,180,0})
+                obj.unlock()
+            end
+        end
+    end
+    -- for i,obj in ipairs(getObjectFromGUID('2ef0d2').getObjects()) do
+    --     if obj.tag=="Deck" then
+    --         obj.destruct()
+    --     end
+    -- end
+end
+OBS_STATION_INTERSECTION_6 = '1f2f06'--1
+OBS_STATION_DOCK = '658da4'--2
+OBS_STATION_2_HATCH = '14f719' --3
+OBS_STATION_1_HATCH = '1dc08d' --4
+OBS_STATION_INTERSECTION_3 = '9b082f' --5
+OBS_CARGO = 'a86859' --6
+OBS_TURBOLASER = 'a37217' --7
+OBS_FUEL_TANK = 'f9107e' --8
+OBS_SENSOR_ARRAY = 'c79079' --9
+OBS_SHIELD_GENERATOR = '90774c' --10
+OBS_COMMAND = 'ef93c4' --11
+OBS_MINEFIELD = '48749b' --12
+OBS_CLOUD_EDGE_1_DRAGON = 'cfdb1c' --13
+OBS_CLOUD_EDGE_2_STAR = 'c01ade' --14
+OBS_CLOUD_EDGE_3_GLOVE = 'a37851' --15
+OBS_CLOUD_EDGE_4_LONG = '865ced' --16
+OBS_CLOUD_1_BIRD_OF_PREY = 'b02b37' --17
+OBS_CLOUD_2_CLAW = '5d2db6' --18
+OBS_CLOUD_3_FISH = '02802c' --19
+OBS_CLOUD_4_FACE = '246375' --20
+OBS_CLOUD_5_OCARINA = 'be66ed' --21
+OBS_CLOUD_6_LONG = '0c2b46' --22
+OBS_CONTAINER = '1afd7c'
+OBS_ESCAPE_POD = '1ba16d'
+OBS_TRACKING_TOKEN = '978b08'
+col_index = 0
+obs_index = 0
+
+d12 = {1,2,3,4,5,6,7,8,9,10,11,12}
+d6 = {1,2,3,4,5,6}
+d6plus6 = {7,8,9,10,11,12}
+function Action_setup(object)
+    col_index = 0
+    obs_index = 0
+    --BAD
+    --object.clearButtons()
+    if mission_ps == nil or mission_players == nil then
+        printToAll("Must select Number of players and Average Player Skill", {1,0,0})
+    else
+        local mission = object.getName():match '^Mission: (.*)'
+        --local squads = {}
+        epic = false
+        missionsquads = {}
+        missionuniqueobstacles = {}
+        missionvectors = {}
+        decks = {}
+        cards = {}
+        squads = {}
+        shipnum = 1
+        asteroid_min_x = -9.2
+        asteroid_max_x = 9.2
+        asteroid_min_y = -9.2
+        asteroid_max_y = 9.2
+        num_asteroids = 0
+        num_debris = 0
+        img_index = IMG_NEBULA_BLUE
+        local rule_page
+        local turns = 12
+        printToAll("Setting up: "..mission, {0,1,0})
+        if mission == "Local Trouble" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            rule_page = 46
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
+            --            table.insert(missionvectors, {x=-4.5, y=-1.5, rot=90})
+            --            table.insert(missionvectors, {x=-4.5, y= 1.5, rot=90})
+            --            table.insert(missionvectors, {x=-1.5, y= 4.5, rot=180})
+            --            table.insert(missionvectors, {x= 1.5, y= 4.5, rot=180})
+            --            table.insert(missionvectors, {x= 4.5, y= 1.5, rot=-90})
+            --            table.insert(missionvectors, {x= 4.5, y=-1.5, rot=-90})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+        end
+        if mission == "Pallas Trouble" then
+            campaign = "PALLAS"
+            turns = 10
+            num_asteroids = 6
+            rule_page = 46
+            table.insert(missionsquads, {name="Bandit",turn=0,vector=7,ai="attack",type="ZBAN",count={1,1,0,1,0,1}, elite=false, isHostile=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TFO",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={1,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="attack",type="TIE",count={0,1,1,0,1,1}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,v._0730}
+        end
+        if mission == "Rescue Rebel Operatives" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=7,vector="1d6",ai="strike",type="INT",count={0,8,0,6,0,0}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1030S, v._0130S,v._0230,v._0330}
+            --TODO implement spawning HWK-290
+        end
+        if mission == "Disable Sensor Net" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 12
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Patrol",turn=1,vector="1d6",ai="attack",type="INT",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement spawning Sensor Beacons
+            --TODO implement spawning HWK-290
+        end
+
+        if mission == "Capture Refueling Station" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 - r1*3
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="TIE",count={1,-8,1,-6,1,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="bay1",ai="attack",type="INT",count={0,8,0,6,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="bay2",ai="attack",type="INT",count={0,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="bay1",ai="attack",type="ADV",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=5,vector="bay2",ai="attack",type="BOM",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=8,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            missionvectors = {v._0800,v._0900, v._1000, v._0200,v._0300,v._0400, bay1 = v.bay1, bay2 = v.bay2}
+            --TODO: implement spawning refueling station
+
+        end
+        if mission == "Tread Softly" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Minelayer",turn=0,vector=3,ai="attack",type="BOM",count={1,8,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="INT",count={0,0,6,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=5,vector="1d6",ai="attack",type="BOM",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=7,vector="1d6",ai="attack",type="TIE",count={1,1,8,1,6,1}, elite=false})
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement minefield spawning
+
+        end
+        if mission == "Imperial Entanglements" then
+            campaign = "HOTAC"
+            turns = 10
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={1,0,6,1,0,4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=3,vector="1d3",ai="strike",type="BOM",count={1,0,1,8,1,0}, elite=false})
+            table.insert(missionsquads, {name="Decimator",turn=6,vector="c",ai="strike",type="DEC",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="TIE",count={8,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="1d6",ai="attack",type="*",count={0,0,1,0,1,0}, elite=false})
+
+            missionvectors = {v._0630, v._0830,v._0930, v._1130, v._0030,v._0230,v._0330,c = v._0730}
+            --TODO: implement minefield spawning
+            --TODO: implement Transport spawning
+            --TODO: implement Decimator spawning
+            --TODO: implement spawning Ion Pulse Missile
+        end
+        if mission == "Care Package" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 12
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="INT",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={1,1,-8,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="INT",count={0,0,8,0,4,0}, elite=false})
+            table.insert(missionsquads, {name="Assault1",turn=3,vector="*",ai="strike",type="BOM",count={1,8,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=3,vector="1d6",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="INT",count={0,8,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Assault2",turn=6,vector="*",ai="srike",type="BOM",count={6,1,0,1,0,1}, elite=false})
+            missionvectors = {v._0600, v._0730,v._0900, v._1200, v._0130,v._0300}
+            --TODO: implement Transport spawning
+            --TODO: implement spawning proton torpedo
+        end
+        if mission == "Needle in a Haystack" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="strike",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="TIE",count={1,1,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=5,vector="1d6",ai="strike",type="TIE",count={1,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="strike",type="*",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Phantom",turn=13,vector="1d6",ai="attack",type="PHA",count={1,0,0,1,0,0}, elite=false})
+
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement ion storm spawning
+            --TODO: implement tracking token spawning
+            --TODO: implement Assault Ship spawning
+        end
+        if mission == "Bait" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-8}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d6",ai="attack",type="*",count={0,0,0,4,0,8}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d6+6",ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="SupportA",turn=3,vector="1d6",ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="SupportB",turn=3,vector="*",ai="attack",type="SHU",count={0,0,0,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=4,vector="1d12",ai="*",type="PHA",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="TIE",count={1,1,-6,1,-4,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6+6",ai="attack",type="*",count={0,0,6,0,4,0}, elite=false})
+            --TODO: implement random filtering (not shuttle/phantom)
+            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130, v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630}
+            --TODO: implement Transport spawning
+            --TODO: implement starting cloaked
+            --TODO: implement spawning shuttle abilities
+        end
+        if mission == "Cloak and Dagger" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=3,ai="attack",type="PHA",count={1,8,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,1,-6,1,-8,1}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,0,6,0,8,0}, elite=false})
+            --TODO: implement random filtering (not shuttle/phantom)
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-4,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,0,0,4,0,6}, elite=false})
+
+            missionvectors = {v._0830,v._0930, v._1130, v._0030,v._0230,v._0330}
+            --TODO: implement ion storm spawning
+            --TODO: implement spawning partial stations on side
+        end
+        if mission == "Revenge" then
+            campaign = "HOTAC"
+            turns = 10
+            table.insert(missionsquads, {name="Aces",turn=1,vector="1d12",ai="strike",type="INT",count={1,1,1,1,1,1}, elite=true})
+            --TODO: implement ion storm spawning
+            --TODO: elites match player PS
+            --TODO: implement multistrike
+        end
+        if mission == "Capture Officer" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Shuttle",turn=0,vector=7,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Elite",turn=2,vector="1d6",ai="attack",type="ADV",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-4,1,-6,1,-8}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector="1d6",ai="attack",type="INT",count={0,4,0,6,0,8}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=11,vector="1d6",ai="attack",type="INT",count={1,1,0,1,0,1}, elite=false})
+            missionvectors = {v._0530,v._0630,v._0930, v._1130, v._0030,v._0230, {x=0, y=-1,rot=180}}
+        end
+        if mission == "Nobody Home" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            num_debris = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Obstacle",turn=0,vector=6,ai="stiketarget",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="strike",type="INT",count={1,0,0,8,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=2,ai="strike",type="INT",count={0,6,1,0,0,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="TIE",count={1,1,-4,1,-8,1}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=3,ai="strike",type="*",count={0,0,4,0,8,0}, elite=false})
+            table.insert(missionsquads, {name="Command",turn=0,vector=4,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector=5,ai="strike",type="*",count={0,0,0,6,0,4}, elite=false})
+            missionvectors = {v._1100,v._1120,v._0020, v._0040, v._0100, {x=0, y=-2,rot=180}}
+        end
+        if mission == "Miners' Strike" then
+            campaign = "HOTAC"
+            turns = 12
+            table.insert(missionsquads, {name="Cargo",turn=0,vector=7,ai="flee",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Cargo",turn=0,vector=8,ai="flee",type="SHU",count={0,0,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,0,1,0,1,0}, elite=false})--2/3?
+            table.insert(missionsquads, {name="Beta",turn=0,vector=4,ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})--4/5?
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="TIE",count={1,-6,1,-8,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector="1d6",ai="attack",type="*",count={0,6,0,8,0,4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-4,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,4,0,6}, elite=false})
+
+            --TODO: spawn station components
+            missionvectors = {v._0630,v._0830,v._0930, v._1130, v._0030,v._0230,{x=0,y=3,rot=180},{x=2,y=2,rot=270}}
+        end
+        if mission == "Secure Holonet Receiver" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,-8,1,-6,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="*",count={0,0,8,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="TIE",count={0,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector="1d6",ai="attack",type="INT",count={8,0,4,0,6,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Inspection",turn=9,vector="1d6",ai="strike",type="INT",count={0,0,1,8,1,6}, elite=false})
+            --TODO: Spawn Satellite Relays
+            --TODO: Spawn Station
+            --TODO: spawn HWK-290
+            missionvectors = {v._0600,v._0730,v._0900, v._0000,v._0130,v._0300}
+        end
+        if mission == "Defector" then
+            campaign = "HOTAC"
+            turns = 10
+            num_asteroids = 6
+            table.insert(missionsquads, {name="Prototype",turn=0,vector=4,ai="attack",type="DEF",count={1,1,0,1,0,1}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,-8,1,-6}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="*",count={0,0,0,8,0,6}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="TIE",count={1,1,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=6,ai="attack",type="*",count={0,0,0,6,0,4}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={0,0,1,6,1,4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="TIE",count={1,-8,1,-6,1,-4}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector="1d6",ai="attack",type="*",count={0,8,0,6,0,4}, elite=false})
+            --TODO: implement random filters
+            missionvectors = {v._0920,v._1030S,v._1130,v._0030,v._0130S,v._0240}
+
+        end
+        if mission == "Pride of the Empire" then
+            campaign = "HOTAC"
+            turns = 12
+            num_asteroids = 6
+            asteroid_min_x = -9.2 - r1
+            asteroid_max_x = 9.2 + r1
+            asteroid_min_y = -9.2 - r1
+            asteroid_max_y = 9.2 + r1
+            -- c = 13, d = 14, e = 15, f = 16, center = 17
+            table.insert(missionsquads, {name="Instructor",turn=0,vector=17,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="DEF",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=13,ai="attack",type="TIE",count={0,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="DEF",count={0,0,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=14,ai="attack",type="TIE",count={1,1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector=15,ai="attack",type="TIE",count={1,0,0,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="DEF",count={0,0,0,0,0,1}, elite=true})
+            table.insert(missionsquads, {name="Delta",turn=0,vector=16,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="INT",count={1,0,1,0,1,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=8,vector="1d12",ai="attack",type="TIE",count={0,8,0,6,0,4}, elite=false})
+            missionvectors = {v._0730,v._0830,v._0930,v._1030,v._1130,v._0030,v._0130,v._0230,v._0330,v._0430,v._0530,v._0630,
+                {x=-1.5, y=1.5,rot=270}, --C
+                {x=-1.5, y=-1.5,rot=180}, --D
+                {x=1.5,y=-1.5,rot=90}, --E
+                {x=1.5,y=1.5,rot=0}, --F
+                {x=0,y=0,rot=180}    --center
+            }
+        end
+        haspallas = false
+        if mission == "Attack on the Pallas S1" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Attack on the Pallas S2" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={2,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Attack on the Pallas S3" then
+            campaign = "PALLAS"
+            turns = 8
+            haspallas = true
+            --TODO: Spawn Pallas
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=7,ai="attack",type="TFO",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="PUN",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=4,ai="strike",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=6,ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="3or8",ai="attack",type="*",count={3,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="PUN",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1or2",ai="strike",type="TIE",count={1,0,1,0,0,0}, elite=false})
+            missionvectors = {v._0630,v._0530,v._0330,v._0230,v._0030,v._1130,v._0930,v._0830}
+        end
+        if mission == "Retrieve the T70 prototype" then
+            campaign = "PALLAS"
+            turns = 99 --TODO: No Turn Limit?
+            haspallas = true
+            --TODO: Spawn Pallas
+            --TODO: Spawn T70
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="1d8",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="1d8",ai="strike",type="BOM",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector="1d8",ai="attack",type="TAP",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector="1d8",ai="attack",type="*",count={1,0,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="TSF",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector="1d8",ai="attack",type="DEF",count={0,0,1,0,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+            --TODO: Handle multiple squad entries spawning in 1 location?
+        end
+        if mission == "Retrieve the K-Wing prototype" then
+            campaign = "PALLAS"
+            turns = 20 --TODO: No Turn Limit?
+            haspallas = true
+            --TODO: Spawn U-Wing Blue Squadron Pathfinder
+            --TODO: Spawn T70
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="?",ai="attack",type="PUN",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector="?",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=4,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={1,-1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="SHU",count={0,1,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector=6,ai="attack",type="TSF",count={0,0,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=2,ai="strike",type="INT",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+            --TODO: STEFAN Who is Zeta?
+            --TODO: STEFAN What vector for Alpha/Beta? (special?)
+        end
+        if mission == "Win the E-Wing prototype" then
+            campaign = "PALLAS"
+            turns = 99
+            --strike race AI?
+            table.insert(missionsquads, {name="Alpha",turn=0,vector="*",ai="flee",type="EBLM",count={1,0,0,0,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "YT-1300 Combat Refit" then
+            campaign = "PALLAS"
+            haspallas = true
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn="*",vector="1d8",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="ADV",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="1d8",ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+
+        end
+        if mission == "Earn the YT-2400" then
+            campaign = "PALLAS"
+            turns = 10
+            --TODO: Add Cargo
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=5,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+
+        if mission == "Flying School" then
+            campaign = "PALLAS"
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=4,vector=4,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "Covert Ops" then
+            campaign = "PALLAS"
+            turns = 99
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=3,vector=9,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="INT",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=9,ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930,
+                {x=2,y=2,rot=180}} --TODO: Verify docking bay location
+        end
+        if mission == "Escape" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=5,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=3,vector=7,ai="strike",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={4,5,6,7},ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="strike",type="ADV",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=8,vector=7,ai="attack",type="TIE",count={0,1,1,1,0,0}, elite=false})
+            missionvectors = {v._1130,v._0030,v._0230,v._0330,v._0530,v._0630,v._0830,v._0930}
+        end
+        if mission == "Meeting" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=2,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=4,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIEE",count={0,1,0,1,0,0}, elite=true})
+            table.insert(missionsquads, {name="Epsilon",turn=6,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+            --setup ion clouds
+        end
+        if mission == "Arms race" then
+            campaign = "PALLAS"
+            turns = 15
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=3,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=6,vector=1,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=8,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            --spawn blue squadron pathfinder
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+        end
+        if mission == "Resources" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=9,ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="INT",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=2,vector=2,ai="attack",type="ADV",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=2,vector=2,ai="attack",type="SHU",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=6,vector="*",ai="strike",type="*",count={1,0,1,0,0,0}, elite=false})
+            --spawn transport
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000, {x=0,y=2,315}}
+        end
+        if mission == "Babysitters" then
+            campaign = "PALLAS"
+            turns = 10
+            haspallas = true
+            epic = true
+            img_index = IMG_EPIC_BLUE_PLANET
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,8},ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector={7,8},ai="strike",type="ADV",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="BetaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn=0,vector="copy",ai="attack",type="TIE",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Delta",turn=0,vector={2,7},ai="strike",type="BOM",count={1,0,1,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="DeltaOptionalTIE",turn="*",vector="*",ai="strike",type="TIE",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="TIE",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Epsilon",turn=0,vector="copy",ai="attack",type="INT",count={0,1,0,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Zeta",turn="*",vector={4,5},ai="attack",type="*",count={1,-1,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Zeta",turn="*",vector="copy",ai="attack",type="*",count={0,1,0,1,0,0}, elite=true})
+
+            missionvectors = {v._1100,v._0000,v._0100,v._0230,v._0330,
+                              v._0500,v._0600,v._0700,v._0830,v._0930}
+            y = 1
+            y_layer_2 = 1.1
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16,y,6.09},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.28,y,2.21},rot={0,150,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16,y,3.16},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.09,y,1.99},rot={0,30,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_6,pos={21.84,y,-0.11},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_2_HATCH,pos={18.17,y,-2.26},rot={0,150,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_INTERSECTION_3,pos={16.1,y,-3.41},rot={0,90,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_1_HATCH,pos={14.41,y,-2.47},rot={0,210,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_STATION_DOCK,pos={16.1,y,-6.3},rot={0,180,0}})
+
+            striketarget[2] = {}
+            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.3,y_layer_2,6.47},rot={0,270,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.63,y_layer_2,6.5},rot={0,0,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={13.92,y_layer_2,1.91},rot={0,60,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.16,y_layer_2,2.1},rot={0,30,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={22.81,y_layer_2,0.51},rot={0,60,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_SENSOR_ARRAY,pos={21.75,y_layer_2,-1.28},rot={0,180,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_SHIELD_GENERATOR,pos={20.81,y_layer_2,0.55},rot={0,120,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_FUEL_TANK,pos={18.3,y_layer_2,-2.34},rot={0,150,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={14.01,y_layer_2,-2.21},rot={0,120,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_CARGO,pos={17.86,y_layer_2,-6.68},rot={0,90,0},desc='ai addtarget 2'})
+            table.insert(missionuniqueobstacles, {guid=OBS_TURBOLASER,pos={14.4,y_layer_2,-6.66},rot={0,90,0},desc='ai addtarget 2'})
+
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={25.96,y,-6.90},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,-7.23},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={8.39,y,7.78},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={26.13,y,7.26},rot={0,0,0}})
+
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={3.03,2,-16.79},rot={0,0,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_MINEFIELD,pos={-3.03,2,-16.79},rot={0,0,0}})
+        end
+        if mission == "Assassination games" then
+            campaign = "PALLAS"
+            turns = 8
+            num_debris = 3
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=1,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="TIE",count={0,0,1,-1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Alpha",turn=0,vector=2,ai="attack",type="INT",count={0,0,0,1,0,0}, elite=false})
+            missionvectors = {{x=0,y=0,rot=180},{x=0.5,y=0,rot=180}}
+        end
+        if mission == "Traitor Hunt" then
+            campaign = "PALLAS"
+            turns = 7
+            table.insert(missionsquads, {name="Alpha",turn=0,vector={1,2,3,4,5,6,7,8,9,10,11,12},ai="attack",type="XRED",count={1,0,0,0,0,0}, elite=false})
+            missionvectors = {v._1100,v._0000,v._0100,v._0200,v._0300,v._0400,
+                              v._0500,v._0600,v._0700,v._0800,v._0900,v._1000}
+            y = 1
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_1_BIRD_OF_PREY ,pos={10.2,y,-1.82},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_2_CLAW ,pos={-9.72,y,-12.9},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_3_FISH ,pos={-1.02,y,7.26},rot={0,195,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_4_FACE ,pos={10.49,y,-9.78},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_5_OCARINA ,pos={0.63,y,-9.03},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_6_LONG ,pos={-3.97,y,0.21},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_1_DRAGON ,pos={14.37,y,9.13},rot={0,90,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_2_STAR ,pos={0.13,y,14.41},rot={0,180,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_3_GLOVE ,pos={-13.89,y,-2.94},rot={0,270,0}})
+            table.insert(missionuniqueobstacles, {guid=OBS_CLOUD_EDGE_4_LONG ,pos={-13.62,y,10.27},rot={0,180,0}})
+        end
+        if mission == "Attack on the mining station" then
+            campaign = "PALLAS"
+            turns = 99
+            num_asteroids = 6
+            epic = true
+            asteroid_min_x = -9.2-r1*2.5
+            asteroid_max_x = 9.2-r1*2.5
+            asteroid_min_y = -9.2
+            asteroid_max_y = 9.2
+            img_index = IMG_EPIC_DEATH_STAR_2
+            missionvectors = {v._1100,v._1120,v._1140,v._0020,v._0040,v._0100,
+                              v._0200,v._0240,v._0320,v._0400,
+                              v._0500,v._0520,v._0540,v._0620,v._0640,v._0700,
+                              v._0800,v._0840,v._0920,v._1000,
+                              {x=1.222,y=2.4,rot=120}, --dock 1 (21)
+                              {x=1.25,y=-2.5,rot=60}, --dock 2 (22)
+                              {x=3.29,y=0,rot=240}, -- cargo dock (23)
+                              {x=-1.5,y=0,rot=90} -- Smuggler (24)
+                             }
+            table.insert(missionsquads, {name="Alpha",turn=2,vector=21,ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false})
+            table.insert(missionsquads, {name="Beta",turn=0,vector=24,ai="flee e",type="ORS",count={1,0,0,0,0,0}, elite=false})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="TIE",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 3})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="ADV",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="INT",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 5})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="BOM",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="PHA",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 7})
+            table.insert(missionsquads, {name="Gamma",turn="*",vector="*",ai="attack",type="DEF",count={1,1,1,1,0,0}, elite=false, temp_round_pos = 9})
+            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={1,-1,1,-1,0,0}, elite=false, temp_round_pos = 10})
+            table.insert(missionsquads, {name="Delta",turn="*",vector=8,ai="strike",type="BOM",count={0,1,0,1,0,0}, elite=true, temp_round_pos = 10})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={1,-1,0,0,0,0}, elite=false, temp_round_pos = 11})
+            table.insert(missionsquads, {name="Epsilon",turn="*",vector=9,ai="attack",type="DEC",count={0,1,0,0,0,0}, elite=true, temp_round_pos = 11})
+
+        end
+        if mission == "Test" then
+            --            shipnum = 1
+            --            Spawn_Squad(1,"TIE","Alpha",4, false)
+            --            Spawn_Squad(2,"INT","Beta",3, false)
+            --            Spawn_Squad(3,"ADV","Beta",2, false)
+            --            Spawn_Squad(4,"BOM","Gamma",1, false)
+            --            Spawn_Squad(5,"DEF","Gamma",3, false)
+            --            Spawn_Squad(6,"PHA","Gamma",4, false)
+            --            Spawn_Squad(7,"SHU","Gamma",1, false)
+            --            Spawn_Squad(8,"DEC","Gamma",1, false)
+        end
+        if mission == "Epic Test" then
+            img_index = IMG_EPIC_BLUE_PLANET
+            epic = true
+        end
+        for i,obsdef in ipairs(missionuniqueobstacles) do
+            Spawn_Obstacle(i, obsdef.guid, obsdef.pos, obsdef.rot,obsdef.desc)
+        end
+        print("#missionvectors:"..#missionvectors)
+        for i,squad in ipairs(missionsquads) do
+            Spawn_Squad(squad)
+        end
+        --        local rules1 = findObjectByName("Rules Page 1")
+        --        rules1.setState(rule_page)
+        --        local rules2 = findObjectByName("Rules Page 2")
+        --        rules2.setState(rule_page+1)
+        setEpic(epic)
+        getObjectFromGUID(playmat).call('API_SetImage',{index=img_index})
+        startLuaCoroutine(self, 'spawnAllAsteroidsCoroutine')
+        turn_marker.setPosition({-39.84+6.9075,turn_marker.getPosition()[2],turn_marker.getPosition()[3]})
+        end_marker.setPosition({-39.84+6.9075*(turns),end_marker.getPosition()[2],end_marker.getPosition()[3]})
+        -- Spawn_Card(nil,nil,nil)
+    end
+end
+function API_ToggleEpic()
+    setEpic(not isEpicMap)
+end
+function setEpic(isEpic)
+    --printToAll("[:2338] isEpic"..tostring(isEpic),{1,1,1})
+    isEpicMap = isEpic
+    if isEpicMap then
+        printToAll("Set Map Size to EPIC",{0,0.5,1})
+    else
+        printToAll("Set Map Size to STD",{0,1,0.5})
+    end
+end
+function mod(a,b)
+    return a - math.floor(a/b)*b
+end
+local asteroids = {}
+function spawnAllAsteroidsCoroutine()
+    printToAll("Starting Asteroid Spawning Coroutine",{1,1,1})
+    asteroids = {}
+    local core_source = findObjectByNameAndType("Core Set Asteroids","Infinite")
+    local tfa_source = findObjectByNameAndType("TFA Set Asteroids","Infinite")
+    local debris_source = findObjectByNameAndType("Debris Fields","Infinite")
+    for i=1,num_asteroids,1 do
+        --printToAll("Asteroid "..tostring(i),{1,1,1})
+        local i_source = math.random(2)
+        --local i_roll = math.random(6)
+        local params = {}
+        --local x = asteroid_min_x + (asteroid_max_x - asteroid_min_x)*math.random()
+        --local y = asteroid_min_y + (asteroid_max_y - asteroid_min_y)*math.random()
+        params.position = findClearPosition()
+        params.rotation = {0,math.random(360),0}
+        --params.callback = 'setAsteroidState'
+        params.smooth = false
+        --params.callback_owner = self
+        --        local callback_params = {}
+        --        --local state = mod(i_roll-1,6)+1
+        --        callback_params['index'] = i
+        --        callback_params['state'] = i_roll
+        --params.params = {index = i, state = i_roll}
+        if i_source==1 then
+            --printToAll("Taking object from Core",{1,1,1})
+            asteroids[i] = core_source.takeObject(params)
+        elseif i_source==2 then
+            --printToAll("Taking object from TFA",{1,1,1})
+            asteroids[i] = tfa_source.takeObject(params)
+        else
+            printToAll("i_roll is not what is expected: "..tostring(i_roll),{1,0,0})
+        end
+        local type = "Core"
+        if i_source==2 then type="TFA" end
+        printToAll("Spawned Asteroid ("..type..") at {"..round(params.position[1],2)..","..round(params.position[2],2)..","..round(params.position[3],2).."}",{0,1,0})
+        for i=1, 20, 1 do
+            coroutine.yield(0)
+        end
+        --printToAll("Done Sleeping",{1,1,1})
+    end
+    for i=1,num_debris,1 do
+        --printToAll("Debris "..tostring(i),{1,1,1})
+        local i_roll = math.random(6)
+        local params = {}
+        params.position = findClearPosition()
+        params.rotation = {0,math.random(360),0}
+        params.smooth = false
+        --params.callback = 'setAsteroidState'
+        --params.callback_owner = self
+        --local callback_params = {}
+        --local state = i_roll
+        --callback_params['index'] = num_asteroids+i
+        --callback_params['state'] = state
+        --params.params = callback_params
+        debris_source.takeObject(params) --asteroids[num_asteroids+i] =
+        printToAll("Spawned Asteroid (Debris "..i_roll..") at {"..round(params.position[1],2)..",0,"..round(params.position[3],2).."}",{0,1,0})
+        for i=1, 20, 1 do
+            coroutine.yield(0)
+        end
+        --printToAll("Done Sleeping",{1,1,1})
+    end
+    --Randomize asteroids
+    for i=1, 20, 1 do
+        coroutine.yield(0)
+    end
+    for i,asteroid in ipairs(getAllObjects()) do
+        if isInPlay(asteroid) and (asteroid.getName():match "Asteroid" or asteroid.getName():match "DebrisField") and asteroid.tag ~= "Infinite" then
+            local i_roll = math.random(6)
+            printToAll("Setting: "..asteroid.getName().." to state: "..tostring(i_roll),{0,1,0})
+            if i_roll>1 then
+                asteroid.setState( i_roll )
+            end
+        end
+    end
+    for i=1, 20, 1 do
+        coroutine.yield(0)
+    end
+    for i,asteroid in ipairs(getAllObjects()) do
+        if isInPlay(asteroid) and (asteroid.getName():match "Asteroid" or asteroid.getName():match "DebrisField") and asteroid.tag ~= "Infinite" then
+            asteroid.Lock()
+        end
+    end
+    --printToAll("Returning spawnAllAsteroidsCoroutine",{1,1,1})
+    return true
+end
+function findClearPosition()
+    --printToAll("Looking for position",{1,1,1})
+    local tries = 10
+    local pos
+    for i=1, tries, 1 do
+        local x = asteroid_min_x + (asteroid_max_x - asteroid_min_x)*math.random()
+        local y = asteroid_min_y + (asteroid_max_y - asteroid_min_y)*math.random()
+        pos = {x,1,y}
+        if isClear(pos) then
+            return pos
+        end
+
+        --printToAll("  Still Looking...",{1,1,1})
+    end
+    printToAll("Couldn't find clear area after 10 tries",{1,0,0})
+    return pos
+end
+function isClear(pos)
+    for i,asteroid in ipairs(getAllObjects()) do
+        if asteroid.getName():match "Asteroid" or asteroid.getName():match "DebrisField" then
+            local astpos = asteroid.getPosition()
+            if distance(pos[1],pos[3],astpos[1],astpos[3])<5 then return false end
+        end
+    end
+    return true
+end
+function setAsteroidState(object, params)
+    asteroids[params['index']].setState( params['state'] )
+    -- printToAll("Setting '"..asteroids[params['index']].getGUID().."' to state '"..params['state'].."'",{0,1,0})
+end
+
+squad_offsets = {{-1.1,0,1.1},{1.1,0,1.1},{-1.1,0,-1.1},{1.1,0,-1.1} }
+
+    -- {"INT","INT","INT","INT","INT","INT",
+    -- "BOM","BOM","BOM","BOM","BOM","BOM",
+    -- "ADV","ADV","ADV","ADV",
+    -- "DEF","DEF","DEF","DEF",
+    -- "PHA","PHA","PHA","PHA",
+    -- "SHU","SHU","SHU","SHU" }
+placement_offset = {
+    {0,0,0.25},
+    {1.46,0,0.25},
+    {1.46,0,2.46},
+    {1.46,0,2.46}
+}
+copy_vector = nil
+function Spawn_Squad(squad, more_after_lgs)
+    --TODO: implement type filtering
+    --One Row? +0.25
+    --Two Row? +2.46
+    --One column? 0
+    --Two column? +1.46
+    local again = false
+    local squad_orig = squad.type
+    if squad.type == "*" then
+        local pick = 1+math.random(#squad_types_deck[campaign] -1)
+        if more_after_lgs then
+            while AI_DEFS[campaign][squad_types_deck[campaign][pick]].isLargeShip do
+                printToAll("Draw LGS again", {1,0,0})
+                pick = 1+math.random(#squad_types_deck[campaign] -1)
+            end
+        end
+        squad.type = squad_types_deck[campaign][pick]
+        --TODO: If large ship is drawn, draw again for others?
+
+    end
+    local quantity = countSquad(squad)
+    if AI_DEFS[campaign][squad.type].isLargeShip and squad_orig=="*" then
+        again = true
+        quantity = 1
+    end
+    if more_after_lgs then
+        quantity = quantity - 1
+    end
+    if quantity==0 then return end
+    local position = {0,0,0 }
+    local temp_position = {0,0,0}
+    local rotation = 180
+    local card = math.random(pilot_card_num[campaign][squad.type])
+    local adjust = {0,0,0}
+    temp_position = calculateTempPosition(squad)
+    if squad.vector=="copy" then
+        squad.vector = copy_vector
+    end
+    if squad.turn==0 and type(squad.vector) == "number" or type(squad.vector) == "table" then
+        if type(squad.vector) == "table" then
+            local i_roll = math.random(#squad.vector)
+            squad.vector = squad.vector[i_roll]
+            printToAll("Randomly selected vector: "..tostring(squad.vector).." for: "..squad.name,{0,1,1})
+        end
+        copy_vector = squad.vector
+        position = calculateRealPosition(squad)
+        rotation = missionvectors[squad.vector].rot
+        local adjustlookup = {0,0,1.875} --placement_offset[quantity]
+        if quantity == 1 then
+            adjustlookup = add(adjustlookup, {-1.125,0,0})
+        end
+        adjust = RotateVector(adjustlookup,rotation)
+    else
+        position = temp_position
+    end
+    for i,off in ipairs(squad_offsets) do
+        if 5-i<=quantity then
+            off = RotateVector(off,rotation)
+            Spawn_Ship(squad.hostile, squad.type, squad.name, squad.elite, squad.ai, card, add(add(position,adjust),off), rotation, add(temp_position,off))
+        end
+    end
+    squads[squad.turn+1] = squad
+    if again then
+        printToAll("Generating 2nd random AI group along with LGS", {1,1,1})
+        squad.type = squad_orig
+        Spawn_Squad(squad, true)
+    end
+end
+function calculateRealPosition(squad)
+    local x_scalar = 1
+    if isEpicMap then
+        x_scalar = 2
+    end
+    print("V:"..squad.vector.." #missionvectors"..#missionvectors)
+    return {missionvectors[squad.vector].x*x_scalar*4.074, 1, missionvectors[squad.vector].y*4.074} --3.622
+end
+function calculateTempPosition(squad)
+    --local x = 56.7
+    local y = 29.6
+    if type(squad.turn) ~= "number" then
+        if squad.temp_round_pos ~=nil then
+            squad.turn = squad.temp_round_pos
+        else
+            squad.turn=-1
+        end
+    end
+    if squads[squad.turn]~=nil and squads[squad.turn-1]~=nil then y = y+4.4 end
+    local position = {-39.84-1.1+squad.turn*6.9075, 1, y }
+    --if squad.turn == 0 then position = add(position,{0,0,-2.59}) end
+    if squads[squad.turn+1]~=nil then position = add(position, {5,0,0}) end
+    return position
+end
+function countSquad(squad)
+    local number = 0
+    for i,s in ipairs(squad.count) do
+        if s>0 and s<=mission_ps and i<=mission_players then number = number+1 end
+        if s<0 and s>=-mission_ps and i<=mission_players then number = number-1 end
+    end
+    return number
+end
+function add(pos, offset)
+    return {pos[1] + offset[1],pos[2] + offset[2],pos[3] + offset[3]}
+end
+function sub(pos, offset)
+    return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
+end
+function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, temp_pos)
+    if isHostile==nil then
+        isHostile = true
+    end
+    local def = AI_DEFS[campaign][type]
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Model'
+    obj_parameters.position = position
+
+    obj_parameters.rotation = { 0, 180+rotation, 0 }
+    local newship = spawnObject(obj_parameters)
+    newship.scale({0.625,0.625,0.625})
+    local custom = {}
+    custom.mesh = def.mesh
+    custom.diffuse = def.diffuse
+    custom.collider = def.collider
+    custom.type = 1 --Figurine
+    custom.material = 1
+    custom.specular_intensity = 0
+    custom.specular_color = {223/255, 207/255, 190/255}
+    newship.setCustomObject(custom)
+    local ps = def.elitePilotSkills[1]
+    if elite then
+        if mission_ps >= 8 then ps = def.elitePilotSkills[5]
+        elseif mission_ps >= 6 then ps = def.elitePilotSkills[4]
+        elseif mission_ps >= 4 then ps = def.elitePilotSkills[3]
+        else ps = def.elitePilotSkills[2]
+        end
+    end
+    local size = ""
+    local hostility = "AI"
+    if not isHostile then
+        hostility = "FR"
+    end
+    if def.isLargeShip then size = " LGS" end
+    newship.setName("["..hostility..":"..type..":"..ps.."] "..name.."#"..tostring(shipnum)..size)
+    if ai=="strike" then newship.setDescription("ai strike") end
+    Spawn_Card(type, name, temp_pos, shipnum, card)
+    shipnum = shipnum + 1
+
+    --newship.lock()
+end
+
+obs_bags = {}
+obss = {}
+function Spawn_Obstacle(obsnum, guid, position, rotation,description)
+    local obs_source = findObjectByNameAndType("Hotac Obstacles","Infinite")
+    params = {}
+    local offset = {obs_index,0,0}
+    obs_index = obs_index+3
+    params.position = add({-30,5,50 },offset)
+    params.callback = 'drawObs'
+    params.callback_owner = self
+    params.params = {guid = guid, obsnum = obsnum, position = position, rotation = rotation, description=description }
+    obs_bags[obsnum] = obs_source.takeObject(params)
+end
+function drawObs(object, params)
+    local p = {}
+    p.position = params.position
+    p.rotation = params.rotation
+    p.guid = params.guid
+    p.callback = 'updateObstacle'
+    p.callback_owner = self
+    p.params = params
+    obss[params.obsnum] = obs_bags[params.obsnum].takeObject(p)
+    obs_bags[params.obsnum].destruct()
+end
+function updateObstacle(object, params)
+    local obs = obss[params.obsnum]
+    obs.setDescription(params.description)
+    obs.lock()
+end
+decks = {}
+cards = {}
+function Spawn_Card(type, name, position, shipnum, card)
+    if pilot_card_num[campaign][type]==nil then return end
+    local pilots = findObjectByNameAndType(campaign.." AI","Infinite")
+    local params = {}
+    -- params.position = pilots.getPosition()
+    -- params.position[1] = params.position[1]+5
+    -- params.position[2] = 5
+    local offset = {col_index,0,0}
+    col_index = (col_index + 1.5) % 50
+    params.position = add({-54,5,37 },offset)
+    params.callback = 'drawCard'
+    params.callback_owner = self
+    local index = pilot_card_offsets[campaign][type]+card-1 --math.random(pilot_card_num[type])-1
+    printToAll("Drawing card "..index,{0,1,0})
+    params.params = {index = index, shipnum = shipnum, name = name, position = position }
+    decks[shipnum] = pilots.takeObject(params)
+end
+function drawCard(object, params)
+    local p = {}
+    p.position = add(params.position,{0,3,5}) --{22,5,14 }
+    p.index = params.index
+    p.callback = 'updateCard'
+    p.callback_owner = self
+    p.params = params
+    cards[params.shipnum] = decks[params.shipnum].takeObject(p)
+    decks[params.shipnum].destruct()
+end
+function updateCard(object, params)
+    local card = cards[params.shipnum]
+    printToAll("Drawing card "..params.name.."#"..tostring(params.shipnum),{0,1,0})
+    card.setName(params.name.."#"..tostring(params.shipnum))
+end
+function string.starts(String,Start)
+    if String==nil then
+        return false
+    end
+    return string.sub(String,1,string.len(Start))==Start
+end
+function findObjectByName(name)
+    for i,obj in ipairs(getAllObjects()) do
+        if obj.getName()==name then return obj end
+    end
+end
+function findObjectByNameAndType(name, type)
+    for i,obj in ipairs(getAllObjects()) do
+        if obj.getName()==name and obj.tag == type then return obj end
+    end
+end
+function notify(guid,move,text,ship)
+    if text == nil then
+        text = ''
+    end
+    local obj = getObjectFromGUID(guid)
+    local name = obj.getName()
+    name = string.gsub(name,":","|")
+    if move == 'q' then
+        printToAll(name .. ' executed undo.', {0, 1, 0})
+    elseif move == 'set' then
+        printToAll(name .. ' set name.', {0, 1, 1})
+    elseif move == 'r' then
+        printToAll(name .. ' spawned a ruler.', {0.2, 0.2, 0.8})
+elseif move == 'action' then
+        printToAll(name .. ' ' .. text .. '.', {0.959999978542328 , 0.439000010490417 , 0.806999981403351})
+    elseif move == 'keep' then
+        printToAll(name .. ' stored his position.', {0.5, 0, 1})
+    elseif move == 'decloak' then
+        printToAll(name .. ' cannot decloak.', {0.5, 1, 0.9})
+    else
+        if ship ~= nil then
+            printToAll(name .. ' attemped a (' .. move .. ') but is now touching ' .. ship .. '.', {0.9, 0.5, 0})
+        else
+            printToAll(name .. ' ' .. text ..' (' .. move .. ').', {1, 0, 0})
+        end
+    end
+end
+function distance(x,y,a,b)
+    x = (x-a)*(x-a)
+    y = (y-b)*(y-b)
+    return math.sqrt(math.abs((x+y)))
+end
+
+function round(x)
+    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
+end
+
+function round(num, idp)
+    if num == nil then return nil end
+    local mult = 10^(idp or 0)
+    if num >= 0 then return math.floor(num * mult + 0.5) / mult
+    else return math.ceil(num * mult - 0.5) / mult end
+end
+function table.getKeys(tbl)
+    local keyset={}
+    local n=0
+
+    for k,v in pairs(tbl) do
+      n=n+1
+      keyset[n]=k
+    end
+    return keyset
+end
+-- Shallow table copy
+-- Does not include metatables
+table.shallowcopy = function(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = orig_value
+        end
+    else
+        copy = orig
+    end
+    return copy
+end
+table.contains = function(tab, el)
+    for k,v in pairs(tab) do
+        if v == el then
+            return true
+        end
+    end
+    return false
+end
+Vect = {}
+Vect.tostring = function(vect)
+    return "{"..tostring(round(vect[1],2))..","..tostring(round(vect[3],2)).."}"
+end
+Vect.Cross2D = function(u,v)
+    return u[3]*v[1]-u[1]*v[3]
+end
+Vect.Sum = function(vec1, vec2)
+    assert(type(vec1) == 'table', 'Vect.Sum: arg#1 not a table!')
+    assert(type(vec2) == 'table', 'Vect.Sum: arg#2 not a table!')
+    local out = {}
+    local k = 1
+    while vec1[k] ~= nil and vec2[k] ~= nil do
+        out[k] = vec1[k]+vec2[k]
+        k = k+1
+    end
+    return out
+end
+-- returns result from -pi to pi
+Vect.Angle2D = function(vec1, vec2)
+    if vec2 == nil then
+        vec2 = {1}
+        for k = 2, #vec1, 1 do
+            table.insert(vec2, 0)
+        end
+    end
+    local angle = ( math.atan2(vec2[3], vec2[1]) - math.atan2(vec1[3], vec1[1]) )
+    if angle>math.pi then
+        angle = angle - math.pi*2
+    end
+    if angle<-math.pi then
+        angle = angle + math.pi*2
+    end
+    return angle
+end
