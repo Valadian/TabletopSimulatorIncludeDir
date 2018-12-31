@@ -60,3 +60,15 @@ end
 function vector.cross2D(u,v)
     return u[3]*v[1]-u[1]*v[3]
 end
+function vector.dot(a,b)
+    return a[3]*b[3] + a[1]*b[1]
+end
+function vector.forward(obj)
+    local direction = obj.getRotation()
+    local rotval = math.round(direction[2])
+    local radrotval = math.rad(rotval)
+    local xForward = math.sin(radrotval) * -1
+    local zForward = math.cos(radrotval) * -1
+    -- log(guid .. " for x: "..round(xForward,2).." y: "..round(zForward,2))
+    return {xForward, 0, zForward}
+end

@@ -376,7 +376,7 @@ function auto(guid)
                 n = {0, 0, -12}
             }
             local aiPos = ai.getPosition()
-            local aiForward = getForwardVector(guid)
+            local aiForward = vector.forward(ai)
             local tgtPos = vector.add(ai.getPosition(), offsets[direction])
             local offset = {tgtPos[1] - aiPos[1],0,tgtPos[3] - aiPos[3]}
             local angle = math.atan2(offset[3], offset[1]) - math.atan2(aiForward[3], aiForward[1])
@@ -391,7 +391,7 @@ function auto(guid)
             printToAll(ai.getName().." declares target as [00FF00][u]" .. tgt.getName().."[/u][-]",{0,1,0})
             local aiPos = ai.getPosition()
             local tgtPos = tgt.getPosition()
-            local aiForward = getForwardVector(guid)
+            local aiForward = vector.forward(tgt)
             local corners = findCorners(tgt)
             -- printToAll("AI Pos: "..vector.tostring(aiPos),{1,1,1})
             minAngle = 999999
@@ -426,7 +426,7 @@ function auto(guid)
             end
             -- printToAll("Min: "..tostring(minAngle),{1,1,1})
             -- printToAll("Max: "..tostring(maxAngle),{1,1,1})
-            local tgtForward = getForwardVector(tgt.getGUID())
+            local tgtForward = vector.forward(tgt)
             local cross = vector.cross2D(offset,tgtForward)
             local i_dir = 1
             local splittingLine = get_i_dir(minAngle) != get_i_dir(maxAngle)
@@ -443,7 +443,7 @@ function auto(guid)
                 end
             end
 
-            local fleeing = dot(offset,tgtForward)>0
+            local fleeing = vector.dot(offset,tgtForward)>0
             move = getMove(getAiType(ai),i_dir,realDistance(guid,tgt.getGUID()),fleeing)
             if squad ~= nil and squadmove[squad]==nil then
                 -- printToAll("Setting move for squad [".. squad.."] ".. move,{1,0,0})
@@ -1476,19 +1476,6 @@ function setNewLock(object, params)
     freshLock.call('manualSet', {color=params['player_color'], name=params['ship_name']})
 end
 
-function getForwardVector(guid)
-    local this = getObjectFromGUID(guid)
-    local direction = this.getRotation()
-    local rotval = math.round(direction[2])
-    local radrotval = math.rad(rotval)
-    local xForward = math.sin(radrotval) * -1
-    local zForward = math.cos(radrotval) * -1
-    -- log(guid .. " for x: "..round(xForward,2).." y: "..round(zForward,2))
-    return {xForward, 0, zForward}
-end
-function dot(a,b)
-    return a[3]*b[3] + a[1]*b[1]
-end
 function findNearestShip(pos)
     local nearest
     local minDist = 999999
@@ -1546,8 +1533,8 @@ function findNearestPlayer(guid,strike)
             distances[ship.getGUID()] = realDistance(guid,ship.getGUID())
 
             local aiPos = ai.getPosition()
-            local aiForward = getForwardVector(guid)
-            local tgtForward = getForwardVector(ship.getGUID())
+            local aiForward = vector.forward(ai)
+            local tgtForward = vector.forward(ship)
             local tgtCorners = findCorners(ship)
             for i,corner in ipairs(tgtCorners) do
                 local offset = {corner[1] - aiPos[1],0,corner[3] - aiPos[3]}
@@ -1618,7 +1605,7 @@ end
 function findRelativeCorners(object)
     local scalar = 0.75--0.85
     if isBigShip(object.getGUID()) then scalar = 1.5 end --1.63
-    local forward = getForwardVector(object.getGUID())
+    local forward = vector.forward(object)
     local f = {forward[1] * scalar, 0, forward[3] * scalar}
     local corners = {}
     corners[1] = { f[1] - f[3], 0,  f[3] + f[1]}
@@ -2398,6 +2385,5 @@ elseif move == 'action' then
     end
 end
 #include ../../util/string
-#include ../../util/math
 #include ../../util/table
 #include ../../util/vector

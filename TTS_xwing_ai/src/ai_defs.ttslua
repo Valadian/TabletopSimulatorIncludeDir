@@ -1,18 +1,18 @@
 
 local AI_DEFS = {}
-local campaigns = {"HOTAC","PALLAS","DOTE"}
+local campaigns = {'HOTAC','PALLAS','DOTE'}
 -- TODO: Meshes for other spawning
 -- MESH= {
---     GR = "https://paste.ee/r/h5ND1",
---     YT = "https://paste.ee/r/kkPoB"
+--     GR = 'https://paste.ee/r/h5ND1',
+--     YT = 'https://paste.ee/r/kkPoB'
 -- }
 -- DIFFUSE = {
---     GR = "http://i.imgur.com/Nur18O2.jpg",
---     YT = "http://i.imgur.com/QiomPcM.jpg"
+--     GR = 'http://i.imgur.com/Nur18O2.jpg',
+--     YT = 'http://i.imgur.com/QiomPcM.jpg'
 -- }
 -- COLLIDER = {
---     GR = "https://paste.ee/r/qIaBu",
---     YT = "https://paste.ee/r/LIxnJ"
+--     GR = 'https://paste.ee/r/qIaBu',
+--     YT = 'https://paste.ee/r/LIxnJ'
 -- }
 
 local squad_types_deck = {}
@@ -28,17 +28,17 @@ function initialize_ai()
         pilot_card_num[campaign] = {}
         squad_types_deck[campaign] = {}
     end
-	-- AI_DEFS["HOTAC"] = {}
-	-- AI_DEFS["PALLAS"] = {}
-	-- AI_DEFS["DOTE"] = {}
+	-- AI_DEFS['HOTAC'] = {}
+	-- AI_DEFS['PALLAS'] = {}
+	-- AI_DEFS['DOTE'] = {}
 	HostileAiDefinition = {
 	    isHostile = true,
 	    isLargeShip = false,
         ignoresHugeShips = false,
-	    mesh = "",
-	    diffuse = "",
-	    collider = "",
-	    typeColor = "FFFFFF",
+	    mesh = '',
+	    diffuse = '',
+	    collider = '',
+	    typeColor = 'FFFFFF',
 	    has360Turret = false,
 	    hasCloak = false,
 	    hasFreeFocus = false,
@@ -74,12 +74,12 @@ function initialize_ai()
 	    FriendlyAiDefinition.__index = FriendlyAiDefinition
 	    return o
 	end
-    AI_DEFS["HOTAC"]["TIE"] = HostileAiDefinition:new{
+    AI_DEFS['HOTAC']['TIE'] = HostileAiDefinition:new{
         ignoresHugeShips = true,
-        mesh = "https://paste.ee/r/Yz0kt",
-        diffuse = "http://i.imgur.com/otxKcUx.png",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "666666",
+        mesh = 'https://paste.ee/r/Yz0kt',
+        diffuse = 'http://i.imgur.com/otxKcUx.png',
+        collider = 'https://paste.ee/r/1dx1C',
+        typeColor = '666666',
         hasBarrelRoll = true,
         hasConditionalEvade = true,
         elitePilotSkills = {1, nil, nil, nil, nil},
@@ -100,24 +100,24 @@ function initialize_ai()
                       ['br2']='br3',
                       ['tr1']='tr3',['tr2']='tr3',
                       ['k4*']='k3*'},
-        swerves =    {["tl1"] = {nil,"bl2"}, ["tl2"] = {nil,"bl2"}, ["tl3"] = {nil,"bl3"},
-                      ["bl2"] = {"tl2","s2"}, ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"}, ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
-                      ["br2"] = {"s2","tr2"}, ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" } }
+        swerves =    {['tl1'] = {nil,'bl2'}, ['tl2'] = {nil,'bl2'}, ['tl3'] = {nil,'bl3'},
+                      ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3','s3'},
+                      ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'}, ['s5'] = {'bl3','br3'},
+                      ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
+                      ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                      ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' } }
     }
-    AI_DEFS["PALLAS"]["TIE"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["HOTAC"]["TIE"]))
-    AI_DEFS["PALLAS"]["TIEE"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["HOTAC"]["TIE"]))
-    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkills = {2,4,5,7,9}
-    AI_DEFS["PALLAS"]["TIEE"].elitePilotSkillDeckEntries = 4
+    AI_DEFS['PALLAS']['TIE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
+    AI_DEFS['PALLAS']['TIEE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
+    AI_DEFS['PALLAS']['TIEE'].elitePilotSkills = {2,4,5,7,9}
+    AI_DEFS['PALLAS']['TIEE'].elitePilotSkillDeckEntries = 4
 
-    AI_DEFS["HOTAC"]["INT"] = HostileAiDefinition:new{
+    AI_DEFS['HOTAC']['INT'] = HostileAiDefinition:new{
         ignoresHugeShips = true,
-        mesh = "https://paste.ee/r/JxWNX",
-        diffuse = "https://i.imgur.com/1pSXuxb.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "600000",
+        mesh = 'https://paste.ee/r/JxWNX',
+        diffuse = 'https://i.imgur.com/1pSXuxb.jpg',
+        collider = 'https://paste.ee/r/1dx1C',
+        typeColor = '600000',
         hasFreeFocus = true,
         hasBoost = true,
         hasBarrelRoll = true,
@@ -141,20 +141,20 @@ function initialize_ai()
                       ['br2'] = 'br3',
                       ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
                       ['k5*'] = 'k3*'},
-        swerves =    {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                      ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k3*"] = {"bl3","br3"}, ["k5*"] = {"bl3","br3" }}
+        swerves =    {['tl1'] = {nil,'bl2'},   ['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                      ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                      ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
+                      ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                      ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                      ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3' }}
     }
-    AI_DEFS["PALLAS"]["INT"] = AI_DEFS["HOTAC"]["INT"]
+    AI_DEFS['PALLAS']['INT'] = AI_DEFS['HOTAC']['INT']
 
-    AI_DEFS["HOTAC"]["BOM"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/5A0YG",
-        diffuse = "http://i.imgur.com/nYO1XwT.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "00FFFF",
+    AI_DEFS['HOTAC']['BOM'] = HostileAiDefinition:new{
+        mesh = 'https://paste.ee/r/5A0YG',
+        diffuse = 'http://i.imgur.com/nYO1XwT.jpg',
+        collider = 'https://paste.ee/r/1dx1C',
+        typeColor = '00FFFF',
         hasFreeTargetLock = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
@@ -175,20 +175,20 @@ function initialize_ai()
                         ['s1'] = 's4',          ['s2'] = 's4',     ['s3'] = 's4',
                         ['br1'] = 'br3',        ['br2'] = 'br3',
                         ['tr2*'] = 'tr3'},
-        swerves =      {["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
-                        ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
-                        ["k5*"] = {"bl3","br3" }}
+        swerves =      {['tl2*'] = {nil,'bl2'},  ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2*','s1'}, ['bl2'] = {'tl2*','s2'}, ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
+                        ['tr2*'] = {'br2',nil }, ['tr3'] = {'br3',nil },
+                        ['k5*'] = {'bl3','br3' }}
     }
-    AI_DEFS["PALLAS"]["BOM"] = AI_DEFS["HOTAC"]["BOM"]
+    AI_DEFS['PALLAS']['BOM'] = AI_DEFS['HOTAC']['BOM']
 
-    AI_DEFS["HOTAC"]["ADV"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/NeptF",
-        diffuse = "http://i.imgur.com/trxaCDg.jpg",
-        collider = "https://paste.ee/r/VAYqd",
-        typeColor = "c1440e",
+    AI_DEFS['HOTAC']['ADV'] = HostileAiDefinition:new{
+        mesh = 'https://paste.ee/r/NeptF',
+        diffuse = 'http://i.imgur.com/trxaCDg.jpg',
+        collider = 'https://paste.ee/r/VAYqd',
+        typeColor = 'c1440e',
         hasFreeTargetLock = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
@@ -210,20 +210,20 @@ function initialize_ai()
                         ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
                         ['br1'] = 'br3',   ['br2'] = 'br3',
                         ['tr2'] = 'tr3'},
-        swerves =    {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s2","tr2" }, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k4*"] = {"bl3","br3" }}
+        swerves =    {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s2'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
+                        ['br1'] = {'s2','tr2' }, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                        ['k4*'] = {'bl3','br3' }}
     }
-    AI_DEFS["PALLAS"]["ADV"] = AI_DEFS["HOTAC"]["ADV"]
+    AI_DEFS['PALLAS']['ADV'] = AI_DEFS['HOTAC']['ADV']
 
-    AI_DEFS["HOTAC"]["DEF"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/tIm5S",
-        diffuse = "http://i.imgur.com/0u5rtnX.jpg",
-        collider = "https://paste.ee/r/6jn13",
-        typeColor = "660066",
+    AI_DEFS['HOTAC']['DEF'] = HostileAiDefinition:new{
+        mesh = 'https://paste.ee/r/tIm5S',
+        diffuse = 'http://i.imgur.com/0u5rtnX.jpg',
+        collider = 'https://paste.ee/r/6jn13',
+        typeColor = '660066',
         hasFreeTargetLock = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
@@ -244,20 +244,20 @@ function initialize_ai()
                         ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
                         ['br1'] = 'br3',   ['br2'] = 'br3',
                         ['tr1*'] = 'tr3',  ['tr2*'] = 'tr3'},
-        swerves =      {["tl1*"] = {nil,"bl1"},  ["tl2*"] = {nil,"bl2"},  ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl1*","s2"}, ["bl2"] = {"tl2*","s2"}, ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s2","tr1*"}, ["br2"] = {"s2","tr2*"}, ["br3"] = {"s3","tr3"},
-                        ["tr1*"] = {"br1",nil }, ["tr2*"] = {"br2",nil }, ["tr3"] = {"br3",nil },
-                        ["k4"] = {"bl3","br3" }}
+        swerves =      {['tl1*'] = {nil,'bl1'},  ['tl2*'] = {nil,'bl2'},  ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl1*','s2'}, ['bl2'] = {'tl2*','s2'}, ['bl3'] = {'tl3','s3'},
+                        ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
+                        ['br1'] = {'s2','tr1*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
+                        ['tr1*'] = {'br1',nil }, ['tr2*'] = {'br2',nil }, ['tr3'] = {'br3',nil },
+                        ['k4'] = {'bl3','br3' }}
     }
-    AI_DEFS["PALLAS"]["DEF"] = AI_DEFS["HOTAC"]["DEF"]
+    AI_DEFS['PALLAS']['DEF'] = AI_DEFS['HOTAC']['DEF']
 
-    AI_DEFS["HOTAC"]["PHA"] = HostileAiDefinition:new{
-        mesh = "https://paste.ee/r/JN16g",
-        diffuse = "http://i.imgur.com/4bXBvZZ.jpg",
-        collider = "https://paste.ee/r/1dx1C",
-        typeColor = "2C75FF",
+    AI_DEFS['HOTAC']['PHA'] = HostileAiDefinition:new{
+        mesh = 'https://paste.ee/r/JN16g',
+        diffuse = 'http://i.imgur.com/4bXBvZZ.jpg',
+        collider = 'https://paste.ee/r/1dx1C',
+        typeColor = '2C75FF',
         hasCloak = true,
         hasFreeEvade = true,
         hasBarrelRoll = true,
@@ -281,21 +281,21 @@ function initialize_ai()
                         ['br2'] = 'br3',
                         ['tr1'] = 'tr3',   ['tr2'] = 'tr3',
                         ['k4*'] = 'k3*'},
-        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3" }}
+        swerves =      {['tl1'] = {nil,'bl2'},   ['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
+                        ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                        ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' }}
     }
-    AI_DEFS["PALLAS"]["PHA"] = AI_DEFS["HOTAC"]["PHA"]
+    AI_DEFS['PALLAS']['PHA'] = AI_DEFS['HOTAC']['PHA']
 
-    AI_DEFS["HOTAC"]["DEC"] = HostileAiDefinition:new{
+    AI_DEFS['HOTAC']['DEC'] = HostileAiDefinition:new{
         isLargeShip = true,
-        mesh = "https://paste.ee/r/MJOFI",
-        diffuse = "http://i.imgur.com/atzM3rO.jpg",
-        collider = "https://paste.ee/r/JavTd",
-        typeColor = "808080",
+        mesh = 'https://paste.ee/r/MJOFI',
+        diffuse = 'http://i.imgur.com/atzM3rO.jpg',
+        collider = 'https://paste.ee/r/JavTd',
+        typeColor = '808080',
         has360Turret = true,
         hasFreeTargetLock = true,
         hasConditionalFocus = true,
@@ -316,22 +316,22 @@ function initialize_ai()
                         ['s1'] = 's4',     ['s2'] = 's4', ['s3'] = 's4',
                         ['br1'] = 'br3',   ['br2'] = 'br3',
                         ['tr2'] = 'tr3'},
-        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil }}
+        swerves =      {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil }}
     }
-    AI_DEFS["PALLAS"]["DEC"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["HOTAC"]["DEC"]))
-    AI_DEFS["PALLAS"]["DEC"].elitePilotSkills = {2,4,5,7,9}
-    AI_DEFS["PALLAS"]["DEC"].elitePilotSkillDeckEntries = 4
+    AI_DEFS['PALLAS']['DEC'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['DEC']))
+    AI_DEFS['PALLAS']['DEC'].elitePilotSkills = {2,4,5,7,9}
+    AI_DEFS['PALLAS']['DEC'].elitePilotSkillDeckEntries = 4
 
-    AI_DEFS["HOTAC"]["SHU"] = HostileAiDefinition:new{
+    AI_DEFS['HOTAC']['SHU'] = HostileAiDefinition:new{
         isLargeShip = true,
-        mesh = "https://paste.ee/r/4uxZO",
-        diffuse = "http://i.imgur.com/rd9ZPz3.jpg",
-        collider = "https://paste.ee/r/xBpMo",
-        typeColor = "A0A0A0",
+        mesh = 'https://paste.ee/r/4uxZO',
+        diffuse = 'http://i.imgur.com/rd9ZPz3.jpg',
+        collider = 'https://paste.ee/r/xBpMo',
+        typeColor = 'A0A0A0',
         hasFreeTargetLock = true,
         hasConditionalFocus = true,
         elitePilotSkills = {2,4, 4, 6, 8},
@@ -346,24 +346,24 @@ function initialize_ai()
                         {'tr2*','tr2*','tr2*','tr2*','br2','br3*'},
                         {'tr2*','tr2*','tr2*','tr2*','br1','br1'},
                         {'tl2*','tl2*','tl2*','tr2*','tr2*','tr2*'}},
-        fleeMoves =    {['bl1'] = 'bl3*',  ['bl2'] = 'bl3*',
-                        ['s1'] = 's3',     ['s2'] = 's3',
-                        ['br1'] = 'br3*',  ['br2'] = 'br3*'},
-        swerves =      {["s0*"] = {nil,nil},
-                        ["tr2*"] = {"br2",nil },
-                        ["bl1"] = {"tl2*","s1"}, ["bl2"] = {"tl2*","s2"}, ["bl3*"] = {"tl2*","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"},
-                        ["br1"] = {"s1","tr2*"}, ["br2"] = {"s2","tr2*"}, ["br3*"] = {"s3","tr2*"},
-                        ["tl2*"] = {nil,"bl2"}}
-    }
-    AI_DEFS["PALLAS"]["SHU"] = AI_DEFS["HOTAC"]["SHU"]
+        fleeMoves =    {['bl1']='bl3*',['bl2']='bl3*',
+                        ['s0*']='s3',['s1']='s3',['s2']='s3',
+                        ['br1']='br3*',['br2']='br3*'},
+        swerves =      {['tl2*'] = {nil,'bl2'},
+                        ['bl1'] = {'tl2*','s1'}, ['bl2'] = {'tl2*','s2'}, ['bl3*'] = {'tl2*','s3'},
+                        ['s0*'] = {'bl1','br1'}, ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3*','br3*'},
+                        ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3*'] = {'s3','tr2*'},
+                        ['tr2*'] = {'br2',nil} }
 
-    AI_DEFS["PALLAS"]["TFO"] = HostileAiDefinition:new{
+    }
+    AI_DEFS['PALLAS']['SHU'] = AI_DEFS['HOTAC']['SHU']
+
+    AI_DEFS['PALLAS']['TFO'] = HostileAiDefinition:new{
         ignoresHugeShips = true,
-        mesh = "http://pastebin.com/jt2AzA8t",
-        diffuse = "http://i.imgur.com/z56FaVi.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "333333",
+        mesh = 'http://pastebin.com/jt2AzA8t',
+        diffuse = 'http://i.imgur.com/z56FaVi.png',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = '333333',
         hasFreeFocus = true,
         hasBarrelRoll = true,
         hasConditionalEvade = true,
@@ -386,25 +386,24 @@ function initialize_ai()
                         ['s2'] = 's5',     ['s3'] = 's5', ['s4'] = 's5',
                         ['br2'] = 'br3',
                         ['tr1'] = 'tr3',   ['tr2'] = 'tr3'},
-        swerves =      {["tl1"] = {nil,"bl2"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                        ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr1"] = {"br2",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["bl2s*"] = {"tl2","s2" },
-                        ["k4*"] = {"bl3","br3" },
-                        ["br2s*"] = {"tr2","s2" }}
-    }
-    AI_DEFS["PALLAS"]["TFOE"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["PALLAS"]["TFO"]))
-    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkills = {2, 4, 5, 7, 9}
-    AI_DEFS["PALLAS"]["TFOE"].elitePilotSkillDeckEntries = 4
+        swerves =      {['tl1'] = {nil,'bl2'},   ['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
+                        ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                        ['bl2s*'] = {'tl2','k4*'},
+                        ['k4*'] = {'bl2s*','br2s*'},
+                        ['br2s*'] = {'k4*','tr2'} }
+    AI_DEFS['PALLAS']['TFOE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['TFO']))
+    AI_DEFS['PALLAS']['TFOE'].elitePilotSkills = {2, 4, 5, 7, 9}
+    AI_DEFS['PALLAS']['TFOE'].elitePilotSkillDeckEntries = 4
     --TODO: UPS Upsilon Shuttle
-    AI_DEFS["PALLAS"]["UPS"] = HostileAiDefinition:new{
+    AI_DEFS['PALLAS']['UPS'] = HostileAiDefinition:new{
         isLargeShip = true,
-        mesh = "http://pastebin.com/nsHXF9XV",
-        diffuse = "http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
-        typeColor = "A0A0A0",
+        mesh = 'http://pastebin.com/nsHXF9XV',
+        diffuse = 'http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
+        typeColor = 'A0A0A0',
         hasFreeTargetLock = true,
         hasConditionalFocus = true,
         elitePilotSkills = {2, nil, nil, nil, nil}, --UPS should be 2 not 1
@@ -425,17 +424,17 @@ function initialize_ai()
                      ['br1'] = 'br3', ['br2'] = 'br3',
                      ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
         swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
-                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
-                   ["s0*"] = {"bl1","br1"},  ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
-                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
+                   ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3*','s3'},
+                   ['s0*'] = {'bl1','br1'},  ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},
+                   ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3*'},
                    ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil}}
     }
     --TODO: TAP TIE Adv. Prototype
-    AI_DEFS["PALLAS"]["TAP"] = HostileAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029089434/A4DA1AD96E4A6D65CC6AE4F745EDA966BA4EF85A/",
-        diffuse = "http://i.imgur.com/7vyhllx.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "91340b",
+    AI_DEFS['PALLAS']['TAP'] = HostileAiDefinition:new{
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029089434/A4DA1AD96E4A6D65CC6AE4F745EDA966BA4EF85A/',
+        diffuse = 'http://i.imgur.com/7vyhllx.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = '91340b',
         hasFreeBarrelRoll = true,
         hasBoost = true,
         hasConditionalFocus = true,
@@ -458,19 +457,19 @@ function initialize_ai()
                      ['s2'] = 's5',     ['s3'] = 's5',     ['s4'] = 's5',
                      ['br1'] = 'br3',   ['br2'] = 'br3',
                      ['tr1'] = 'tr3',  ['tr2'] = 'tr3'},
-        swerves =    {["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl1","s2"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},  ["s5"] = {"bl3","br3"},
-                      ["br1"] = {"s2","tr1"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}}
+        swerves =    {['tl1'] = {nil,'bl1'},   ['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                      ['bl1'] = {'tl1','s2'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                      ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
+                      ['br1'] = {'s2','tr1'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                      ['tr1'] = {'br1',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                      ['k4*'] = {'bl3','br3'}}
     }
     --TODO: TSF TIE S/F
-    AI_DEFS["PALLAS"]["TSF"] = HostileAiDefinition:new{
-        mesh = "http://pastebin.com/LezDjunY",
-        diffuse = "http://i.imgur.com/x8NveGf.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "aa0000",
+    AI_DEFS['PALLAS']['TSF'] = HostileAiDefinition:new{
+        mesh = 'http://pastebin.com/LezDjunY',
+        diffuse = 'http://i.imgur.com/x8NveGf.png',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = 'aa0000',
         hasFreeTargetLock = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
@@ -492,18 +491,18 @@ function initialize_ai()
                      ['br1'] = 'br3', ['br2'] = 'br3',
                      ['tr1*'] = 'tr3*', ['tr2'] = 'tr3*'},
         swerves = {['tl1*'] = {nil, 'bl1'}, ['tl2'] = {nil, 'bl2'}, ['tl3*'] = {nil, 'bl3'},
-                   ["bl1"] = {"tl1*","s1"}, ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3*","s3"},
-                   ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},  ["s4"] = {"bl3","br3"},
-                   ["br1"] = {"s1","tr1*"}, ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3*"},
+                   ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3*','s3'},
+                   ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
+                   ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3*'},
                    ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
-                   ['bl3s*'] = {'tr3*', 's3'}, ['br3s*'] = {'s3','tr3*'}}
-    }
+                   ['bl3s*'] = {'tl3*','s3'},
+                   ['br3s*'] = {'s3','tr3*'} }
     --TODO: PUN Punisher
-    AI_DEFS["PALLAS"]["PUN"] = HostileAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029073355/7A1507E4D88098D19C8EAFE4A763CC33A5EC35CB/",
-        diffuse = "http://i.imgur.com/r6bfxcV.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "008F8F",
+    AI_DEFS['PALLAS']['PUN'] = HostileAiDefinition:new{
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029073355/7A1507E4D88098D19C8EAFE4A763CC33A5EC35CB/',
+        diffuse = 'http://i.imgur.com/r6bfxcV.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = '008F8F',
         hasFreeTargetLock = true,
         hasBoost = true,
         hasConditionalFocus = true,
@@ -524,19 +523,19 @@ function initialize_ai()
                      ['s1'] = 's3', ['s2'] = 's3',
                      ['br1'] = 'br3', ['br2'] = 'br3',
                      ['tr2*'] = 'tr3'},
-        swerves =    {["tl2*"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl2*","s1"},  ["bl2"] = {"tl2*","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"},
-                      ["br1"] = {"s1","tr2*"},  ["br2"] = {"s2","tr2*"},  ["br3"] = {"s3","tr3"},
-                      ["tr2*"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}}
+        swerves =    {['tl2*'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                      ['bl1'] = {'tl2*','s1'},  ['bl2'] = {'tl2*','s2'},  ['bl3'] = {'tl3','s3'},
+                      ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},
+                      ['br1'] = {'s1','tr2*'},  ['br2'] = {'s2','tr2*'},  ['br3'] = {'s3','tr3'},
+                      ['tr2*'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                      ['k4*'] = {'bl3','br3'}}
     }
     --TODO: BWI B-wing
-    AI_DEFS["PALLAS"]["BBLU"] = FriendlyAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/",
-        diffuse = "http://i.imgur.com/JihQH1r.png",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "0000FF",
+    AI_DEFS['PALLAS']['BBLU'] = FriendlyAiDefinition:new{
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/',
+        diffuse = 'http://i.imgur.com/JihQH1r.png',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = '0000FF',
         hasFreeFocus = true,
         hasBarrelRoll = true,
         hasConditionalFocus = false,
@@ -558,24 +557,24 @@ function initialize_ai()
                      ['s1'] = 's4*', ['s2'] = 's4*',['s3'] = 's4*',
                      ['br1'] = 'br3*',['br2'] = 'br3*',
                      ['tr1*'] = 'tr2'},
-        swerves =   {["tr1*"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
-                     ["bl1"] = {"tl1*","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3*"] = {"tl2","s3"},
-                     ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3*","br3*"}, ["s4*"] = {"bl3*","br3*"},
-                     ["br1"] = {"s1","tr1*"},  ["br2"] = {"s2","tr2"},  ["br3*"] = {"s3","tr2"},
-                     ["tr1*"] = {"br1",nil },  ["tr2"] = {"br2",nil },
-                     ["k2*"] = {"bl2","br2"}},
+        swerves =   {['tl1*'] = {nil,'bl1'},   ['tl2'] = {nil,'bl2'},
+                     ['bl1'] = {'tl1*','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3*'] = {'tl2','s3'},
+                     ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3*','br3*'}, ['s4*'] = {'bl3*','br3*'},
+                     ['br1'] = {'s1','tr1*'},  ['br2'] = {'s2','tr2'},  ['br3*'] = {'s3','tr2'},
+                     ['tr1*'] = {'br1',nil },  ['tr2'] = {'br2',nil },
+                     ['k2*'] = {'bl2','br2'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
-    -- AI_DEFS["DOTE"]["BBLU"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["PALLAS"]["BBLU"]))
-    -- AI_DEFS["DOTE"]["BDAG"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["PALLAS"]["BBLU"]))
-    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkills = {4,5,6,8,10}
-    -- AI_DEFS["DOTE"]["BDAG"].elitePilotSkillDeckEntries = 2
+    -- AI_DEFS['DOTE']['BBLU'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
+    -- AI_DEFS['DOTE']['BDAG'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
+    -- AI_DEFS['DOTE']['BDAG'].elitePilotSkills = {4,5,6,8,10}
+    -- AI_DEFS['DOTE']['BDAG'].elitePilotSkillDeckEntries = 2
 
-    AI_DEFS["PALLAS"]["ZBAN"] = FriendlyAiDefinition:new{
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/",
-        diffuse = "http://i.imgur.com/hcCxX3n.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FFFF00",
+    AI_DEFS['PALLAS']['ZBAN'] = FriendlyAiDefinition:new{
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/',
+        diffuse = 'http://i.imgur.com/hcCxX3n.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = 'FFFF00',
         hasBarrelRoll = true,
         hasConditionalFocus = true,
         elitePilotSkills = {2,nil,nil,nil,nil},
@@ -595,24 +594,24 @@ function initialize_ai()
                         ['s1'] = 's4', ['s2'] = 's4',['s3'] = 's4',
                         ['br1'] = 'br3',['br2'] = 'br3',
                         ['tr2'] = 'tr3'},
-        swerves =      {["tr2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4*"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}},
+        swerves =      {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                        ['k3*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
     }
-    -- AI_DEFS["DOTE"]["ZBAN"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["PALLAS"]["ZBAN"]))
-    -- AI_DEFS["DOTE"]["ZTAL"] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS["PALLAS"]["ZBAN"]))
+    -- AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    -- AI_DEFS['DOTE']['ZTAL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
     --TODO: ZBIN Scum Binayre
     --TODO: ZBLA Scum Black Sun
 
-    AI_DEFS["PALLAS"]["XRED"] = FriendlyAiDefinition:new{--x-wing T-65
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/",
-        diffuse = "http://i.imgur.com/3GxuDDz.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FF0000",
+    AI_DEFS['PALLAS']['XRED'] = FriendlyAiDefinition:new{--x-wing T-65
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/',
+        diffuse = 'http://i.imgur.com/3GxuDDz.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = 'FF0000',
         hasFreeFocus = true,
         hasConditionalTargetLock = true,
         elitePilotSkills = {4,nil,nil,nil,nil},
@@ -632,21 +631,21 @@ function initialize_ai()
                      ['s1'] = 's4', ['s2'] = 's4', ['s3'] = 's4',
                      ['br1'] = 'br3', ['br2'] = 'br3',
                      ['tr2'] = 'tr3'},
-        swerves = {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                      ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                      ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
-                      ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                      ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                      ["k4*"] = {"bl3","br3"}},
+        swerves = {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                      ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                      ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                      ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                      ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                      ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
     --TODO: XROO
 
-    AI_DEFS["PALLAS"]["EBLM"] = FriendlyAiDefinition:new{ --E-Wing Knave
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/",
-        diffuse = "http://i.imgur.com/TItm60V.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/",
-        typeColor = "FF8080",
+    AI_DEFS['PALLAS']['EBLM'] = FriendlyAiDefinition:new{ --E-Wing Knave
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/',
+        diffuse = 'http://i.imgur.com/TItm60V.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = 'FF8080',
         hasFreeTargetLock = true,
         hasBarrelRoll = true,
         hasConditionalFocus = true,
@@ -668,12 +667,12 @@ function initialize_ai()
                         ['br1'] = 'br3', ['br2'] = 'br3',
                         ['tr2'] = 'tr3',
                         ['k4*'] = 'k3*'},
-        swerves =      {["tl2"] = {nil,"bl2"},   ["tl3"] = {nil,"bl3"},
-                        ["bl1"] = {"tl2","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl3","s3"},
-                        ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"}, ["s5"] = {"bl3","br3"},
-                        ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr3"},
-                        ["tr2"] = {"br2",nil },  ["tr3"] = {"br3",nil },
-                        ["k3*"] = {"bl3","br3"}, ["k4*"] = {"bl3","br3"}},
+        swerves =      {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'}, ['s5'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+                        ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
     }
     --TODO: EKNA
@@ -690,12 +689,12 @@ function initialize_ai()
     --TODO: HWKS Scum HWK Spice Runner
 
     --TODO: ORS YT-1300 Outer Rim Smuggler
-    AI_DEFS["PALLAS"]["ORS"] = HostileAiDefinition:new{
+    AI_DEFS['PALLAS']['ORS'] = HostileAiDefinition:new{
         isLargeShip = true,
-        mesh = "http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/",
-        diffuse = "http://i.imgur.com/QiomPcM.jpg",
-        collider = "http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/",
-        typeColor = "8080FF",
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/',
+        diffuse = 'http://i.imgur.com/QiomPcM.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
+        typeColor = '8080FF',
 	    has360Turret = true,
 	    hasFreeFocus = true,
 	    hasConditionalFocus = false,
@@ -718,11 +717,11 @@ function initialize_ai()
                      ['br1'] = 'br3', ['br2'] = 'br3',
                      ['tr1'] = 'tr2',
                      ['k4*'] = 'k3*' },
-	    swerves = { ["tl1"] = {nil,"bl1"},   ["tl2"] = {nil,"bl2"},
-                    ["bl1"] = {"tl1","s1"},  ["bl2"] = {"tl2","s2"},  ["bl3"] = {"tl2","s3"},
-                    ["s1"] = {"bl1","br1"},  ["s2"] = {"bl2","br2"},  ["s3"] = {"bl3","br3"}, ["s4"] = {"bl3","br3"},
-                    ["br1"] = {"s1","tr2"},  ["br2"] = {"s2","tr2"},  ["br3"] = {"s3","tr2"},
-                    ["tr1"] = {"br1",nil },  ["tr2"] = {"br2",nil },
+	    swerves = { ['tl1'] = {nil,'bl1'},   ['tl2'] = {nil,'bl2'},
+                    ['bl1'] = {'tl1','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl2','s3'},
+                    ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                    ['br1'] = {'s1','tr1'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr2'},
+                    ['tr1'] = {'br1',nil },  ['tr2'] = {'br2',nil },
                     ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
     }
@@ -759,12 +758,12 @@ function initialize_ai()
             end
         end
     end
-    -- AI_DEFS["TEMP"] = HostileAiDefinition:new{
+    -- AI_DEFS['TEMP'] = HostileAiDefinition:new{
     --     isLargeShip = false,
-    --     mesh = "",
-    --     diffuse = "",
-    --     collider = "",
-    --     typeColor = "FFFFFF",
+    --     mesh = '',
+    --     diffuse = '',
+    --     collider = '',
+    --     typeColor = 'FFFFFF',
     --     has360Turret = false,
     --     hasCloak = false,
     --     hasFreeFocus = false,
