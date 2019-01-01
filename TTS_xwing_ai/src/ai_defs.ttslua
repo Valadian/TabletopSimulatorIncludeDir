@@ -51,6 +51,7 @@ function initialize_ai()
 	    hasConditionalEvade = false,
 	    hasConditionalTargetLock = false,
 	    hasConditionalCloak = false,
+        hasConditionalSlam = false, --TODO: IMPLEMENT
 	    elitePilotSkills = {},
 	    elitePilotSkillDeckEntries = 0,
 	    closeMoves = {},
@@ -403,7 +404,7 @@ function initialize_ai()
         mesh = 'http://pastebin.com/nsHXF9XV',
         diffuse = 'http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
-        typeColor = 'A0A0A0',
+        typeColor = 'A0A0C0',
         hasFreeTargetLock = true,
         hasConditionalFocus = true,
         elitePilotSkills = {2, nil, nil, nil, nil}, --UPS should be 2 not 1
@@ -535,7 +536,7 @@ function initialize_ai()
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/',
         diffuse = 'http://i.imgur.com/JihQH1r.png',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
-        typeColor = '0000FF',
+        typeColor = '2a81c5',
         hasFreeFocus = true,
         hasBarrelRoll = true,
         hasConditionalFocus = false,
@@ -565,16 +566,16 @@ function initialize_ai()
                      ['k2*'] = {'bl2','br2'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
-    -- AI_DEFS['DOTE']['BBLU'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
-    -- AI_DEFS['DOTE']['BDAG'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
-    -- AI_DEFS['DOTE']['BDAG'].elitePilotSkills = {4,5,6,8,10}
+    AI_DEFS['DOTE']['BBLU'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
+    AI_DEFS['DOTE']['BDAG'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
+    AI_DEFS['DOTE']['BDAG'].elitePilotSkills = {4,5,6,8,10}
     -- AI_DEFS['DOTE']['BDAG'].elitePilotSkillDeckEntries = 2
 
     AI_DEFS['PALLAS']['ZBAN'] = FriendlyAiDefinition:new{
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/',
         diffuse = 'http://i.imgur.com/hcCxX3n.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
-        typeColor = 'FFFF00',
+        typeColor = '808000',
         hasBarrelRoll = true,
         hasConditionalFocus = true,
         elitePilotSkills = {2,nil,nil,nil,nil},
@@ -602,10 +603,20 @@ function initialize_ai()
                         ['k3*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
     }
-    -- AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
-    -- AI_DEFS['DOTE']['ZTAL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
-    --TODO: ZBIN Scum Binayre
-    --TODO: ZBLA Scum Black Sun
+    AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZTAL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZTAL'].elitePilotSkills = {4,nil,nil,nil,nil}
+    AI_DEFS['DOTE']['ZTAL'].hasFreeFocus = true
+    AI_DEFS['DOTE']['ZTAL'].hasConditionalFocus = false
+    AI_DEFS['DOTE']['ZTAL'].hasConditionalTargetLock = true
+    AI_DEFS['DOTE']['ZBIN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZBIN'].elitePilotSkills = {1,nil,nil,nil,nil}
+    AI_DEFS['DOTE']['ZBIN'].hasBarrelRoll = false
+    AI_DEFS['DOTE']['ZBIN'].hasConditionalTargetLock = false
+    AI_DEFS['DOTE']['ZBLA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZBLA'].elitePilotSkills = {3,nil,nil,nil,nil}
+    AI_DEFS['DOTE']['ZBLA'].hasBarrelRoll = false
+    AI_DEFS['DOTE']['ZBLA'].hasConditionalTargetLock = true
 
     AI_DEFS['PALLAS']['XRED'] = FriendlyAiDefinition:new{--x-wing T-65
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/',
@@ -639,9 +650,16 @@ function initialize_ai()
                       ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
-    --TODO: XROO
+    AI_DEFS['DOTE']['XROO'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['XRED']))
+    AI_DEFS['DOTE']['XROO'].hasFreeFocus = false
+    AI_DEFS['DOTE']['XROO'].hasConditionalFocus = true
+    AI_DEFS['DOTE']['XROO'].hasConditionalTargetLock = false
+    AI_DEFS['DOTE']['XRED'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['XRED']))
+    AI_DEFS['DOTE']['XRED'].elitePilotSkills = {4,5,6,8,10}
+    AI_DEFS['DOTE']['XRED'].hasFreeFocus = true
+    -- AI_DEFS['DOTE']['XRED'].elitePilotSkillDeckEntries = 4
 
-    AI_DEFS['PALLAS']['EBLM'] = FriendlyAiDefinition:new{ --E-Wing Knave
+    AI_DEFS['PALLAS']['EBLM'] = FriendlyAiDefinition:new{ --E-Wing Blackmoon
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/',
         diffuse = 'http://i.imgur.com/TItm60V.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -675,26 +693,190 @@ function initialize_ai()
                         ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
     }
-    --TODO: EKNA
+    AI_DEFS['DOTE']['EKNA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
+    AI_DEFS['DOTE']['EKNA'].elitePilotSkills = {1,nil,nil,nil,nil}
+    AI_DEFS['DOTE']['EBLM'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
+    AI_DEFS['DOTE']['EBLM'].hasFreeEvade = true
+    AI_DEFS['DOTE']['EBLM'].elitePilotSkills = {3,5,6,8,10}
+    -- AI_DEFS['DOTE']['EBLM'].elitePilotSkillDeckEntries = 2
 
-    --TODO: KWAR
-    --TODO: KGUA
+    AI_DEFS['DOTE']['KWAR'] = HostileAiDefinition:new{ --E-Wing Blackmoon
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = 'FFFFB0',
+        hasFreeFocus = true,
+        hasConditionalTargetLock = true,
+        hasConditionalSlam = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'s3','s3','br2','bl2','tr2','tl2'},
+                        {'bl2','tl2','br2','br2','s3','s3'},
+                        {'br3','br2','br2','tr2','br1','br1'},
+                        {'br3','br2','br2','tr2','tr2','br1'},
+                        {'tl2','tl2','tr2','tr2','bl1','br1'}},
+        farMoves =     {{'s3','s3','s3','s3','s2','s2'},
+                        {'s3','br2','br2','br3','br3','tr2'},
+                        {'br3','br2','br2','tr2','tr2','br1'},
+                        {'tr2','tr2','tr2','br2','br2','br1'},
+                        {'tl2','tl2','tl2','tr2','tr2','tr2'}},
+        fleeMoves =    {['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s3',['s2']='s3',
+                        ['br1']='br3',['br2']='br3'},
+        swerves =      {['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
+                        ['tr2'] = {'br2',nil} },
+        hyperdriveMoves = {} --NO HYPERDRIVE
+    }
+    AI_DEFS['DOTE']['KGUA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['KWAR']))
+    AI_DEFS['DOTE']['KGUA'].elitePilotSkills = {4,nil,nil,nil,nil}
+    AI_DEFS['DOTE']['KGUA'].hasFreeFocus = false
+    AI_DEFS['DOTE']['KGUA'].hasFreeTargetLock = true
+    AI_DEFS['DOTE']['KGUA'].hasConditionalFocus = true
 
-    --TODO: YGOL
-    --TODO: YGRE
-    --TODO: YSYN Scum Syndicate
-    --TODO: YHIR Scum Hired
+    AI_DEFS['DOTE']['YGOL'] = HostileAiDefinition:new{ --E-Wing Blackmoon
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = 'FFFF00',
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'bl1','br1','s1','s1','tl2','tr2'},
+                        {'tr2','tr2','s1','br1','br1','br1'},
+                        {'br1','tr2','tr2','tr2','tr3*','tr3*'},
+                        {'k4*','k4*','k4*','tr2','tr2','tr3*'},
+                        {'k4*','k4*','k4*','tl2','tr2','s3'}},
+        farMoves =     {{'s4*','s3','s3','s3','s2','s2'},
+                        {'s2','br2','br3','br3','tr2','tr2'}, --assuming 2nd row of br2 is acutally br3
+                        {'br3','tr2','tr2','tr2','tr3*','tr3*'},
+                        {'k4*','k4*','tr2','tr2','tr2','tr3*'},
+                        {'k4*','k4*','k4*','k4*','tl2','tr2'}},
+        fleeMoves =    {['tl2']='tl3*',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4*',['s2']='s4*',['s3']='s4*',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr2']='tr3*'},
+        swerves =      {['tl2'] = {nil,'bl2'}, ['tl3*'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3*','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4*'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
+                        ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
+                        ['k4*'] = {'bl3','br3'} },
+        hyperdriveMoves = {'s1','s1','s1','s1','s2','s2'}
+    }
+    AI_DEFS['DOTE']['YGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YGOL']))
+    AI_DEFS['DOTE']['YGRE'].hasFreeFocus = true
+    AI_DEFS['DOTE']['YGRE'].hasConditionalFocus = false
+    AI_DEFS['DOTE']['YGRE'].elitePilotSkills = {4,5,6,8,10},
+    -- AI_DEFS['DOTE']['YGRE'].elitePilotSkillDeckEntries = 2
+    AI_DEFS['DOTE']['YSYN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YGOL']))
+    AI_DEFS['DOTE']['YSYN'].closeMoves =   {{'bl1','br1','s1','s1','tl2','tr2'},
+                                            {'tr2','tr2','s1','br1','br1','br1'},
+                                            {'br1','tr2','tr2','tr2','tr3','tr3'},
+                                            {'k4*','k4*','k4*','tr2','tr2','tr3'},
+                                            {'k4*','k4*','k4*','tl2','tr2','s3'}},
+    AI_DEFS['DOTE']['YSYN'].closeMoves =   {{'s4*','s3','s3','s3','s2','s2'},
+                                            {'s2','br2','br3','br3','tr2','tr2'}, --assuming 2nd row of br2 is acutally br3
+                                            {'br3','tr2','tr2','tr2','tr3','tr3'},
+                                            {'k4*','k4*','tr2','tr2','tr2','tr3'},
+                                            {'k4*','k4*','k4*','k4*','tl2','tr2'}},
+    AI_DEFS['DOTE']['YSYN'].fleeMoves =    {['tl2']='tl3',
+                                            ['bl1']='bl3',['bl2']='bl3',
+                                            ['s1']='s4*',['s2']='s4*',['s3']='s4*',
+                                            ['br1']='br3',['br2']='br3',
+                                            ['tr2']='tr3' }
+    AI_DEFS['DOTE']['YSYN'].swerves =      {['tl2'] = {nil,'bl2'}, ['tl3'] = {nil,'bl3'},
+                                            ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3','s3'},
+                                            ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4*'] = {'bl3','br3'},
+                                            ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
+                                            ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
+                                            ['k4*'] = {'bl3','br3'} }
 
-    --TODO: HWK Rebel
-    --TODO: HWKS Scum HWK Spice Runner
+    AI_DEFS['DOTE']['YSYN'].hyperdriveMoves = {'s1','s2','s2','s3','tl3','tr3'}
+    AI_DEFS['DOTE']['YHIR'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YSYN']))
+    AI_DEFS['DOTE']['YHIR'].elitePilotSkills = {4,5,6,8,10},
+    -- AI_DEFS['DOTE']['YHIR'].elitePilotSkillDeckEntries = 2
 
-    --TODO: ORS YT-1300 Outer Rim Smuggler
+    --TODO: Scum has multiple erros (right most arc has tr3 and k3* that don't exist)
+    AI_DEFS['DOTE']['HWK'] = HostileAiDefinition:new{ --E-Wing Blackmoon
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = 'b87333',
+        hasFreeFocus = true,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        elitePilotSkillDeckEntries = 0,
+        closeMoves =   {{'s3','s3','br2','bl2','tr2','tl2'},
+                     -- {'s1','s1','br2','bl2','tr2','tl2'}, --SCUM VARIANT
+                        {'br2','tl2','bl2','s3','s3','s4*'},
+                     -- {'br2','tl2','br2','br2',s1','s1'}, --SCUM VARIANT
+                        {'br3*','br2','br2','tr2','br1','br1'},
+                        {'br3*','br2','br2','tr2','tr2','br1'},
+                        {'tl2','tl2','tr2','tr2','bl1','br1'}},
+        farMoves =     {{'s4*','s3','s3','s3','s2','s2'},
+                        {'s4*','s3','br2','br2','tr2','br3*'},
+                     -- {'s4*','br2','br2','tr2','br3*','br3*'}, --SCUM VARIANT
+                        {'br3*','br2','br2','tr2','tr2','br1'},
+                        {'tr2','tr2','tr2','tr2','br1','br1'},
+                        {'tl2','tl2','tl2','tr2','tr2','tr2'}},
+        fleeMoves =    {['bl1']='bl3*',['bl2']='bl3*',
+                        ['s1']='s4*',['s2']='s4*',['s3']='s4*',
+                        ['br1']='br3*',['br2']='br3*' },
+        swerves =      {['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3*'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3*','br3*'}, ['s4*'] = {'bl3*','br3*'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3*'] = {'s3','tr2'},
+                        ['tr2'] = {'br2',nil} },
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
+    }
+    AI_DEFS['DOTE']['HWKS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HWK']))
+    AI_DEFS['DOTE']['HWKS'].hasFreeFocus = false
+    AI_DEFS['DOTE']['HWKS'].hasConditionalFocus = true
+    AI_DEFS['DOTE']['HWKS'].hasConditionalTargetLock = false
+    AI_DEFS['DOTE']['HWKS'].elitePilotSkills = {1,nil,nil,nil,nil}
+    -- AI_DEFS['DOTE']['KWAR'] = HostileAiDefinition:new{ --E-Wing Blackmoon
+    --     mesh = '',
+    --     diffuse = '',
+    --     collider = '',
+    --     typeColor = '',
+    --     elitePilotSkills = {3,nil,nil,nil,nil},
+    --     elitePilotSkillDeckEntries = 0,
+    --     closeMoves =   {{},
+    --                     {},
+    --                     {},
+    --                     {},
+    --                     {}},
+    --     farMoves =     {{},
+    --                     {},
+    --                     {},
+    --                     {},
+    --                     {}},
+    --     fleeMoves =    {['tl2'] = 'tl3',
+    --                     ['bl1'] = 'bl3', ['bl2'] = 'bl3',
+    --                     ['s1'] = 's5', ['s2'] = 's5', ['s3'] = 's5', ['s4'] = 's5',
+    --                     ['br1'] = 'br3', ['br2'] = 'br3',
+    --                     ['tr2'] = 'tr3',
+    --                     ['k4*'] = 'k3*'},
+    --     swerves =      {['tl2'] = {nil,'bl2'},   ['tl3'] = {nil,'bl3'},
+    --                     ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
+    --                     ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'}, ['s5'] = {'bl3','br3'},
+    --                     ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
+    --                     ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
+    --                     ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
+    --     hyperdriveMoves = {}
+    -- }
+
+
     AI_DEFS['PALLAS']['ORS'] = HostileAiDefinition:new{
         isLargeShip = true,
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/',
         diffuse = 'http://i.imgur.com/QiomPcM.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
-        typeColor = '8080FF',
+        typeColor = 'FFE8E8',
 	    has360Turret = true,
 	    hasFreeFocus = true,
 	    hasConditionalFocus = false,
@@ -725,8 +907,11 @@ function initialize_ai()
                     ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
         hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
     }
+    AI_DEFS['DOTE']['ORS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ORS']))
+    --E8FFE8
     --TODO: WSF YT-2400 Wild Space Fringer
 
+    --5f6831
     --TODO: APRO
     --TODO: AGRE
 
@@ -741,6 +926,8 @@ function initialize_ai()
     --TODO: SVEN Scum StarViper Black Sun Enforcer
     --TODO: SVVI Scum StarViper Black Sun Vigo
     --TODO: JUMP
+    --TODO: Lancer
+
 
     for _,campaign_key in ipairs(campaigns) do
         local offset = 0
