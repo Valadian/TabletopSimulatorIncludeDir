@@ -2264,9 +2264,9 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
     newship.setCustomObject(custom)
     local ps = def.elitePilotSkills[1]
     if elite then
-        if mission_ps >= 8 then ps = def.elitePilotSkills[5]
-        elseif mission_ps >= 6 then ps = def.elitePilotSkills[4]
-        elseif mission_ps >= 4 then ps = def.elitePilotSkills[3]
+        if mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[5] --8
+        elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[4] --6
+        elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[3] --4
         else ps = def.elitePilotSkills[2]
         end
     end
