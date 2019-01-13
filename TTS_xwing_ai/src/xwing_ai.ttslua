@@ -183,15 +183,18 @@ function buildButton(label, def)
     return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size}
 end
 #include ai_defs
-function mirrorMoveTable(tbl)
-    mirrorRow(tbl,4,6)
-    mirrorRow(tbl,3,7)
-    mirrorRow(tbl,2,8)
+function mirrorMoveTable(tbl,leftAlts)
+    mirrorRow(tbl,4,6,leftAlts)
+    mirrorRow(tbl,3,7,leftAlts)
+    mirrorRow(tbl,2,8,leftAlts)
 end
-function mirrorRow(tbl,from,to)
+function mirrorRow(tbl,from,to,leftAlts)
     tbl[to] = {}
     for i,move in ipairs(tbl[from]) do
         local newmove = string.gsub(string.gsub(string.gsub(move,"r","L"),"l","r"),"L","l")
+        if leftAlts~=nil and leftAlts[newmove]~=nil then
+            newmove = leftAlts[newmove]
+        end
         table.insert(tbl[to], newmove)
     end
 end

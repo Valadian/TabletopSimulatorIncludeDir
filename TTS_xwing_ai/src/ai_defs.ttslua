@@ -1,6 +1,6 @@
 
 local AI_DEFS = {}
-local campaigns = {'HOTAC','PALLAS','DOTE'}
+local campaigns = {'HOTAC','PALLAS','DOTE','MISC'}
 local REBELLION = "Rebellion"
 local EMPIRE = "Empire"
 local SCUM = "Scum"
@@ -36,6 +36,8 @@ function initialize_ai()
 	-- AI_DEFS['DOTE'] = {}
 	HostileAiDefinition = {
         faction = '',
+        shipType = '',
+        description = '',
 	    isHostile = true,
 	    isLargeShip = false,
         ignoresHugeShips = false,
@@ -60,9 +62,12 @@ function initialize_ai()
 	    elitePilotSkillDeckEntries = 0,
         pilotCards = {},
         elitePilotCards = {},
+        alternate = nil,
+        alternateLevel = nil,
         maneuverCard = '',
 	    closeMoves = {},
 	    farMoves = {},
+        leftAlts = {},
 	    fleeMoves = {},
 	    swerves = {},
         eliteLimits = {4,6,8}
@@ -85,6 +90,8 @@ function initialize_ai()
 	end
     AI_DEFS['HOTAC']['TIE'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Fighter',
+        description = 'Acadamy Pilot',
         ignoresHugeShips = true,
         mesh = 'https://paste.ee/r/Yz0kt',
         diffuse = 'http://i.imgur.com/otxKcUx.png',
@@ -121,6 +128,7 @@ function initialize_ai()
     }
     AI_DEFS['PALLAS']['TIE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
     AI_DEFS['PALLAS']['TIEE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
+    AI_DEFS['PALLAS']['TIEE'].description = "Black Squadron Pilot" --"Obsidian Squadron Pilot" --TODO: Obsidian actually is PS3
     AI_DEFS['PALLAS']['TIEE'].elitePilotSkills = {2,4,5,7,9}
     AI_DEFS['PALLAS']['TIEE'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['TIEE'].pilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
@@ -128,6 +136,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['INT'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Interceptor',
+        description = 'Alpha Squadron Pilot',
         ignoresHugeShips = true,
         mesh = 'https://paste.ee/r/JxWNX',
         diffuse = 'https://i.imgur.com/1pSXuxb.jpg',
@@ -170,6 +180,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['BOM'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Bomber',
+        description = 'Scimitar Squadron Pilot',
         mesh = 'https://paste.ee/r/5A0YG',
         diffuse = 'http://i.imgur.com/nYO1XwT.jpg',
         collider = 'https://paste.ee/r/1dx1C',
@@ -208,6 +220,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['ADV'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Advanced',
+        description = 'Tempest Squadron Pilot',
         mesh = 'https://paste.ee/r/NeptF',
         diffuse = 'http://i.imgur.com/trxaCDg.jpg',
         collider = 'https://paste.ee/r/VAYqd',
@@ -247,6 +261,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['DEF'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Defender',
+        description = 'Delta Squadron Pilot',
         mesh = 'https://paste.ee/r/tIm5S',
         diffuse = 'http://i.imgur.com/0u5rtnX.jpg',
         collider = 'https://paste.ee/r/6jn13',
@@ -285,6 +301,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['PHA'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Phantom',
+        description = 'Sigma Squadron Pilot',
         mesh = 'https://paste.ee/r/JN16g',
         diffuse = 'http://i.imgur.com/4bXBvZZ.jpg',
         collider = 'https://paste.ee/r/1dx1C',
@@ -326,6 +344,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['DEC'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'VT-49 Decimator',
+        description = 'Patrol Leader',
         isLargeShip = true,
         mesh = 'https://paste.ee/r/MJOFI',
         diffuse = 'http://i.imgur.com/atzM3rO.jpg',
@@ -360,6 +380,7 @@ function initialize_ai()
                         ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil }}
     }
     AI_DEFS['PALLAS']['DEC'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['DEC']))
+    AI_DEFS['PALLAS']['DEC'].description = 'Patrol Leader (Elite)',
     AI_DEFS['PALLAS']['DEC'].elitePilotSkills = {2,4,5,7,9}
     AI_DEFS['PALLAS']['DEC'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['DEC'].pilotCards = {'https://i.imgur.com/p4QjitY.png','https://i.imgur.com/3hIY2CE.png','https://i.imgur.com/Y9oLlN7.png','https://i.imgur.com/e8HoQzQ.png'}
@@ -367,6 +388,8 @@ function initialize_ai()
 
     AI_DEFS['HOTAC']['SHU'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'Lambda-class Shuttle',
+        description = 'Omicron Group Pilot',
         isLargeShip = true,
         mesh = 'https://paste.ee/r/4uxZO',
         diffuse = 'http://i.imgur.com/rd9ZPz3.jpg',
@@ -403,6 +426,8 @@ function initialize_ai()
 
     AI_DEFS['PALLAS']['TFO'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE/FO Fighter',
+        description = 'Epsilon Squadron Pilot',
         ignoresHugeShips = true,
         mesh = 'http://pastebin.com/jt2AzA8t',
         diffuse = 'http://i.imgur.com/z56FaVi.png',
@@ -441,11 +466,17 @@ function initialize_ai()
                         ['k4*'] = {'bl2s*','br2s*'},
                         ['br2s*'] = {'k4*','tr2'} }
     AI_DEFS['PALLAS']['TFOE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['TFO']))
+    AI_DEFS['PALLAS']['TFOE'].description = "Omega Squadron Pilot"
     AI_DEFS['PALLAS']['TFOE'].elitePilotSkills = {2, 4, 5, 7, 9}
     AI_DEFS['PALLAS']['TFOE'].elitePilotSkillDeckEntries = 4
+    AI_DEFS['PALLAS']['TFOE'].pilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
+    AI_DEFS['PALLAS']['TFOE'].elitePilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
+
     --TODO: UPS Upsilon Shuttle
     AI_DEFS['PALLAS']['UPS'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'Upsilon-class Shuttle',
+        description = 'Starkiller Base Pilot',
         isLargeShip = true,
         mesh = 'http://pastebin.com/nsHXF9XV',
         diffuse = 'http://cloud-3.steamusercontent.com/ugc/200804344074733139/9D83653AAE1963E2C4945712860F5B47D2B41415/',
@@ -481,6 +512,8 @@ function initialize_ai()
     --TODO: TAP TIE Adv. Prototype
     AI_DEFS['PALLAS']['TAP'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Adv. Prototype',
+        description = 'Sienar Test Pilot',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029089434/A4DA1AD96E4A6D65CC6AE4F745EDA966BA4EF85A/',
         diffuse = 'http://i.imgur.com/7vyhllx.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -520,6 +553,8 @@ function initialize_ai()
     --TODO: TSF TIE S/F
     AI_DEFS['PALLAS']['TSF'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE/SF Fighter',
+        description = 'Zeta Specialist',
         mesh = 'http://pastebin.com/LezDjunY',
         diffuse = 'http://i.imgur.com/x8NveGf.png',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -556,6 +591,8 @@ function initialize_ai()
     --TODO: PUN Punisher
     AI_DEFS['PALLAS']['PUN'] = HostileAiDefinition:new{
         faction = EMPIRE,
+        shipType = 'TIE Punisher',
+        description = 'Cutlass Squadron Pilot',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029073355/7A1507E4D88098D19C8EAFE4A763CC33A5EC35CB/',
         diffuse = 'http://i.imgur.com/r6bfxcV.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -593,6 +630,8 @@ function initialize_ai()
     --TODO: BWI B-wing
     AI_DEFS['PALLAS']['BBLU'] = FriendlyAiDefinition:new{
         faction = REBELLION,
+        shipType = 'B-Wing',
+        description = 'Blue Squadron Pilot (Wingman)',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/',
         diffuse = 'http://i.imgur.com/JihQH1r.png',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -629,20 +668,26 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
     AI_DEFS['DOTE']['BBLU'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
+    AI_DEFS['DOTE']['BBLU'].description = 'Blue Squadron Pilot'
     AI_DEFS['DOTE']['BBLU'].elitePilotSkills = {2,5,6,8,10}
-    AI_DEFS['DOTE']['BDAG'].eliteLimits = {6,8,10}
+    AI_DEFS['DOTE']['BBLU'].eliteLimits = {6,8,10}
     AI_DEFS['DOTE']['BBLU'].maneuverCard = 'https://i.imgur.com/zKziUHr.png'
     AI_DEFS['DOTE']['BBLU'].elitePilotCards = {'https://i.imgur.com/kiiEkpm.png','https://i.imgur.com/LfVhcn6.png'}
     AI_DEFS['DOTE']['BBLU'].alternate = 'BDAG'
     AI_DEFS['DOTE']['BBLU'].alternateLevel = 6
     AI_DEFS['DOTE']['BDAG'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['BBLU']))
+    AI_DEFS['DOTE']['BDAG'].description = 'Dagger Squadron Pilot'
     AI_DEFS['DOTE']['BDAG'].elitePilotSkills = {4,5,6,8,10}
     AI_DEFS['DOTE']['BDAG'].pilotCards = {'https://i.imgur.com/TRKukz4.png'}
     AI_DEFS['DOTE']['BDAG'].maneuverCard = 'https://i.imgur.com/hRxWqim.png'
+    AI_DEFS['DOTE']['BDAG'].alternate = nil
+    AI_DEFS['DOTE']['BDAG'].alternateLevel = nil
     -- AI_DEFS['DOTE']['BDAG'].elitePilotSkillDeckEntries = 2
 
     AI_DEFS['PALLAS']['ZBAN'] = FriendlyAiDefinition:new{
         faction = REBELLION,
+        shipType = 'Z-95 Headhunter',
+        description = 'Bandit Squadron Pilot (Wingman)',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029075380/02AE170F8A35A5619E57B3380F9F7FE0E127E567/',
         diffuse = 'http://i.imgur.com/hcCxX3n.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -679,29 +724,43 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
     }
     AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZBAN'].description = 'Bandit Squadron Pilot',
     AI_DEFS['DOTE']['ZBAN'].maneuverCard = 'https://i.imgur.com/ZiqX7r2.png'
+    AI_DEFS['DOTE']['ZBAN'].alternate = 'ZTAL'
+    AI_DEFS['DOTE']['ZBAN'].alternateLevel = 5
     AI_DEFS['DOTE']['ZTAL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
+    AI_DEFS['DOTE']['ZTAL'].description = 'Tala Squadron Pilot',
     AI_DEFS['DOTE']['ZTAL'].elitePilotSkills = {4,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZTAL'].hasFreeFocus = true
     AI_DEFS['DOTE']['ZTAL'].hasConditionalFocus = false
     AI_DEFS['DOTE']['ZTAL'].hasConditionalTargetLock = true
     AI_DEFS['DOTE']['ZTAL'].pilotCards = {'https://i.imgur.com/cOYaDzo.png'}
     AI_DEFS['DOTE']['ZTAL'].maneuverCard = 'https://i.imgur.com/sbFF2TV.png'
+    AI_DEFS['DOTE']['ZTAL'].alternate = nil
+    AI_DEFS['DOTE']['ZTAL'].alternateLevel = nil
     AI_DEFS['DOTE']['ZBIN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
     AI_DEFS['DOTE']['ZBIN'].faction = SCUM
+    AI_DEFS['DOTE']['ZBIN'].description = 'Binayre Pirate',
     AI_DEFS['DOTE']['ZBIN'].elitePilotSkills = {1,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZBIN'].hasBarrelRoll = false
     AI_DEFS['DOTE']['ZBIN'].hasConditionalTargetLock = false
     AI_DEFS['DOTE']['ZBIN'].pilotCards = {'https://i.imgur.com/wqJyuEh.png'}
     AI_DEFS['DOTE']['ZBIN'].maneuverCard = 'https://i.imgur.com/fxWBXx0.png'
+    AI_DEFS['DOTE']['ZBIN'].alternate = 'ZBLA'
+    AI_DEFS['DOTE']['ZBIN'].alternateLevel = 4
     AI_DEFS['DOTE']['ZBLA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBIN']))
+    AI_DEFS['DOTE']['ZBLA'].description = 'Black Sun Soldier',
     AI_DEFS['DOTE']['ZBLA'].elitePilotSkills = {3,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZBLA'].hasConditionalTargetLock = true
     AI_DEFS['DOTE']['ZBLA'].pilotCards = {'https://i.imgur.com/fEmvLdA.png'}
     AI_DEFS['DOTE']['ZBLA'].maneuverCard = 'https://i.imgur.com/r3e3UkP.png'
+    AI_DEFS['DOTE']['ZBLA'].alternate = nil
+    AI_DEFS['DOTE']['ZBLA'].alternateLevel = nil
 
     AI_DEFS['PALLAS']['XRED'] = FriendlyAiDefinition:new{--x-wing T-65
         faction = REBELLION,
+        shipType = 'X-Wing',
+        description = 'Red Squadron Pilot (Wingman)',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029083210/BFF5BAE2A45EC9D647E14D9041140FFE114BF2D4/',
         diffuse = 'http://i.imgur.com/3GxuDDz.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -736,6 +795,7 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
     AI_DEFS['DOTE']['XROO'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['XRED']))
+    AI_DEFS['DOTE']['XROO'].description = 'Rookie Pilot',
     AI_DEFS['DOTE']['XROO'].hasFreeFocus = false
     AI_DEFS['DOTE']['XROO'].hasConditionalFocus = true
     AI_DEFS['DOTE']['XROO'].hasConditionalTargetLock = false
@@ -744,17 +804,24 @@ function initialize_ai()
     AI_DEFS['DOTE']['XROO'].pilotCards = {'https://i.imgur.com/zomP7IU.png'}
     AI_DEFS['DOTE']['XROO'].elitePilotCards = {'https://i.imgur.com/ghc8pT0.png','https://i.imgur.com/1hodCHu.png','https://i.imgur.com/yiURYiv.png','https://i.imgur.com/M1pEqNW.png'}
     AI_DEFS['DOTE']['XROO'].maneuverCard = 'https://i.imgur.com/BDMeI4U.png'
+    AI_DEFS['DOTE']['XROO'].alternate = 'XRED'
+    AI_DEFS['DOTE']['XROO'].alternateLevel = 5
     AI_DEFS['DOTE']['XRED'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['XROO']))
+    AI_DEFS['DOTE']['XRED'].description = 'Red Squadron Pilot',
     AI_DEFS['DOTE']['XRED'].hasFreeFocus = true
     AI_DEFS['DOTE']['XRED'].hasConditionalFocus = false
     AI_DEFS['DOTE']['XRED'].hasConditionalTargetLock = true
     AI_DEFS['DOTE']['XRED'].elitePilotSkills = {4,5,6,8,10}
     AI_DEFS['DOTE']['XRED'].pilotCards = {'https://i.imgur.com/LQQFQqG.png'}
     AI_DEFS['DOTE']['XRED'].maneuverCard = 'https://i.imgur.com/Nppukw0.png'
+    AI_DEFS['DOTE']['XRED'].alternate = nil
+    AI_DEFS['DOTE']['XRED'].alternateLevel = nil
     -- AI_DEFS['DOTE']['XRED'].elitePilotSkillDeckEntries = 4
 
     AI_DEFS['PALLAS']['EBLM'] = FriendlyAiDefinition:new{ --E-Wing Blackmoon
         faction = REBELLION,
+        shipType = 'E-Wing',
+        description = 'Blackmoon Squadron Pilot (Wingman)',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029072231/46CA6A77D12681CA1B1B4A9D97BD6917811D561C/',
         diffuse = 'http://i.imgur.com/TItm60V.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -791,19 +858,27 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
     }
     AI_DEFS['DOTE']['EKNA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
+    AI_DEFS['DOTE']['EKNA'].description = 'Knave Squadron Pilot',
     AI_DEFS['DOTE']['EKNA'].elitePilotSkills = {1,5,6,8,10}
     AI_DEFS['DOTE']['EKNA'].eliteLimits = {6,8,10}
     AI_DEFS['DOTE']['EKNA'].pilotCards = {'https://i.imgur.com/Xgd94rV.png'}
     AI_DEFS['DOTE']['EBLM'].elitePilotCards = {'https://i.imgur.com/0fYxjMx.png','https://i.imgur.com/mSELDWS.png'}
     AI_DEFS['DOTE']['EKNA'].maneuverCard = 'https://i.imgur.com/4cgzz5H.png'
+    AI_DEFS['DOTE']['EKNA'].alternate = 'EBLM'
+    AI_DEFS['DOTE']['EKNA'].alternateLevel = 7
     AI_DEFS['DOTE']['EBLM'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
+    AI_DEFS['DOTE']['EBLM'].description = 'Blackmoon Squadron Pilot',
     AI_DEFS['DOTE']['EBLM'].hasFreeEvade = true
     AI_DEFS['DOTE']['EBLM'].elitePilotSkills = {3,5,6,8,10}
     AI_DEFS['DOTE']['EBLM'].maneuverCard = 'https://i.imgur.com/Py1HNlu.png'
+    AI_DEFS['DOTE']['EBLM'].alternate = nil
+    AI_DEFS['DOTE']['EBLM'].alternateLevel = nil
     -- AI_DEFS['DOTE']['EBLM'].elitePilotSkillDeckEntries = 2
 
     AI_DEFS['DOTE']['KWAR'] = HostileAiDefinition:new{
         faction = REBELLION,
+        shipType = 'K-Wing',
+        description = 'Warden Squadron Pilot',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029069099/CDF24012FD0342ED8DE472CFA0C7C2748E3AF541/',
         diffuse = 'http://i.imgur.com/gi6Ju20.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -833,9 +908,12 @@ function initialize_ai()
                         ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'},
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
                         ['tr2'] = {'br2',nil} },
-        hyperdriveMoves = {} --NO HYPERDRIVE
+        hyperdriveMoves = {}, --NO HYPERDRIVE
+        alternate = "KGUA",
+        alternateLevel = 7
     }
     AI_DEFS['DOTE']['KGUA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['KWAR']))
+    AI_DEFS['DOTE']['KGUA'].description = 'Guardian Squadron Pilot'
     AI_DEFS['DOTE']['KGUA'].hasFreeFocus = false
     AI_DEFS['DOTE']['KGUA'].hasFreeTargetLock = true
     AI_DEFS['DOTE']['KGUA'].hasConditionalFocus = true
@@ -845,6 +923,8 @@ function initialize_ai()
 
     AI_DEFS['DOTE']['YGOL'] = HostileAiDefinition:new{
         faction = REBELLION,
+        shipType = 'Y-Wing',
+        description = 'Gold Squadron Pilot',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029097150/75A486189FEDE8BEEBFBACC0D76DE926CB42E52A/',
         diffuse = 'http://i.imgur.com/x5zYjn5.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -877,18 +957,24 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
                         ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                         ['k4*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s1','s1','s1','s1','s2','s2'}
+        hyperdriveMoves = {'s1','s1','s1','s1','s2','s2'},
+        alternate = "YGRE",
+        alternateLevel = 6
     }
     AI_DEFS['DOTE']['YGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YGOL']))
+    AI_DEFS['DOTE']['YGRE'].description = 'Grey Squadron Pilot'
     AI_DEFS['DOTE']['YGRE'].hasFreeFocus = true
     AI_DEFS['DOTE']['YGRE'].hasConditionalFocus = false
     AI_DEFS['DOTE']['YGRE'].elitePilotSkills = {4,5,6,8,10}
     -- AI_DEFS['DOTE']['YGRE'].elitePilotSkillDeckEntries = 2
     AI_DEFS['DOTE']['YGRE'].pilotCards = {'https://i.imgur.com/IKosfUo.png'}
     AI_DEFS['DOTE']['YGRE'].maneuverCard = 'https://i.imgur.com/T7FvHSp.png'
+    AI_DEFS['DOTE']['YGRE'].alternate = nil
+    AI_DEFS['DOTE']['YGRE'].alternateLevel = nil
 
     AI_DEFS['DOTE']['YSYN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YGOL']))
     AI_DEFS['DOTE']['YSYN'].faction = SCUM
+    AI_DEFS['DOTE']['YSYN'].description = 'Syndicate Thug'
     AI_DEFS['DOTE']['YSYN'].diffuse = 'http://i.imgur.com/CB3arLi.jpg'
     AI_DEFS['DOTE']['YSYN'].closeMoves =   {{'bl1','br1','s1','s1','tl2','tr2'},
                                             {'tr2','tr2','s1','br1','br1','br1'},
@@ -917,17 +1003,24 @@ function initialize_ai()
     AI_DEFS['DOTE']['YSYN'].pilotCards = {'https://i.imgur.com/1PqXt9a.png'}
     AI_DEFS['DOTE']['YSYN'].elitePilotCards = {'https://i.imgur.com/3wvTPLf.png','https://i.imgur.com/IX19vrf.png'}
     AI_DEFS['DOTE']['YSYN'].maneuverCard = 'https://i.imgur.com/6AncNWj.png'
+    AI_DEFS['DOTE']['YSYN'].alternate = 'YHIR'
+    AI_DEFS['DOTE']['YSYN'].alternateLevel = 5
 
     AI_DEFS['DOTE']['YHIR'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YSYN']))
+    AI_DEFS['DOTE']['YHIR'].description = 'Hired Gun'
     AI_DEFS['DOTE']['YHIR'].diffuse = 'http://i.imgur.com/uDMHAL2.jpg'
     AI_DEFS['DOTE']['YHIR'].elitePilotSkills = {4,5,6,8,10}
     AI_DEFS['DOTE']['YHIR'].pilotCards = {'https://i.imgur.com/WSK0mDv.png'}
     AI_DEFS['DOTE']['YHIR'].maneuverCard = 'https://i.imgur.com/p7stZa5.png'
+    AI_DEFS['DOTE']['YHIR'].alternate = nil
+    AI_DEFS['DOTE']['YHIR'].alternateLevel = nil
     -- AI_DEFS['DOTE']['YHIR'].elitePilotSkillDeckEntries = 2
 
     --TODO: Scum has multiple erros (right most arc has tr3 and k3* that don't exist)
     AI_DEFS['DOTE']['HWK'] = HostileAiDefinition:new{
         faction = REBELLION,
+        shipType = 'HWK-290',
+        description = 'Rebel Operative',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029098250/4E8A65B9C156B7882A729BC9D93B2B434D549834/',
         diffuse = 'http://i.imgur.com/lOoTAem.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -963,6 +1056,7 @@ function initialize_ai()
     }
     AI_DEFS['DOTE']['HWKS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HWK']))
     AI_DEFS['DOTE']['HWKS'].faction = SCUM
+    AI_DEFS['DOTE']['HWKS'].description = 'Spice Runner'
     AI_DEFS['DOTE']['HWKS'].hasFreeFocus = false
     AI_DEFS['DOTE']['HWKS'].hasConditionalFocus = true
     AI_DEFS['DOTE']['HWKS'].hasConditionalTargetLock = false
@@ -971,8 +1065,10 @@ function initialize_ai()
     AI_DEFS['DOTE']['HWKS'].pilotCards = {'https://i.imgur.com/2PuoffI.png'}
     AI_DEFS['DOTE']['HWKS'].maneuverCard = 'https://i.imgur.com/PMDXmhp.png'
 
-    AI_DEFS['PALLAS']['ORS'] = HostileAiDefinition:new{
+    AI_DEFS['PALLAS']['ORS'] = HostileAiDefinition:new{ --YT-1300
         faction = EMPIRE, --REBELLION
+        shipType = 'YT-1300',
+        description = 'Mining Craft (Outer Rim Smuggler)',
         isLargeShip = true,
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029088151/213EF50E847F62BB943430BA93094F1E794E866B/',
         diffuse = 'http://i.imgur.com/QiomPcM.jpg',
@@ -1011,10 +1107,13 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
     }
     AI_DEFS['DOTE']['ORS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ORS']))
+    AI_DEFS['DOTE']['ORS'].description = 'Outer Rim Smuggler'
     AI_DEFS['DOTE']['ORS'].faction = REBELLION
 
-    AI_DEFS['DOTE']['WSF'] = HostileAiDefinition:new{
+    AI_DEFS['DOTE']['WSF'] = HostileAiDefinition:new{ --YT-2400
         faction = REBELLION,
+        shipType = 'YT-2400',
+        description = 'Wild Space Fringer',
         isLargeShip = true,
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029079241/206F408212849DCBB3E1934A623FD7A8844AAE47/',
         diffuse = 'http://i.imgur.com/suojpQZ.jpg',
@@ -1054,6 +1153,8 @@ function initialize_ai()
 
     AI_DEFS['DOTE']['APRO'] = HostileAiDefinition:new{
         faction = REBELLION,
+        shipType = 'A-Wing',
+        description = 'Prototype Pilot',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029092256/19939432DC769A3B77BA19F2541C9EA11B72C73B/',
         diffuse = 'http://i.imgur.com/iS3L5eo.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -1087,18 +1188,25 @@ function initialize_ai()
                         ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
                         ['tr1'] = {'br2',nil}, ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
                         ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s5','s5','tr2','tr2','tl2','tl2'}
+        hyperdriveMoves = {'s5','s5','tr2','tr2','tl2','tl2'},
+        alternate = 'AGRE',
+        alternateLevel = 4
     }
     AI_DEFS['DOTE']['AGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['APRO']))
+    AI_DEFS['DOTE']['AGRE'].description = 'Green Squadron Pilot'
     AI_DEFS['DOTE']['AGRE'].diffuse = 'http://i.imgur.com/iS3L5eo.jpg'
     AI_DEFS['DOTE']['AGRE'].hasFreeFocus = true
     AI_DEFS['DOTE']['AGRE'].hasConditionalFocus = false
     AI_DEFS['DOTE']['AGRE'].elitePilotSkills = {3,5,6,8,10}
     AI_DEFS['DOTE']['AGRE'].pilotCards = {'https://i.imgur.com/iZgzkdp.png'}
     AI_DEFS['DOTE']['AGRE'].maneuverCard = 'https://i.imgur.com/1Z26KWZ.png'
+    AI_DEFS['DOTE']['AGRE'].alternate = nil
+    AI_DEFS['DOTE']['AGRE'].alternateLevel = nil
 
-    AI_DEFS['DOTE']['HSCA'] = HostileAiDefinition:new{
+    AI_DEFS['DOTE']['HSCS'] = HostileAiDefinition:new{
         faction = SCUM,
+        shipType = 'M-3A Interceptor (Heavy Scyk)',
+        description = 'Cartel Spacer',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029096648/6773CD675FA734358137849555B2868AC513801B/',
         diffuse = 'http://i.imgur.com/b5nDFtF.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -1135,15 +1243,22 @@ function initialize_ai()
                         ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
         hyperdriveMoves = {'s2','s2','s3','s3','bl1','br1'}
     }
-    AI_DEFS['DOTE']['HSTA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCA']))
-    AI_DEFS['DOTE']['HSTA'].diffuse = 'http://i.imgur.com/ojOpBFC.jpg'
-    AI_DEFS['DOTE']['HSTA'].pilotCards = 'https://i.imgur.com/V2VD48t.png'
-    AI_DEFS['DOTE']['HSTA'].maneuverCard = 'https://i.imgur.com/roY4URD.png'
-    AI_DEFS['DOTE']['LSCA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCA']))
-    AI_DEFS['DOTE']['LSCA'].maneuverCard = 'https://i.imgur.com/0Atf7ZJ.png'
+    AI_DEFS['DOTE']['HSTP'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCS']))
+    AI_DEFS['DOTE']['HSTP'].description = 'Tansarii Point Veteran'
+    AI_DEFS['DOTE']['HSTP'].diffuse = 'http://i.imgur.com/ojOpBFC.jpg'
+    AI_DEFS['DOTE']['HSTP'].pilotCards = 'https://i.imgur.com/V2VD48t.png'
+    AI_DEFS['DOTE']['HSTP'].maneuverCard = 'https://i.imgur.com/roY4URD.png'
+    AI_DEFS['DOTE']['HSTP'].elitePilotSkills = {5,6,7,9,10}
+    AI_DEFS['DOTE']['LSCS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCS']))
+    AI_DEFS['DOTE']['LSCS'].shipType = 'M-3A Interceptor (Light Scyk)'
+    AI_DEFS['DOTE']['LSCS'].maneuverCard = 'https://i.imgur.com/0Atf7ZJ.png'
+    AI_DEFS['DOTE']['LSCS'].elitePilotSkills = {1,nil,nil,nil,nil}
 
     AI_DEFS['DOTE']['FIR'] = HostileAiDefinition:new{
         faction = SCUM,
+        shipType = 'Firespray-31',
+        description = 'Mandalorian Mercenary',
+        isLargeShip = true,
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029069521/B5F857033DD0324E7508645821F17B572BC1AF6A/',
         diffuse = 'http://i.imgur.com/UAViC3E.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
@@ -1181,8 +1296,10 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','bl1','br1','s2','s2'}
     }
 
-    AI_DEFS['DOTE']['PZER'] = HostileAiDefinition:new{
+    AI_DEFS['DOTE']['PZEA'] = HostileAiDefinition:new{
         faction = SCUM,
+        shipType = 'Protectorate Starfighter',
+        description = 'Zealous Recruit',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/89352769138031546/C70B323524602140897D8E195C19522DB450A7E0/',
         diffuse = 'http://cloud-3.steamusercontent.com/ugc/89352769138161283/DD31149DF8FA0F877EA863643A1DFDFEEC90D0BF/',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -1215,16 +1332,23 @@ function initialize_ai()
                         ['tl2t*'] = {nil,'bl2'},
                         ['k4*'] = {'bl3','br3'},
                         ['tr2t*'] = {'br2',nil} },
-        hyperdriveMoves = {'bl2','bl2','br2','br2','tl2','tr2'}
+        hyperdriveMoves = {'bl2','bl2','br2','br2','tl2','tr2'},
+        alternate = 'PCON',
+        alternateLevel = 7
     }
-    AI_DEFS['DOTE']['PCON'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['PZER']))
+    AI_DEFS['DOTE']['PCON'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['PZEA']))
+    AI_DEFS['DOTE']['PCON'].description = 'Concord Dawn Veteran'
     AI_DEFS['DOTE']['PCON'].diffuse = 'http://cloud-3.steamusercontent.com/ugc/89352769138141306/EC532F6E04EBCBB97E10A49B09D0BDB0D5E2334C/'
     AI_DEFS['DOTE']['PCON'].elitePilotSkills = {3,4,6,8,10}
     AI_DEFS['DOTE']['PCON'].pilotCards = {'https://i.imgur.com/qikLAwX.png'}
     AI_DEFS['DOTE']['PCON'].maneuverCard = 'https://i.imgur.com/nuatq3y.png'
+    AI_DEFS['DOTE']['PCON'].alternate = nil
+    AI_DEFS['DOTE']['PCON'].alternateLevel = nil
 
     AI_DEFS['DOTE']['KZCA'] = HostileAiDefinition:new{ --KZCA Scum Kihraxz Cartel
         faction = SCUM,
+        shipType = 'Kihrax Fighter',
+        description = 'Cartel Marauder',
         mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029077425/6C88D57B03EF8B0CD7E4D91FED266EC15C614FA9/',
         diffuse = 'http://i.imgur.com/AKcnKWf.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
@@ -1257,16 +1381,439 @@ function initialize_ai()
                         ['br1'] = {'s2','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
                         ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil},
                         ['k4*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'bl1','bl1','br1','br1','bl2','br2'}
+        hyperdriveMoves = {'bl1','bl1','br1','br1','bl2','br2'},
+        alternate = 'KZBL',
+        alternateLevel = 7
     }
     AI_DEFS['DOTE']['KZBL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['KZCA'])) --KZBL Scum Kihraxz Black Sun
+    AI_DEFS['DOTE']['KZBL'].description = 'Black Sun Ace'
     AI_DEFS['DOTE']['KZBL'].diffuse = 'http://i.imgur.com/U5mDYyJ.png'
     AI_DEFS['DOTE']['KZBL'].elitePilotSkills = {5,6,7,9,10}
     AI_DEFS['DOTE']['KZBL'].pilotCards = {'https://i.imgur.com/Yg3Bgwy.png'}
     AI_DEFS['DOTE']['KZBL'].maneuverCard = 'https://i.imgur.com/f5BwgNe.png'
+    AI_DEFS['DOTE']['KZBL'].alternate = nil
+    AI_DEFS['DOTE']['KZBL'].alternateLevel = nil
 
-    -- AI_DEFS['DOTE'][''] = HostileAiDefinition:new{
+    AI_DEFS['DOTE']['SVEN'] = HostileAiDefinition:new{--SVEN Scum StarViper Black Sun Enforcer
+        faction = SCUM,
+        shipType = 'StarViper',
+        description = 'Black Sun Enforcer',
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029085780/6B4B13CE7C78700EF474D06F44CEB27A14731011/',
+        diffuse = 'http://i.imgur.com/4Vzoz48.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
+        typeColor = '',
+        hasBarrelRoll = true,
+        hasBoost = true,
+        hasConditionalFocus = true,
+        elitePilotSkills = {1,4,6,8,10},
+        eliteLimits = {6,8,10},
+        pilotCards = {'https://i.imgur.com/NoB4cSW.png'},
+        elitePilotCards = {'https://i.imgur.com/IiSvFMu.png','https://i.imgur.com/pF1oCkA.png'},
+        maneuverCard = 'https://i.imgur.com/hKoyb3c.png',
+        closeMoves =   {{'bl3s*','br3s*','bl1','br1','s1','s1'},
+                        {'bl3s*','bl3s*','br2','tr1','br1','br1'},
+                        {'bl3s*','bl3s*','tr2','tr1','tr1','tr1'},
+                        {'tr1','tr1','tr2','bl3s*','bl3s*','br3s*'},
+                        {'bl3s*','bl3s*','br3s*','br3s*','tl2','tr2'}},
+        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
+                        {'s2','br2','br3','br3','br3','s3'},
+                        {'br3','br3','br2','tr2','tr2','tr1'},
+                        {'bl3s*','bl3s*','tr2','tr2','tr1','tr1'},
+                        {'bl3s*','bl3s*','br3s*','br3s*','tl1','tr1'}},
+        fleeMoves =    {['tl1']='tl2',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr1']='tr2' },
+        swerves =      {['tl1'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl1','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
+                        ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil},
+                        ['bl3s*'] = {'tl2','s3'},
+                        ['br3s*'] = {'s3','tr2'} },
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'},
+        alternate = 'SVVI',
+        alternateLevel = 8
+    }
+    AI_DEFS['DOTE']['SVVI'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['SVEN'])) --SVVI Scum StarViper Black Sun Vigo
+    AI_DEFS['DOTE']['SVVI'].description = 'Black Sun Vigo'
+    AI_DEFS['DOTE']['SVVI'].diffuse = "http://i.imgur.com/604dnbD.jpg"
+    AI_DEFS['DOTE']['SVVI'].elitePilotSkills = {3,4,6,8,10}
+    AI_DEFS['DOTE']['SVVI'].pilotCards = {'https://i.imgur.com/EhnVhPw.png'}
+    AI_DEFS['DOTE']['SVVI'].maneuverCard = "https://i.imgur.com/fOjakJA.png"
+    AI_DEFS['DOTE']['SVVI'].alternate = nil
+    AI_DEFS['DOTE']['SVVI'].alternateLevel = nil
+
+    AI_DEFS['DOTE']['JUMP'] = HostileAiDefinition:new{
+        faction = SCUM,
+        shipType = 'JumpMaster 5000',
+        description = 'Contracted Scout',
+        isLargeShip = true,
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029067863/A8F7079195681ECD24028AE766C8216E6C27EE21/',
+        diffuse = 'http://i.imgur.com/D58bZNz.jpg',
+        collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
+        typeColor = '',
+        hasFreeFocus = true,
+        hasConditionalFocus = false,
+        hasBarrelRoll = true,
+        hasConditionalTargetLock = true,
+        elitePilotSkills = {3,4,6,8,10},
+        eliteLimits = {6,8,10},
+        pilotCards = {'https://i.imgur.com/8RGysEY.png'},
+        elitePilotCards = {'https://i.imgur.com/nuX5vUK.png','https://i.imgur.com/v3UZO0j.png'},
+        maneuverCard = 'https://i.imgur.com/oHFQpVX.png',
+        closeMoves =   {{'k4*','k4*','bl2s','bl2s','br2s*','s1'},
+                        {'k4*','br2s*','br2s*','tr1','br1','br1'},
+                        {'br2s*','br2s*','tr2','tr1','tr1','tr1'},
+                        {'tr1','tr1','tr2','br2s*','br2s*','bl2s'},
+                        {'k4*','bl2s','bl2s','br2s*','tl2','tl2'}},
+        farMoves =     {{'s4','s4','s3','s3','s3','s2'},
+                        {'s2','br2','br3','br3','br3','s3'},
+                        {'br3','br3','br2','tr2','tr2','tr1'},
+                        {'bl2s','bl2s','tr2','tr2','tr1','tr1'},
+                        {'k4*','k4*','bl2s','bl2s','br2s*','tl1'}},
+        leftAlts =     {['bl2s*'] = 'bl2s',
+                        ['br2s'] = 'br2s*' }
+        fleeMoves =    {['tl1']='tl2',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr1']='tr2' },
+        swerves =      {['tl1'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl1','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
+                        ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil},
+                        ['bl2s'] = {'tl2','k4*'},
+                        ['k4*'] = {'bl2s','br2s*'},
+                        ['br2s*'] = {'k4*','tr2'} },
+        hyperdriveMoves = {'s1','s2','bl1','bl1','br1','br1'}
+    }
+    --TODO: Lancer
+    --mesh: https://paste.ee/r/1af5C
+    --diffuse: http://i.imgur.com/D58bZNz.jpg
+    --collider: https://paste.ee/r/v8OYL
+    AI_DEFS['MISC']['LANC'] = HostileAiDefinition:new{ --Extra ships
+        faction = SCUM,
+        shipType = 'Lancer-class Pursuit Craft',
+        description = 'Shadowport Hunter',
+        isLargeShip = true,
+        mesh = 'https://paste.ee/r/1af5C',
+        diffuse = 'http://i.imgur.com/D58bZNz.jpg',
+        collider = 'https://paste.ee/r/v8OYL',
+        typeColor = '',
+        hasFreeTargetLock = true,
+        --TODO: mobileFiringArc?
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        pilotCards = {'https://i.imgur.com/XuPL43P.jpg'},
+        maneuverCard = 'https://i.imgur.com/1OVn26o.png',
+        closeMoves =   {{'bl1','bl1','br1','br1','s1','k5*'},
+                        {'tr2','bl3','bl3','s1','s1','k5*'},
+                        {'tl2','bl2','bl2','tr3','tr3','k5*'},
+                        {'k5*','k5*','tr2','tr3','tr3','br1'},
+                        {'tr3','tr3','tl3','tl3','k5*','s5'}},
+        farMoves =     {{'s5','s5','s5','s4','s4','s3'},
+                        {'s2','bl2','tr3','tr3','br3','br3'},
+                        {'br3','br3','tr3','tr3','tr2','tr2'},
+                        {'k5*','k5*','tr2','tr2','tr3','tr3'},
+                        {'k5*','k5*','tl2','tl2','tr2','tr2'}},
+        fleeMoves =    {['tl2']='tl3',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s5',['s2']='s5',['s3']='s5',['s4']='s5',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr2']='tr3' },
+        swerves =      {['tl2'] = {nil,'bl2'}, ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'}, ['s5'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
+                        ['k5*'] = {'bl3','br3'} },
+        hyperdriveMoves = {'s3','s4','tl3','bl3','br3','tr3'}
+    }
+
+    --TODO: G-1A Starfighter
+    AI_DEFS['MISC']['MIST'] = HostileAiDefinition:new{
+        faction = SCUM,
+        shipType = 'G-1A StarFighter',
+        description = 'Ruthless Freelancer',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        elitePilotSkills = {3,nil,nil,nil,nil},
+        pilotCards = {'https://i.imgur.com/0pG7odQ.png'},
+        maneuverCard = 'https://i.imgur.com/UnntyMT.png',
+        closeMoves =   {{'bl1','bl1','br1','br1','s1','s1'},
+                        {'tr2','br1','br1','s1','s1','k4*'},
+                        {'tr2','br2','br2','tr1*','tr1*','k4*'},
+                        {'k4*','k4*','tr2','tr2','tr1*','tr1*'},
+                        {'tl2','tl2','tr2','tr2','k4*','k3*'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','br2','tr2','tr2','br3*','br3*'},
+                        {'br3*','br3*','tr1*','tr1*','tr2','tr2'},
+                        {'k3*','k3*','tr2','tr2','tr1*','tr1*'},
+                        {'k3*','k3*','tl2','tl2','tr2','tr2'}},
+        fleeMoves =    {['tl1*']='tl2',
+                        ['bl1']='bl3*',['bl2']='bl3*',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3*',['br2']='br3*',
+                        ['tr1*']='tr2',
+                        ['k4*']='k3*' },
+        swerves =      {['tl1*'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3*'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3*','br3*'}, ['s4'] = {'bl3*','br3*'},
+                        ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3*'] = {'s3','tr2'},
+                        ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil},
+                        ['k3*'] = {'bl3*','br3*'}, ['k4*'] = {'bl3*','br3*'} },
+        hyperdriveMoves = {'s1','s2','s3','s3','bl1','br1'}
+    }
+
+    --TODO: ARC-170
+    AI_DEFS['MISC']['ARC'] = HostileAiDefinition:new{
+        faction = REBELLION,
+        shipType = 'ARC-170',
+        description = 'Razor Squadron Pilot',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {3,nil,nil,nil,nil},
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        pilotCards = {'https://i.imgur.com/ejN4xWf.png'},
+        maneuverCard = 'https://i.imgur.com/DfPD5Aj.png',
+        closeMoves =   {{'s1','s1','bl1','br1','s2','k4*'},
+                        {'s1','br2','br2','br1','br1','k4*'},
+                        {'tr2','tr2','tr2','k4*','k4*','tr3*'},
+                        {'br1','br1','tr2','tr2','tr3*','k4*'},
+                        {'k4*','k4*','tr2','tl2','br3','bl3'}},
+        farMoves =     {{'s4*','s4*','s4*','s3','s3','s2'},
+                        {'s2','tr3*','br3','br3','br2','br2'},
+                        {'br3','br2','tr3*','tr3*','tr2','tr2'},
+                        {'br3','tr2','tr3*','tr3*','k4*','k4*'},
+                        {'k4*','k4*','tr2','tr2','tl2','tl2'}},
+        fleeMoves =    {['tl2']='tl3*',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4*',['s2']='s4*',['s3']='s4*',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr2']='tr3*' },
+        swerves =      {['tl2'] = {nil,'bl2'}, ['tl3*'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3*','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4*'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
+                        ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
+                        ['k4*'] = {'bl3','br3'} },
+        hyperdriveMoves = {'bl1','s1','br1','bl2','s2','br2'}
+    }
+
+    --TODO: YV-666
+    AI_DEFS['MISC']['YVS'] = HostileAiDefinition:new{
+        faction = SCUM,
+        shipType = 'YV-666',
+        description = 'Trandoshan Slaver',
+        isLargeShip = true,
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        pilotCards = {'https://i.imgur.com/z5eEZCf.png'},
+        maneuverCard = 'https://i.imgur.com/OM6lTsj.png',
+        closeMoves =   {{'s1','bl1','br1','s0*','s0*','s0*'},
+                        {'s1','br2','br1','br1','br1','s0*'},
+                        {'br2','br1','br1','tr2*','tr2*','s0*'},
+                        {'br3','tr3','tr3','tr2*','br2','s0*'},
+                        {'s0*','s0*','tr3','tl3','br3','bl3'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','br2','br3','br3','tr3','tr3'},
+                        {'br3','br2','tr2*','tr2*','tr3','tr3'},
+                        {'br3','br1','tr2*','tr2*','tr3','tr3'},
+                        {'tl2*','tl2*','tl2*','tr2*','tr2*','tr2*'}},
+        fleeMoves =    {['tl2*']='tl3',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s0*']='s4',['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr2*']='tr3' },
+        swerves =      {['tl2*'] = {nil,'bl2'}, ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2*','s1'}, ['bl2'] = {'tl2*','s2'}, ['bl3'] = {'tl3','s3'},
+                        ['s0*'] = {'bl1','br1'}, ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
+                        ['tr2*'] = {'br2',nil}, ['tr3'] = {'br3',nil} },
+        hyperdriveMoves = {'s1','s1','bl1','br1','s2','s3'}
+    }
+
+    --TODO: Attack Shuttle
+    AI_DEFS['MISC']['AS'] = HostileAiDefinition:new{
+        faction = REBELLION,
+        shipType = 'Attack Shuttle',
+        description = 'VCX-Series Auxiliary Starfighter',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {3,nil,nil,nil,nil},
+        hasFreeTargetLock = true,
+        hasBarrelRoll = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        pilotCards = {'https://i.imgur.com/tsCVD1A.png'},
+        maneuverCard = 'https://i.imgur.com/7gAwUlP.png',
+        closeMoves =   {{'s1','s1','bl1','br1','k4*','k4*'},
+                        {'s1','k4*','k4*','br2','br2','br1'},
+                        {'tr1*','tr1*','tr1*','br2','br2','tr2'},
+                        {'k4*','k4*','tr2','tr2','tr1*','tr3*'},
+                        {'k4*','k4*','tr2','tr2','tl2','tl2'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','tr3*','br3','br3','br2','br2'},
+                        {'br3','br2','tr3*','tr3*','tr2','tr2'},
+                        {'br2','tr2','tr3*','tr3*','k4*','k4*'},
+                        {'k4*','k4*','tr2','tr2','tl2','tl2'}},
+        fleeMoves =    {['tl1*']='tl3*',['tl2']='tl3*',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr1*']='tr3*',['tr2']='tr3*' },
+        swerves =      {['tl1*'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'}, ['tl3*'] = {nil,'bl3'},
+                        ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3*','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
+                        ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
+                        ['k4*'] = {'bl3','br3'} },
+        hyperdriveMoves = {} --NO HYPERDRIVE
+    }
+
+    --TODO: VCX-100
+    AI_DEFS['MISC']['VCX'] = HostileAiDefinition:new{
+        faction = REBELLION,
+        shipType = 'VCX-100',
+        description = 'Lothal Rebel',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {3,nil,nil,nil,nil},
+        hasFreeTargetLock = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        pilotCards = {'https://i.imgur.com/acu3O5f.png'},
+        maneuverCard = 'https://i.imgur.com/vNMKEx1.png',
+        closeMoves =   {{'s1','s1','bl1','br1','k5*','k5*'},
+                        {'s1','k5*','k5*','br2','br2','br1'},
+                        {'tr1*','tr1*','tr1*','br2','br2','tr2'},
+                        {'br1','br1','tr2','tr2','tr1*','k5*'},
+                        {'k5*','k5*','tr2','tl2','br3','bl3'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s2','tr3*','br3','br3','br2','br2'},
+                        {'br3','br2','tr3*','tr3*','tr2','tr2'},
+                        {'br2','tr2','tr3*','tr3*','k5*','k5*'},
+                        {'k5*','k5*','tr2','tr2','tl2','tl2'},
+        fleeMoves =    {['tl1*']='tl3*',['tl2']='tl3*',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr1*']='tr3*',['tr2']='tr3*' },
+        swerves =      {['tl1*'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'}, ['tl3*'] = {nil,'bl3'},
+                        ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3*','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
+                        ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
+                        ['k5*'] = {'bl3','br3'} },
+        hyperdriveMoves = {'s1','s2','bl2','bl2','br2','br2'}
+    }
+
+    --TODO: Aggressor (IG-88)
+    --maneuverCard = 'https://i.imgur.com/KsUgPNn.png'
+    AI_DEFS['MISC']['AGGR'] = HostileAiDefinition:new{
+        faction = SCUM,
+        shipType = 'Aggressor',
+        description = 'IG-88',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {6,nil,nil,nil,nil},
+        hasFreeTargetLock = true,
+        hasBoost = true,
+        hasConditionalFocus = true,
+        hasConditionalEvade = true,
+        pilotCards = {'https://i.imgur.com/gOnNNnb.png'},
+        maneuverCard = 'https://i.imgur.com/peaW8gf.png',
+        closeMoves =   {{'bl3s*','br3s*','bl1','br1','s1','k4*'},
+                        {'s1','bl3s*','br1','br1','br1','k4*'},
+                        {'bl3s*','tr1','tr1','tr2','tr2','k4*'},
+                        {'bl3s*','br3s*','tr1','tr1','k4*','k4*'},
+                        {'bl3s*','br3s*','k4*','k4*','tl1','tr1'}},
+        farMoves =     {{'s3','s3','s3','s3','s2','s2'},
+                        {'s2','br2','br2','br3','br3','br1'},
+                        {'br2','tr2','tr2','tr1','tr1','br1'},
+                        {'k4*','k4*','bl3s*','tr2','tr2','tr1'},
+                        {'k4*','k4*','bl3s*','br3s*','tl2','tr2'}},
+        fleeMoves =    {['tl1']='tl2',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s3',['s2']='s3',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr1']='tr2' },
+        swerves =      {['tl1'] = {nil,'bl1'}, ['tl2'] = {nil,'bl2'},
+                        ['bl1'] = {'tl1','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl2','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
+                        ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil},
+                        ['bl3s*'] = {'tl2','k4*'},
+                        ['k4*'] = {'bl3s*','br3s*'},
+                        ['br3s*'] = {'k4*','tr2'} },
+        hyperdriveMoves = {'bl2','bl3','s2','s3','br2','br3'}
+    }
+
+    --TODO: T-70 X-Wing
+    AI_DEFS['MISC']['XTBL'] = HostileAiDefinition:new{
+        faction = SCUM,
+        shipType = 'T-70 X-Wing',
+        description = 'Blue Squadron Novice',
+        mesh = '',
+        diffuse = '',
+        collider = '',
+        typeColor = '',
+        elitePilotSkills = {2,nil,nil,nil,nil},
+        pilotCards = {'https://i.imgur.com/SrjWBvJ.png'},
+        maneuverCard = 'https://i.imgur.com/im9z3zX.png',
+        closeMoves =   {{'k4*','k4*','bl1','br1','s2','s1'},
+                        {'s1','tl3t*','br1','br1','br1','k4*'},
+                        {'br1','tr2','tr2','tl3t*','tl3t*','k4*'},
+                        {'k4*','k4*','br1','tr2','tr2','tl3t*'},
+                        {'s4','k4*','k4*','k4*','tl3t*','tr3t*'}},
+        farMoves =     {{'s4','s4','s4','s3','s3','s2'},
+                        {'s3','br2','br3','br3','tr3','tr2'},
+                        {'br1','br2','tr2','tr2','tr3','tr3'},
+                        {'k4*','k4*','tr3t*','tr3t*','tr3t*','tr2'},
+                        {'k4*','k4*','tl3t*','tr3t*','tl2','tr2'}},
+        fleeMoves =    {['tl2']='tl3',
+                        ['bl1']='bl3',['bl2']='bl3',
+                        ['s1']='s4',['s2']='s4',['s3']='s4',
+                        ['br1']='br3',['br2']='br3',
+                        ['tr2']='tr3' },
+        swerves =      {['tl2'] = {nil,'bl2'}, ['tl3'] = {nil,'bl3'},
+                        ['bl1'] = {'tl2','s1'}, ['bl2'] = {'tl2','s2'}, ['bl3'] = {'tl3','s3'},
+                        ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
+                        ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
+                        ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
+                        ['tl3t*'] = {nil,'bl3'},
+                        ['k4*'] = {'bl3','br3'},
+                        ['tr3t*'] = {'br3',nil} },
+        hyperdriveMoves = {'bl1','br1','s1','s2','s3','s3'}
+    }
+
+    -- AI_DEFS['MISC'][''] = HostileAiDefinition:new{
     --     faction = SCUM,
+    --     shipType = '',
+    --     description = '',
     --     mesh = '',
     --     diffuse = '',
     --     collider = '',
@@ -1276,6 +1823,8 @@ function initialize_ai()
     --     pilotCards = {''},
     --     elitePilotCards = {''},
     --     maneuverCard = '',
+    --     alternate = nil,
+    --     alternateLevel = nil,
     --     closeMoves =   {{},
     --                     {},
     --                     {},
@@ -1290,20 +1839,6 @@ function initialize_ai()
     --     swerves =
     --     hyperdriveMoves = {}
     -- }
-    --TODO: SVEN Scum StarViper Black Sun Enforcer
-    --model: http://cloud-3.steamusercontent.com/ugc/82591194029085780/6B4B13CE7C78700EF474D06F44CEB27A14731011/
-    --diffuse: http://i.imgur.com/4Vzoz48.jpg
-    --collider: http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/
-    --TODO: SVVI Scum StarViper Black Sun Vigo
-    --diffuse: http://i.imgur.com/604dnbD.jpg
-    --TODO: JUMP
-    --mesh: http://cloud-3.steamusercontent.com/ugc/82591194029067863/A8F7079195681ECD24028AE766C8216E6C27EE21/
-    --diffuse: http://i.imgur.com/D58bZNz.jpg
-    --collider: http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/
-    --TODO: Lancer
-    --mesh: https://paste.ee/r/1af5C
-    --diffuse: http://i.imgur.com/D58bZNz.jpg
-    --collider: https://paste.ee/r/v8OYL
 
     -- Spawn custom cards?
     -- '{ "Hands": true, "CardID": '..(100+card_zero_index)..
@@ -1315,8 +1850,8 @@ function initialize_ai()
     for _,campaign_key in ipairs(campaigns) do
         local offset = 0
         for key,ai in pairs(AI_DEFS[campaign_key]) do
-            mirrorMoveTable(ai.closeMoves)
-            mirrorMoveTable(ai.farMoves)
+            mirrorMoveTable(ai.closeMoves,ai.leftAlts)
+            mirrorMoveTable(ai.farMoves,ai.leftAlts)
             -- pilot_card_offsets[campaign] = {}
             pilot_card_offsets[campaign_key][key] = offset
             offset = offset + ai.elitePilotSkillDeckEntries
