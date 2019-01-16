@@ -380,7 +380,7 @@ function initialize_ai()
                         ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil }}
     }
     AI_DEFS['PALLAS']['DEC'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['DEC']))
-    AI_DEFS['PALLAS']['DEC'].description = 'Patrol Leader (Elite)',
+    AI_DEFS['PALLAS']['DEC'].description = 'Patrol Leader (Elite)'
     AI_DEFS['PALLAS']['DEC'].elitePilotSkills = {2,4,5,7,9}
     AI_DEFS['PALLAS']['DEC'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['DEC'].pilotCards = {'https://i.imgur.com/p4QjitY.png','https://i.imgur.com/3hIY2CE.png','https://i.imgur.com/Y9oLlN7.png','https://i.imgur.com/e8HoQzQ.png'}
@@ -464,7 +464,7 @@ function initialize_ai()
                         ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
                         ['bl2s*'] = {'tl2','k4*'},
                         ['k4*'] = {'bl2s*','br2s*'},
-                        ['br2s*'] = {'k4*','tr2'} }
+                        ['br2s*'] = {'k4*','tr2'} } }
     AI_DEFS['PALLAS']['TFOE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['TFO']))
     AI_DEFS['PALLAS']['TFOE'].description = "Omega Squadron Pilot"
     AI_DEFS['PALLAS']['TFOE'].elitePilotSkills = {2, 4, 5, 7, 9}
@@ -587,7 +587,7 @@ function initialize_ai()
                    ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3*'},
                    ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                    ['bl3s*'] = {'tl3*','s3'},
-                   ['br3s*'] = {'s3','tr3*'} }
+                   ['br3s*'] = {'s3','tr3*'} } }
     --TODO: PUN Punisher
     AI_DEFS['PALLAS']['PUN'] = HostileAiDefinition:new{
         faction = EMPIRE,
@@ -724,12 +724,12 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
     }
     AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
-    AI_DEFS['DOTE']['ZBAN'].description = 'Bandit Squadron Pilot',
+    AI_DEFS['DOTE']['ZBAN'].description = 'Bandit Squadron Pilot'
     AI_DEFS['DOTE']['ZBAN'].maneuverCard = 'https://i.imgur.com/ZiqX7r2.png'
     AI_DEFS['DOTE']['ZBAN'].alternate = 'ZTAL'
     AI_DEFS['DOTE']['ZBAN'].alternateLevel = 5
     AI_DEFS['DOTE']['ZTAL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
-    AI_DEFS['DOTE']['ZTAL'].description = 'Tala Squadron Pilot',
+    AI_DEFS['DOTE']['ZTAL'].description = 'Tala Squadron Pilot'
     AI_DEFS['DOTE']['ZTAL'].elitePilotSkills = {4,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZTAL'].hasFreeFocus = true
     AI_DEFS['DOTE']['ZTAL'].hasConditionalFocus = false
@@ -740,7 +740,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['ZTAL'].alternateLevel = nil
     AI_DEFS['DOTE']['ZBIN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
     AI_DEFS['DOTE']['ZBIN'].faction = SCUM
-    AI_DEFS['DOTE']['ZBIN'].description = 'Binayre Pirate',
+    AI_DEFS['DOTE']['ZBIN'].description = 'Binayre Pirate'
     AI_DEFS['DOTE']['ZBIN'].elitePilotSkills = {1,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZBIN'].hasBarrelRoll = false
     AI_DEFS['DOTE']['ZBIN'].hasConditionalTargetLock = false
@@ -748,8 +748,8 @@ function initialize_ai()
     AI_DEFS['DOTE']['ZBIN'].maneuverCard = 'https://i.imgur.com/fxWBXx0.png'
     AI_DEFS['DOTE']['ZBIN'].alternate = 'ZBLA'
     AI_DEFS['DOTE']['ZBIN'].alternateLevel = 4
-    AI_DEFS['DOTE']['ZBLA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBIN']))
-    AI_DEFS['DOTE']['ZBLA'].description = 'Black Sun Soldier',
+    AI_DEFS['DOTE']['ZBLA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['ZBIN']))
+    AI_DEFS['DOTE']['ZBLA'].description = 'Black Sun Soldier'
     AI_DEFS['DOTE']['ZBLA'].elitePilotSkills = {3,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZBLA'].hasConditionalTargetLock = true
     AI_DEFS['DOTE']['ZBLA'].pilotCards = {'https://i.imgur.com/fEmvLdA.png'}
@@ -795,7 +795,7 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
     }
     AI_DEFS['DOTE']['XROO'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['XRED']))
-    AI_DEFS['DOTE']['XROO'].description = 'Rookie Pilot',
+    AI_DEFS['DOTE']['XROO'].description = 'Rookie Pilot'
     AI_DEFS['DOTE']['XROO'].hasFreeFocus = false
     AI_DEFS['DOTE']['XROO'].hasConditionalFocus = true
     AI_DEFS['DOTE']['XROO'].hasConditionalTargetLock = false
@@ -807,7 +807,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['XROO'].alternate = 'XRED'
     AI_DEFS['DOTE']['XROO'].alternateLevel = 5
     AI_DEFS['DOTE']['XRED'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['XROO']))
-    AI_DEFS['DOTE']['XRED'].description = 'Red Squadron Pilot',
+    AI_DEFS['DOTE']['XRED'].description = 'Red Squadron Pilot'
     AI_DEFS['DOTE']['XRED'].hasFreeFocus = true
     AI_DEFS['DOTE']['XRED'].hasConditionalFocus = false
     AI_DEFS['DOTE']['XRED'].hasConditionalTargetLock = true
@@ -858,16 +858,16 @@ function initialize_ai()
         hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
     }
     AI_DEFS['DOTE']['EKNA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
-    AI_DEFS['DOTE']['EKNA'].description = 'Knave Squadron Pilot',
+    AI_DEFS['DOTE']['EKNA'].description = 'Knave Squadron Pilot'
     AI_DEFS['DOTE']['EKNA'].elitePilotSkills = {1,5,6,8,10}
     AI_DEFS['DOTE']['EKNA'].eliteLimits = {6,8,10}
     AI_DEFS['DOTE']['EKNA'].pilotCards = {'https://i.imgur.com/Xgd94rV.png'}
-    AI_DEFS['DOTE']['EBLM'].elitePilotCards = {'https://i.imgur.com/0fYxjMx.png','https://i.imgur.com/mSELDWS.png'}
+    AI_DEFS['DOTE']['EKNA'].elitePilotCards = {'https://i.imgur.com/0fYxjMx.png','https://i.imgur.com/mSELDWS.png'}
     AI_DEFS['DOTE']['EKNA'].maneuverCard = 'https://i.imgur.com/4cgzz5H.png'
     AI_DEFS['DOTE']['EKNA'].alternate = 'EBLM'
     AI_DEFS['DOTE']['EKNA'].alternateLevel = 7
     AI_DEFS['DOTE']['EBLM'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
-    AI_DEFS['DOTE']['EBLM'].description = 'Blackmoon Squadron Pilot',
+    AI_DEFS['DOTE']['EBLM'].description = 'Blackmoon Squadron Pilot'
     AI_DEFS['DOTE']['EBLM'].hasFreeEvade = true
     AI_DEFS['DOTE']['EBLM'].elitePilotSkills = {3,5,6,8,10}
     AI_DEFS['DOTE']['EBLM'].maneuverCard = 'https://i.imgur.com/Py1HNlu.png'
@@ -980,12 +980,12 @@ function initialize_ai()
                                             {'tr2','tr2','s1','br1','br1','br1'},
                                             {'br1','tr2','tr2','tr2','tr3','tr3'},
                                             {'k4*','k4*','k4*','tr2','tr2','tr3'},
-                                            {'k4*','k4*','k4*','tl2','tr2','s3'}},
+                                            {'k4*','k4*','k4*','tl2','tr2','s3'}}
     AI_DEFS['DOTE']['YSYN'].closeMoves =   {{'s4*','s3','s3','s3','s2','s2'},
                                             {'s2','br2','br3','br3','tr2','tr2'}, --assuming 2nd row of br2 is acutally br3
                                             {'br3','tr2','tr2','tr2','tr3','tr3'},
                                             {'k4*','k4*','tr2','tr2','tr2','tr3'},
-                                            {'k4*','k4*','k4*','k4*','tl2','tr2'}},
+                                            {'k4*','k4*','k4*','k4*','tl2','tr2'}}
     AI_DEFS['DOTE']['YSYN'].fleeMoves =    {['tl2']='tl3',
                                             ['bl1']='bl3',['bl2']='bl3',
                                             ['s1']='s4*',['s2']='s4*',['s3']='s4*',
@@ -1080,8 +1080,8 @@ function initialize_ai()
 	    hasConditionalTargetLock = true,
 	    elitePilotSkills = {1,nil,nil,nil,nil},
 	    elitePilotSkillDeckEntries = 1,
-        pilotCards = {'https://i.imgur.com/xWIEyzi.png'}
-        maneuverCard = 'https://i.imgur.com/IYgZ3rH.png'
+        pilotCards = {'https://i.imgur.com/xWIEyzi.png'},
+        maneuverCard = 'https://i.imgur.com/IYgZ3rH.png',
 	    closeMoves = {{'s4','s4','bl3','br3','tr2','tl2'},
                       {'br3','bl3','bl2','tl2','s4','s4'},
                       {'br3','br3','br1','tr2','tr1','k4*'},
@@ -1192,7 +1192,7 @@ function initialize_ai()
         alternate = 'AGRE',
         alternateLevel = 4
     }
-    AI_DEFS['DOTE']['AGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['APRO']))
+    AI_DEFS['DOTE']['AGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['APRO']))
     AI_DEFS['DOTE']['AGRE'].description = 'Green Squadron Pilot'
     AI_DEFS['DOTE']['AGRE'].diffuse = 'http://i.imgur.com/iS3L5eo.jpg'
     AI_DEFS['DOTE']['AGRE'].hasFreeFocus = true
@@ -1474,7 +1474,7 @@ function initialize_ai()
                         {'bl2s','bl2s','tr2','tr2','tr1','tr1'},
                         {'k4*','k4*','bl2s','bl2s','br2s*','tl1'}},
         leftAlts =     {['bl2s*'] = 'bl2s',
-                        ['br2s'] = 'br2s*' }
+                        ['br2s'] = 'br2s*' },
         fleeMoves =    {['tl1']='tl2',
                         ['bl1']='bl3',['bl2']='bl3',
                         ['s1']='s4',['s2']='s4',['s3']='s4',
@@ -1714,7 +1714,7 @@ function initialize_ai()
                         {'s2','tr3*','br3','br3','br2','br2'},
                         {'br3','br2','tr3*','tr3*','tr2','tr2'},
                         {'br2','tr2','tr3*','tr3*','k5*','k5*'},
-                        {'k5*','k5*','tr2','tr2','tl2','tl2'},
+                        {'k5*','k5*','tr2','tr2','tl2','tl2'}},
         fleeMoves =    {['tl1*']='tl3*',['tl2']='tl3*',
                         ['bl1']='bl3',['bl2']='bl3',
                         ['s1']='s4',['s2']='s4',['s3']='s4',
@@ -1853,6 +1853,7 @@ function initialize_ai()
     for _,campaign_key in ipairs(campaigns) do
         local offset = 0
         for key,ai in pairs(AI_DEFS[campaign_key]) do
+            --printToAll("Mirroring: "..campaign_key.." "..key,{1,1,1})
             mirrorMoveTable(ai.closeMoves,ai.leftAlts)
             mirrorMoveTable(ai.farMoves,ai.leftAlts)
             -- pilot_card_offsets[campaign] = {}
