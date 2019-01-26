@@ -96,7 +96,9 @@ function onload(save_string)
     turn_marker = findObjectByName("Turn Marker")
     end_marker = findObjectByName("End Marker")
     initialize_ai()
+    xwing_ai_ui_onload()
 end
+#include xwing_ai_ui
 function onSave()
     local save = {}
     save.aitype = aitype
