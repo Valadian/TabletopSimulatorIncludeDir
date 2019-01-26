@@ -1,0 +1,258 @@
+--#include ../../util/table
+function selectXwingAITab(player, _, idValue)
+    local xml = UI.getXmlTable()
+    for i=1,#xml do
+        if(xml[i].attributes.id == "xwingPanel") then
+            --xml[i].attributes.height = "70"
+            --table.removeKey(xml[i].attributes, "offsetXY")
+            for j=1,#(xml[i].children) do
+                if(xml[i].children[j].attributes.class == "buttonPanel") then
+                    --if(xml[i].children[j].attributes.active=="true") then
+                    UI.hide(xml[i].children[j].attributes.id)
+                        --xml[i].children[j].attributes.active = "false"
+                    --end
+                end
+            end
+        end
+    end
+    --UI.setXmlTable(xml)
+    --UI.setAttributes("buttonPanel", "active", false)
+    -- Wait.frames(function()
+    --     UI.setAttribute("xwingPanel", "height", 400)
+    --     UI.setAttribute(idValue.."Panel", "active", true)
+    -- end, 1)
+    UI.show(idValue.."Panel")
+end
+function xwing_ai_ui_onload()
+    local assets = {
+        {
+            name = "AGGR",
+            url = "https://i.imgur.com/2P9BOLq.png"
+        },
+        {
+            name = "ARC",
+            url = "https://i.imgur.com/ddXQAbm.png"
+        },
+        {
+            name = "AS",
+            url = "https://i.imgur.com/hwYblXp.png"
+        },
+        {
+            name = "AUZ",
+            url = "https://i.imgur.com/IgYyoQE.png"
+        },
+        {
+            name = "AWNG",
+            url = "https://i.imgur.com/xBSePLj.png"
+        },
+        {
+            name = "_BL",
+            url = "https://i.imgur.com/FResnVX.png"
+        },
+        {
+            name = "_BLS",
+            url = "https://i.imgur.com/gltk9zw.png"
+        },
+        {
+            name = "_BR",
+            url = "https://i.imgur.com/9qjQgjZ.png"
+        },
+        {
+            name = "_BRS",
+            url = "https://i.imgur.com/B0TyaDm.png"
+        },
+        {
+            name = "BSF",
+            url = "https://i.imgur.com/tJHWQrG.png"
+        },
+        {
+            name = "BWNG",
+            url = "https://i.imgur.com/i0WD507.png"
+        },
+        {
+            name = "DEC",
+            url = "https://i.imgur.com/7hbk5Cz.png"
+        },
+        {
+            name = "EWNG",
+            url = "https://i.imgur.com/DrjNhKV.png"
+        },
+        {
+            name = "FIRE",
+            url = "https://i.imgur.com/BvCim6a.png"
+        },
+        {
+            name = "G1A",
+            url = "https://i.imgur.com/TP97KUg.png"
+        },
+        {
+            name = "HWK",
+            url = "https://i.imgur.com/YEqu5hY.png"
+        },
+        {
+            name = "EMPIRE",
+            url = "https://i.imgur.com/AiTEfUY.png"
+        },
+        {
+            name = "JMP",
+            url = "https://i.imgur.com/BvuPpI7.png"
+        },
+        {
+            name = "_K",
+            url = "https://i.imgur.com/JCZgTin.png"
+        },
+        {
+            name = "KIH",
+            url = "https://i.imgur.com/cEnDdA6.png"
+        },
+        {
+            name = "KWNG",
+            url = "https://i.imgur.com/7AuBhbi.png"
+        },
+        {
+            name = "SHU", --Lambda
+            url = "https://i.imgur.com/e2Vz4Cz.png"
+        },
+        {
+            name = "LAN",
+            url = "https://i.imgur.com/gZi1ToA.png"
+        },
+        {
+            name = "M3A",
+            url = "https://i.imgur.com/kT5ngxA.png"
+        },
+        {
+            name = "PALL",--Pallas
+            url = "https://i.imgur.com/3Wdp1Z2.png"
+        },
+        {
+            name = "PROT",
+            url = "https://i.imgur.com/QW4CxRl.png"
+        },
+        {
+            name = "PUN",
+            url = "https://i.imgur.com/Q1y8qgR.png"
+        },
+        {
+            name = "_REBELLION",
+            url = "https://i.imgur.com/Dak1r93.png"
+        },
+        {
+            name = "_S",
+            url = "https://i.imgur.com/4fiHvAf.png"
+        },
+        {
+            name = "_S0",
+            url = "https://i.imgur.com/FvmLfys.png"
+        },
+        {
+            name = "_SCUM",
+            url = "https://i.imgur.com/taQ9mph.png"
+        },
+        {
+            name = "SCU", --Scurrg
+            url = "https://i.imgur.com/wXXbWFD.png"
+        },
+        {
+            name = "STAR",
+            url = "https://i.imgur.com/mIDHF6l.png"
+        },
+        {
+            name = "T70",
+            url = "https://i.imgur.com/IqUjKc3.png"
+        },
+        {
+            name = "TAP",
+            url = "https://i.imgur.com/Ml1RnRW.png"
+        },
+        {
+            name = "ADV",
+            url = "https://i.imgur.com/uhxMHMc.png"
+        },
+        {
+            name = "BOM",
+            url = "https://i.imgur.com/XUL8jnk.png"
+        },
+        {
+            name = "DEF",
+            url = "https://i.imgur.com/HmT5l4j.png"
+        },
+        {
+            name = "TIE",
+            url = "https://i.imgur.com/Ht6XW0n.png"
+        },
+        {
+            name = "TFO",
+            url = "https://i.imgur.com/cQ8w9nN.png"
+        },
+        {
+            name = "INT",
+            url = "https://i.imgur.com/5aTA6CO.png"
+        },
+        {
+            name = "PHA",
+            url = "https://i.imgur.com/AD23sTo.png"
+        },
+        {
+            name = "TSF",
+            url = "https://i.imgur.com/C7Ta7ft.png"
+        },
+        {
+            name = "_TL",
+            url = "https://i.imgur.com/NyZ8nEz.png"
+        },
+        {
+            name = "_TLT",
+            url = "https://i.imgur.com/25A20hn.png"
+        },
+        {
+            name = "_TR",
+            url = "https://i.imgur.com/LU1x5vB.png"
+        },
+        {
+            name = "TRAN", --Transport
+            url = "https://i.imgur.com/HoF0HHk.png"
+        },
+        {
+            name = "_TRT",
+            url = "https://i.imgur.com/bN08BBo.png"
+        },
+        {
+            name = "UPS",--Upsilon
+            url = "https://i.imgur.com/6uHL81A.png"
+        },
+        {
+            name = "UWNG",
+            url = "https://i.imgur.com/jdsclHD.png"
+        },
+        {
+            name = "VCX",
+            url = "https://i.imgur.com/Rljq1cl.png"
+        },
+        {
+            name = "XWNG",
+            url = "https://i.imgur.com/scbWpp9.png"
+        },
+        {
+            name = "YT13",
+            url = "https://i.imgur.com/dkgLCG5.png"
+        },
+        {
+            name = "YT24",
+            url = "https://i.imgur.com/tYgL6Sx.png"
+        },
+        {
+            name = "YV6",
+            url = "https://i.imgur.com/A4AnXtP.png"
+        },
+        {
+            name = "YWNG",
+            url = "https://i.imgur.com/ofwDCm4.png"
+        },
+        {
+            name = "Z95",
+            url = "https://i.imgur.com/XfnFvJM.png"
+        }
+    }
+    UI.setCustomAssets(assets)
+end
