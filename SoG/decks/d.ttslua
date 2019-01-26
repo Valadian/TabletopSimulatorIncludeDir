@@ -1,0 +1,76 @@
+CARDS['DAback4'] = { Aback = { Start = {-0.03,0,-7.5}, Aback = {offset={0.668,0,-1.331}, rotation=-62.63} },
+    AbackTwice = { Start = {-0.03,0,7.5}, AbackTwice = {offset={0.095,0,1.603}, rotation=-64.57} } }
+CARDS['DAback5'] = { Aback = { Start = {-0.036,0,-7.5}, Aback = {offset={0,0,-1.21}, rotation=0} },
+    AbackTwice = { Start = {-0.036,0,7.5}, AbackTwice = {offset={0,0,1.755}, rotation=0} } }
+CARDS['DAback6'] = { Aback = { Start = {-0.03,0,-7.5}, Aback = {offset={-0.687,0,-1.325}, rotation=62.81} },
+    AbackTwice = { Start = {-0.03,0,7.5}, AbackTwice = {offset={-0.108,0,1.609}, rotation=65.06} } }
+CARDS['DBM5L2'] = { BrokenMast = { Start = {-0.03,0,-7.5}, Beating = {offset={0.006,0,-1.509}, rotation=-15.41},
+    Reaching = {offset={0.426,0,-2.476}, rotation=-32.28} } }
+CARDS['DBM6L2'] = { BrokenMast = { Start = {-0.004,0,-7.5}, Beating = {offset={0.477,0,-1.535}, rotation=-24.97},
+    Reaching = {offset={0.897,0,-2.463}, rotation=-22.06} } }
+CARDS['DBM7R2'] = { BrokenMast = { Start = {-0.004,0,-7.5}, Beating = {offset={-0.083,0,-1.579}, rotation=19.11},
+    Reaching = {offset={-0.439,0,-2.508}, rotation=17.88} } }
+CARDS['DBM8R2'] = { BrokenMast = { Start = {-0.055,0,-7.5}, Beating = {offset={-0.28,0,-1.439}, rotation=24.25},
+    Reaching = {offset={-0.871,0,-2.272}, rotation=32.8} } }
+CARDS['DBM4R'] = { BrokenMast = { Start = {-0.03,0,-7.5}, Beating = {offset={-0.216,0,-1.268}, rotation=52.37},
+    Reaching = {offset={-1.037,0,-1.84}, rotation=58.25} } }
+CARDS['DBM3R'] = { BrokenMast = { Start = {-0.036,0,-7.5}, Beating = {offset={-0.528,0,-1.28}, rotation=28.89},
+    Reaching = {offset={-1.119,0,-2.031}, rotation=43.51} } }
+CARDS['DBM2L'] = { BrokenMast = { Start = {-0.042,0,-7.5}, Beating = {offset={0.502,0,-1.35}, rotation=-54.5},
+    Reaching = {offset={1.393,0,-2.094}, rotation=-37.01} } }
+CARDS['DBM1L'] = { BrokenMast = { Start = {-0.004,0,-7.5}, Beating = {offset={0.045,0,-1.274}, rotation=-38.5},
+    Reaching = {offset={1.081,0,-1.986}, rotation=-69.78} } }
+CARDS['D8R'] = { Backing = { Start = {1.064,0,-7.5}, Beating = {offset={-0.114,0,-0.867}, rotation=39.49},
+    Reaching = {offset={-0.611,0,-1.395}, rotation=68.07} },
+    Battle = { Start = {0.002,0,-7.5}, Beating = {offset={-0.312,0,-1.872}, rotation=33.88},
+    Reaching = {offset={-1.119,0,-2.794}, rotation=67.81} },
+    Full = { Start = {-1.06,0,-7.5}, Beating = {offset={-0.356,0,-2.851}, rotation=28.47},
+    Reaching = {offset={-1.584,0,-4.269}, rotation=68.13} } }
+CARDS['D7R'] = { Backing = { Start = {1.039,0,-7.5}, Beating = {offset={-0.095,0,-0.95}, rotation=29.74},
+    Reaching = {offset={-0.502,0,-1.541}, rotation=45.75} },
+    Battle = { Start = {-0.023,0,-7.5}, Beating = {offset={-0.382,0,-1.923}, rotation=31.26},
+    Reaching = {offset={-1.043,0,-2.889}, rotation=45.24} },
+    Full = { Start = {-1.092,0,-7.5}, Beating = {offset={-0.572,0,-3.029}, rotation=30.9},
+    Reaching = {offset={-1.412,0,-4.371}, rotation=45.49} } }
+CARDS['D6R'] = { Backing = { Start = {1.071,0,-7.5}, Beating = {offset={-0.025,0,-0.918}, rotation=11.58},
+    Reaching = {offset={-0.216,0,-1.605}, rotation=22.83} },
+    Battle = { Start = {-0.004,0,-7.5}, Beating = {offset={-0.191,0,-1.865}, rotation=18.33},
+    Reaching = {offset={-0.553,0,-2.908}, rotation=22.78} },
+    Full = { Start = {-1.06,0,-7.5}, Beating = {offset={-0.312,0,-3.029}, rotation=18.54},
+    Reaching = {offset={-0.77,0,-4.397}, rotation=22.65} } }
+CARDS['D5R'] = { Backing = { Start = {1.026,0,-7.5}, Beating = {offset={-0.273,0,-0.918}, rotation=32.92},
+    Reaching = {offset={-0.572,0,-1.497}, rotation=0} },
+    Battle = { Start = {-0.042,0,-7.5}, Beating = {offset={-0.636,0,-1.719}, rotation=30.61},
+    Reaching = {offset={-1.075,0,-2.718}, rotation=0} },
+    Full = { Start = {-1.111,0,-7.5}, Beating = {offset={-0.948,0,-2.52}, rotation=29.7},
+    Reaching = {offset={-1.342,0,-4.021}, rotation=0} } }
+CARDS['D5S'] = { Backing = { Start = {1.064,0,-7.5}, Beating = {offset={0,0,-0.943}, rotation=0},
+    Reaching = {offset={0,0,-1.617}, rotation=0} },
+    Battle = { Start = {-0.011,0,-7.5}, Beating = {offset={0,0,-1.859}, rotation=0},
+    Reaching = {offset={0,0,-2.928}, rotation=0} },
+    Full = { Start = {-1.079,0,-7.5}, Beating = {offset={0,0,-2.858}, rotation=0},
+    Reaching = {offset={0,0,-4.397}, rotation=0} } }
+CARDS['D5L'] = { Backing = { Start = {-1.026,0,-7.5}, Beating = {offset={0.273,0,-0.918}, rotation=-32.92},
+    Reaching = {offset={0.572,0,-1.497}, rotation=0} },
+    Battle = { Start = {0.042,0,-7.5}, Beating = {offset={0.636,0,-1.719}, rotation=-30.61},
+    Reaching = {offset={1.075,0,-2.718}, rotation=0} },
+    Full = { Start = {1.111,0,-7.5}, Beating = {offset={0.948,0,-2.52}, rotation=-29.7},
+    Reaching = {offset={1.342,0,-4.021}, rotation=0} } }
+CARDS['D4L'] = { Backing = { Start = {-1.071,0,-7.5}, Beating = {offset={0.025,0,-0.918}, rotation=-11.58},
+    Reaching = {offset={0.216,0,-1.605}, rotation=-22.83} },
+    Battle = { Start = {0.004,0,-7.5}, Beating = {offset={0.191,0,-1.865}, rotation=-18.33},
+    Reaching = {offset={0.553,0,-2.908}, rotation=-22.78} },
+    Full = { Start = {1.06,0,-7.5}, Beating = {offset={0.312,0,-3.029}, rotation=-18.54},
+    Reaching = {offset={0.77,0,-4.397}, rotation=-22.65} } }
+CARDS['D3L'] = { Backing = { Start = {-1.039,0,-7.5}, Beating = {offset={0.095,0,-0.95}, rotation=-29.74},
+    Reaching = {offset={0.502,0,-1.541}, rotation=-45.75} },
+    Battle = { Start = {0.023,0,-7.5}, Beating = {offset={0.382,0,-1.923}, rotation=-31.26},
+    Reaching = {offset={1.043,0,-2.889}, rotation=-45.24} },
+    Full = { Start = {1.092,0,-7.5}, Beating = {offset={0.572,0,-3.029}, rotation=-30.9},
+    Reaching = {offset={1.412,0,-4.371}, rotation=-45.49} } }
+CARDS['D2L'] = { Backing = { Start = {-1.064,0,-7.5}, Beating = {offset={0.114,0,-0.867}, rotation=-39.49},
+    Reaching = {offset={0.611,0,-1.395}, rotation=-68.07} },
+    Battle = { Start = {-0.002,0,-7.5}, Beating = {offset={0.312,0,-1.872}, rotation=-33.88},
+    Reaching = {offset={1.119,0,-2.794}, rotation=-67.81} },
+    Full = { Start = {1.06,0,-7.5}, Beating = {offset={0.356,0,-2.851}, rotation=-28.47},
+    Reaching = {offset={1.584,0,-4.269}, rotation=-68.13} } }
