@@ -1,0 +1,37 @@
+Artesien = ShipDefinition:new{
+    Class = "Artesien",
+    Type = "Ship-of-the-Line",
+    Rate = 3,
+    Deck = "N",
+    Burden = 4,
+    Veer = 6,
+    Crew = 569,
+    Guns = 64,
+    rear_arc = {0.651,0,2.371}, 
+    center_arc = {0.873,0,0.291},
+    front_arc = {0.79,0,-1.789},
+    aback = 40,
+    beat = 99,
+    reach = 168.5
+}
+
+SHIPS["French"]["Protee"] = Artesien:new{
+    Name = "Protee",
+    Model = "https://drive.google.com/uc?id=15QYxkSgE2YVjtdJJ_zdoxApm66xj-Tbb",
+    Log = "https://i.imgur.com/PUT2em2.jpg",
+    Card = "https://i.imgur.com/HJndXgX.png",
+    PV = 102
+}
+SHIPS["French"]["Eveille"] = Artesien:new{
+    Name = "Eveille",
+    Model = "https://drive.google.com/uc?id=17clARVqAxVFiXpcu5TcRpAJlo1cg4W0X",
+    Log = "https://i.imgur.com/5IuUayx.png",
+    Card = "https://i.imgur.com/EYhyXoW.png",
+    PV = 102
+}
+
+--Artesien
+--Roland
+
+--HMS Protee
+--HMS Argonaut

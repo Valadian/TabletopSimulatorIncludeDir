@@ -1,0 +1,86 @@
+Amazon = ShipDefinition:new{
+    Class = "Amazon",
+    Type = "Frigate",
+    Rate = 5,
+    Deck = "C",
+    Burden = 2,
+    Veer = 8,
+    --Crew = 0,
+    Guns = 32,
+    rear_arc = {0.637,0,1.817}, 
+    center_arc = {0.776,0,0.291},
+    front_arc = {0.748,0,-1.248},
+    aback = 40,
+    beat = 99,
+    reach = 168.5
+}
+
+SHIPS["British"]["HMS Meleager"] = Amazon:new{
+    Name = "HMS Meleager",
+    Model = "https://drive.google.com/uc?id=1685gVZVh39QDj2aiLOcXhewXZXiw7zbI",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166849851/03B97E5E69FEBFBD605B499F999CBB372482E3B7/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190340351/8F553EB5BEC797F21E94483FC68C5E349A1A46B7/",
+    Card = "https://i.imgur.com/ScZaoq8.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/930437577137112816/FBC4D49646911E293F11B0427B07486AD1B1A5ED/",
+    PV = 69,
+    Crew = 220
+}
+SHIPS["British"]["HMS Terpsichore"] = Amazon:new{
+    Name = "HMS Terpsichore",
+    Model = "https://drive.google.com/uc?id=1d4pDAc7yyw5RotOEypVMlASka0SfsYhU",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190440223/F2F060100F6C1227A224F6EE357F90480B216E9F/",
+    Card = "https://i.imgur.com/c1NDElK.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/931563240049685339/67DABA63ABD24D64ACCA231BDF413CE05D4B0665/",
+    PV = 68,
+    Crew = 220
+}
+
+--Embuscade
+--Le Succes
+
+--HMS Cleopatra
+--HMS Iphigenia
+-- SHIPS["British"]["HMS Cleopatra"] = {
+--     Name = "HMS Cleopatra",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190325314/35711D758E573847E664752491889A4A033B78AC/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931562843182940499/8FEB4E9F3DB82F1CBD767F378E76F5AF096C7049/",
+--     Arc = "TER",
+--     Burden = 3,
+--     Deck = "C",
+--     Veer = 8,
+--     PV = 68,
+--     Rate = 5
+-- }
+-- SHIPS["British"]["HMS Iphigenia"] = {
+--     Name = "HMS Iphigenia",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166844395/0EA5AEAAB19BC76108A9CFA96282359E7EB883AE/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190338915/3B82BF94CC8A915F02C8A6968796EA6F73E44757/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931563240052632657/2BBE9A33991BE8A1BBB8DF8DEB639E8973F26CA8/",
+--     Arc = "TER",
+--     Burden = 2,
+--     Deck = "C",
+--     Veer = 8,
+--     PV = 68,
+--     Rate = 5
+-- }
+
+--HMS Orpheus
+--HMS Amphion
+-- SHIPS["British"]["HMS Orpheus"] = {
+--     Name = "HMS Orpheus",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166854095/FC7B9B96EDC81E499895FFB4DC7F84056CC3D121/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/958586631005417582/AC00F1BC356D6744BE626B44E4C3BCDEF92EFD3E/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/930437577137119855/A9187DF67404BBD8C69970A8AA170B030D07BA0C/",
+--     Arc = "TER",
+--     Burden = 2,
+--     Deck = "C",
+--     Veer = 8,
+--     PV = 69,
+--     Rate = 5
+-- }
+
+--KICKSTARTER
+--HMS Juno
+--HMS Castor

@@ -1,0 +1,39 @@
+Ocean = ShipDefinition:new{
+    Class = "Ocean",
+    Type = "Ship-of-the-Line",
+    Rate = 1,
+    Deck = "F",
+    Burden = 6,
+    Veer = 3,
+    --Crew = 220,
+    Guns = 118,
+    rear_arc = {1.053,0,2.621},
+    center_arc = {1.164,0,0.291},
+    front_arc = {1.15,0,-2.038},
+    aback = 52.5,
+    beat = 99,
+    reach = 168.5
+}
+
+SHIPS["French"]["Imperial"] = Ocean:new{
+    Name = "Imperial",
+    Model = "https://drive.google.com/uc?id=1dx3fgp2e95SK_ZwsLdtqZmFADwyT8tir",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190447417/57370E484623E253B4F120A2B72AAE1850939712/",
+    Card = "https://i.imgur.com/F97a9Vt.png",
+    PV = 209,
+    Crew = 1130
+}
+SHIPS["French"]["Republique Francais"] = Ocean:new{
+    Name = "Republique Francais",
+    Model = "https://drive.google.com/uc?id=1rMMUXqMPY0vkHQeXFe3uFlCnf7t_vH0f",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190529472/14DB8BB6051C8C7BA771F3B2829173BFDC7D1066/",
+    Card = "https://i.imgur.com/4K0teZ5.png",
+    PV = 206,
+    Crew = 1105
+}
+
+--Montagne
+--Commerce de Marseille
+
+--Orient
+--Austerlitz

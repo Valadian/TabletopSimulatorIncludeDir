@@ -1,0 +1,41 @@
+Hebe = ShipDefinition:new{
+    Class = "Hebe",
+    Type = "Frigate",
+    Rate = 5,
+    Deck = "E",
+    Burden = 4,
+    Veer = 6,
+    --Crew = 220,
+    --Guns = 74,
+    rear_arc = {0.693,0,2.163}, 
+    center_arc = {0.804,0,0.291},
+    front_arc = {0.693,0,-1.581},
+    aback = 40,
+    beat = 99,
+    reach = 168.5
+}
+
+SHIPS["British"]["HMS Sybille"] = Hebe:new{
+    Name = "HMS Sybille",
+    Model = "https://drive.google.com/uc?id=1PMHmUnLcksExJ4Moo2ZwdzOt4F2UOCrZ",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190438428/9B6F38553E32B2366A73E9E6B377B03021F2F18E/",
+    Card = "https://i.imgur.com/RdyoQu2.png",
+    PV = 85,
+    Guns = 34,
+    Crew = 297
+}
+SHIPS["British"]["HMS Amelia"] = Hebe:new{
+    Name = "HMS Amelia",
+    Model = "https://drive.google.com/uc?id=1OiJ7ib5xx3XHgPRFy4ebLkz0Wp5Wgc1w",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190321274/38C6C4D4A360D25519E2C55B5581905C1BB5AAD5/",
+    Card = "https://i.imgur.com/eDqGqW9.png",
+    PV = 88,
+    Guns = 38,
+    Crew = 284
+}
+
+--Charmagnole
+--Sybille
+
+--Proserpine
+--Dryade

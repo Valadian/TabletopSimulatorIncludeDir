@@ -5,7 +5,16 @@ LOG_COLS_X = {146.7, 119.26,  91.82, 54.88, 27.44, 0}
 LOG_ROT = {0,180}
 spawner_guid = 'ac3fe2'
 spawner = nil
-DECK_SOURCES = {['A'] = '5b2acc', ['B'] = '880d60', ['C'] = '9f3bbd', ['D'] = '1ba27a'}
+DECK_SOURCES = {['A'] = '5b2acc',
+                ['B'] = '880d60',
+                ['C'] = '9f3bbd',
+                ['D'] = '1ba27a',
+                ['E'] = 'e90c19',
+                ['F'] = '6b4369',
+                ['G'] = '2246a2',
+                ['H'] = '46b6d4',
+                ['N'] = 'a694f7',
+                ['O'] = 'e6c066'}
 ACTION_SOURCE_GUID = '009a16'
 AMMO_SOURCE_GUID = 'ba173b'
 #include ship_db
@@ -43,21 +52,37 @@ function Spawner.drawButtons()
             })
     end
 end
+function Action_Log_Spawn_HMS_Hibernia(log) SpawnShip(log, "British", "HMS Hibernia") end
+function Action_Log_Spawn_HMS_Royal_George(log) SpawnShip(log, "British", "HMS Royal George") end
 function Action_Log_Spawn_HMS_Vanguard(log) SpawnShip(log, "British", "HMS Vanguard") end
 function Action_Log_Spawn_HMS_Defence(log) SpawnShip(log, "British", "HMS Defence") end
-function Action_Log_Spawn_HMS_Adamant(log) SpawnShip(log, "British", "HMS Adamant") end
-function Action_Log_Spawn_HMS_Unite(log) SpawnShip(log, "British", "HMS Unite") end
-function Action_Log_Spawn_HMS_Orpheus(log) SpawnShip(log, "British", "HMS Orpheus") end
+--function Action_Log_Spawn_HMS_Adamant(log) SpawnShip(log, "British", "HMS Adamant") end
+function Action_Log_Spawn_HMS_Isis(log) SpawnShip(log, "British", "HMS Isis") end
+function Action_Log_Spawn_HMS_Leopard(log) SpawnShip(log, "British", "HMS Leopard") end
+function Action_Log_Spawn_HMS_Amelia(log) SpawnShip(log, "British", "HMS Amelia") end
+function Action_Log_Spawn_HMS_Sybille(log) SpawnShip(log, "British", "HMS Sybille") end
+--function Action_Log_Spawn_HMS_Unite(log) SpawnShip(log, "British", "HMS Unite") end
+--function Action_Log_Spawn_HMS_Orpheus(log) SpawnShip(log, "British", "HMS Orpheus") end
+--function Action_Log_Spawn_HMS_Cleopatra(log) SpawnShip(log, "British", "HMS Cleopatra") end
+--function Action_Log_Spawn_HMS_Iphigenia(log) SpawnShip(log, "British", "HMS Iphigenia") end
 function Action_Log_Spawn_HMS_Meleager(log) SpawnShip(log, "British", "HMS Meleager") end
-function Action_Log_Spawn_HMS_Cleopatra(log) SpawnShip(log, "British", "HMS Cleopatra") end
-function Action_Log_Spawn_HMS_Iphigenia(log) SpawnShip(log, "British", "HMS Iphigenia") end
 function Action_Log_Spawn_HMS_Terpsichore(log) SpawnShip(log, "British", "HMS Terpsichore") end
+function Action_Log_Spawn_HMS_Fairy(log) SpawnShip(log, "British", "HMS Fairy") end
+function Action_Log_Spawn_HMS_Swan(log) SpawnShip(log, "British", "HMS Swan") end
+
+
+function Action_Log_Spawn_Imperial(log) SpawnShip(log, "French", "Imperial") end
+function Action_Log_Spawn_Republique_Francais(log) SpawnShip(log, "French", "Republique Francais") end
 function Action_Log_Spawn_Aquilon(log) SpawnShip(log, "French", "Aquilon") end
 function Action_Log_Spawn_Genereux(log) SpawnShip(log, "French", "Genereux") end
+function Action_Log_Spawn_Eveille(log) SpawnShip(log, "French", "Eveille") end
+function Action_Log_Spawn_Protee(log) SpawnShip(log, "French", "Protee") end
 function Action_Log_Spawn_Courageuse(log) SpawnShip(log, "French", "Courageuse") end
-function Action_Log_Spawn_Hermione(log) SpawnShip(log, "French", "Hermione") end
 function Action_Log_Spawn_Unite(log) SpawnShip(log, "French", "Unite") end
-function Action_Log_Spawn_Concorde(log) SpawnShip(log, "French", "Concorde") end
+--function Action_Log_Spawn_Hermione(log) SpawnShip(log, "French", "Hermione") end
+--function Action_Log_Spawn_Concorde(log) SpawnShip(log, "French", "Concorde") end
+function Action_Log_Spawn_Alligator(log) SpawnShip(log, "French", "Alligator") end
+function Action_Log_Spawn_Le_Fortune(log) SpawnShip(log, "French", "Le Fortune") end
 function SpawnShip(log, faction, shipname)
     log.clearButtons()
     shipdef = SHIPS[faction][shipname]
@@ -100,8 +125,14 @@ function SpawnShip(log, faction, shipname)
     pos = vector.add(log.getPosition(),vector.rotate({8.7,1,9.3},log.getRotation()[2]))
     ship = SpawnCustomAssetBundle(shipdef.Model, pos, log.getRotation()[2], 1)
     ship.unlock()
-    ship.setDescription(shipdef.Arc..":ship")
+    --ship.setDescription(shipdef.Arc..":ship")
+    ship.setDescription("ship")
     ship.setName(shipdef.Name)
+    --printToAll("shipdef.center_arc==nil: "..tostring(shipdef.center_arc==nil))
+    --printToAll("shipdef.Rate: "..tostring(shipdef.Rate))
+    Wait.frames(function() Ship.SetShipDefinition(ship,shipdef) end,10)
+    --printToAll("shipdef.center_arc==nil: "..tostring(Ship.GetShipDefinition(ship).center_arc==nil))
+    --printToAll("shipdef.Rate: "..tostring(Ship.GetShipDefinition(ship).Rate))
     Log.drawButtons(log)
     Ship.onObjectDrop(ship)
     deck_source = getObjectFromGUID(DECK_SOURCES[shipdef.Deck])
@@ -202,20 +233,26 @@ function ShowShipSelection(log, faction)
     -- yrotation = CalculateButtonRotation(i)
     -- topleftpos = vector.add(spawnbutton,vector.rotate({-6,0,-15},yrotation[2]))
     btns = T(SHIPS[faction]):OrderByDesc(function(def) return def.PV end):Select(function(shipdef)
+        -- printToAll("shipdef.Name: "..tostring(shipdef.Name))
+        -- printToAll("shipdef.PV: "..tostring(shipdef.PV))
+        -- printToAll("shipdef.Rate: "..tostring(shipdef.Rate))
+        -- printToAll("shipdef.Burden: "..tostring(shipdef.Burden))
+        -- printToAll("shipdef.Deck: "..tostring(shipdef.Deck))
+        -- printToAll("shipdef.Veer: "..tostring(shipdef.Veer))
         return {
             ['click_function'] = 'Action_Log_Spawn_'..(shipdef.Name:gsub(" ","_")),
             ['label'] = shipdef.Name.." ("..shipdef.PV..")",
-            ['tooltip'] = shipdef.Rate..rate[shipdef.Rate].." Rate\n"..
+            ['tooltip'] = (shipdef.Rate==0 and "Sloop" or shipdef.Rate..rate[shipdef.Rate].." Rate").."\n"..
                           shipdef.Burden.." Burden\n"..
                           shipdef.Deck.." Maneuver Deck\n"..
                           shipdef.Veer.." Veer",
             ['color'] = {r=(shipdef.PV-min_PV)/(max_PV-min_PV)*(1-pastel)+pastel, g=pastel, b = 1-(shipdef.PV-min_PV)/(max_PV-min_PV)*(1-pastel)},
-            ['width'] = 5000,
+            ['width'] = 6000,
             ['height'] = 1200,
             ['font_size'] = 500
             }
     end)
-    Button.LayoutGrid(btns, log, {-1,1,-1}, 0, 0.18, 2, {11, 0,2.5})
+    Button.LayoutGrid(btns, log, {-1.2,1,-1}, 0, 0.18, 2, {13, 0,2.5})
 end
 function Spawn_Log(i)
     offset = CalculateButtonOffset(i)

@@ -1,0 +1,49 @@
+Portant = ShipDefinition:new{
+    Class = "Portant",
+    Type = "Ship-of-the-Line",
+    Rate = 4,
+    Deck = "O",
+    Burden = 4,
+    Veer = 7,
+    Crew = 350,
+    Guns = 50,
+    rear_arc = {0.665,0,2.233}, 
+    center_arc = {0.817,0,0.388},
+    front_arc = {0.776,0,-1.484},
+    aback = 47.5,
+    beat = 101,
+    reach = 168.5
+}
+
+SHIPS["British"]["HMS Leopard"] = Portant:new{
+    Name = "HMS Leopard",
+    Model = "https://drive.google.com/uc?id=1c3YSdTrCAzS6g8dyb_SxdeOYWmOIUHA3",
+    Log = "https://i.imgur.com/h359Gzm.jpg",
+    Card = "https://i.imgur.com/E18F20n.png",
+    PV = 96
+}
+SHIPS["British"]["HMS Isis"] = Portant:new{
+    Name = "HMS Isis",
+    Model = "https://drive.google.com/uc?id=1CR632hDjC0DHo-8tYqpNTThHGcNBimtu",
+    Log = "https://i.imgur.com/GKSm1v1.png",
+    Card = "https://i.imgur.com/b9AVesL.png",
+    PV = 99
+}
+
+--HMS Leander
+--HMS Adamant
+-- SHIPS["British"]["HMS Adamant"] = {
+--     Name = "HMS Adamant",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166843462/9B6C37DA9506909DD65210D468854FFEC467D526/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/930437577137277937/F6CCAE6D4400C819FA747C609491C6AE508ABFD6/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931562843191813973/F9554C326022316E4398DA3536ABBE64713A4346/",
+--     Arc = "COU",
+--     Burden = 4,
+--     Deck = "D",
+--     Veer = 7,
+--     PV = 96,
+--     Rate = 4
+-- }
+
+--Petit Annibal
+--Leander

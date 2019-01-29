@@ -1,0 +1,51 @@
+Bellona = ShipDefinition:new{
+    Class = "Bellona",
+    Type = "Ship-of-the-Line",
+    Rate = 3,
+    Deck = "D",
+    Burden = 5,
+    Veer = 5,
+    --Crew = 220,
+    Guns = 74,
+    rear_arc = {0.748,0,2.385}, 
+    center_arc = {0.928,0,0.277},
+    front_arc = {0.873,0,-1.83},
+    aback = 51.5,
+    beat = 98.25,
+    reach = 168.5
+}
+
+SHIPS["British"]["HMS Defence"] = Bellona:new{
+    Name = "HMS Defence",
+    Model = "https://drive.google.com/uc?id=1tuesUqdfHMVFMdSX9I-m5CLs6k4ZFimo",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341168381338/BCCF5FCA92562527B96E4FD9AE716D3BA17D8453/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190329969/1B7557469AA0868F4EE1671B12649D7BFF041A17/",
+    Card = "https://i.imgur.com/vpUM8cA.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/958586631008597826/7E17FADE447AA69954E82824DEC27EB3327F1852/",
+    PV = 135,
+    Crew = 597
+}
+SHIPS["British"]["HMS Vanguard"] = Bellona:new{
+    Name = "HMS Vanguard",
+    Variant = "Edgar",
+    Model = "https://drive.google.com/uc?id=1b3zubPsNvwMl6VuYk6GqAUUt7vDaFtxv",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341168383415/DFEB2FCB4F8C1ED6A581E3C4DCA17CE480D858C3/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190444198/817AE58697AB5E75A13E4000C51EAF8E9D5BFA62/",
+    Card = "https://i.imgur.com/9fPQD1b.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/931563240052638428/8807193C2DD5E93B71128CF5E08DFD8FB1936879/",
+    PV = 135,
+    Crew = 600
+}
+
+--Le Berwick
+--Le Swiftsure
+
+--HMS Bellona
+--HMS Goliath
+
+--HMS Zealous
+--HMS Superb
+
+--KICKSTARTER
+--HMS Bellerophon
+--HMS Defiance

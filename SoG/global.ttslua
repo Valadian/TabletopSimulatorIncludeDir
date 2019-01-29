@@ -19,6 +19,9 @@ ARCS['TER'] = 'https://paste.ee/p/PMxwq'
 ARCS['GEN'] = 'https://paste.ee/p/r6YkZ'
 ARC_COLLIDER = 'https://paste.ee/p/7n7Kt'
 
+FRONT_ARC = 'https://paste.ee/p/K41Jk'
+FULL_ARC = 'https://paste.ee/p/0vWCe'
+
 local world_wind = "Mid"
 local GREEN ={r=0, g=1, b=0}
 local ORANGE ={r=1, g=0.5, b=0}

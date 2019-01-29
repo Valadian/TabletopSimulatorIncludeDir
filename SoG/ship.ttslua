@@ -30,6 +30,11 @@ function Ship.onSave(item)
     data["ready"] = Ship.GetReadyToMove(item)
     data["backing"] = Ship.GetIsBacking(item)
     data["arc"] = Ship.GetArc(item) and Ship.GetArc(item).getGUID() or nil
+    local def = Ship.GetShipDefinition(item)
+    data["rear_arc"] = def.rear_arc
+    data["center_arc"] = def.center_arc
+    data["front_arc"] = def.front_arc
+    data["def"] = def
 end
 function Ship.onLoad(item, data)
     --printToAll("Loading ship: "..guid,{1,1,1})
@@ -44,6 +49,11 @@ function Ship.onLoad(item, data)
     if data["arc"] then
         Ship.SetArc(item,getObjectFromGUID(data["arc"]))
     end
+    local def = data["def"]
+    def.rear_arc = data["rear_arc"]
+    def.center_arc = data["center_arc"]
+    def.front_arc = data["front_arc"]
+    Ship.SetShipDefinition(item,def)
     Ship.drawButtons(item)
 end
 
@@ -65,6 +75,34 @@ function Ship.SetIsBacking(ship,backing) ship.setVar('backing',backing) end
 function Ship.GetIsBacking(ship) return ship.getVar('backing') end
 function Ship.SetArc(ship, arc) ship.setVar('arc',arc) end
 function Ship.GetArc(ship) return ship.getVar('arc') end
+function Ship.SetShipDefinition(ship,def)
+    --def['Rate'] = def.Rate
+    printToAll("ship.getGUID: "..tostring(ship.getGUID()))
+    printToAll("Ship.SetShipDefinition (before) def.aback: "..tostring(def.aback))
+    printToAll("Ship.SetShipDefinition (before) def.Rate: "..tostring(def.Rate))
+    ship.setTable('def_rear_arc',def.rear_arc)
+    ship.setTable('def_center_arc',def.center_arc)
+    ship.setTable('def_front_arc',def.front_arc)
+    ship.setTable('def',def)
+    printToAll("Ship.SetShipDefinition (after) def.aback: "..tostring(def.aback))
+    printToAll("Ship.SetShipDefinition (after) def.Rate: "..tostring(def.Rate))
+end
+function Ship.GetShipDefinition(ship)
+    printToAll("ship.getGUID: "..tostring(ship.getGUID()))
+    local def = ship.getTable('def')
+    if def==nil then
+        printToAll("def==nil",{1,0,0})
+        return nil
+    end
+    printToAll("#def: "..tostring(#def),{0,1,1})
+    printToAll("Ship.GetShipDefinition def.rear_arc: : "..tostring(def['rear_arc']))
+    printToAll("Ship.GetShipDefinition def.aback: "..tostring(def['aback']))
+    printToAll("Ship.GetShipDefinition def.Rate: "..tostring(def.Rate))
+    def.rear_arc = ship.getTable('def_rear_arc')
+    def.center_arc = ship.getTable('def_center_arc')
+    def.front_arc = ship.getTable('def_front_arc')
+    return def
+end
 
 function Ship.GetEffectiveSpeed(ship)
     local speed = Ship.GetSpeed(ship)
@@ -83,23 +121,37 @@ function Ship.GetEffectiveSpeed(ship)
     end
 end
 
-function Ship.ToggleArc(ship)
+function Ship.ToggleArc(ship,arc_model,x_scale,y_scale)
     if Ship.GetArc(ship)~=nil then
         Ship.GetArc(ship).destruct()
         Ship.SetArc(ship,nil)
     else
         local desc = ship.getDescription()
-        local type = desc:match '(%u*):ship'
-        if ARCS[type]~=nil then
+        --local type = desc:match '(%u*):ship'
+        local def = Ship.GetShipDefinition(ship)
+        if def~=nil then
             ship.lock()
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = ship.getPosition()
+            printToAll("def==nil"..tostring(def==nil))
+            printToAll("def.center_arc"..tostring(def.center_arc))
+            local offset = vector.scale(def.center_arc,{-x_scale,1,1})
+            if arc_model==FRONT_ARC and y_scale==1 then
+                offset = vector.scale(def.front_arc,{-x_scale,1,1})
+            end
+            if arc_model==FRONT_ARC and y_scale==-1 then
+                offset = vector.scale(def.rear_arc,{-x_scale,1,1})
+            end
+            offset = vector.rotate(offset,ship.getRotation()[2])
+            obj_parameters.position = vector.add(ship.getPosition(),offset)
             obj_parameters.rotation = ship.getRotation()
+            obj_parameters.scale = {x_scale, 0.6, y_scale}
             local newruler = spawnObject(obj_parameters)
             local custom = {}
-            custom.mesh = ARCS[type]
+            custom.mesh = arc_model --ARCS[type]
+            custom.diffuse = 'http://i.imgur.com/Szoc5MW.png'
             custom.collider = ARC_COLLIDER
+            custom.material = 1 --WOOD
             newruler.setCustomObject(custom)
             newruler.lock()
             Ship.SetArc(ship,newruler)
@@ -110,9 +162,23 @@ function Ship.drawButtons(ship, y_rot_override)
     ship.clearButtons()
 
     --draw wind indicator
-    local pos = {3, 0.2, 0}
+    local pos = {3, 0.5, 0}
     local rot = wind_dir.getRotation()[2]-(y_rot_override or ship.getRotation()[2])
     pos = vector.rotate(pos,-rot)
+    local wind_color = {0,0,0}
+    local def = Ship.GetShipDefinition(ship)
+    if def~=nil then
+        printToAll("def.aback: "..tostring(def.aback))
+        if math.abs(rot)<def.aback then
+            wind_color = {1,0,0}
+        elseif math.abs(rot)<def.beat then
+            wind_color = {1,0.75,0}
+        elseif math.abs(rot)<def.reach then
+            wind_color = {0,0,1}
+        else
+            wind_color = {1,0.75,0}
+        end
+    end
     ship.createButton({['click_function'] = 'Action_DoNothing', ['label'] = '', ['position'] = pos, ['color'] = {0,0,0},['function_owner'] = self, ['rotation'] =  {0, rot, 0}, ['width'] = 1600, ['height'] = 10, ['font_size'] = 10})
 
     if Ship.GetCard(ship)~=nil then
@@ -127,8 +193,12 @@ function Ship.drawButtons(ship, y_rot_override)
         ship.createButton({['click_function'] = 'Action_Done', ['label'] = 'Done', ['position'] = {0, 0.5, -3}, ['color'] = GREEN, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 400, ['font_size'] = 350})
     else
         -- no card? Add Fire buttons
-        ship.createButton({['click_function'] = 'Action_Fire', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-        ship.createButton({['click_function'] = 'Action_Fire', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = 'Fire', ['position'] = {2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+        ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
     end
     -- ship.createButton({['click_function'] = 'Action_SetFull', ['label'] = '(3) Full', ['position'] = {4.5, 0.5, -3}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
     -- ship.createButton({['click_function'] = 'Action_SetBattle', ['label'] = '(2) Battle', ['position'] = {4.5, 0.5, -2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
@@ -139,9 +209,17 @@ function Ship.drawButtons(ship, y_rot_override)
         ship.createButton({['click_function'] = 'Action_Undo', ['label'] = 'Undo', ['position'] = {0, 0.5, 4}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
     end
 end
-function Action_Fire(ship)
-    Ship.ToggleArc(ship)
-end
+STBD = -1
+PORT = 1
+FRONT = 1
+FULL = 1
+REAR = -1
+function Action_STBD_Front(ship) Ship.ToggleArc(ship,FRONT_ARC,STBD,FRONT) end
+function Action_STBD_Full(ship) Ship.ToggleArc(ship,FULL_ARC,STBD,FULL) end
+function Action_STBD_Rear(ship) Ship.ToggleArc(ship,FRONT_ARC,STBD,REAR) end
+function Action_PORT_Front(ship) Ship.ToggleArc(ship,FRONT_ARC,PORT,FRONT) end
+function Action_PORT_Full(ship) Ship.ToggleArc(ship,FULL_ARC,PORT,FULL) end
+function Action_PORT_Rear(ship) Ship.ToggleArc(ship,FRONT_ARC,PORT,REAR) end
 function Action_DoNothing() end
 
 function Action_Done(ship)
@@ -299,7 +377,7 @@ function positionCard(card_obj, ship)
         ship.lock()
         card_obj.setPositionSmooth(vector.add(ship.getPosition(),off),false,false)
         card_obj.setRotationSmooth({0,ship.getRotation()[2],0},false,false)
-        card_obj.setScale({2.24,1,2.24*7.5/7})
+        card_obj.setScale({2.4,1,2.4})
         card_obj.lock()
         -- if move[ship.getVar('wind')] then
         --

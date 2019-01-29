@@ -1,0 +1,86 @@
+Concorde = ShipDefinition:new{
+    Class = "Concorde",
+    Type = "Frigate",
+    Rate = 5,
+    Deck = "A",
+    Burden = 3,
+    Veer = 7,
+    Guns = 32,
+    rear_arc = {0.568,0,2.025},
+    center_arc = {0.748,0,0.25},
+    front_arc = {0.72,0,-1.539},
+    aback = 33.5,
+    beat = 97.5,
+    reach = 168.5
+}
+SHIPS["French"]["Courageuse"] = Concorde:new{
+    Name = "Courageuse",
+    Model = "https://drive.google.com/uc?id=1m2CMO4-Dmu9dFOxOnC0uqVqVxurhd1Mm",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166848597/4C49A5D04D6322F63B085A796625294CDD7ACA3B/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190275911/17CCB08C9A7DDFFA8BEC5605422E09CE851CB121/",
+    Card = "https://i.imgur.com/8FTT4Yv.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/930437577137106585/D599E353F5900AC91059FC18821AB9C70AF8EC5A/",
+    PV = 74,
+    Guns = 34,
+    Crew = 280
+}
+SHIPS["French"]["Unite"] = Concorde:new{
+    Name = "Unite",
+    Class = "Charmante",
+    Model = "https://drive.google.com/uc?id=1VfCSvQmRgpg13hwwf646ysoh7q5sn9Mk",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166842470/D9D81CAD296836A04B8A8F37216F0938631303FB/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190536278/3D45BEA9327A0E24D4FE4EAD9305058C12F2CC56/",
+    Card = "https://i.imgur.com/ZoOSF3w.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/931563240052634902/FF550FCF7D7053D88E40AE16B5E32FD77BC042DE/",
+    PV = 72,
+    Guns = 32,
+    Crew = 280
+}
+--HMS Concorde
+--HMS Unite
+-- SHIPS["British"]["HMS Unite"] = {
+--     Name = "HMS Unite",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166843462/9B6C37DA9506909DD65210D468854FFEC467D526/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190441413/2FC3BFE432479611E2568B5DE3C787984276E854/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931563240052636837/52C2C25E6F47A12CA4B1975DA77EBF16255B97E5/",
+--     Arc = "COU",
+--     Burden = 3,
+--     Deck = "A",
+--     Veer = 7,
+--     PV = 76,
+--     Rate = 5
+-- }
+-- SHIPS["French"]["Concorde"] = {
+--     Name = "Concorde",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166851941/928B9E769878900647388970F4DA065B56465D1A/",
+--     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190327661/F4EFC1AF11D9A0D7BE90D24B027ABAF83A33256A/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931562843182950389/F0999561C8406F2A7A16D0498155BB01FE1B7785/",
+--     Arc = "COU",
+--     Burden = 3,
+--     Deck = "A",
+--     Veer = 7,
+--     PV = 72,
+--     Rate = 5
+-- }
+
+--Hermione
+--L'Inconstante
+-- SHIPS["French"]["Hermione"] = {
+--     Name = "Hermione",
+--     Model = "http://cloud-3.steamusercontent.com/ugc/958586341166851941/928B9E769878900647388970F4DA065B56465D1A/", --USES CONCORDE
+--     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190286827/7B9B8A3D020CC33680087CE7DCD9F82AB1CE615B/",
+--     Card = "http://cloud-3.steamusercontent.com/ugc/931563240052627392/C2D17C8B86939E9C00F89AB228560C5EFFECFF8E/",
+--     Arc = "COU",
+--     Burden = 3,
+--     Deck = "A",
+--     Veer = 7,
+--     PV = 72,
+--     Rate = 5
+-- }
+
+--Sirena
+--Ifigenia
+
+--KICKSTARTER
+--La Concorde (French)
+--Junon

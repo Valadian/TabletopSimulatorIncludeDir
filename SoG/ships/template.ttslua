@@ -1,0 +1,27 @@
+__REPLACE_ME__ = ShipDefinition:new{
+    Class = "",
+    Type = "",
+    Rate = nil,
+    Deck = "",
+    Burden = nil,
+    Veer = nil,
+    --Crew = 220,
+    Guns = nil,
+}
+
+SHIPS[""][""] = __REPLACE_ME__:new{
+    Name = "",
+    Model = "",
+    Log = "",
+    Card = "",
+    PV = nil,
+    Crew = nil
+}
+SHIPS[""][""] = __REPLACE_ME__:new{
+    Name = "",
+    Model = "",
+    Log = "",
+    Card = "",
+    PV = nil,
+    Crew = nil
+}

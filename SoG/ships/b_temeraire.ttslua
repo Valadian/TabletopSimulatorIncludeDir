@@ -1,0 +1,48 @@
+Temeraire = ShipDefinition:new{
+    Class = "Temeraire",
+    Type = "Ship-of-the-Line",
+    Rate = 3,
+    Deck = "B",
+    Burden = 5,
+    Veer = 5,
+    --Crew = 0,
+    Guns = 74,
+    rear_arc = {0.776,0,2.524}, 
+    center_arc = {0.901,0,0.25},
+    front_arc = {0.845,0,-2.025},
+    aback = 51.5,
+    beat = 97.5,
+    reach = 168.5
+}
+
+SHIPS["French"]["Aquilon"] = Temeraire:new{
+    Name = "Aquilon",
+    Model = "https://drive.google.com/uc?id=11fcE4J2TUDEhQ5qhNib2vj430YMCTz9k",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166846543/C597CFDB2463753867930AED09F1325020E4DBAA/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190267882/275F0A32B2C216085960B112C409E7E3D12E398E/",
+    Card = "https://i.imgur.com/6jpLhhD.png",
+    PV = 144,
+    Crew = 700
+}
+SHIPS["French"]["Genereux"] = Temeraire:new{
+    Name = "Genereux",
+    Model = "https://drive.google.com/uc?id=1EIMI2BYOkJBRRRzlpAow_7K276_rQ6Y8",
+    --Model = "http://cloud-3.steamusercontent.com/ugc/958586341166847552/78DF36C3AEC28142B3332B8643C7B4D06B2027BD/",
+    Log = "http://cloud-3.steamusercontent.com/ugc/931562843190284939/A0D2D172F36A68435E880C9C6187EC481D833579/",
+    Card = "https://i.imgur.com/lW9UcAf.png",
+    --Card = "http://cloud-3.steamusercontent.com/ugc/931562843182883781/395FF4E6587A2FA1EB0DA9B14B2375374BFDA2DB/",
+    PV = 143,
+    Crew = 693
+}
+--HMS Impetueux
+--HMS Spartiate
+
+--Commerce de Bordeaux
+--Duguay-Trouin
+
+--Argonauta
+--Heroe
+
+--KICKSTARTER
+--Fougueux (French)
+--Redoutable (French)

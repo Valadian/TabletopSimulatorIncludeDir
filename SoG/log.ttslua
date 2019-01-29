@@ -73,7 +73,7 @@ function Log.GetReady(log) return log.getVar('ready') end
 function Log.PositionCard(log, card, offset)
     card.setPositionSmooth(vector.add(log.getPosition(), vector.rotate(offset,log.getRotation()[2])), false, false)
     card.setRotationSmooth({0,log.getRotation()[2],180},false,false)
-    card.setScale({2.24,1,2.24*7.5/7},false,false)
+    card.setScale({2.4,1,2.4},false,false)
     card.clearButtons()
     card.lock()
 end
