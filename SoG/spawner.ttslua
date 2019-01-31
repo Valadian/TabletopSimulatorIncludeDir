@@ -37,11 +37,22 @@ function Spawner.onload(saveData)
     if save['current_difficulty']~=nil then
         current_difficulty = save['current_difficulty']
     end
+    if save['spawner_log_guids']~=nil then
+        for i, log_guid in pairs(save['spawner_log_guids']) do
+            logs[i] = getObjectFromGUID(log_guid)
+        end
+    end
     Spawner.drawButtons()
 end
 function Spawner.onSave(save)
     save['currently_spawning'] = currently_spawning
     save['current_difficulty'] = current_difficulty
+    save['spawner_log_guids'] = {}
+    for i, log in pairs(logs) do
+        if log~=nil then
+            save['spawner_log_guids'][i] = log.getGUID()
+        end
+    end
 end
 function Spawner.drawButtons()
     spawner.clearButtons()
@@ -170,11 +181,13 @@ function SpawnShip(log, faction, shipname)
             {position = {1.73,0,0.27}},
             {position = {2.23,0,0.27}}
         })
+        Log.SetShipStatSheet(log,customlog)
     end
     if shipdef.Card!=nil then
         pos = vector.add(log.getPosition(),vector.rotate({8.7,0,9.3},log.getRotation()[2]))
         customcard = SpawnCustomObject(shipdef.Card, pos, log.getRotation()[2], 1.7)
         customcard.setName(shipdef.Name)
+        Log.SetShipCard(log,customcard)
     end
     pos = vector.add(log.getPosition(),vector.rotate({8.7,1,9.3},log.getRotation()[2]))
     ship = SpawnCustomAssetBundle(shipdef.Model, pos, log.getRotation()[2], 1)
@@ -251,6 +264,24 @@ function Action_Spawn(i)
         ShowFactionSelection(log)
         --ShowShipSelection(logs[i], "British")
     else
+        local log = logs[i]
+        local ship = Log.GetShip(log)
+        local shipCard = Log.GetShipCard(log)
+        local shipStatSheet = Log.GetShipStatSheet(log)
+        for i,item in ipairs(getAllObjects()) do
+            if isCard(item) and Card.GetLog(item)==log then
+                destroyObject(item)
+            end
+        end
+        if ship~=nil then
+            destroyObject(ship)
+        end
+        if shipCard~=nil then
+            destroyObject(shipCard)
+        end
+        if shipStatSheet~=nil then
+            destroyObject(shipStatSheet)
+        end
         destroyObject(logs[i])
         logs[i]=nil
     end

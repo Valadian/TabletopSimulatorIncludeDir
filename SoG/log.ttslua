@@ -4,6 +4,9 @@ function Log.onSave(item)
     data["primary"] = Log.GetPrimary(item) and Log.GetPrimary(item).getGUID() or nil
     data["secondary"] = Log.GetSecondary(item) and Log.GetSecondary(item).getGUID() or nil
     data["ship"] = Log.GetShip(item) and Log.GetShip(item).getGUID() or nil
+    data["shipStatSheet"] = Log.GetShipStatSheet(item) and Log.GetShipStatSheet(item).getGUID() or nil
+    data["shipCard"] = Log.GetShipCard(item) and Log.GetShipCard(item).getGUID() or nil
+    data["ship"] = Log.GetShip(item) and Log.GetShip(item).getGUID() or nil
     data["deckName"] = Log.GetDeckName(item)
     data["abackRight"] = Log.GetAbackRight(item) and Log.GetAbackRight(item).getGUID() or nil
     data["abackStraight"] = Log.GetAbackStraight(item) and Log.GetAbackStraight(item).getGUID() or nil
@@ -20,6 +23,12 @@ function Log.onLoad(item, data)
     end
     if data["ship"] then
         Log.SetShip(item,getObjectFromGUID(data["ship"]))
+    end
+    if data["shipStatSheet"] then
+        Log.SetShipStatSheet(item,getObjectFromGUID(data["shipStatSheet"]))
+    end
+    if data["shipCard"] then
+        Log.SetShipCard(item,getObjectFromGUID(data["shipCard"]))
     end
     Log.SetDeckName(item,data["deckName"])
     if data["abackRight"] then
@@ -54,6 +63,10 @@ function Log.SetSecondary(log, card) log.setVar('secondary',card) end
 function Log.GetSecondary(log) return log.getVar('secondary') end
 function Log.SetShip(log,ship) log.setVar('ship',ship) end
 function Log.GetShip(log) return log.getVar('ship') end
+function Log.SetShipCard(log,card) log.setVar('shipCard',card) end
+function Log.GetShipCard(log) return log.getVar('shipCard') end
+function Log.SetShipStatSheet(log,stat) log.setVar('shipStatSheet',stat) end
+function Log.GetShipStatSheet(log) return log.getVar('shipStatSheet') end
 function Log.SetDeckName(log,deckName) log.setVar('deckName',deckName) end
 function Log.GetDeckName(log) return log.getVar('deckName') end
 function Log.SetAbackRight(log,card) log.setVar('abackRight',card) end
