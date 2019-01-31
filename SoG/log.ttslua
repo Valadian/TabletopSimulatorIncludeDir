@@ -218,6 +218,7 @@ function Action_CardPlay(log)
 end
 function Log.PlayToShip(log, card)
     local ship = Log.GetShip(log)
+    card.clearButtons()
     if Ship.GetCard(ship)~=nil then
         printToAll("Ship already has a card",{1,0,0})
         return false
