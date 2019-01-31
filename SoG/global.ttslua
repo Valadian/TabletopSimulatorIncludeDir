@@ -11,6 +11,7 @@ wind_dir_guid = '9c666a'
 wind_speed_guid = '9b304d'
 wind_dir = nil
 current_phase = "planning"
+current_difficulty = "Advanced"
 
 ARCS = {}
 ARCS['DEF'] = 'https://paste.ee/p/GrUc9'
@@ -36,13 +37,15 @@ function onload(saveData)
         local save = JSON.decode(saveData)
         for guid, data in pairs(save) do
             local item = getObjectFromGUID(guid)
-            local type = data["type"]
-            if type=='ship' then
-                Ship.onLoad(item, data)
-            elseif type=='log' then
-                Log.onLoad(item, data)
-            elseif type=='card' then
-                Card.onLoad(item, data)
+            if item~=nil then
+                local type = data["type"]
+                if type=='ship' then
+                    Ship.onLoad(item, data)
+                elseif type=='log' then
+                    Log.onLoad(item, data)
+                elseif type=='card' then
+                    Card.onLoad(item, data)
+                end
             end
         end
         for i, item in ipairs(getAllObjects()) do
@@ -53,7 +56,7 @@ function onload(saveData)
         world_wind = save['wind'] or "Mid"
     end
     drawWindButtons(wind_speed)
-    Spawner.onload()
+    Spawner.onload(saveData)
     -- local desc = "CBM4R"
     -- printToAll("match: "..(desc:match '%u(B?M?%d*%u2?)'),{1,1,1})
 end
@@ -69,6 +72,7 @@ function onSave()
         end
     end
     save['wind']=world_wind
+    Spawner.onSave(save)
     save_string = JSON.encode(save)
     return save_string
 end

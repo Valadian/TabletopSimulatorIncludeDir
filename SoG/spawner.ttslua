@@ -17,8 +17,11 @@ DECK_SOURCES = {['A'] = '5b2acc',
                 ['O'] = 'e6c066'}
 ACTION_SOURCE_GUID = '009a16'
 AMMO_SOURCE_GUID = 'ba173b'
+currently_spawning = true
+
 #include ship_db
-function Spawner.onload()
+function Spawner.onload(saveData)
+    local save = JSON.decode(saveData)
     -- for faction,ships in pairs(SHIPS) do
     --     for _,ship in pairs(ships) do
     --         Global['Action_Log_Spawn_'..faction.."_"..ship]
@@ -28,28 +31,37 @@ function Spawner.onload()
     -- for i=1,12 do
     --     _G['ActionSpawn_'..i] = function() Action_Spawn(i) end
     -- end
+    if save['currently_spawning']~=nil then
+        currently_spawning = save['currently_spawning']
+    end
     Spawner.drawButtons()
 end
+function Spawner.onSave(save)
+    save['currently_spawning'] = currently_spawning
+end
 function Spawner.drawButtons()
+    spawner.clearButtons()
     spawner.createButton({
-        ['click_function'] = 'Action_ClearButtons',
-        ['label'] = "Finish Spawning",
+        ['click_function'] = 'Action_ToggleSpawning',
+        ['label'] = "Toggle Spawning",
         ['position'] = {-7,0,0},
         ['width'] = 4000,
         ['height'] = 1200,
         ['font_size'] = 500
         })
-    for i=1,12 do
-        spawner.createButton({
-            ['click_function'] = 'Action_Spawn_'..i,--|obj| Action_Spawn(i),
-            --['function_owner'] = spawner,
-            ['label'] = "Spawn",
-            ['position'] = CalculateButtonOffset(i),
-            ['rotation'] =  CalculateButtonRotation(i),
-            ['width'] = 2200,
-            ['height'] = 1200,
-            ['font_size'] = 500
-            })
+    if currently_spawning then
+        for i=1,12 do
+            spawner.createButton({
+                ['click_function'] = 'Action_Spawn_'..i,--|obj| Action_Spawn(i),
+                --['function_owner'] = spawner,
+                ['label'] = "Spawn",
+                ['position'] = CalculateButtonOffset(i),
+                ['rotation'] =  CalculateButtonRotation(i),
+                ['width'] = 2200,
+                ['height'] = 1200,
+                ['font_size'] = 500
+                })
+        end
     end
 end
 function Action_Log_Spawn_HMS_Hibernia(log) SpawnShip(log, "British", "HMS Hibernia") end
@@ -177,8 +189,9 @@ function layout_deck(deck,log)
     deck.setPosition(vector.add(deck.getPosition(),vector.rotate({0,0,35},deck.getRotation()[2])))
     Action_Layout(deck)
 end
-function Action_ClearButtons()
-    spawner.clearButtons()
+function Action_ToggleSpawning()
+    currently_spawning = not currently_spawning
+    Spawner.drawButtons()
 end
 function CalculateButtonOffset(i)
     return {LOG_COLS_X[math.imod(i,6)], 0, BUTTON_ROW_Z[math.floor((i-1)/6)+1]}
