@@ -27,9 +27,9 @@ ShipDefinition = {
 function ShipDefinition:new(o)
     o = o or {}
     setmetatable(o, self)
-    if o.rear_arc==nil then o.rear_arc = self.rear_arc end
-    if o.rear_arc==nil then o.center_arc = self.center_arc end
-    if o.rear_arc==nil then o.front_arc = self.front_arc end
+    -- if o.rear_arc==nil then o.rear_arc = self.rear_arc end
+    -- if o.rear_arc==nil then o.center_arc = self.center_arc end
+    -- if o.rear_arc==nil then o.front_arc = self.front_arc end
     self.__index = self
     return o
 end

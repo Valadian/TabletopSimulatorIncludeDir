@@ -1,4 +1,4 @@
-printToAll("ShipDefinition.front_arc: "..tostring(ShipDefinition.front_arc[1]))
+--printToAll("ShipDefinition.front_arc: "..tostring(ShipDefinition.front_arc[1]))
 Umpire = ShipDefinition:new{
     Class = "Umpire",
     Type = "Ship-of-the-Line",
@@ -15,7 +15,7 @@ Umpire = ShipDefinition:new{
     beat = 99,
     reach = 168.5
 }
-printToAll("Umpire.front_arc: "..tostring(Umpire.front_arc[1]))
+--printToAll("Umpire.front_arc: "..tostring(Umpire.front_arc[1]))
 SHIPS["British"]["HMS Royal George"] = Umpire:new{
     Name = "HMS Royal George",
     Model = "https://drive.google.com/uc?id=1iN4HApcpWrraEr_kLxtRpl7YVRr2GV87",
@@ -31,7 +31,7 @@ SHIPS["British"]["HMS Hibernia"] = Umpire:new{
     Card = "https://i.imgur.com/Fe9cxJJ.png",
     PV = 212
 }
-printToAll("SHIPS['British']['HMS Hibernia'].front_arc: "..tostring(SHIPS["British"]["HMS Hibernia"].front_arc[1]))
+--printToAll("SHIPS['British']['HMS Hibernia'].front_arc: "..tostring(SHIPS["British"]["HMS Hibernia"].front_arc[1]))
 
 --HMS Royal Sovereign
 --HMS Britannia

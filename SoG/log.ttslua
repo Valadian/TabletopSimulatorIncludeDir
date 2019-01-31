@@ -8,6 +8,7 @@ function Log.onSave(item)
     data["abackRight"] = Log.GetAbackRight(item) and Log.GetAbackRight(item).getGUID() or nil
     data["abackStraight"] = Log.GetAbackStraight(item) and Log.GetAbackStraight(item).getGUID() or nil
     data["abackLeft"] = Log.GetAbackLeft(item) and Log.GetAbackLeft(item).getGUID() or nil
+    return data
 end
 function Log.onLoad(item, data)
     --printToAll("Loading log: "..guid,{1,1,1})

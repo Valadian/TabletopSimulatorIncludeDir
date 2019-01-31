@@ -7,6 +7,7 @@ function Card.onSave(item)
     data["shiplog"] = Card.GetLog(item) and Card.GetLog(item).getGUID() or nil
     data["orig_pos"] = Card.GetOriginalPos(item)
     data["orig_rot"] = Card.GetOriginalRot(item)
+    return data
 end
 function Card.onLoad(item, data)
     --printToAll("Loading card: "..guid,{1,1,1})
