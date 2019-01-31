@@ -34,10 +34,14 @@ function Spawner.onload(saveData)
     if save['currently_spawning']~=nil then
         currently_spawning = save['currently_spawning']
     end
+    if save['current_difficulty']~=nil then
+        current_difficulty = save['current_difficulty']
+    end
     Spawner.drawButtons()
 end
 function Spawner.onSave(save)
     save['currently_spawning'] = currently_spawning
+    save['current_difficulty'] = current_difficulty
 end
 function Spawner.drawButtons()
     spawner.clearButtons()
@@ -48,6 +52,41 @@ function Spawner.drawButtons()
         ['width'] = 4000,
         ['height'] = 1200,
         ['font_size'] = 500
+        })
+    local color = {1,1,1}
+    local font_color = {0,0,0}
+    if current_difficulty=="Basic" then color = {0,1,0}; font_color={1,1,1} else color = {1,1,1}; font_color = {0,0,0} end
+    spawner.createButton({
+        ['click_function'] = 'Action_SetBasic',
+        ['label'] = "Basic",
+        ['position'] = {7,0,-3},
+        ['width'] = 3000,
+        ['height'] = 1200,
+        ['font_size'] = 500,
+        ['color'] = color,
+        ['font_color'] = font_color
+        })
+    if current_difficulty=="Standard" then color = {1,0.5,0}; font_color={1,1,1} else color = {1,1,1}; font_color = {0,0,0} end
+    spawner.createButton({
+        ['click_function'] = 'Action_SetStandard',
+        ['label'] = "Standard",
+        ['position'] = {7,0,0},
+        ['width'] = 3000,
+        ['height'] = 1200,
+        ['font_size'] = 500,
+        ['color'] = color,
+        ['font_color'] = font_color
+        })
+    if current_difficulty=="Advanced" then color = {1,0,0}; font_color={1,1,1} else color = {1,1,1}; font_color = {0,0,0} end
+    spawner.createButton({
+        ['click_function'] = 'Action_SetAdvanced',
+        ['label'] = "Advanced",
+        ['position'] = {7,0,3},
+        ['width'] = 3000,
+        ['height'] = 1200,
+        ['font_size'] = 500,
+        ['color'] = color,
+        ['font_color'] = font_color
         })
     if currently_spawning then
         for i=1,12 do
@@ -64,6 +103,9 @@ function Spawner.drawButtons()
         end
     end
 end
+function Action_SetBasic() current_difficulty="Basic"; Spawner.drawButtons() end
+function Action_SetStandard() current_difficulty="Standard"; Spawner.drawButtons() end
+function Action_SetAdvanced() current_difficulty="Advanced"; Spawner.drawButtons() end
 function Action_Log_Spawn_HMS_Hibernia(log) SpawnShip(log, "British", "HMS Hibernia") end
 function Action_Log_Spawn_HMS_Royal_George(log) SpawnShip(log, "British", "HMS Royal George") end
 function Action_Log_Spawn_HMS_Vanguard(log) SpawnShip(log, "British", "HMS Vanguard") end

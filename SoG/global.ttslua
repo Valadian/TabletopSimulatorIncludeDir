@@ -11,7 +11,7 @@ wind_dir_guid = '9c666a'
 wind_speed_guid = '9b304d'
 wind_dir = nil
 current_phase = "planning"
-current_difficulty = "Advanced"
+current_difficulty = "Advanced" --Basic, Standard
 
 ARCS = {}
 ARCS['DEF'] = 'https://paste.ee/p/GrUc9'
