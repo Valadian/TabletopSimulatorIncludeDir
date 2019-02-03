@@ -210,8 +210,9 @@ function Ship.drawButtons(ship, y_rot_override)
         end
     end
 
-    ship.createButton({['click_function'] = 'Action_DoNothing', ['label'] = '', ['position'] = pos, ['color'] = wind_color,['function_owner'] = self, ['rotation'] =  {0, rot, 0}, ['width'] = 1600, ['height'] = 10, ['font_size'] = 10})
-
+    if current_phase~="combat" and current_phase~="reload" then
+        ship.createButton({['click_function'] = 'Action_DoNothing', ['label'] = '', ['position'] = pos, ['color'] = wind_color,['function_owner'] = self, ['rotation'] =  {0, rot, 0}, ['width'] = 1600, ['height'] = 10, ['font_size'] = 10})
+    end
     if Ship.GetCard(ship)~=nil then
         if Ship.GetReadyToMove(ship) then
             ship.createButton({['click_function'] = 'Action_PerformMove', ['label'] = 'MOVE', ['position'] = {0, 0.5, -5}, ['color'] = GREEN, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 400, ['font_size'] = 350})
