@@ -80,14 +80,14 @@ function Card.drawButtons(card, reset)
     local card_veer = Card.GetVeer(card)
     local ship = Log.GetShip(log)
     local def = Ship.GetShipDefinition(ship)
-    printToAll('Planned: '..tostring(planned_veer).." This: "..tostring(card_veer).." Max Veer: "..tostring(def["Veer"]))
+    --printToAll('Planned: '..tostring(planned_veer).." This: "..tostring(card_veer).." Max Veer: "..tostring(def["Veer"]))
     if planned_veer~=nil and card_veer~=nil then
         if math.abs(card_veer - planned_veer)>def["Veer"] then
             color = {1,0,0}
             tooltip = "EXCEEDS VEER"
         end
         if math.abs(card_veer - planned_veer)==def["Veer"] then
-            color = {1,1,0}
+            color = {1,1,0.7}
             tooltip = "Max Veer, unless rudder is broken"
         end
     end
@@ -108,7 +108,7 @@ function Card.reset(card)
     local orig_pos = Card.GetOriginalPos(card)
     local orig_rot = Card.GetOriginalRot(card) or 180
     card.lock()
-    card.setScale({0.896,1,0.896*7.5/7},false,false) --1.12
+    card.setScale({1,1,1},false,false) --1.12
     card.setPositionSmooth(orig_pos, false, false)
     card.setRotationSmooth({0,orig_rot,0},false,false)
     --card.unlock()

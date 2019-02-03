@@ -119,6 +119,9 @@ function Ship.GetApparentWind(ship,y_rot_override)
         if real_rot<-180 then
             real_rot = real_rot+360
         end
+        -- if real_rot>180 then
+        --     real_rot = real_rot-360
+        -- end
         return real_rot
     end
     return 0
