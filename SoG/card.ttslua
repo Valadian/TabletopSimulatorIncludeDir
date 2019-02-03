@@ -7,6 +7,7 @@ function Card.onSave(item)
     data["shiplog"] = Card.GetLog(item) and Card.GetLog(item).getGUID() or nil
     data["orig_pos"] = Card.GetOriginalPos(item)
     data["orig_rot"] = Card.GetOriginalRot(item)
+    data["reset"] = Card.GetReset(item)
     return data
 end
 function Card.onLoad(item, data)
@@ -16,6 +17,7 @@ function Card.onLoad(item, data)
     end
     Card.SetOriginalPos(item,data["orig_pos"])
     Card.SetOriginalRot(item,data["orig_rot"])
+    Card.SetReset(item,data["reset"])
     Card.drawButtons(item)
 end
 function isCard(card)
@@ -28,6 +30,16 @@ function Card.SetOriginalPos(card, pos) card.setTable('orig_pos',pos) end
 function Card.GetOriginalPos(card) return card.getTable('orig_pos') end
 function Card.SetOriginalRot(card, rot) card.setVar('orig_rot',rot) end
 function Card.GetOriginalRot(card) return card.getVar('orig_rot') end
+function Card.GetVeer(card)
+    local veerstring = card.getDescription():match '^%u(%d+)'
+    if veerstring~='' then
+        return tonumber(veerstring)
+    else
+        return nil
+    end
+end
+function Card.SetReset(card,reset) card.setVar('reset',reset) end
+function Card.GetReset(card) return card.getVar('reset') end
 
 function Card.SwapAback(card)
     local log = Card.GetLog(card)
@@ -60,9 +72,27 @@ function Card.SwapAback(card)
 end
 function Card.drawButtons(card, reset)
     card.clearButtons()
+    local log = Card.GetLog(card)
     local desc = card.getDescription()
+    local color = {1,1,1}
+    local tooltip = ''
+    local planned_veer = Log.GetPlannedVeer(log)
+    local card_veer = Card.GetVeer(card)
+    local ship = Log.GetShip(log)
+    local def = Ship.GetShipDefinition(ship)
+    printToAll('Planned: '..tostring(planned_veer).." This: "..tostring(card_veer).." Max Veer: "..tostring(def["Veer"]))
+    if planned_veer~=nil and card_veer~=nil then
+        if math.abs(card_veer - planned_veer)>def["Veer"] then
+            color = {1,0,0}
+            tooltip = "EXCEEDS VEER"
+        end
+        if math.abs(card_veer - planned_veer)==def["Veer"] then
+            color = {1,1,0}
+            tooltip = "Max Veer, unless rudder is broken"
+        end
+    end
     if not desc:match '.Aback.' then
-        card.createButton({['click_function'] = 'Card_Action_Plan', ['label'] = 'Plan', ['scale'] = {0.8,0.8,0.8}, ['position'] = {0, 0.3, -1.3}, ['width'] = 800, ['height'] = 500, ['font_size'] = 350})
+        card.createButton({['color'] = color, ['tooltip'] = tooltip, ['click_function'] = 'Card_Action_Plan', ['label'] = 'Plan', ['scale'] = {0.8,0.8,0.8}, ['position'] = {0, 0.3, -1.3}, ['width'] = 800, ['height'] = 500, ['font_size'] = 350})
     end
 end
 function Card.drawReturnButton(card)
@@ -74,6 +104,7 @@ function Card.isBrokenMastCard(card)
     return (desc:match '.BM.*')~=nil
 end
 function Card.reset(card)
+    Card.SetReset(card,true)
     local orig_pos = Card.GetOriginalPos(card)
     local orig_rot = Card.GetOriginalRot(card) or 180
     card.lock()
@@ -85,6 +116,7 @@ function Card.reset(card)
 end
 
 function Card_Action_Plan(card)
+    Card.SetReset(card,false)
     local log = Card.GetLog(card)
     local ship = Log.GetShip(log)
     -- printToAll('Card.isBrokenMastCard: '..tostring(Card.isBrokenMastCard(card)),{1,1,1})
@@ -97,6 +129,14 @@ function Card_Action_Plan(card)
             printToAll("Your mast is broken, you must plan a broken mast card",{1,0,0})
         else
             printToAll("You mast is not broken, plan a regular numbered card",{1,0,0})
+        end
+    end
+    Card.RedrawResetCards()
+end
+function Card.RedrawResetCards()
+    for _,item in ipairs(getAllObjects()) do
+        if isCard(item) and Card.GetReset(item) then
+            Card.reset(item)
         end
     end
 end

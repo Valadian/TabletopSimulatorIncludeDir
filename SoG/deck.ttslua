@@ -81,5 +81,6 @@ function callback_Card_AssignLogFromParams(card, params)
     --card.setScale({1.12,1,1.12})
     --Card.drawButtons(card,true)
     --card.lock()
+    Card.SetReset(card,true)
     Card.reset(card)
 end

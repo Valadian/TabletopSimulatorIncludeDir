@@ -83,7 +83,13 @@ function Log.SetReady(log,ready)
 end
 function Log.GetReady(log) return log.getVar('ready') end
 
-
+function Log.GetPlannedVeer(log)
+    if Log.GetPrimary(log)==nil then
+        return nil
+    else
+        return Card.GetVeer(Log.GetPrimary(log))
+    end
+end
 function Log.PositionCard(log, card, offset)
     card.setPositionSmooth(vector.add(log.getPosition(), vector.rotate(offset,log.getRotation()[2])), false, false)
     card.setRotationSmooth({0,log.getRotation()[2],180},false,false)
@@ -229,6 +235,7 @@ function Action_CardPlay(log)
             Log.PromoteSecondary(log)
         end
         Log.drawButtons(log)
+        Card.RedrawResetCards()
     end
 end
 function Log.PlayToShip(log, card)
@@ -245,6 +252,7 @@ function Log.PlayToShip(log, card)
         Ship.drawButtons(ship)
     end
     Log.drawButtons(log)
+    Card.RedrawResetCards()
     return success
 end
 function Action_CardPrimaryUndo(log)
@@ -253,6 +261,8 @@ function Action_CardPrimaryUndo(log)
     Log.SetPrimary(log,nil)
     Log.drawButtons(log)
     UpdateNote()
+    Card.SetReset(card, true)
+    Card.RedrawResetCards()
 end
 function Action_CardSecondaryUndo(log)
     local card = Log.GetSecondary(log)
@@ -260,6 +270,8 @@ function Action_CardSecondaryUndo(log)
     Log.SetSecondary(log,nil)
     Log.drawButtons(log)
     UpdateNote()
+    Card.SetReset(card, true)
+    Card.RedrawResetCards()
 end
 function Action_SetLog_Full(log)
     Log.SetSpeed(log, 'Full')
