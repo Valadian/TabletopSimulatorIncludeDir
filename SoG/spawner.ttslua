@@ -13,6 +13,7 @@ DECK_SOURCES = {['A'] = '5b2acc',
                 ['F'] = '6b4369',
                 ['G'] = '2246a2',
                 ['H'] = '46b6d4',
+                ['I'] = '21773d',
                 ['N'] = 'a694f7',
                 ['O'] = 'e6c066'}
 ACTION_SOURCE_GUID = '009a16'
@@ -119,6 +120,8 @@ function Action_SetStandard() current_difficulty="Standard"; Spawner.drawButtons
 function Action_SetAdvanced() current_difficulty="Advanced"; Spawner.drawButtons() end
 function Action_Log_Spawn_HMS_Hibernia(log) SpawnShip(log, "British", "HMS Hibernia") end
 function Action_Log_Spawn_HMS_Royal_George(log) SpawnShip(log, "British", "HMS Royal George") end
+function Action_Log_Spawn_HMS_Victory_1783(log) SpawnShip(log, "British", "HMS Victory 1783") end
+function Action_Log_Spawn_HMS_Victory_1805(log) SpawnShip(log, "British", "HMS Victory 1805") end
 function Action_Log_Spawn_HMS_Vanguard(log) SpawnShip(log, "British", "HMS Vanguard") end
 function Action_Log_Spawn_HMS_Defence(log) SpawnShip(log, "British", "HMS Defence") end
 --function Action_Log_Spawn_HMS_Adamant(log) SpawnShip(log, "British", "HMS Adamant") end

@@ -18,6 +18,8 @@
 
 #include decks/h
 
+#include decks/i
+
 #include decks/o
 
 #include decks/n

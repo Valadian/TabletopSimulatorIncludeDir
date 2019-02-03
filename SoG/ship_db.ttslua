@@ -50,7 +50,7 @@ LOG_BORDER = "http://i.imgur.com/QVS6UBX.png"
 #include ships/g_swan
 #include ships/h_umpire
 --#include ships/h_bucentaure_tonnant
---#include ships/i_victory
+#include ships/i_victory
 --#include ships/j_ardent_intrepid_inflexible
 --#include ships/k_mahonesa
 --#include ships/l_constitution
