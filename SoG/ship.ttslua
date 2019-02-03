@@ -1,3 +1,12 @@
+STBD_FORE = 1
+STBD_FULL = 2
+STBD_AFT = 3
+PORT_FORE = 4
+PORT_FULL = 5
+PORT_AFT = 6
+STBD_ARCS = {1,2,3}
+PORT_ARCS = {4,5,6}
+ALL_ARCS = {1,2,3,4,5,6}
 function API_UPDATE_ALL_BUTTONS()
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) then
@@ -29,7 +38,7 @@ function Ship.onSave(item)
     data["broke_mast"] = Ship.GetBrokeMast(item)
     data["ready"] = Ship.GetReadyToMove(item)
     data["backing"] = Ship.GetIsBacking(item)
-    data["arc"] = Ship.GetArc(item) and Ship.GetArc(item).getGUID() or nil
+    -- data["arc"] = Ship.GetArc(item) and Ship.GetArc(item).getGUID() or nil
     local def = Ship.GetShipDefinition(item)
     --data["rear_arc"] = def.rear_arc
     --data["center_arc"] = def.center_arc
@@ -47,9 +56,9 @@ function Ship.onLoad(item, data)
     Ship.SetBrokeMast(item,data["broke_mast"])
     Ship.SetReadyToMove(item,data["ready"])
     Ship.SetIsBacking(item,data["backing"])
-    if data["arc"] then
-        Ship.SetArc(item,getObjectFromGUID(data["arc"]))
-    end
+    -- if data["arc"] then
+    --     Ship.SetArc(item,getObjectFromGUID(data["arc"]))
+    -- end
     local def = data["def"]
     --def.rear_arc = data["rear_arc"]
     --def.center_arc = data["center_arc"]
@@ -74,8 +83,24 @@ function Ship.SetReadyToMove(ship, ready) ship.setVar('ready',ready) end
 function Ship.GetReadyToMove(ship) return ship.getVar('ready') end
 function Ship.SetIsBacking(ship,backing) ship.setVar('backing',backing) end
 function Ship.GetIsBacking(ship) return ship.getVar('backing') end
-function Ship.SetArc(ship, arc) ship.setVar('arc',arc) end
-function Ship.GetArc(ship) return ship.getVar('arc') end
+function Ship.SetArc(ship, index, arc)
+    if ship.getTable('arcs')==nil then
+        ship.setTable('arcs',{})
+    end
+    local t = ship.getTable('arcs')
+    t[index] = arc
+    ship.setTable('arcs',t)
+    --ship.setVar('arc',arc)
+end
+function Ship.GetArc(ship,index)
+    local t = ship.getTable('arcs')
+    if t==nil then
+        return nil
+    else
+        return t[index]
+    end
+    --return ship.getVar('arc')
+end
 function Ship.GetAbackLastTurn(ship) return ship.getVar('aback_last_turn') end
 function Ship.SetAbackLastTurn(ship, aback_last_turn) ship.setVar('aback_last_turn',aback_last_turn) end
 function Ship.SetShipDefinition(ship,def)
@@ -143,40 +168,79 @@ function Ship.GetEffectiveSpeed(ship)
         return speed
     end
 end
-
-function Ship.ToggleArc(ship,arc_model,x_scale,y_scale)
-    if Ship.GetArc(ship)~=nil then
-        Ship.GetArc(ship).destruct()
-        Ship.SetArc(ship,nil)
-    else
-        local desc = ship.getDescription()
-        --local type = desc:match '(%u*):ship'
-        local def = Ship.GetShipDefinition(ship)
-        if def~=nil then
-            ship.lock()
-            local obj_parameters = {}
-            obj_parameters.type = 'Custom_Model'
-            --printToAll("def.center_arc"..tostring(def['center_arc']))
-            local offset = vector.scale(def['center_arc'],{-x_scale,1,1})
-            if arc_model==FRONT_ARC and y_scale==1 then
-                offset = vector.scale(def['front_arc'],{-x_scale,1,1})
+function Ship.ClearArcs(ship)
+    for i,arc in ipairs(Ship.getTable('arcs')) do
+        arc.destruct()
+    end
+    ship.setTable('arcs',nil)
+end
+function Ship.ToggleArc(ship,arc_table ) --arc_model,x_scale,y_scale
+    -- if Ship.GetArc(ship)~=nil then
+    --     Ship.GetArc(ship).destruct()
+    --     Ship.SetArc(ship,nil)
+    -- end
+    ship.getTable('arcs')
+    local num_spawned = 0
+    local num_destroyed = 0
+    for _,arc in ipairs(ALL_ARCS) do
+        if not table.Contains(arc_table, arc) and Ship.GetArc(ship,arc)~=nil then
+            num_destroyed = num_destroyed+1
+            Ship.GetArc(ship,arc).destruct()
+            Ship.SetArc(ship,arc,nil)
+        elseif Ship.GetArc(ship,arc)==nil and table.Contains(arc_table,arc) then
+            num_spawned = num_spawned+1
+            local is_front_arc = (math.fmod(arc,3)==1)
+            local is_full_arc = (math.fmod(arc,3)==-1)
+            printToAll("arc: "..tostring(arc))
+            printToAll("math.fmod(arc,3): "..tostring(math.fmod(arc,3)))
+            local is_aft_arc = (math.fmod(arc,3)==0)
+            local is_port_arc = arc>3
+            printToAll("is_front_arc: "..tostring(is_front_arc))
+            printToAll("is_full_arc: "..tostring(is_full_arc))
+            printToAll("is_aft_arc: "..tostring(is_aft_arc))
+            printToAll("is_port_arc: "..tostring(is_port_arc))
+            x_scale = -1
+            if is_port_arc then x_scale = 1 end
+            y_scale = 1
+            if is_aft_arc then y_scale = -1 end
+            arc_model = FRONT_ARC
+            if is_full_arc then arc_model = FULL_ARC end
+            local desc = ship.getDescription()
+            --local type = desc:match '(%u*):ship'
+            local def = Ship.GetShipDefinition(ship)
+            if def~=nil then
+                ship.lock()
+                local obj_parameters = {}
+                obj_parameters.type = 'Custom_Model'
+                --printToAll("def.center_arc"..tostring(def['center_arc']))
+                local offset = vector.scale(def['center_arc'],{-x_scale,1,1})
+                if is_front_arc then --arc_model==FRONT_ARC and y_scale==1 then
+                    offset = vector.scale(def['front_arc'],{-x_scale,1,1})
+                end
+                if is_aft_arc then --arc_model==FRONT_ARC and y_scale==-1 then
+                    offset = vector.scale(def['rear_arc'],{-x_scale,1,1})
+                end
+                offset = vector.rotate(offset,ship.getRotation()[2])
+                obj_parameters.position = vector.add(ship.getPosition(),offset)
+                obj_parameters.rotation = ship.getRotation()
+                obj_parameters.scale = {x_scale, 0.6, y_scale}
+                local newruler = spawnObject(obj_parameters)
+                local custom = {}
+                custom.mesh = arc_model --ARCS[type]
+                custom.diffuse = 'http://i.imgur.com/Szoc5MW.png'
+                custom.collider = ARC_COLLIDER
+                custom.material = 1 --WOOD
+                newruler.setCustomObject(custom)
+                newruler.lock()
+                Ship.SetArc(ship,arc,newruler)
             end
-            if arc_model==FRONT_ARC and y_scale==-1 then
-                offset = vector.scale(def['rear_arc'],{-x_scale,1,1})
+        end
+    end
+    if num_spawned==0 and num_destroyed==0 then
+        for _,arc in ipairs(ALL_ARCS) do
+            if Ship.GetArc(ship,arc)~=nil then
+                Ship.GetArc(ship,arc).destruct()
             end
-            offset = vector.rotate(offset,ship.getRotation()[2])
-            obj_parameters.position = vector.add(ship.getPosition(),offset)
-            obj_parameters.rotation = ship.getRotation()
-            obj_parameters.scale = {x_scale, 0.6, y_scale}
-            local newruler = spawnObject(obj_parameters)
-            local custom = {}
-            custom.mesh = arc_model --ARCS[type]
-            custom.diffuse = 'http://i.imgur.com/Szoc5MW.png'
-            custom.collider = ARC_COLLIDER
-            custom.material = 1 --WOOD
-            newruler.setCustomObject(custom)
-            newruler.lock()
-            Ship.SetArc(ship,newruler)
         end
     end
 end
@@ -231,12 +295,15 @@ function Ship.drawButtons(ship, y_rot_override)
     else
         if current_phase=="combat" then
             -- no card? Add Fire buttons
-            ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-            ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-            ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = 'Fire', ['position'] = {-2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-            ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = 'Fire', ['position'] = {2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-            ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-            ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = 'Fire', ['position'] = {2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = 'Arc', ['position'] = {-2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = 'Arc', ['position'] = {-2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_STBD_All_Arcs', ['label'] = 'All Arcs', ['position'] = {-1.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = 'Arc', ['position'] = {-2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+
+            ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = 'Arc', ['position'] = {2.8, 0.5, -3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = 'Arc', ['position'] = {2.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_PORT_All_Arcs', ['label'] = 'Arc', ['position'] = {1.8, 0.5, 0}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+            ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = 'Arc', ['position'] = {2.8, 0.5, 3}, ['color'] = RED, ['font_color'] = WHITE, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
         end
     end
     -- ship.createButton({['click_function'] = 'Action_SetFull', ['label'] = '(3) Full', ['position'] = {4.5, 0.5, -3}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
@@ -298,12 +365,14 @@ PORT = 1
 FRONT = 1
 FULL = 1
 REAR = -1
-function Action_STBD_Front(ship) Ship.ToggleArc(ship,FRONT_ARC,STBD,FRONT) end
-function Action_STBD_Full(ship) Ship.ToggleArc(ship,FULL_ARC,STBD,FULL) end
-function Action_STBD_Rear(ship) Ship.ToggleArc(ship,FRONT_ARC,STBD,REAR) end
-function Action_PORT_Front(ship) Ship.ToggleArc(ship,FRONT_ARC,PORT,FRONT) end
-function Action_PORT_Full(ship) Ship.ToggleArc(ship,FULL_ARC,PORT,FULL) end
-function Action_PORT_Rear(ship) Ship.ToggleArc(ship,FRONT_ARC,PORT,REAR) end
+function Action_STBD_Front(ship) Ship.ToggleArc(ship,{STBD_FORE}) end--FRONT_ARC,STBD,FRONT) end
+function Action_STBD_Full(ship) Ship.ToggleArc(ship,{STBD_FULL}) end--FULL_ARC,STBD,FULL) end
+function Action_STBD_All_Arcs(ship) Ship.ToggleArc(ship,STBD_ARCS) end
+function Action_STBD_Rear(ship) Ship.ToggleArc(ship,{STBD_AFT}) end--FRONT_ARC,STBD,REAR) end
+function Action_PORT_Front(ship) Ship.ToggleArc(ship,{PORT_FORE}) end--FRONT_ARC,PORT,FRONT) end
+function Action_PORT_Full(ship) Ship.ToggleArc(ship,{PORT_FULL}) end--FULL_ARC,PORT,FULL) end
+function Action_PORT_All_Arcs(ship) Ship.ToggleArc(ship,PORT_ARCS) end
+function Action_PORT_Rear(ship) Ship.ToggleArc(ship,{PORT_AFT}) end--FRONT_ARC,PORT,REAR) end
 function Action_DoNothing() end
 function Action_Fwd(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({0,0,-0.4},ship.getRotation()[2]))) end
 function Action_Bkwd(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({0,0,0.4},ship.getRotation()[2]))) end
