@@ -156,26 +156,39 @@ end
 function Action_SetStart()
     current_phase = "start"
     ResetReady()
+    RedrawShips()
 end
 function Action_SetPlanning()
     current_phase = "planning"
     ResetReady()
+    RedrawShips()
 end
 function Action_SetAction()
     current_phase = "action"
     ResetReady()
+    RedrawShips()
 end
 function Action_SetMovement()
     current_phase = "move"
     ResetReady()
+    RedrawShips()
 end
 function Action_SetCombat()
     current_phase = "combat"
     ResetReady()
+    RedrawShips()
 end
 function Action_SetReloading()
     current_phase = "reload"
     ResetReady()
+    RedrawShips()
+end
+function RedrawShips()
+    for i,item in ipairs(getAllObjects()) do
+        if isShip(item) then
+            Ship.drawButtons(item)
+        end
+    end
 end
 function CheckReady()
     local ready= true
