@@ -192,10 +192,10 @@ function Ship.IsOnlyActiveArcs(ship,arc_table)
             num_spawned = num_spawned+1
         end
     end
-    printToAll("")
-    printToAll("num: "..tostring(#arc_table).." arc: "..tostring(arc_table[1]))
-    printToAll("num_spawned: "..tostring(num_spawned))
-    printToAll("num_destroyed: "..tostring(num_destroyed))
+    -- printToAll("")
+    -- printToAll("num: "..tostring(#arc_table).." arc: "..tostring(arc_table[1]))
+    -- printToAll("num_spawned: "..tostring(num_spawned))
+    -- printToAll("num_destroyed: "..tostring(num_destroyed))
     return num_spawned==0 and num_destroyed==#arc_table
 end
 function Ship.ToggleArc(ship,arc_table ) --arc_model,x_scale,y_scale
@@ -217,8 +217,8 @@ function Ship.ToggleArc(ship,arc_table ) --arc_model,x_scale,y_scale
             local is_full_arc = (math.fmod(arc,3)==-1)
             local is_aft_arc = (math.fmod(arc,3)==0)
             local is_port_arc = arc>3
-            x_scale = -1
-            if is_port_arc then x_scale = 1 end
+            x_scale = 1
+            if is_port_arc then x_scale = -1 end
             y_scale = 1
             if is_aft_arc then y_scale = -1 end
             arc_model = FRONT_ARC
@@ -326,54 +326,54 @@ function Ship.drawButtons(ship, y_rot_override)
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_FORE}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = label, ['position'] = {-2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = label, ['position'] = {2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_FULL}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = label, ['position'] = {-2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = label, ['position'] = {2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'All Arcs'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,STBD_ARCS) then label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG end
-                ship.createButton({['click_function'] = 'Action_STBD_All_Arcs', ['label'] = label, ['position'] = {-1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_STBD_All_Arcs', ['label'] = label, ['position'] = {1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_AFT}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = label, ['position'] = {-2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = label, ['position'] = {2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
             end
 
             if Log.isPortLoaded(log) then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_FORE}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = label, ['position'] = {2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = label, ['position'] = {-2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_FULL}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = label, ['position'] = {2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = label, ['position'] = {-2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'All Arcs'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,PORT_ARCS) then label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG end
-                ship.createButton({['click_function'] = 'Action_PORT_All_Arcs', ['label'] = label, ['position'] = {1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_PORT_All_Arcs', ['label'] = label, ['position'] = {-1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
 
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_AFT}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
-                ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = label, ['position'] = {2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = label, ['position'] = {-2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
             end
         end
     end

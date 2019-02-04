@@ -109,8 +109,10 @@ function Log.PromoteSecondary(log)
         Log.PositionCard(log, card, PRIMARY_OFFSET)
     end
 end
-PORT_AMMO_OFFSET = {2.04,0,1.82}
-STBD_AMMO_OFFSET = {4.36,0,1.82}
+PORT_AMMO_OFFSET = {4.36,0,1.82}
+STBD_AMMO_OFFSET = {2.04,0,1.82}
+PORT_AMMO_SRC_OFFSET = {4.36,0,4.5}
+STBD_AMMO_OFFSET = {2.04,0,4.5}
 function Log.iconCast(log, offset, predicate,action)
     local pos = vector.add(log.getPosition() , vector.rotate(offset, log.getRotation()[2]))
     local hitList = Physics.cast({
