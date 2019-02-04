@@ -109,6 +109,30 @@ function Log.PromoteSecondary(log)
         Log.PositionCard(log, card, PRIMARY_OFFSET)
     end
 end
+PORT_AMMO_OFFSET = {2.04,0,1.82}
+STBD_AMMO_OFFSET = {4.36,0,1.82}
+function Log.iconCast(log, offset, predicate)
+    local pos = vector.add(log.getPosition() , vector.rotate(offset, log.getRotation()[2]))
+    local hitList = Physics.cast({
+        origin = pos,
+        direction = {0,1,0},
+        type = 2, --SPHERE
+        size = {0.8,0.8,0.8},
+        max_distance = 0,
+    })
+    for _,hit in ipairs(hitList) do
+        if predicate(hit) then
+            return true
+        end
+    end
+    return false
+end
+function Log.isPortLoaded(log)
+    return Log.iconCast(log, PORT_AMMO_OFFSET, |hit| hit.hit_object.getDescription()=="ammo")
+end
+function Log.isStbdLoaded(log)
+    return Log.iconCast(log, STBD_AMMO_OFFSET, |hit| hit.hit_object.getDescription()=="ammo")
+end
 function Log.drawButtons(log)
     log.clearButtons()
     local ship = Log.GetShip(log)
