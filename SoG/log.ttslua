@@ -111,7 +111,7 @@ function Log.PromoteSecondary(log)
 end
 PORT_AMMO_OFFSET = {2.04,0,1.82}
 STBD_AMMO_OFFSET = {4.36,0,1.82}
-function Log.iconCast(log, offset, predicate)
+function Log.iconCast(log, offset, predicate,action)
     local pos = vector.add(log.getPosition() , vector.rotate(offset, log.getRotation()[2]))
     local hitList = Physics.cast({
         origin = pos,
@@ -121,17 +121,26 @@ function Log.iconCast(log, offset, predicate)
         max_distance = 0,
     })
     for _,hit in ipairs(hitList) do
-        if predicate(hit) then
-            return true
+        if predicate==nil or predicate(hit.hit_object) then
+            if action~=nil then
+                action(hit.hit_object)
+            end
+            return hit.hit_object
         end
     end
-    return false
+    return nil
 end
 function Log.isPortLoaded(log)
-    return Log.iconCast(log, PORT_AMMO_OFFSET, |hit| hit.hit_object.getDescription()=="ammo")
+    return Log.iconCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo")
 end
 function Log.isStbdLoaded(log)
-    return Log.iconCast(log, STBD_AMMO_OFFSET, |hit| hit.hit_object.getDescription()=="ammo")
+    return Log.iconCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo")
+end
+function Log.flipPort(log)
+    return Log.iconCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
+end
+function Log.flipStbd(log)
+    return Log.iconCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
 end
 function Log.drawButtons(log)
     log.clearButtons()
