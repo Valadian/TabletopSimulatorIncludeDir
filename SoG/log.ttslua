@@ -147,6 +147,9 @@ end
 function Log.isFiringStarboard(log)
     return current_difficulty~="Advanced" or Log.hasCommand(log, "Fire Starboard (Right)")
 end
+function Log.canFireMusketry(log)
+    return current_difficulty~="Advanced" or Log.hasCommand(log, "Musketry Fire")
+end
 function Log.hasCommand(log, cmdName)
     local a1 = Log.iconCast(log, ACTION_1_OFFSET, |obj| obj.getName()==cmdName)
     local a2 = Log.iconCast(log, ACTION_2_OFFSET, |obj| obj.getName()==cmdName)

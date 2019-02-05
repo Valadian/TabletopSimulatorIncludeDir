@@ -22,6 +22,7 @@ ARC_COLLIDER = 'https://paste.ee/p/7n7Kt'
 
 FRONT_ARC = 'https://paste.ee/p/K41Jk'
 FULL_ARC = 'https://paste.ee/p/0vWCe'
+MUSKETRY_ARC = 'https://paste.ee/p/pteEt'
 
 local world_wind = "Mid"
 local GREEN ={r=0, g=1, b=0}
