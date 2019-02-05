@@ -313,7 +313,7 @@ function Ship.drawButtons(ship, y_rot_override)
         end
 
     else
-        if current_phase=="combat" then
+        --if current_phase=="combat" then
             -- no card? Add Fire buttons
             BASE_BG = RED
             BASE_FG = WHITE
@@ -322,60 +322,80 @@ function Ship.drawButtons(ship, y_rot_override)
 
             local log = Ship.GetLog(ship)
 
-            if Log.isStbdLoaded(log) then
+            local stbd_loaded = Log.isStbdLoaded(log)
+            if (current_phase=="combat" and stbd_loaded) or Ship.GetArc(ship,STBD_FORE)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_FORE}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and stbd_loaded then
+                        ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = label, ['position'] = {2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and stbd_loaded) or Ship.GetArc(ship,STBD_FULL)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_FULL}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and stbd_loaded then
+                        ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = label, ['position'] = {2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and stbd_loaded) then
                 label = 'All Arcs'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,STBD_ARCS) then label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG end
                 ship.createButton({['click_function'] = 'Action_STBD_All_Arcs', ['label'] = label, ['position'] = {1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and stbd_loaded) or Ship.GetArc(ship,STBD_AFT)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_AFT}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and stbd_loaded then
+                        ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = label, ['position'] = {2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
             end
 
-            if Log.isPortLoaded(log) then
+            local port_loaded = Log.isPortLoaded(log)
+            if (current_phase=="combat" and port_loaded) or Ship.GetArc(ship,PORT_FORE)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
-                if Ship.IsOnlyActiveArcs(ship,{PORT_FORE}) then
+                if Ship.IsOnlyActiveArcs(ship,{PORT_FORE})  then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and port_loaded then
+                        ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_PORT_Front', ['label'] = label, ['position'] = {-2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and port_loaded) or Ship.GetArc(ship,PORT_FULL)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_FULL}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and port_loaded then
+                        ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_PORT_Full', ['label'] = label, ['position'] = {-2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and port_loaded) then
                 label = 'All Arcs'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,PORT_ARCS) then label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG end
                 ship.createButton({['click_function'] = 'Action_PORT_All_Arcs', ['label'] = label, ['position'] = {-1.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
-
+            end
+            if (current_phase=="combat" and port_loaded) or Ship.GetArc(ship,PORT_AFT)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_AFT}) then
                     label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
-                    ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    if current_phase=="combat" and port_loaded then
+                        ship.createButton({['click_function'] = 'Action_PORT_Fire', ['label'] = 'Fire', ['position'] = {-3.5, 0.5, 3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    end
                 end
                 ship.createButton({['click_function'] = 'Action_PORT_Rear', ['label'] = label, ['position'] = {-2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, -90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
             end
-        end
+        --end
     end
     -- ship.createButton({['click_function'] = 'Action_SetFull', ['label'] = '(3) Full', ['position'] = {4.5, 0.5, -3}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
     -- ship.createButton({['click_function'] = 'Action_SetBattle', ['label'] = '(2) Battle', ['position'] = {4.5, 0.5, -2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
@@ -403,6 +423,7 @@ function Action_STBD_Fire(ship)
     if ammo~=nil then
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Starboard",{1,0,0})
     end
+    Wait.frames(|| Ship.drawButtons(ship), 10)
 end
 function Action_PORT_Fire(ship)
     local log = Ship.GetLog(ship)
@@ -410,6 +431,7 @@ function Action_PORT_Fire(ship)
     if ammo~=nil then
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Port",{1,0,0})
     end
+    Wait.frames(|| Ship.drawButtons(ship), 10)
 end
 function Action_PerformMove(ship)
     local def = Ship.GetShipDefinition(ship)

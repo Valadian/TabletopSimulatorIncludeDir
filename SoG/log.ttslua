@@ -111,8 +111,8 @@ function Log.PromoteSecondary(log)
 end
 PORT_AMMO_OFFSET = {4.36,0,1.82}
 STBD_AMMO_OFFSET = {2.04,0,1.82}
-PORT_AMMO_SRC_OFFSET = {4.36,0,4.5}
-STBD_AMMO_OFFSET = {2.04,0,4.5}
+PORT_AMMO_SRC_OFFSET = {4.36,2,4.5}
+STBD_AMMO_SRC_OFFSET = {2.04,2,4.5}
 function Log.iconCast(log, offset, predicate,action)
     local pos = vector.add(log.getPosition() , vector.rotate(offset, log.getRotation()[2]))
     local hitList = Physics.cast({
@@ -132,17 +132,22 @@ function Log.iconCast(log, offset, predicate,action)
     end
     return nil
 end
+FACEUP = true
+FACEDOWN = false
+function isFaceDownAmmo(obj)
+    return obj.getDescription()=="ammo" and obj.getRotation()[3]==180
+end
 function Log.isPortLoaded(log)
-    return Log.iconCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo")
+    return Log.iconCast(log, PORT_AMMO_OFFSET, isFaceDownAmmo) --|obj| obj.getDescription()=="ammo" and obj.getRotation()[3]==180)
 end
 function Log.isStbdLoaded(log)
-    return Log.iconCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo")
+    return Log.iconCast(log, STBD_AMMO_OFFSET, isFaceDownAmmo) --|obj| obj.getDescription()=="ammo" and obj.getRotation()[3]==180)
 end
 function Log.flipPort(log)
-    return Log.iconCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
+    return Log.iconCast(log, PORT_AMMO_OFFSET, isFaceDownAmmo, |obj| Log.moveToken(log, obj, nil, FACEUP)) --|obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
 end
 function Log.flipStbd(log)
-    return Log.iconCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
+    return Log.iconCast(log, STBD_AMMO_OFFSET, isFaceDownAmmo, |obj| Log.moveToken(log, obj, nil, FACEUP)) --obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
 end
 function Log.drawButtons(log)
     log.clearButtons()
@@ -215,8 +220,35 @@ function Action_SetCombat()
 end
 function Action_SetReloading()
     current_phase = "reload"
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.unloadAmmo(log)
+        end
+    end
     ResetReady()
     RedrawShips()
+end
+function Log.relativePosition(log, pos)
+    return vector.add(log.getPosition() , vector.rotate(pos, log.getRotation()[2]))
+end
+function Log.moveToken(log, obj, rel_pos, faceup)
+    if rel_pos~=nil then
+        new_pos = Log.relativePosition(log, rel_pos)
+        printToAll("Setting: "..obj.getName().." to: {"..new_pos[1]..","..new_pos[2]..","..new_pos[3].."}")
+        obj.setPositionSmooth(new_pos);
+    end
+    if faceup~=nil then
+        rotation = 0
+        if not faceup then
+            rotation = 180
+        end
+        obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],rotation})
+    end
+end
+function Log.unloadAmmo(log)
+    -- and obj.getRotation()[3]==0
+    Log.iconCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| Log.moveToken(log, obj, PORT_AMMO_SRC_OFFSET, FACEDOWN))
+    Log.iconCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| Log.moveToken(log, obj, STBD_AMMO_SRC_OFFSET, FACEDOWN))
 end
 function RedrawShips()
     for i,item in ipairs(getAllObjects()) do
