@@ -17,7 +17,7 @@ Swan = ShipDefinition:new{
 
 SHIPS["French"]["Alligator"] = Swan:new{
     Name = "Alligator",
-    Model = "https://drive.google.com/open?id=1VuLoO7GLow4cLrVWBlnbs-QL0bKaWDWD",
+    Model = "https://drive.google.com/open?id=1xuSDRYG-a5KjtvunBHJWiAHgRHJpJWXE",
     Log = "http://cloud-3.steamusercontent.com/ugc/931562843190266418/38515EE2A2D1901715A37AE576016809A4C6A3A6/",
     Card = "https://i.imgur.com/YWSgkDZ.png",
     PV = 37

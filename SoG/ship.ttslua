@@ -322,7 +322,7 @@ function Ship.drawButtons(ship, y_rot_override)
 
             local log = Ship.GetLog(ship)
 
-            local stbd_loaded = Log.isStbdLoaded(log)
+            local stbd_loaded = Log.isStbdLoaded(log) and Log.isFiringStarboard(log)
             if (current_phase=="combat" and stbd_loaded) or Ship.GetArc(ship,STBD_FORE)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{STBD_FORE}) then
@@ -359,7 +359,7 @@ function Ship.drawButtons(ship, y_rot_override)
                 ship.createButton({['click_function'] = 'Action_STBD_Rear', ['label'] = label, ['position'] = {2.8, 0.5, 3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
             end
 
-            local port_loaded = Log.isPortLoaded(log)
+            local port_loaded = Log.isPortLoaded(log) and Log.isFiringPort(log)
             if (current_phase=="combat" and port_loaded) or Ship.GetArc(ship,PORT_FORE)~=nil then
                 label = 'Arc'; color = BASE_BG; text_color = BASE_FG;
                 if Ship.IsOnlyActiveArcs(ship,{PORT_FORE})  then

@@ -134,8 +134,25 @@ function Log.iconCast(log, offset, predicate,action)
 end
 FACEUP = true
 FACEDOWN = false
+ACTION_1_OFFSET = {-0.83,0,4.97}
+ACTION_2_OFFSET = {-3.15,0,4.97}
+ACTION_3_OFFSET = {-5.46,0,4.97}
+ACTION_4_OFFSET = {-7.84,0,4.97}
 function isFaceDownAmmo(obj)
     return obj.getDescription()=="ammo" and obj.getRotation()[3]==180
+end
+function Log.isFiringPort(log)
+    return current_difficulty~="Advanced" or Log.hasCommand(log, "Fire Port (Left)")
+end
+function Log.isFiringStarboard(log)
+    return current_difficulty~="Advanced" or Log.hasCommand(log, "Fire Starboard (Right)")
+end
+function Log.hasCommand(log, cmdName)
+    local a1 = Log.iconCast(log, ACTION_1_OFFSET, |obj| obj.getName()==cmdName)
+    local a2 = Log.iconCast(log, ACTION_2_OFFSET, |obj| obj.getName()==cmdName)
+    local a3 = Log.iconCast(log, ACTION_3_OFFSET, |obj| obj.getName()==cmdName)
+    local a4 = Log.iconCast(log, ACTION_4_OFFSET, |obj| obj.getName()==cmdName)
+    return a1 or a2 or a3 or a4
 end
 function Log.isPortLoaded(log)
     return Log.iconCast(log, PORT_AMMO_OFFSET, isFaceDownAmmo) --|obj| obj.getDescription()=="ammo" and obj.getRotation()[3]==180)
