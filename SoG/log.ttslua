@@ -217,21 +217,41 @@ function Action_SetStart()
     current_phase = "start"
     ResetReady()
     RedrawShips()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
 end
 function Action_SetPlanning()
     current_phase = "planning"
     ResetReady()
     RedrawShips()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
 end
 function Action_SetAction()
     current_phase = "action"
     ResetReady()
     RedrawShips()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
 end
 function Action_SetMovement()
     current_phase = "move"
     ResetReady()
     RedrawShips()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
 end
 function Action_SetCombat()
     current_phase = "combat"
@@ -247,6 +267,11 @@ function Action_SetReloading()
     end
     ResetReady()
     RedrawShips()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
 end
 function Log.relativePosition(log, pos)
     return vector.add(log.getPosition() , vector.rotate(pos, log.getRotation()[2]))
