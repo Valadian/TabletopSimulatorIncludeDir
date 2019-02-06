@@ -10,7 +10,7 @@ Spawner = {}
 wind_dir_guid = '9c666a'
 wind_speed_guid = '9b304d'
 wind_dir = nil
-current_phase = "planning"
+current_phase = "start"
 current_difficulty = "Advanced" --Basic, Standard
 
 ARCS = {}
@@ -60,6 +60,7 @@ function onload(saveData)
     Spawner.onload(saveData)
     -- local desc = "CBM4R"
     -- printToAll("match: "..(desc:match '%u(B?M?%d*%u2?)'),{1,1,1})
+    UpdateNote()
 end
 function onSave()
     local save = {}

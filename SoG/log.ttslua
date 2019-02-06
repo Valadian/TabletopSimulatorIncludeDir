@@ -138,8 +138,12 @@ ACTION_1_OFFSET = {-0.83,0,4.97}
 ACTION_2_OFFSET = {-3.15,0,4.97}
 ACTION_3_OFFSET = {-5.46,0,4.97}
 ACTION_4_OFFSET = {-7.84,0,4.97}
+ALL_ACTION_OFFSETS = {ACTION_1_OFFSET,ACTION_2_OFFSET,ACTION_3_OFFSET,ACTION_4_OFFSET}
 function isFaceDownAmmo(obj)
     return obj.getDescription()=="ammo" and obj.getRotation()[3]==180
+end
+function isAction(obj)
+    return obj.getDescription()=="action"
 end
 function Log.isFiringPort(log)
     return current_difficulty~="Advanced" or Log.hasCommand(log, "Fire Port (Left)")
@@ -240,6 +244,17 @@ function Action_SetAction()
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) then
             Clear_Arcs(ship)
+        end
+    end
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            printToAll("Flipping Actions for: "..log.getName())
+            for _,action_off in ipairs(ALL_ACTION_OFFSETS) do
+                icon = Log.iconCast(log, action_off, isAction, |obj| Log.moveToken(log, obj, nil, FACEUP))
+                if icon~=nil then
+                    printToAll("Found: "..icon.getName())
+                end
+            end
         end
     end
 end

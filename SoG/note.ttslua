@@ -1,7 +1,15 @@
 
 function UpdateNote()
+    local num_logs = 0
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            num_logs=num_logs+1
+        end
+    end
     noteString = ""
-    if current_phase == "start" then
+    if num_logs==0 then
+        noteString="Spawn Ships, Select difficulty, then Toggle off Ship Spawning to begin the game."
+    elseif current_phase == "start" then
         noteString="***Start Phase ***\nUpdate [A0A0FF]Wind[-]\nFire Spreads\nWater Leaks"
         for i,log in ipairs(getAllObjects()) do
             if isLog(log) then
