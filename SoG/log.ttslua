@@ -294,7 +294,7 @@ end
 function Log.moveToken(log, obj, rel_pos, faceup)
     if rel_pos~=nil then
         new_pos = Log.relativePosition(log, rel_pos)
-        printToAll("Setting: "..obj.getName().." to: {"..new_pos[1]..","..new_pos[2]..","..new_pos[3].."}")
+        --printToAll("Setting: "..obj.getName().." to: {"..new_pos[1]..","..new_pos[2]..","..new_pos[3].."}")
         obj.setPositionSmooth(new_pos);
     end
     if faceup~=nil then
