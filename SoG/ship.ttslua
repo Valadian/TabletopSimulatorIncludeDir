@@ -28,7 +28,11 @@ function Ship.onObjectDrop(dropped_object)
             Log.drawButtons(log)
         end
     end
-    Ship.drawButtons(dropped_object)
+    if ship.getVar('colliding') then
+        Action_Collision(ship)
+    else
+        Ship.drawButtons(dropped_object)
+    end
 end
 function Ship.onSave(item)
     local data = {}
@@ -312,6 +316,7 @@ function Ship.drawButtons(ship, y_rot_override)
         else
             ship.createButton({['click_function'] = 'Action_Done', ['label'] = 'Clear', ['position'] = {0, 0.5, -4.2}, ['color'] = GREEN, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 400, ['font_size'] = 350})
         end
+        ship.createButton({['click_function'] = 'Action_Collision', ['label'] = 'Collision', ['position'] = {0, 0.5, 4.2}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 400, ['font_size'] = 350})
 
     else
         local log = Ship.GetLog(ship)
@@ -319,7 +324,7 @@ function Ship.drawButtons(ship, y_rot_override)
         BASE_FG = WHITE
         CLEAR_BG = {0.7,0.7,0.7}
         CLEAR_FG = WHITE
-        
+
         if (current_phase=="combat" and Log.canFireMusketry(log)) or ship.getVar('musketry')~=nil then
             label = 'Musketry'; color = {108/255, 138/255, 174/255}; text_color = {0,0,0};
             if ship.getVar('musketry')~=nil then
@@ -411,20 +416,29 @@ function Ship.drawButtons(ship, y_rot_override)
     -- ship.createButton({['click_function'] = 'Action_SetBacking', ['label'] = '(1) Battle', ['position'] = {4.5, 0.5, -1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
     -- ship.createButton({['click_function'] = 'Action_SetBrokeMast', ['label'] = '(-1) Broke Mast', ['position'] = {4.5, 0.5, 1}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
     -- ship.createButton({['click_function'] = 'Action_SetBrokenMasts', ['label'] = '(-2) Broken Masts', ['position'] = {4.5, 0.5, 2}, ['color'] = RED, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1600, ['height'] = 250, ['font_size'] = 200})
-    if ship.getTable('undoPos')~=nil and #ship.getTable('undoPos')>0 then
-        ship.createButton({['click_function'] = 'Action_Undo', ['label'] = 'Undo', ['position'] = {0, 0.5, 4}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+    if current_phase == "move" and ship.getTable('undoPos')~=nil and #ship.getTable('undoPos')>0 then
+        ship.createButton({['click_function'] = 'Action_Undo', ['label'] = 'Undo', ['position'] = {1.7, 0.5, 3.2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
     end
-    if not ship.locked then
-        local manual_y = 1
-        Ship.drawManualControls(ship, {0,manual_y,4.5})
-        Ship.drawManualControls(ship, {0,manual_y,-4.5})
-        -- ship.createButton({['click_function'] = 'Action_Fwd', ['label'] = '^', ['position'] = {0, manual_y, 4.5}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-        -- ship.createButton({['click_function'] = 'Action_Bkwd', ['label'] = 'V', ['position'] = {0, manual_y, 4.9}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-        -- ship.createButton({['click_function'] = 'Action_Right', ['label'] = '>', ['position'] = {0.4, manual_y, 4.9}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-        -- ship.createButton({['click_function'] = 'Action_Left', ['label'] = '<', ['position'] = {-0.4, manual_y, 4.9}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-        -- ship.createButton({['click_function'] = 'Action_Turn_Right', ['label'] = 'tR', ['position'] = {1.2, manual_y, 4.9}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-        -- ship.createButton({['click_function'] = 'Action_Turn_Left', ['label'] = 'tL', ['position'] = {-1.2, manual_y, 4.9}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    end
+end
+function Action_Collision(ship)
+    ship.setVar("colliding",true)
+    ship.unlock()
+    ship.clearButtons()
+    local manual_y = 0.5
+    Ship.drawManualControls(ship, {0,manual_y,2.7})
+    Ship.drawManualControls(ship, {0,manual_y,-2.7})
+    ship.createButton({['click_function'] = 'Action_Lock', ['label'] = 'Lock', ['position'] = {0, 0.5, 3.2}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+end
+function Action_Lock(ship)
+    ship.setVar("colliding",nil)
+    local undoPos = ship.getTable('undoPos') or {}
+    local undoRot = ship.getTable('undoRot') or {}
+    table.insert(undoPos,ship.getPosition())
+    table.insert(undoRot,ship.getRotation())
+    ship.setTable('undoPos',undoPos)
+    ship.setTable('undoRot',undoRot)
+    ship.lock()
+    Ship.drawButtons(ship)
 end
 function Action_STBD_Fire(ship)
     local log = Ship.GetLog(ship)
@@ -468,13 +482,18 @@ function Action_PerformMove(ship)
     end
 end
 function Ship.drawManualControls(ship, pos)
-
-    ship.createButton({['click_function'] = 'Action_Fwd', ['label'] = '^', ['position'] = pos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    ship.createButton({['click_function'] = 'Action_Bkwd', ['label'] = 'V', ['position'] = vector.add(pos,{0, 0, 0.4}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    ship.createButton({['click_function'] = 'Action_Right', ['label'] = '>', ['position'] = vector.add(pos,{0.4, 0, 0.4}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    ship.createButton({['click_function'] = 'Action_Left', ['label'] = '<', ['position'] = vector.add(pos,{-0.4, 0, 0.4}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    ship.createButton({['click_function'] = 'Action_Turn_Right', ['label'] = 'tR', ['position'] = vector.add(pos,{1.2, 0, 0.4}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
-    ship.createButton({['click_function'] = 'Action_Turn_Left', ['label'] = 'tL', ['position'] = vector.add(pos,{-1.2, 0, 0.4}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 200, ['height'] = 200, ['font_size'] = 200})
+    local turn_suffix = "_Rotate_Around_Front"
+    if pos[3]>0 then
+        turn_suffix = "_Rotate_Around_Back"
+    end
+    ship.createButton({['click_function'] = 'Action_Fwd', ['label'] = '^', ['tooltip'] = 'Right-Click to jump 75mm', ['position'] = vector.add(pos,{1, 0, -0.5}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 500, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Bkwd', ['label'] = 'V', ['position'] = vector.add(pos,{1, 0, 0.5}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 500, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Fwd', ['label'] = '^', ['position'] = vector.add(pos,{-1, 0, -0.5}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 500, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Bkwd', ['label'] = 'V', ['position'] = vector.add(pos,{-1, 0, 0.5}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 500, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Right', ['label'] = '>', ['position'] = vector.add(pos,{2, 0, 0}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 1000, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Left', ['label'] = '<', ['position'] = vector.add(pos,{-2, 0, 0}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 1000, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Turn_Right'..turn_suffix, ['label'] = 'tR', ['position'] = vector.add(pos,{3, 0, 0}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 1000, ['font_size'] = 400})
+    ship.createButton({['click_function'] = 'Action_Turn_Left'..turn_suffix, ['label'] = 'tL', ['position'] = vector.add(pos,{-3, 0, 0}), ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 500, ['height'] = 1000, ['font_size'] = 400})
 end
 STBD = -1
 PORT = 1
@@ -526,13 +545,34 @@ function Action_PORT_Full(ship) Ship.ToggleArc(ship,{PORT_FULL}) end--FULL_ARC,P
 function Action_PORT_All_Arcs(ship) Ship.ToggleArc(ship,PORT_ARCS) end
 function Action_PORT_Rear(ship) Ship.ToggleArc(ship,{PORT_AFT}) end--FRONT_ARC,PORT,REAR) end
 function Action_DoNothing() end
-function Action_Fwd(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({0,0,-0.4},ship.getRotation()[2]))) end
-function Action_Bkwd(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({0,0,0.4},ship.getRotation()[2]))) end
-function Action_Right(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({-0.1,0,0},ship.getRotation()[2]))) end
-function Action_Left(ship) ship.setPosition(vector.add(ship.getPosition(),vector.rotate({0.1,0,0},ship.getRotation()[2]))) end
-function Action_Turn_Right(ship) ship.setRotation({ship.getRotation()[1],ship.getRotation()[2]+1,ship.getRotation()[3]}) end
-function Action_Turn_Left(ship) ship.setRotation({ship.getRotation()[1],ship.getRotation()[2]-1,ship.getRotation()[3]}) end
-
+function Action_Fwd(ship, color, alt_click) local ratio=1; if alt_click then ratio = 75 end ship.setPositionSmooth(vector.add(ship.getPosition(),vector.rotate({0,0,-0.1*ratio},ship.getRotation()[2]))) end
+function Action_Bkwd(ship) ship.setPositionSmooth(vector.add(ship.getPosition(),vector.rotate({0,0,0.1},ship.getRotation()[2]))) end
+function Action_Right(ship) ship.setPositionSmooth(vector.add(ship.getPosition(),vector.rotate({-0.1,0,0},ship.getRotation()[2]))) end
+function Action_Left(ship) ship.setPositionSmooth(vector.add(ship.getPosition(),vector.rotate({0.1,0,0},ship.getRotation()[2]))) end
+function Action_Turn_Right_Rotate_Around_Front(ship)
+    Action_Turn_Right(ship,3.75)
+end
+function Action_Turn_Right_Rotate_Around_Back(ship)
+    Action_Turn_Right(ship,-3.75)
+end
+function Action_Turn_Right(ship,pivot)
+    local offset = vector.rotate({0,0,pivot},ship.getRotation()[2])
+    local new_offset = vector.rotate({0,0,pivot},ship.getRotation()[2]+1)
+    ship.setPosition(vector.add(vector.sub(ship.getPosition(),offset),new_offset))
+    ship.setRotation({ship.getRotation()[1],ship.getRotation()[2]+1,ship.getRotation()[3]})
+end
+function Action_Turn_Left_Rotate_Around_Front(ship)
+    Action_Turn_Left(ship,3.75)
+end
+function Action_Turn_Left_Rotate_Around_Back(ship)
+    Action_Turn_Left(ship,-3.75)
+end
+function Action_Turn_Left(ship,pivot)
+    local offset = vector.rotate({0,0,pivot},ship.getRotation()[2])
+    local new_offset = vector.rotate({0,0,pivot},ship.getRotation()[2]-1)
+    ship.setPosition(vector.add(vector.sub(ship.getPosition(),offset),new_offset))
+    ship.setRotation({ship.getRotation()[1],ship.getRotation()[2]-1,ship.getRotation()[3]})
+end
 
 function Action_Done(ship)
     Ship.SetIsBacking(ship,false)
@@ -557,6 +597,7 @@ function Action_Undo(ship)
         ship.setTable('undoPos',undoPos)
         ship.setTable('undoRot',undoRot)
     end
+    Ship.drawButtons(ship)
 end
 function Action_SetReaching(ship)
     PerformMove(ship, 'Reaching')
