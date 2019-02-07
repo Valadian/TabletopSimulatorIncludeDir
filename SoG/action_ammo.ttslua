@@ -17,7 +17,7 @@ ACTION_SPAWN_ROW = {4,0,18}
 function Log.positionActions(deck, log)
     for i,card in ipairs(deck.getObjects()) do
         if card.description=='action' then
-            printToAll("Spawning: "..card.name)
+            --printToAll("Spawning: "..card.name)
             local offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[card.name])
             local parameters = {}
             parameters.position = Log.relativePosition(log,offset)
