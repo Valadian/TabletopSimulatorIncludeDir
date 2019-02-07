@@ -1,0 +1,18 @@
+function relativeHitCast(parent, offset, predicate, action)
+    local pos = vector.add(parent.getPosition() , vector.rotate(offset, parent.getRotation()[2]))
+    local hitList = Physics.cast({
+        origin = pos,
+        direction = {0,1,0},
+        type = 2, --SPHERE
+        size = {0.8,0.8,0.8},
+        max_distance = 0,
+    })
+    for _,hit in ipairs(hitList) do
+        if predicate==nil or predicate(hit.hit_object) then
+            if action~=nil then
+                action(hit.hit_object)
+            end
+            return hit.hit_object
+        end
+    end
+end

@@ -742,3 +742,10 @@ function positionCard(card_obj, ship)
         return false
     end
 end
+function Ship.clearAllArcs()
+    for i,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            Clear_Arcs(ship)
+        end
+    end
+end

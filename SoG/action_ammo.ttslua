@@ -1,0 +1,83 @@
+PORT_AMMO_OFFSET = {4.36,0,1.82}
+STBD_AMMO_OFFSET = {2.04,0,1.82}
+PORT_AMMO_SRC_OFFSET = {4.36,2,4.5}
+STBD_AMMO_SRC_OFFSET = {2.04,2,4.5}
+FACEUP = true
+FACEDOWN = false
+ACTION_1_OFFSET = {-0.83,0,4.97}
+ACTION_2_OFFSET = {-3.15,0,4.97}
+ACTION_3_OFFSET = {-5.46,0,4.97}
+ACTION_4_OFFSET = {-7.84,0,4.97}
+ALL_ACTION_OFFSETS = {ACTION_1_OFFSET,ACTION_2_OFFSET,ACTION_3_OFFSET,ACTION_4_OFFSET}
+function isFaceDownAmmo(obj)
+    return obj.getDescription()=="ammo" and obj.getRotation()[3]==180
+end
+function isAction(obj)
+    return obj.getDescription()=="action"
+end
+function Log.hasAction(log, cmdName)
+    local a1 = relativeHitCast(log, ACTION_1_OFFSET, |obj| obj.getName()==cmdName)
+    local a2 = relativeHitCast(log, ACTION_2_OFFSET, |obj| obj.getName()==cmdName)
+    local a3 = relativeHitCast(log, ACTION_3_OFFSET, |obj| obj.getName()==cmdName)
+    local a4 = relativeHitCast(log, ACTION_4_OFFSET, |obj| obj.getName()==cmdName)
+    return a1 or a2 or a3 or a4
+end
+function Log.isFiringPort(log)
+    return current_difficulty~="Advanced" or Log.hasAction(log, "Fire Port (Left)")
+end
+function Log.isFiringStarboard(log)
+    return current_difficulty~="Advanced" or Log.hasAction(log, "Fire Starboard (Right)")
+end
+function Log.canFireMusketry(log)
+    return current_difficulty~="Advanced" or Log.hasAction(log, "Musketry Fire")
+end
+function Log.isPortLoaded(log)
+    return relativeHitCast(log, PORT_AMMO_OFFSET, isFaceDownAmmo) --|obj| obj.getDescription()=="ammo" and obj.getRotation()[3]==180)
+end
+function Log.isStbdLoaded(log)
+    return relativeHitCast(log, STBD_AMMO_OFFSET, isFaceDownAmmo) --|obj| obj.getDescription()=="ammo" and obj.getRotation()[3]==180)
+end
+function Log.flipPort(log)
+    return relativeHitCast(log, PORT_AMMO_OFFSET, isFaceDownAmmo, |obj| Log.moveToken(log, obj, nil, FACEUP)) --|obj| obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
+end
+function Log.flipStbd(log)
+    return relativeHitCast(log, STBD_AMMO_OFFSET, isFaceDownAmmo, |obj| Log.moveToken(log, obj, nil, FACEUP)) --obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],0}))
+end
+function Log.flipAllActionsFaceup()
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            for _,action_off in ipairs(ALL_ACTION_OFFSETS) do
+                icon = relativeHitCast(log, action_off, isAction, |obj| Log.moveToken(log, obj, nil, FACEUP))
+            end
+        end
+    end
+end
+function Log.unloadAllAmmo()
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.unloadAmmo(log)
+        end
+    end
+end
+function Log.relativePosition(log, pos)
+    return vector.add(log.getPosition() , vector.rotate(pos, log.getRotation()[2]))
+end
+function Log.moveToken(log, obj, rel_pos, faceup)
+    if rel_pos~=nil then
+        new_pos = Log.relativePosition(log, rel_pos)
+        --printToAll("Setting: "..obj.getName().." to: {"..new_pos[1]..","..new_pos[2]..","..new_pos[3].."}")
+        obj.setPositionSmooth(new_pos);
+    end
+    if faceup~=nil then
+        rotation = 0
+        if not faceup then
+            rotation = 180
+        end
+        obj.setRotationSmooth({obj.getRotation()[1],obj.getRotation()[2],rotation})
+    end
+end
+function Log.unloadAmmo(log)
+    -- and obj.getRotation()[3]==0
+    relativeHitCast(log, PORT_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| Log.moveToken(log, obj, PORT_AMMO_SRC_OFFSET, FACEDOWN))
+    relativeHitCast(log, STBD_AMMO_OFFSET, |obj| obj.getDescription()=="ammo", |obj| Log.moveToken(log, obj, STBD_AMMO_SRC_OFFSET, FACEDOWN))
+end
