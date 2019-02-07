@@ -216,17 +216,20 @@ function SpawnShip(log, faction, shipname)
     action_source = getObjectFromGUID(ACTION_SOURCE_GUID)
     action_source.takeObject({
         position = vector.add(log.getPosition(),vector.rotate({-11,1,2},log.getRotation()[2])),
-        rotation = vector.add(log.getRotation(),{0,0,180})
+        rotation = vector.add(log.getRotation(),{0,0,180}),
+        callback_function = |obj| Log.positionActions(obj, log)
     })
 
     ammo_source = getObjectFromGUID(AMMO_SOURCE_GUID)
     ammo_source.takeObject({
         position = vector.add(log.getPosition(),vector.rotate({2.1,1,4.5},log.getRotation()[2])),
-        rotation = vector.add(log.getRotation(),{0,0,180})
+        rotation = vector.add(log.getRotation(),{0,0,180}),
+        callback_function = |obj| Log.positionAmmo(obj, log,-1)
     })
     ammo_source.takeObject({
         position = vector.add(log.getPosition(),vector.rotate({4.5,1,4.5},log.getRotation()[2])),
-        rotation = vector.add(log.getRotation(),{0,0,180})
+        rotation = vector.add(log.getRotation(),{0,0,180}),
+        callback_function = |obj| Log.positionAmmo(obj, log,1)
     })
 
     log.setSnapPoints({

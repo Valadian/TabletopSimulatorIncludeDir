@@ -1,3 +1,42 @@
+ACTION_SPAWN_OFFSETS = {
+    ['Repair'] = {-10.8,0,0},
+    ['Pump Water'] = {-13.2,0,0},
+    ['Fight Fire'] = {-15.6,0,0},
+    ['Musketry Fire'] = {8.4,0,0},
+    ['Fire Port (Left)'] = {6,0,-1.2},
+    ['Reload Port (Left)'] = {6,0,1.2},
+    ['Fire Starboard (Right)'] = {3.6,0,-1.2},
+    ['Reload Starboard (Right)'] = {3.6,0,1.2},
+    ['Raise Sails'] = {-1.2,0,-1.2},
+    ['Lower Sails'] = {-1.2,0,1.2},
+    ['Boarding'] = {-3.6,0,-1.2},
+    ['No Boarding'] = {-3.6,0,1.2},
+    ['Grog (Single Use)'] = {-6,0,0},
+}
+ACTION_SPAWN_ROW = {4,0,18}
+function Log.positionActions(deck, log)
+    for i,card in ipairs(deck.getObjects()) do
+        if card.description=='action' then
+            printToAll("Spawning: "..card.name)
+            local offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[card.name])
+            local parameters = {}
+            parameters.position = Log.relativePosition(log,offset)
+            parameters.rotation = {0,0,0}
+            parameters.guid = card.guid
+            parameters.smooth = true
+            parameters.callback = 'callback_action_ammo_lock'
+            deck.takeObject(parameters)
+        end
+    end
+    deck.destruct()
+end
+function callback_action_ammo_lock(card)
+    card.lock()
+end
+function Log.positionAmmo(ammo_deck, log, side)
+
+end
+
 PORT_AMMO_OFFSET = {4.36,0,1.82}
 STBD_AMMO_OFFSET = {2.04,0,1.82}
 PORT_AMMO_SRC_OFFSET = {4.36,2,4.5}
