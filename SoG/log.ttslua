@@ -155,6 +155,59 @@ function Log.drawButtons(log)
     log.createButton({['click_function'] = 'Action_SetMovement', ['label'] = 'Move', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.2, 0.4, -1.5}, ['color'] = {0.5,0.5,1}, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
     log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.6, 0.4, -1.5}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
     log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.0, 0.4, -1.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+
+    if current_phase=="reload" then
+        if Log.canReloadPort(log) then
+            printToAll("Log.canReloadPort(log)")
+            for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
+                local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{PORT_DIR,1,1}))
+                if relativeHitCast(log, offset, isAmmo) then
+                    --local pos = Log.relativePosition(log,offset)
+                    local buttonpos = Log.relativeButtonPosition(log,offset) --vector.add(vector.scale( offset,{-1/5.52,1/5.52,1/5.52}),{0,0.5,0})
+                    log.createButton({['color'] = AMMO_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Reload_Port_'..key:gsub(' ','_'), ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                end
+            end
+        end
+        if Log.canReloadStarboard(log) then
+            printToAll("Log.canReloadStarboard(log)")
+            for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
+                local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{STBD_DIR,1,1}))
+                if relativeHitCast(log, offset, isAmmo) then
+                    --local pos = Log.relativePosition(log,offset)
+                    local buttonpos = Log.relativeButtonPosition(log,offset) --vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.5,0})
+                    log.createButton({['color'] = AMMO_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Reload_Stbd_'..key:gsub(' ','_'), ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                end
+            end
+        end
+    end
+    if current_phase=="planning" then
+        for key,offset in pairs(ACTION_SPAWN_OFFSETS) do
+            offset = vector.add(ACTION_SPAWN_ROW,offset)
+            if relativeHitCast(log, offset, isAction) then
+                local buttonpos = Log.relativeButtonPosition(log,offset)
+                log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'ActionDoNothing', ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            end
+        end
+    end
+end
+function Action_Reload_Port_Ball_Shot(log) Action_Reload(log, "Ball Shot", PORT_DIR) end
+function Action_Reload_Port_Double_Shot(log) Action_Reload(log, "Double Shot", PORT_DIR) end
+function Action_Reload_Port_Chain_Shot(log) Action_Reload(log, "Chain Shot", PORT_DIR) end
+function Action_Reload_Port_Grape_Shot(log) Action_Reload(log, "Grape Shot", PORT_DIR) end
+function Action_Reload_Stbd_Ball_Shot(log) Action_Reload(log, "Ball Shot", STBD_DIR) end
+function Action_Reload_Stbd_Double_Shot(log) Action_Reload(log, "Double Shot", STBD_DIR) end
+function Action_Reload_Stbd_Chain_Shot(log) Action_Reload(log, "Chain Shot", STBD_DIR) end
+function Action_Reload_Stbd_Grape_Shot(log) Action_Reload(log, "Grape Shot", STBD_DIR) end
+function Action_Reload(log, name, side)
+    printToAll("Action_Reload_"..name..tostring(side))
+    local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(AMMO_SPAWN_OFFSETS[name],{side,1,1}))
+    local to_offset = PORT_AMMO_OFFSET
+    if side==STBD_DIR then
+        to_offset = STBD_AMMO_OFFSET
+    end
+    to_offset = vector.add(to_offset,{0,1,0})
+    relativeHitCast(log, offset, isAmmo, |obj| Log.moveToken(log, obj, to_offset, FACEDOWN, false))
+    Wait.frames(|| Log.drawButtons(log), 10)
 end
 function Action_SetStart()
     current_phase = "start"
@@ -197,9 +250,10 @@ end
 function Action_SetReloading()
     current_phase = "reload"
     Log.unloadAllAmmo()
-    ResetReady()
+
     RedrawShips()
     Ship.clearAllArcs()
+    Wait.frames(|| ResetReady(), 10)
 end
 function RedrawShips()
     for i,item in ipairs(getAllObjects()) do

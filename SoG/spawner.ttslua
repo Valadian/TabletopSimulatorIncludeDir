@@ -208,7 +208,7 @@ function SpawnShip(log, faction, shipname)
     Ship.onObjectDrop(ship)
     deck_source = getObjectFromGUID(DECK_SOURCES[shipdef.Deck])
     deck_source.takeObject({
-        position = vector.add(log.getPosition(),{0,1,0}),
+        position = vector.add(log.getPosition(),{0,0,0}),
         rotation = log.getRotation(),
         callback_function = |obj| layout_deck(obj, log)
     })
@@ -224,12 +224,12 @@ function SpawnShip(log, faction, shipname)
     ammo_source.takeObject({
         position = vector.add(log.getPosition(),vector.rotate({2.1,1,4.5},log.getRotation()[2])),
         rotation = vector.add(log.getRotation(),{0,0,180}),
-        callback_function = |obj| Log.positionAmmo(obj, log,-1)
+        callback_function = |obj| Log.positionAmmo(obj, log, STBD_DIR)
     })
     ammo_source.takeObject({
         position = vector.add(log.getPosition(),vector.rotate({4.5,1,4.5},log.getRotation()[2])),
         rotation = vector.add(log.getRotation(),{0,0,180}),
-        callback_function = |obj| Log.positionAmmo(obj, log,1)
+        callback_function = |obj| Log.positionAmmo(obj, log, PORT_DIR)
     })
 
     log.setSnapPoints({

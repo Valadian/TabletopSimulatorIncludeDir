@@ -39,11 +39,11 @@ function Action_Layout(deck)
         --printToAll("Veer:"..tostring(veer),{1,1,1})
         if veer then
             local i_x_off = CARD_OFFSETS[veer]*0.8
-            local i_y_off = 3
-            if veers[veer]~=nil then i_y_off = 2 end
-            if veer:match 'BM.*' then i_y_off = 1 end
-            if veer:match 'Aback.' then i_y_off = 0 end
-            local offset = {i_x_off*-5/2, 0, i_y_off*-7.5/2}
+            local i_y_off = 2
+            if veers[veer]~=nil then i_y_off = 1 end
+            if veer:match 'BM.*' then i_y_off = 0 end
+            if veer:match 'Aback.' then i_y_off = -1 end
+            local offset = {i_x_off*-5/2, 0, i_y_off*-6.5/2}
             offset = vector.rotate(offset,deck.getRotation()[2])
             veers[veer] = 1
             local new_pos = vector.add(deck.getPosition(), offset)
@@ -81,6 +81,6 @@ function callback_Card_AssignLogFromParams(card, params)
     --card.setScale({1.12,1,1.12})
     --Card.drawButtons(card,true)
     --card.lock()
-    Card.SetReset(card,true)
+    Wait.frames(|| Card.SetReset(card,true), 2)
     Card.reset(card)
 end
