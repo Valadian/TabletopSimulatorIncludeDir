@@ -185,21 +185,72 @@ function Log.drawButtons(log)
             offset = vector.add(ACTION_SPAWN_ROW,offset)
             if relativeHitCast(log, offset, isAction) then
                 local buttonpos = Log.relativeButtonPosition(log,offset)
-                log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'ActionDoNothing', ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Plan_'..key:gsub(' ','_'):gsub('%(',''):gsub('%)',''), ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
             end
         end
     end
 end
-function Action_Reload_Port_Ball_Shot(log) Action_Reload(log, "Ball Shot", PORT_DIR) end
-function Action_Reload_Port_Double_Shot(log) Action_Reload(log, "Double Shot", PORT_DIR) end
-function Action_Reload_Port_Chain_Shot(log) Action_Reload(log, "Chain Shot", PORT_DIR) end
-function Action_Reload_Port_Grape_Shot(log) Action_Reload(log, "Grape Shot", PORT_DIR) end
-function Action_Reload_Stbd_Ball_Shot(log) Action_Reload(log, "Ball Shot", STBD_DIR) end
-function Action_Reload_Stbd_Double_Shot(log) Action_Reload(log, "Double Shot", STBD_DIR) end
-function Action_Reload_Stbd_Chain_Shot(log) Action_Reload(log, "Chain Shot", STBD_DIR) end
-function Action_Reload_Stbd_Grape_Shot(log) Action_Reload(log, "Grape Shot", STBD_DIR) end
+function Action_Plan_Repair(log) Action_Plan_Action(log, "Repair") end
+function Action_Plan_Pump_Water(log) Action_Plan_Action(log, "Pump Water") end
+function Action_Plan_Fight_Fire(log) Action_Plan_Action(log, "Fight Fire") end
+function Action_Plan_Musketry_Fire(log) Action_Plan_Action(log, "Musketry Fire") end
+function Action_Plan_Fire_Port_Left(log) Action_Plan_Action(log, "Fire Port (Left)") end
+function Action_Plan_Reload_Port_Left(log) Action_Plan_Action(log, "Reload Port (Left)") end
+function Action_Plan_Fire_Starboard_Right(log) Action_Plan_Action(log, "Fire Starboard (Right)") end
+function Action_Plan_Reload_Starboard_Right(log) Action_Plan_Action(log, "Reload Starboard (Right)") end
+function Action_Plan_Raise_Sails(log) Action_Plan_Action(log, "Raise Sails") end
+function Action_Plan_Lower_Sails(log) Action_Plan_Action(log, "Lower Sails") end
+function Action_Plan_Boarding(log) Action_Plan_Action(log, "Boarding") end
+function Action_Plan_Grog_Single_Use(log) Action_Plan_Action(log, "Grog (Single Use)") end
+LOCKED = true
+UNLOCKED = false
+function Action_Plan_Action(log, name)
+    action_offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[name])
+    action = relativeHitCast(log, action_offset, isAction)
+    if action then
+        for i,offset in ipairs(ALL_ACTION_OFFSETS) do
+            if not relativeHitCast(log, offset, isAction) then
+                Log.moveToken(log, action, vector.add(offset,{0,1,0}), FACEDOWN, UNLOCKED)
+                break
+            end
+        end
+    end
+    Wait.frames(|| Log.drawButtons(log), 40)
+end
+function Action_Reload_Port_Ball_Shot(log)
+    Action_Reload(log, "Ball Shot", PORT_DIR)
+    Log.returnAction(log, 'Reload Port (Left)')
+end
+function Action_Reload_Port_Double_Shot(log)
+    Action_Reload(log, "Double Shot", PORT_DIR)
+    Log.returnAction(log, 'Reload Port (Left)')
+end
+function Action_Reload_Port_Chain_Shot(log)
+    Action_Reload(log, "Chain Shot", PORT_DIR)
+    Log.returnAction(log, 'Reload Port (Left)')
+end
+function Action_Reload_Port_Grape_Shot(log)
+    Action_Reload(log, "Grape Shot", PORT_DIR)
+    Log.returnAction(log, 'Reload Port (Left)')
+end
+function Action_Reload_Stbd_Ball_Shot(log)
+    Action_Reload(log, "Ball Shot", STBD_DIR)
+    Log.returnAction(log, 'Reload Starboard (Right)')
+end
+function Action_Reload_Stbd_Double_Shot(log)
+    Action_Reload(log, "Double Shot", STBD_DIR)
+    Log.returnAction(log, 'Reload Starboard (Right)')
+end
+function Action_Reload_Stbd_Chain_Shot(log)
+    Action_Reload(log, "Chain Shot", STBD_DIR)
+    Log.returnAction(log, 'Reload Starboard (Right)')
+end
+function Action_Reload_Stbd_Grape_Shot(log)
+    Action_Reload(log, "Grape Shot", STBD_DIR) 
+    Log.returnAction(log, 'Reload Starboard (Right)')
+end
 function Action_Reload(log, name, side)
-    printToAll("Action_Reload_"..name..tostring(side))
+    --printToAll("Action_Reload_"..name..tostring(side))
     local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(AMMO_SPAWN_OFFSETS[name],{side,1,1}))
     local to_offset = PORT_AMMO_OFFSET
     if side==STBD_DIR then
@@ -253,7 +304,7 @@ function Action_SetReloading()
 
     RedrawShips()
     Ship.clearAllArcs()
-    Wait.frames(|| ResetReady(), 10)
+    Wait.frames(|| ResetReady(), 40)
 end
 function RedrawShips()
     for i,item in ipairs(getAllObjects()) do

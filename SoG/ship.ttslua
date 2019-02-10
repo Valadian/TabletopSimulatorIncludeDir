@@ -446,6 +446,7 @@ function Action_STBD_Fire(ship)
     if ammo~=nil then
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Starboard",{1,0,0})
     end
+    Log.returnAction(log, 'Fire Starboard (Right)')
     Wait.frames(|| Ship.drawButtons(ship), 10)
 end
 function Action_PORT_Fire(ship)
@@ -454,6 +455,7 @@ function Action_PORT_Fire(ship)
     if ammo~=nil then
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Port",{1,0,0})
     end
+    Log.returnAction(log, 'Fire Port (Left)')
     Wait.frames(|| Ship.drawButtons(ship), 10)
 end
 function Action_PerformMove(ship)

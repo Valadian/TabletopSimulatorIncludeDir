@@ -50,7 +50,7 @@ function Action_Layout(deck)
             --printToAll("placing card: "..card.guid,{1,1,1})
             local parameters = {}
             parameters.position = new_pos
-            --parameters.scale = {1.12,0,1.12}
+            parameters.scale = {1,1,1}
             parameters.guid = card.guid
             parameters.smooth = true
             parameters.callback = 'callback_Card_AssignLogFromParams'--'Log.SetCard'--'CardSetLog'
