@@ -210,11 +210,23 @@ function Log.drawButtons(log)
                 log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Plan_'..key:gsub(' ','_'):gsub('%(',''):gsub('%)',''), ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
             end
         end
+        local planned_all = true
         for i, offset in ipairs(ALL_ACTION_OFFSETS) do
             if relativeHitCast(log, offset, isAction) then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
                 log.createButton({['color'] = RED, ['font_color'] = WHITE, ['click_function'] = 'Action_Undo_Action_'..tostring(i), ['label'] = 'Undo', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            else
+                if log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
+                    --This slot is disabled
+                else
+                    planned_all = false
+                end
             end
+        end
+        if planned_all and (Ship.GetSpeed(ship)=='Anchored' or Log.GetSecondary(log)~=nil) and Log.GetReady(log)==false then
+            Log.SetReady(log,true)
+            Log.drawButtons(log)
+            UpdateNote()
         end
     end
     if current_phase=="action" then
@@ -234,6 +246,43 @@ function Log.drawButtons(log)
             end
         end
     end
+    for i, offset in ipairs(ALL_ACTION_OFFSETS) do
+        if not relativeHitCast(log, offset, isAction) then
+            if log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
+                buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,-0.6}))
+                log.createButton({['color'] = {0.5,0.5,0.5}, ['tooltip'] = "Click to re-enable this action slot", ['font_color'] = WHITE, ['click_function'] = 'Action_Enable_Action_'..tostring(i), ['label'] = 'X', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 1100, ['font_size'] = 900})
+            else
+                buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
+                log.createButton({['color'] = {0,0,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Disable_Action_'..tostring(i), ['label'] = 'Disable', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            end
+        end
+    end
+end
+function Action_Enable_Action_1(log, player_color) Action_Enable_Action(log, player_color, 1) end
+function Action_Enable_Action_2(log, player_color) Action_Enable_Action(log, player_color, 2) end
+function Action_Enable_Action_3(log, player_color) Action_Enable_Action(log, player_color, 3) end
+function Action_Enable_Action_4(log, player_color) Action_Enable_Action(log, player_color, 4) end
+function Action_Enable_Action(log, player_color, index)
+    local disabled_actions = log.getTable('disabled_actions')
+    if not disabled_actions then
+        disabled_actions = {}
+    end
+    disabled_actions[index] = false
+    log.setTable('disabled_actions',disabled_actions)
+    Log.drawButtons(log)
+end
+function Action_Disable_Action_1(log, player_color) Action_Disable_Action(log, player_color, 1) end
+function Action_Disable_Action_2(log, player_color) Action_Disable_Action(log, player_color, 2) end
+function Action_Disable_Action_3(log, player_color) Action_Disable_Action(log, player_color, 3) end
+function Action_Disable_Action_4(log, player_color) Action_Disable_Action(log, player_color, 4) end
+function Action_Disable_Action(log, player_color, index)
+    local disabled_actions = log.getTable('disabled_actions')
+    if not disabled_actions then
+        disabled_actions = {}
+    end
+    disabled_actions[index] = true
+    log.setTable('disabled_actions',disabled_actions)
+    Log.drawButtons(log)
 end
 function Action_Toggle_AbackLastTurn(log)
     local ship = Log.GetShip(log)

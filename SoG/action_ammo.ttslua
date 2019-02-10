@@ -183,7 +183,7 @@ function Log.relativePosition(log, pos)
     return vector.add(log.getPosition() , vector.rotate(pos, log.getRotation()[2]))
 end
 function Log.relativeButtonPosition(log, offset)
-    return vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.5,0.1})
+    return vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.1,0.1})
 end
 function Log.moveToken(log, obj, rel_pos, faceup, lock)
     if rel_pos~=nil then
