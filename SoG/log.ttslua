@@ -358,7 +358,7 @@ function Action_Execute_Action_Delayed_Repair(log, player_color)
     delayed = log.getTable('delayed')
     if delayed~=nil then
         for i,action_name in pairs(delayed) do
-            printToAll("["..tostring(i).."] "..action_name)
+            --printToAll("["..tostring(i).."] "..action_name)
             if action_name=="Repair" then
                 delayed[i]=nil
                 log.setTable('delayed',delayed)
@@ -372,7 +372,7 @@ function Action_Execute_Action_Delayed_Fight_Fire(log, player_color)
     delayed = log.getTable('delayed')
     if delayed~=nil then
         for i,action_name in pairs(delayed) do
-            printToAll("["..tostring(i).."] "..action_name)
+            --printToAll("["..tostring(i).."] "..action_name)
             if action_name=="Fight Fire" then
                 delayed[i]=nil
                 log.setTable('delayed',delayed)
