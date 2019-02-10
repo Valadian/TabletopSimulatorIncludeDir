@@ -156,11 +156,22 @@ function Log.drawButtons(log)
     log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.6, 0.4, -1.5}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
     log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.0, 0.4, -1.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
+    if current_phase=="combat" then
+        firing = false
+        firing = firing or Log.isFiringPort(log)
+        firing = firing or Log.isFiringStarboard(log)
+        firing = firing or Log.canFireMusketry(log)
+        if not firing and Log.GetReady(log)==false then
+            Log.SetReady(log,true)
+            Log.drawButtons(log)
+            UpdateNote()
+        end
+    end
     if current_phase=="reload" then
         reloading = false
         if Log.canReloadPort(log) then
             reloading = true
-            printToAll("Log.canReloadPort(log)")
+            --printToAll("Log.canReloadPort(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{PORT_DIR,1,1}))
                 if relativeHitCast(log, offset, isAmmo) then
@@ -172,7 +183,7 @@ function Log.drawButtons(log)
         end
         if Log.canReloadStarboard(log) then
             reloading = true
-            printToAll("Log.canReloadStarboard(log)")
+            --printToAll("Log.canReloadStarboard(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{STBD_DIR,1,1}))
                 if relativeHitCast(log, offset, isAmmo) then
@@ -335,6 +346,7 @@ function Action_Reload(log, name, side)
     Wait.frames(|| Log.drawButtons(log), 10)
 end
 function Action_SetStart()
+    broadcastToAll("Transitioning to Start Phase")
     current_phase = "start"
     ResetReady()
     RedrawShips()
@@ -350,6 +362,7 @@ function Action_SetStart()
     end
 end
 function Action_SetPlanning()
+    broadcastToAll("Transitioning to Planning Phase",{1,0.5,0.5})
     current_phase = "planning"
     ResetReady()
     RedrawShips()
@@ -360,6 +373,7 @@ function Action_SetPlanning()
     end
 end
 function Action_SetAction()
+    broadcastToAll("Transitioning to Action Phase",{0.5,1,0.5})
     current_phase = "action"
     ResetReady()
     RedrawShips()
@@ -367,17 +381,21 @@ function Action_SetAction()
     Log.flipAllActionsFaceup()
 end
 function Action_SetMovement()
+    broadcastToAll("Transitioning to Movement Phase",{0.5,0.5,1})
     current_phase = "move"
     ResetReady()
     RedrawShips()
     Ship.clearAllArcs()
 end
 function Action_SetCombat()
+    broadcastToAll("Transitioning to Combat Phase",{1,0,0})
     current_phase = "combat"
     ResetReady()
     RedrawShips()
 end
+-- FULLY AUTOMATED
 function Action_SetReloading()
+    broadcastToAll("Transitioning to Reloading Phase",{1,0.5,0})
     current_phase = "reload"
     Log.unloadAllAmmo()
 

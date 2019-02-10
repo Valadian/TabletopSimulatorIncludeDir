@@ -329,6 +329,9 @@ function Ship.drawButtons(ship, y_rot_override)
             label = 'Musketry'; color = {108/255, 138/255, 174/255}; text_color = {0,0,0};
             if ship.getVar('musketry')~=nil then
                 label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
+                if current_phase=="combat" and Log.canFireMusketry(log) then
+                    ship.createButton({['click_function'] = 'Action_Musketry_Fire', ['label'] = 'Fire', ['position'] = {0, 0.5, -5.2}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                end
             end
             ship.createButton({['click_function'] = 'Action_Musketry', ['label'] = label, ['position'] = {0, 0.5, -4.5}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1200, ['height'] = 250, ['font_size'] = 200})
         end
@@ -448,6 +451,14 @@ function Action_STBD_Fire(ship)
     end
     Log.returnAction(log, 'Fire Starboard (Right)')
     Wait.frames(|| Ship.drawButtons(ship), 10)
+    Wait.frames(|| Log.drawButtons(log), 10)
+end
+function Action_Musketry_Fire(ship)
+    local log = Ship.GetLog(ship)
+    printToAll(ship.getName().." fires Musketry",{1,0,0})
+    Log.returnAction(log, 'Musketry Fire')
+    Wait.frames(|| Ship.drawButtons(ship), 10)
+    Wait.frames(|| Log.drawButtons(log), 10)
 end
 function Action_PORT_Fire(ship)
     local log = Ship.GetLog(ship)
@@ -457,6 +468,7 @@ function Action_PORT_Fire(ship)
     end
     Log.returnAction(log, 'Fire Port (Left)')
     Wait.frames(|| Ship.drawButtons(ship), 10)
+    Wait.frames(|| Log.drawButtons(log), 10)
 end
 function Action_PerformMove(ship)
     local def = Ship.GetShipDefinition(ship)
@@ -538,6 +550,7 @@ function Action_Musketry(ship)
     end
     Log.returnAction(log, 'Musketry Fire')
     Wait.frames(|| Ship.drawButtons(ship), 10)
+    Wait.frames(|| Log.drawButtons(log), 10)
 end
 function Action_STBD_Front(ship) Ship.ToggleArc(ship,{STBD_FORE}) end--FRONT_ARC,STBD,FRONT) end
 function Action_STBD_Full(ship) Ship.ToggleArc(ship,{STBD_FULL}) end--FULL_ARC,STBD,FULL) end
