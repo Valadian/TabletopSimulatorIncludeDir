@@ -132,7 +132,7 @@ function Log.drawButtons(log)
         log.createButton({['click_function'] = 'Action_SetLog_BrokenMast', ['label'] = 'Broke Mast', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.65, 0.4, 0.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1700, ['height'] = 600, ['font_size'] = 250})
 
         if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
-        log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {2, 0.4, 1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-0.6, 0.4, 1.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
         desc = ship.getName().." ("..Ship.GetShipDefinition(ship)["PV"].."pts)"
 
@@ -157,7 +157,9 @@ function Log.drawButtons(log)
     log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.0, 0.4, -1.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
     if current_phase=="reload" then
+        reloading = false
         if Log.canReloadPort(log) then
+            reloading = true
             printToAll("Log.canReloadPort(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{PORT_DIR,1,1}))
@@ -169,6 +171,7 @@ function Log.drawButtons(log)
             end
         end
         if Log.canReloadStarboard(log) then
+            reloading = true
             printToAll("Log.canReloadStarboard(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{STBD_DIR,1,1}))
@@ -179,6 +182,11 @@ function Log.drawButtons(log)
                 end
             end
         end
+        if not reloading and Log.GetReady(log)==false then
+            Log.SetReady(log,true)
+            Log.drawButtons(log)
+            UpdateNote()
+        end
     end
     if current_phase=="planning" then
         for key,offset in pairs(ACTION_SPAWN_OFFSETS) do
@@ -188,6 +196,72 @@ function Log.drawButtons(log)
                 log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Plan_'..key:gsub(' ','_'):gsub('%(',''):gsub('%)',''), ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
             end
         end
+        for i, offset in ipairs(ALL_ACTION_OFFSETS) do
+            if relativeHitCast(log, offset, isAction) then
+                buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
+                log.createButton({['color'] = RED, ['font_color'] = WHITE, ['click_function'] = 'Action_Undo_Action_'..tostring(i), ['label'] = 'Undo', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            end
+        end
+    end
+    if current_phase=="action" then
+        for i, offset in ipairs(ALL_ACTION_OFFSETS) do
+            action = relativeHitCast(log, offset, isAction)
+            if action then
+                buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
+                if action.getName()=="Repair" or action.getName()=="Fight Fire" then
+                    log.createButton({['color'] = {0,0,1}, ['font_color'] = WHITE, ['click_function'] = 'Action_Delay_Action_'..tostring(i), ['label'] = 'Delay', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                    --delay
+                elseif action.getName()=="Raise Sails" or action.getName()=="Lower Sails"
+                    or action.getName()=="'Grog (Single Use)'" or action.getName()=="Pump Water"
+                    or action.getName()=="Boarding" then
+                    log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_'..tostring(i), ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                    --execute
+                end
+            end
+        end
+    end
+end
+
+function Action_Delay_Action_1(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[1]) end
+function Action_Delay_Action_2(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[2]) end
+function Action_Delay_Action_3(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[3]) end
+function Action_Delay_Action_4(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[4]) end
+function Action_Delay_Action(log, player_color, offset)
+    action = relativeHitCast(log, offset, isAction)
+    if action then
+        printToAll(Player[player_color].steam_name.. " delayed: "..action.getName(), player_color)
+        if action.getName()=="Repair" then
+            Log.moveToken(log, action, {-11.1,1,2}, FACEUP, UNLOCKED)
+        elseif action.getName()=="Fight Fire" then
+            Log.moveToken(log, action, {-11.1,1,4.6}, FACEUP, UNLOCKED)
+        end
+        Wait.frames(|| Log.drawButtons(log), 40)
+    end
+end
+function Action_Execute_Action_1(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[1]) end
+function Action_Execute_Action_2(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[2]) end
+function Action_Execute_Action_3(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[3]) end
+function Action_Execute_Action_4(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[4]) end
+function Action_Execute_Action(log, player_color, offset)
+    action = relativeHitCast(log, offset, isAction)
+    printToAll(Player[player_color].steam_name.. " performed: "..action.getName(), player_color)
+    if action then
+        Log.returnAAction(log, action)
+        Wait.frames(|| Log.drawButtons(log), 40)
+    end
+end
+
+function Action_Undo_Action_1(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[1]) end
+function Action_Undo_Action_2(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[2]) end
+function Action_Undo_Action_3(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[3]) end
+function Action_Undo_Action_4(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[4]) end
+function Action_Undo_Action(log, offset)
+    action = relativeHitCast(log, offset, isAction)
+    if action then
+        action_offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[action.getName()])
+        Log.moveToken(log, action, action_offset, FACEUP, LOCKED)
+
+        Wait.frames(|| Log.drawButtons(log), 40)
     end
 end
 function Action_Plan_Repair(log) Action_Plan_Action(log, "Repair") end
@@ -210,7 +284,7 @@ function Action_Plan_Action(log, name)
     if action then
         for i,offset in ipairs(ALL_ACTION_OFFSETS) do
             if not relativeHitCast(log, offset, isAction) then
-                Log.moveToken(log, action, vector.add(offset,{0,1,0}), FACEDOWN, UNLOCKED)
+                Log.moveToken(log, action, vector.add(offset,{0,0.5,0}), FACEDOWN, UNLOCKED)
                 break
             end
         end
@@ -246,7 +320,7 @@ function Action_Reload_Stbd_Chain_Shot(log)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
 function Action_Reload_Stbd_Grape_Shot(log)
-    Action_Reload(log, "Grape Shot", STBD_DIR) 
+    Action_Reload(log, "Grape Shot", STBD_DIR)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
 function Action_Reload(log, name, side)
@@ -267,6 +341,11 @@ function Action_SetStart()
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) then
             Clear_Arcs(ship)
+        end
+    end
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.clearAllActions(log)
         end
     end
 end
@@ -322,20 +401,18 @@ function CheckReady()
     end
     if ready then
         if current_phase == "start" then
-            current_phase = "planning"
+            Action_SetPlanning()
         elseif current_phase == "planning" then
-            current_phase = "action"
+            Action_SetAction()
         elseif current_phase == "action" then
-            current_phase = "move"
+            Action_SetMovement()
         elseif current_phase == "move" then
-            current_phase = "combat"
+            Action_SetCombat()
         elseif current_phase == "combat" then
-            current_phase = "reload"
+            Action_SetReloading()
         elseif current_phase == "reload" then
-            current_phase = "start"
+            Action_SetStart()
         end
-        ResetReady()
-        UpdateNote()
     end
 end
 function ResetReady()

@@ -189,7 +189,7 @@ function Log.moveToken(log, obj, rel_pos, faceup, lock)
     if rel_pos~=nil then
         new_pos = Log.relativePosition(log, rel_pos)
         --printToAll("Setting: "..obj.getName().." to: {"..new_pos[1]..","..new_pos[2]..","..new_pos[3].."}")
-        obj.setPositionSmooth(new_pos,false,true);
+        obj.setPosition(new_pos); --,false,true
     end
     if faceup~=nil then
         rotation = 0
@@ -206,6 +206,10 @@ function Log.moveToken(log, obj, rel_pos, faceup, lock)
         end
     end
 end
+function Log.returnAAction(log, action)
+    offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[action.getName()])
+    Log.moveToken(log, action, offset, FACEUP, LOCKED)
+end
 function Log.returnAction(log, name)
     for i,offset in ipairs(ALL_ACTION_OFFSETS) do
         action = relativeHitCast(log, offset, isAction)
@@ -220,4 +224,9 @@ function Log.unloadAmmo(log)
     -- and obj.getRotation()[3]==0
     relativeHitCast(log, PORT_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(obj,false)) -- Log.moveToken(log, obj, PORT_AMMO_SRC_OFFSET, FACEDOWN)
     relativeHitCast(log, STBD_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(obj,true)) -- Log.moveToken(log, obj, STBD_AMMO_SRC_OFFSET, FACEDOWN))
+end
+function Log.clearAllActions(log)
+    for i,offset in ipairs(ALL_ACTION_OFFSETS) do
+        relativeHitCast(log, offset, isAction, |obj| Log.returnAAction(log, obj))
+    end
 end
