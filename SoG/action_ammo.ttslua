@@ -13,6 +13,8 @@ ACTION_SPAWN_OFFSETS = {
     ['No Boarding'] = {-6,0,1.2},
     ['Grog (Single Use)'] = {-8.4,0,0}
 }
+REPAIR_DELAYED = {-11.1,0,2}
+FIGHT_FIRE_DELAYED = {-11.1,0,4.6}
 ACTION_COLOR = {
     ['Repair'] = {161/255,162/255,84/255},
     ['Pump Water'] ={0.5,0.5,1},-- {161/255,162/255,84/255},
@@ -183,7 +185,7 @@ function Log.relativePosition(log, pos)
     return vector.add(log.getPosition() , vector.rotate(pos, log.getRotation()[2]))
 end
 function Log.relativeButtonPosition(log, offset)
-    return vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.1,0.1})
+    return vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.3,0.1})
 end
 function Log.moveToken(log, obj, rel_pos, faceup, lock)
     if rel_pos~=nil then

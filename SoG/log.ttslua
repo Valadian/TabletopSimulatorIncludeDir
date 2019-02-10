@@ -230,25 +230,47 @@ function Log.drawButtons(log)
         end
     end
     if current_phase=="action" then
+        cmds_left = false
+        delayed = log.getTable('delayed')
         for i, offset in ipairs(ALL_ACTION_OFFSETS) do
             action = relativeHitCast(log, offset, isAction)
             if action then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
                 if action.getName()=="Repair" or action.getName()=="Fight Fire" then
+                    cmds_left = true
                     log.createButton({['color'] = {0,0,1}, ['font_color'] = WHITE, ['click_function'] = 'Action_Delay_Action_'..tostring(i), ['label'] = 'Delay', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --delay
                 elseif action.getName()=="Raise Sails" or action.getName()=="Lower Sails"
                     or action.getName()=="'Grog (Single Use)'" or action.getName()=="Pump Water"
                     or action.getName()=="Boarding" then
+                    cmds_left = true
                     log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_'..tostring(i), ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --execute
                 end
             end
         end
+        if log.getVar('delayed_repair') then
+            buttonpos = Log.relativeButtonPosition(log, vector.add(REPAIR_DELAYED,{0,0.1,0.25}))
+            log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_Delayed_Repair', ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            cmds_left = true
+        end
+        if log.getVar('delayed_fight_fire') then
+            buttonpos = Log.relativeButtonPosition(log, vector.add(FIGHT_FIRE_DELAYED,{0,0.1,0.25}))
+            log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_Delayed_Fight_Fire', ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+            cmds_left = true
+        end
+        if not cmds_left and Log.GetReady(log)==false then
+            Log.SetReady(log,true)
+            Log.drawButtons(log)
+            UpdateNote()
+        end
     end
     for i, offset in ipairs(ALL_ACTION_OFFSETS) do
         if not relativeHitCast(log, offset, isAction) then
-            if log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
+            if log.getTable('delayed')~=nil and log.getTable('delayed')[i]~=nil then
+                buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,-0.6}))
+                log.createButton({['color'] = {0,0,1}, ['tooltip'] = "Click to un-delay this action slot", ['font_color'] = WHITE, ['click_function'] = 'Action_ClearDelay_Action_'..tostring(i), ['label'] = 'D', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 1100, ['font_size'] = 900})
+            elseif log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,-0.6}))
                 log.createButton({['color'] = {0.5,0.5,0.5}, ['tooltip'] = "Click to re-enable this action slot", ['font_color'] = WHITE, ['click_function'] = 'Action_Enable_Action_'..tostring(i), ['label'] = 'X', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 1100, ['font_size'] = 900})
             else
@@ -276,12 +298,18 @@ function Action_Disable_Action_2(log, player_color) Action_Disable_Action(log, p
 function Action_Disable_Action_3(log, player_color) Action_Disable_Action(log, player_color, 3) end
 function Action_Disable_Action_4(log, player_color) Action_Disable_Action(log, player_color, 4) end
 function Action_Disable_Action(log, player_color, index)
-    local disabled_actions = log.getTable('disabled_actions')
-    if not disabled_actions then
-        disabled_actions = {}
+    offset = ALL_ACTION_OFFSETS[index]
+    action = relativeHitCast(log, offset, isAction)
+    if action then
+        printToColor("Can't disable filled slot",player_color,{1,0,0})
+    else
+        local disabled_actions = log.getTable('disabled_actions')
+        if not disabled_actions then
+            disabled_actions = {}
+        end
+        disabled_actions[index] = true
+        log.setTable('disabled_actions',disabled_actions)
     end
-    disabled_actions[index] = true
-    log.setTable('disabled_actions',disabled_actions)
     Log.drawButtons(log)
 end
 function Action_Toggle_AbackLastTurn(log)
@@ -289,21 +317,69 @@ function Action_Toggle_AbackLastTurn(log)
     Ship.SetAbackLastTurn(ship, not Ship.GetAbackLastTurn(ship))
     Log.drawButtons(log)
 end
-function Action_Delay_Action_1(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[1]) end
-function Action_Delay_Action_2(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[2]) end
-function Action_Delay_Action_3(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[3]) end
-function Action_Delay_Action_4(log, player_color) Action_Delay_Action(log, player_color, ALL_ACTION_OFFSETS[4]) end
-function Action_Delay_Action(log, player_color, offset)
+function Action_Delay_Action_1(log, player_color) Action_Delay_Action(log, player_color, 1) end
+function Action_Delay_Action_2(log, player_color) Action_Delay_Action(log, player_color, 2) end
+function Action_Delay_Action_3(log, player_color) Action_Delay_Action(log, player_color, 3) end
+function Action_Delay_Action_4(log, player_color) Action_Delay_Action(log, player_color, 4) end
+function Action_Delay_Action(log, player_color, index)
+    offset = ALL_ACTION_OFFSETS[index]
     action = relativeHitCast(log, offset, isAction)
     if action then
         printToAll(Player[player_color].steam_name.. " delayed: "..action.getName(), player_color)
         if action.getName()=="Repair" then
-            Log.moveToken(log, action, {-11.1,1,2}, FACEUP, UNLOCKED)
+            Log.moveToken(log, action, vector.add(REPAIR_DELAYED,{0,1,0}), FACEUP, UNLOCKED)
         elseif action.getName()=="Fight Fire" then
-            Log.moveToken(log, action, {-11.1,1,4.6}, FACEUP, UNLOCKED)
+            Log.moveToken(log, action, vector.add(FIGHT_FIRE_DELAYED,{0,1,0}), FACEUP, UNLOCKED)
         end
-        Wait.frames(|| Log.drawButtons(log), 40)
+        delayed = log.getTable('delayed')
+        if delayed==nil then
+            delayed = {}
+        end
+        delayed[index] = action.getName()
+        log.setTable('delayed',delayed)
     end
+    Wait.frames(|| Log.drawButtons(log), 40)
+end
+function Action_ClearDelay_Action_1(log, player_color) Action_ClearDelay_Action(log, player_color, 1) end
+function Action_ClearDelay_Action_2(log, player_color) Action_ClearDelay_Action(log, player_color, 2) end
+function Action_ClearDelay_Action_3(log, player_color) Action_ClearDelay_Action(log, player_color, 3) end
+function Action_ClearDelay_Action_4(log, player_color) Action_ClearDelay_Action(log, player_color, 4) end
+function Action_ClearDelay_Action(log, player_color, index)
+    delayed = log.getTable('delayed')
+    if delayed==nil then
+        delayed = {}
+    end
+    delayed[index] = nil
+    log.setTable('delayed',delayed)
+    Log.drawButtons(log)
+end
+function Action_Execute_Action_Delayed_Repair(log, player_color)
+    log.setVar('delayed_repair',nil)
+    delayed = log.getTable('delayed')
+    if delayed~=nil then
+        for i,action_name in pairs(delayed) do
+            printToAll("["..tostring(i).."] "..action_name)
+            if action_name=="Repair" then
+                delayed[i]=nil
+                log.setTable('delayed',delayed)
+            end
+        end
+    end
+    Action_Execute_Action(log, player_color, REPAIR_DELAYED)
+end
+function Action_Execute_Action_Delayed_Fight_Fire(log, player_color)
+    log.setVar('delayed_fight_fire',nil)
+    delayed = log.getTable('delayed')
+    if delayed~=nil then
+        for i,action_name in pairs(delayed) do
+            printToAll("["..tostring(i).."] "..action_name)
+            if action_name=="Fight Fire" then
+                delayed[i]=nil
+                log.setTable('delayed',delayed)
+            end
+        end
+    end
+    Action_Execute_Action(log, player_color, FIGHT_FIRE_DELAYED)
 end
 function Action_Execute_Action_1(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[1]) end
 function Action_Execute_Action_2(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[2]) end
@@ -314,8 +390,8 @@ function Action_Execute_Action(log, player_color, offset)
     printToAll(Player[player_color].steam_name.. " performed: "..action.getName(), player_color)
     if action then
         Log.returnAAction(log, action)
-        Wait.frames(|| Log.drawButtons(log), 40)
     end
+    Wait.frames(|| Log.drawButtons(log), 40)
 end
 
 function Action_Undo_Action_1(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[1]) end
@@ -328,8 +404,8 @@ function Action_Undo_Action(log, offset)
         action_offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[action.getName()])
         Log.moveToken(log, action, action_offset, FACEUP, LOCKED)
 
-        Wait.frames(|| Log.drawButtons(log), 40)
     end
+    Wait.frames(|| Log.drawButtons(log), 40)
 end
 function Action_Plan_Repair(log) Action_Plan_Action(log, "Repair") end
 function Action_Plan_Pump_Water(log) Action_Plan_Action(log, "Pump Water") end
@@ -350,7 +426,7 @@ function Action_Plan_Action(log, name)
     action = relativeHitCast(log, action_offset, isAction)
     if action then
         for i,offset in ipairs(ALL_ACTION_OFFSETS) do
-            if not relativeHitCast(log, offset, isAction) then
+            if not relativeHitCast(log, offset, isAction) and (log.getTable('delayed')==nil or log.getTable('delayed')[i]==nil) then
                 Log.moveToken(log, action, vector.add(offset,{0,0.5,0}), FACEDOWN, UNLOCKED)
                 break
             end
@@ -425,6 +501,15 @@ function Action_SetPlanning()
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) then
             Clear_Arcs(ship)
+        end
+    end
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            -- mark reserved delayed action slots
+            repair = relativeHitCast(log, REPAIR_DELAYED, isAction)
+            log.setVar('delayed_repair',repair~=nil)
+            fight_fire = relativeHitCast(log, FIGHT_FIRE_DELAYED, isAction)
+            log.setVar('delayed_fight_fire',fight_fire~=nil)
         end
     end
 end
