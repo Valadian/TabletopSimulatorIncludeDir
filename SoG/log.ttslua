@@ -201,7 +201,7 @@ function Log.drawButtons(log)
     if current_phase=="planning" then
         for key,offset in pairs(ACTION_SPAWN_OFFSETS) do
             offset = vector.add(ACTION_SPAWN_ROW,offset)
-            if key~="No Boarding" and relativeHitCast(log, offset, isAction) then
+            if key~="No Boarding" and relativeHitCast(log, offset, isFaceUpAction) then
                 local buttonpos = Log.relativeButtonPosition(log,offset)
                 log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Plan_'..key:gsub(' ','_'):gsub('%(',''):gsub('%)',''), ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
             end
@@ -222,7 +222,7 @@ function Log.drawButtons(log)
                     log.createButton({['color'] = {0,0,1}, ['font_color'] = WHITE, ['click_function'] = 'Action_Delay_Action_'..tostring(i), ['label'] = 'Delay', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --delay
                 elseif action.getName()=="Raise Sails" or action.getName()=="Lower Sails"
-                    or action.getName()=="'Grog (Single Use)'" or action.getName()=="Pump Water"
+                    or action.getName()=="Grog (Single Use)" or action.getName()=="Pump Water"
                     or action.getName()=="Boarding" then
                     log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_'..tostring(i), ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --execute

@@ -122,6 +122,10 @@ function isFaceUpAmmo(obj)
     --printToAll("isFaceUpAmmo: "..obj.getName().." "..tostring(obj.getRotation()[3]).." "..tostring(math.approxeq(obj.getRotation()[3],0)))
     return obj.getDescription()=="ammo" and math.approxeq(obj.getRotation()[3],0)
 end
+function isFaceUpAction(obj)
+    --printToAll("isFaceUpAmmo: "..obj.getName().." "..tostring(obj.getRotation()[3]).." "..tostring(math.approxeq(obj.getRotation()[3],0)))
+    return obj.getDescription()=="action" and math.approxeq(obj.getRotation()[3],0)
+end
 function isFaceDownAmmo(obj)
     return obj.getDescription()=="ammo" and obj.getRotation()[3]==180
 end
@@ -210,7 +214,11 @@ function Log.moveToken(log, obj, rel_pos, faceup, lock)
 end
 function Log.returnAAction(log, action)
     offset = vector.add(ACTION_SPAWN_ROW,ACTION_SPAWN_OFFSETS[action.getName()])
-    Log.moveToken(log, action, offset, FACEUP, LOCKED)
+    facing = FACEUP
+    if action.getName()=='Grog (Single Use)' then
+        facing = FACEDOWN
+    end
+    Log.moveToken(log, action, offset, facing, LOCKED)
 end
 function Log.returnAction(log, name)
     for i,offset in ipairs(ALL_ACTION_OFFSETS) do
