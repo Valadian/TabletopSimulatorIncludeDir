@@ -288,7 +288,8 @@ function Action_Delay_Action(log, player_color, index)
     offset = ALL_ACTION_OFFSETS[index]
     action = relativeHitCast(log, offset, isAction)
     if action then
-        printToAll(Player[player_color].steam_name.. " delayed: "..action.getName(), player_color)
+        ship = Log.GetShip(log)
+        printToAll(ship.getName().. " delayed: "..action.getName(), player_color)
         if action.getName()=="Repair" then
             Log.moveToken(log, action, vector.add(REPAIR_DELAYED,{0,1,0}), FACEUP, UNLOCKED)
         elseif action.getName()=="Fight Fire" then
@@ -324,8 +325,9 @@ function Action_Execute_Action_2(log, player_color) Action_Execute_Action(log, p
 function Action_Execute_Action_3(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[3]) end
 function Action_Execute_Action_4(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[4]) end
 function Action_Execute_Action(log, player_color, offset)
+    ship = Log.GetShip(log)
     action = relativeHitCast(log, offset, isAction)
-    printToAll(Player[player_color].steam_name.. " performed: "..action.getName(), player_color)
+    printToAll(ship.getName().." performed: "..action.getName(), player_color)
     if action then
         Log.returnAAction(log, action)
     end
@@ -381,45 +383,50 @@ function Action_Plan_Action(log, name)
         Log.CheckForAutoReady(log)
     end, 0.25, 1)
 end
-function Action_Reload_Port_Ball_Shot(log)
-    Action_Reload(log, "Ball Shot", PORT_DIR)
+function Action_Reload_Port_Ball_Shot(log, player_color)
+    Action_Reload(log, player_color, "Ball Shot", PORT_DIR)
     Log.returnAction(log, 'Reload Port (Left)')
 end
-function Action_Reload_Port_Double_Shot(log)
-    Action_Reload(log, "Double Shot", PORT_DIR)
+function Action_Reload_Port_Double_Shot(log, player_color)
+    Action_Reload(log, player_color, "Double Shot", PORT_DIR)
     Log.returnAction(log, 'Reload Port (Left)')
 end
-function Action_Reload_Port_Chain_Shot(log)
-    Action_Reload(log, "Chain Shot", PORT_DIR)
+function Action_Reload_Port_Chain_Shot(log, player_color)
+    Action_Reload(log, player_color, "Chain Shot", PORT_DIR)
     Log.returnAction(log, 'Reload Port (Left)')
 end
-function Action_Reload_Port_Grape_Shot(log)
-    Action_Reload(log, "Grape Shot", PORT_DIR)
+function Action_Reload_Port_Grape_Shot(log, player_color)
+    Action_Reload(log, player_color, "Grape Shot", PORT_DIR)
     Log.returnAction(log, 'Reload Port (Left)')
 end
-function Action_Reload_Stbd_Ball_Shot(log)
-    Action_Reload(log, "Ball Shot", STBD_DIR)
+function Action_Reload_Stbd_Ball_Shot(log, player_color)
+    Action_Reload(log, player_color, "Ball Shot", STBD_DIR)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
-function Action_Reload_Stbd_Double_Shot(log)
-    Action_Reload(log, "Double Shot", STBD_DIR)
+function Action_Reload_Stbd_Double_Shot(log, player_color)
+    Action_Reload(log, player_color, "Double Shot", STBD_DIR)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
-function Action_Reload_Stbd_Chain_Shot(log)
-    Action_Reload(log, "Chain Shot", STBD_DIR)
+function Action_Reload_Stbd_Chain_Shot(log, player_color)
+    Action_Reload(log, player_color, "Chain Shot", STBD_DIR)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
-function Action_Reload_Stbd_Grape_Shot(log)
-    Action_Reload(log, "Grape Shot", STBD_DIR)
+function Action_Reload_Stbd_Grape_Shot(log, player_color)
+    Action_Reload(log, player_color, "Grape Shot", STBD_DIR)
     Log.returnAction(log, 'Reload Starboard (Right)')
 end
-function Action_Reload(log, name, side)
+function Action_Reload(log, player_color, name, side)
+    local ship = Log.GetShip(log)
+
     --printToAll("Action_Reload_"..name..tostring(side))
     local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(AMMO_SPAWN_OFFSETS[name],{side,1,1}))
     local to_offset = PORT_AMMO_OFFSET
+    local side_text = "Port"
     if side==STBD_DIR then
         to_offset = STBD_AMMO_OFFSET
+        side_text = "Starboard"
     end
+    printToAll(ship.getName().." reloads "..side_text.. " cannons",player_color)
     to_offset = vector.add(to_offset,{0,1,0})
     relativeHitCast(log, offset, isAmmo, |obj| Log.moveToken(log, obj, to_offset, FACEDOWN, false))
     Wait.time(function()
