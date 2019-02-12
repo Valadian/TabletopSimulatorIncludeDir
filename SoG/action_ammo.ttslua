@@ -237,6 +237,10 @@ function Log.unloadAmmo(log)
 end
 function Log.clearAllActions(log)
     for i,offset in ipairs(ALL_ACTION_OFFSETS) do
-        relativeHitCast(log, offset, isAction, |obj| Log.returnAAction(log, obj))
+        relativeHitCast(log, offset, isAction, function(obj)
+            ship = Log.GetShip(log)
+            printToAll(ship.getName().." discards "..obj.getName(),{0.5, 0.5, 0.5})
+            Log.returnAAction(log, obj)
+        end)
     end
 end
