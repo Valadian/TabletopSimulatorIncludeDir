@@ -266,6 +266,7 @@ function Action_Disable_Action_2(log, player_color) Action_Disable_Action(log, p
 function Action_Disable_Action_3(log, player_color) Action_Disable_Action(log, player_color, 3) end
 function Action_Disable_Action_4(log, player_color) Action_Disable_Action(log, player_color, 4) end
 function Action_Disable_Action(log, player_color, index)
+    printToAll("Action_Disable_Action "..tostring(index))
     offset = ALL_ACTION_OFFSETS[index]
     action = relativeHitCast(log, offset, isAction)
     if action then
@@ -736,21 +737,25 @@ function Log.SetSpeed(log, speed)
 end
 function Log.CheckSlotIsReserved(log, index)
     offset = ALL_ACTION_OFFSETS[index]
-    return relativeHitCast(log, offset, isAction) or Log.GetDelayedAction(log, i) or Log.GetDisabledAction(log, i)
+    return relativeHitCast(log, offset, isAction) or Log.GetDelayedAction(log, index) or Log.GetDisabledAction(log, index)
 end
 function Log.GetDisabledAction(log, index)
-    return log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i]
+    return log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[index]
 end
 function Log.SetDisabledAction(log, index, disabled)
+    printToAll("Log.SetDisabledAction "..tostring(index))
     disabled_actions = log.getTable('disabled_actions')
     if disabled_actions==nil then
         disabled_actions = {}
     end
     disabled_actions[index] = disabled
     log.setTable('disabled_actions',disabled_actions)
+    printToAll("log.getTable('disabled_actions')~=nil "..tostring(log.getTable('disabled_actions')~=nil))
+    printToAll("log.getTable('disabled_actions')[index] "..tostring(log.getTable('disabled_actions')[index]))
+    printToAll("Log.GetDisabledAction(log, index) "..tostring(Log.GetDisabledAction(log, index)))
 end
 function Log.GetDelayedAction(log, index)
-    return log.getTable('delayed_actions')~=nil and log.getTable('delayed_actions')[i]
+    return log.getTable('delayed_actions')~=nil and log.getTable('delayed_actions')[index]~=nil
 end
 function Log.SetDelayedAction(log, index, delayed)
     delayed_actions = log.getTable('delayed_actions')

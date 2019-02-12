@@ -320,7 +320,8 @@ function Ship.drawButtons(ship, y_rot_override)
 
     else
         local log = Ship.GetLog(ship)
-        BASE_BG = RED
+        FIRE_BG = RED
+        BASE_BG = {0,0,0}
         BASE_FG = WHITE
         CLEAR_BG = {0.7,0.7,0.7}
         CLEAR_FG = WHITE
@@ -330,7 +331,7 @@ function Ship.drawButtons(ship, y_rot_override)
             if ship.getVar('musketry')~=nil then
                 label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
                 if current_phase=="combat" and Log.canFireMusketry(log) then
-                    ship.createButton({['click_function'] = 'Action_Musketry_Fire', ['label'] = 'Fire', ['position'] = {0, 0.5, -5.2}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_Musketry_Fire', ['label'] = 'Fire', ['position'] = {0, 0.5, -5.9}, ['color'] = FIRE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
             end
             ship.createButton({['click_function'] = 'Action_Musketry', ['label'] = label, ['position'] = {0, 0.5, -4.5}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1200, ['height'] = 250, ['font_size'] = 200})
@@ -345,7 +346,7 @@ function Ship.drawButtons(ship, y_rot_override)
             if Ship.IsOnlyActiveArcs(ship,{STBD_FORE}) then
                 label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
                 if current_phase=="combat" and stbd_loaded then
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, -3}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {4.2, 0.5, -3}, ['color'] = FIRE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
             end
             ship.createButton({['click_function'] = 'Action_STBD_Front', ['label'] = label, ['position'] = {2.8, 0.5, -3}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
@@ -355,7 +356,7 @@ function Ship.drawButtons(ship, y_rot_override)
             if Ship.IsOnlyActiveArcs(ship,{STBD_FULL}) then
                 label = 'Clear'; color = CLEAR_BG; text_color = CLEAR_FG
                 if current_phase=="combat" and stbd_loaded then
-                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {3.5, 0.5, 0}, ['color'] = BASE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
+                    ship.createButton({['click_function'] = 'Action_STBD_Fire', ['label'] = 'Fire', ['position'] = {4.2, 0.5, 0}, ['color'] = FIRE_BG, ['font_color'] = BASE_FG, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
                 end
             end
             ship.createButton({['click_function'] = 'Action_STBD_Full', ['label'] = label, ['position'] = {2.8, 0.5, 0}, ['color'] = color, ['font_color'] = text_color, ['function_owner'] = self, ['rotation'] =  {0, 90, 0}, ['width'] = 800, ['height'] = 250, ['font_size'] = 200})
