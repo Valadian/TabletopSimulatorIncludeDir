@@ -21,14 +21,14 @@ function Ship.onObjectDrop(dropped_object)
     local log = findNearestLog(dropped_object.getPosition())
     if log~=nil and vector.length(vector.sub(log.getPosition(),dropped_object.getPosition()))<16 then
         if Log.GetShip(log)~=nil then
-            printToAll("ShipLog: "..log.getName().." already has a ship.",{1,0,0})
+            --printToAll("ShipLog: "..log.getName().." already has a ship.",{1,0,0})
         else
             Log.SetShip(log,dropped_object)
             log.setName(dropped_object.getName())
             Log.drawButtons(log)
         end
     end
-    if ship.getVar('colliding') then
+    if dropped_object.getVar('colliding') then
         Action_Collision(ship)
     else
         Ship.drawButtons(dropped_object)
@@ -450,15 +450,21 @@ function Action_STBD_Fire(ship)
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Starboard",{1,0,0})
     end
     Log.returnAction(log, 'Fire Starboard (Right)')
-    Wait.frames(|| Ship.drawButtons(ship), 10)
-    Wait.frames(|| Log.drawButtons(log), 10)
+    Wait.frames(function()
+        Ship.drawButtons(ship)
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 10)
 end
 function Action_Musketry_Fire(ship)
     local log = Ship.GetLog(ship)
     printToAll(ship.getName().." fires Musketry",{1,0,0})
     Log.returnAction(log, 'Musketry Fire')
-    Wait.frames(|| Ship.drawButtons(ship), 10)
-    Wait.frames(|| Log.drawButtons(log), 10)
+    Wait.frames(function()
+        Ship.drawButtons(ship)
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 10)
 end
 function Action_PORT_Fire(ship)
     local log = Ship.GetLog(ship)
@@ -467,8 +473,11 @@ function Action_PORT_Fire(ship)
         printToAll(ship.getName().." fires '"..ammo.getName().."' to Port",{1,0,0})
     end
     Log.returnAction(log, 'Fire Port (Left)')
-    Wait.frames(|| Ship.drawButtons(ship), 10)
-    Wait.frames(|| Log.drawButtons(log), 10)
+    Wait.frames(function()
+        Ship.drawButtons(ship)
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 10)
 end
 function Action_PerformMove(ship)
     local def = Ship.GetShipDefinition(ship)

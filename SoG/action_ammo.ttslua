@@ -78,7 +78,7 @@ function Log.resetAction(action)
     action.lock()
     action.setPositionSmooth(Log.relativePosition(log,offset))
 end
-function Log.resetAmmo(ammo,stbd)
+function Log.resetAmmo(log, ammo,stbd)
     --printToAll("Log.resetAmmo: "..ammo.getName())
     local side = STBD_DIR
     if not stbd then
@@ -224,8 +224,8 @@ end
 function Log.unloadAmmo(log)
     --printToAll("Log.unloadAmmo")
     -- and obj.getRotation()[3]==0
-    relativeHitCast(log, PORT_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(obj,false)) -- Log.moveToken(log, obj, PORT_AMMO_SRC_OFFSET, FACEDOWN)
-    relativeHitCast(log, STBD_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(obj,true)) -- Log.moveToken(log, obj, STBD_AMMO_SRC_OFFSET, FACEDOWN))
+    relativeHitCast(log, PORT_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(log, obj,false)) -- Log.moveToken(log, obj, PORT_AMMO_SRC_OFFSET, FACEDOWN)
+    relativeHitCast(log, STBD_AMMO_OFFSET, isFaceUpAmmo, |obj| Log.resetAmmo(log, obj,true)) -- Log.moveToken(log, obj, STBD_AMMO_SRC_OFFSET, FACEDOWN))
 end
 function Log.clearAllActions(log)
     for i,offset in ipairs(ALL_ACTION_OFFSETS) do

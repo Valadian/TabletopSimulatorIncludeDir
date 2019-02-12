@@ -79,5 +79,8 @@ function UpdateNote()
             end
         end
     end
+    if count_down then
+        noteString=noteString.."\n".."[FFA0A0]--- Transition in: "..tostring(count_down).." ---[-] "
+    end
     setNotes(noteString)
 end

@@ -57,7 +57,7 @@ function Log.SetNextCard(log, card)
         Log.SetSecondary(log, card)
         Log.PositionCard(log, card, SECONDARY_OFFSET)
     end
-    UpdateNote()
+    Log.CheckForAutoReady(log)
 end
 function Log.SetPrimary(log, card) log.setVar('primary',card) end
 function Log.GetPrimary(log) return log.getVar('primary') end
@@ -79,11 +79,19 @@ function Log.GetAbackStraight(log) return log.getVar('abackStraight') end
 function Log.GetAbackLeft(log) return log.getVar('abackLeft') end
 function Log.SetReady(log,ready)
     log.setVar('ready',ready)
-    CheckReady()
+    if ready then
+        CheckReady()
+    else
+        KillReadyCountdown()
+    end
     UpdateNote()
     Log.drawButtons(log)
 end
 function Log.GetReady(log) return log.getVar('ready') end
+function Log.SetDisabledAutoReady(log,ready)
+    log.setVar('disable_auto_ready',ready)
+end
+function Log.GetDisabledAutoReady(log) return log.getVar('disable_auto_ready') end
 
 function Log.GetPlannedVeer(log)
     if Log.GetPrimary(log)==nil then
@@ -134,7 +142,14 @@ function Log.drawButtons(log)
         if Ship.GetAbackLastTurn(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
         log.createButton({['click_function'] = 'Action_Toggle_AbackLastTurn', ['label'] = 'Aback Last Turn', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.45, 0.4, 0.1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1900, ['height'] = 600, ['font_size'] = 250})
 
-        if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE
+        else
+            if Log.GetDisabledAutoReady(log) then
+                color = RED; font_color = WHITE
+            else
+                color = WHITE; font_color = BLACK
+            end
+        end
         log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-0.6, 0.4, 1.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
         desc = ship.getName().." ("..Ship.GetShipDefinition(ship)["PV"].."pts)"
@@ -159,21 +174,8 @@ function Log.drawButtons(log)
     log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.6, 0.4, -1.5}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
     log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.0, 0.4, -1.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
-    if current_phase=="combat" then
-        firing = false
-        firing = firing or Log.isFiringPort(log)
-        firing = firing or Log.isFiringStarboard(log)
-        firing = firing or Log.canFireMusketry(log)
-        if not firing and Log.GetReady(log)==false then
-            Log.SetReady(log,true)
-            Log.drawButtons(log)
-            UpdateNote()
-        end
-    end
     if current_phase=="reload" then
-        reloading = false
         if Log.canReloadPort(log) then
-            reloading = true
             --printToAll("Log.canReloadPort(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{PORT_DIR,1,1}))
@@ -185,8 +187,6 @@ function Log.drawButtons(log)
             end
         end
         if Log.canReloadStarboard(log) then
-            reloading = true
-            --printToAll("Log.canReloadStarboard(log)")
             for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
                 local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{STBD_DIR,1,1}))
                 if relativeHitCast(log, offset, isAmmo) then
@@ -196,54 +196,33 @@ function Log.drawButtons(log)
                 end
             end
         end
-        if not reloading and Log.GetReady(log)==false then
-            Log.SetReady(log,true)
-            Log.drawButtons(log)
-            UpdateNote()
-        end
     end
     if current_phase=="planning" then
         for key,offset in pairs(ACTION_SPAWN_OFFSETS) do
             offset = vector.add(ACTION_SPAWN_ROW,offset)
-            if relativeHitCast(log, offset, isAction) then
+            if key~="No Boarding" and relativeHitCast(log, offset, isAction) then
                 local buttonpos = Log.relativeButtonPosition(log,offset)
                 log.createButton({['color'] = ACTION_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Plan_'..key:gsub(' ','_'):gsub('%(',''):gsub('%)',''), ['label'] = 'Plan', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
             end
         end
-        local planned_all = true
         for i, offset in ipairs(ALL_ACTION_OFFSETS) do
             if relativeHitCast(log, offset, isAction) then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
                 log.createButton({['color'] = RED, ['font_color'] = WHITE, ['click_function'] = 'Action_Undo_Action_'..tostring(i), ['label'] = 'Undo', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
-            else
-                if log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
-                    --This slot is disabled
-                else
-                    planned_all = false
-                end
             end
-        end
-        if planned_all and (Ship.GetSpeed(ship)=='Anchored' or Log.GetSecondary(log)~=nil) and Log.GetReady(log)==false then
-            Log.SetReady(log,true)
-            Log.drawButtons(log)
-            UpdateNote()
         end
     end
     if current_phase=="action" then
-        cmds_left = false
-        delayed = log.getTable('delayed')
         for i, offset in ipairs(ALL_ACTION_OFFSETS) do
             action = relativeHitCast(log, offset, isAction)
             if action then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,0.25}))
                 if action.getName()=="Repair" or action.getName()=="Fight Fire" then
-                    cmds_left = true
                     log.createButton({['color'] = {0,0,1}, ['font_color'] = WHITE, ['click_function'] = 'Action_Delay_Action_'..tostring(i), ['label'] = 'Delay', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --delay
                 elseif action.getName()=="Raise Sails" or action.getName()=="Lower Sails"
                     or action.getName()=="'Grog (Single Use)'" or action.getName()=="Pump Water"
                     or action.getName()=="Boarding" then
-                    cmds_left = true
                     log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_'..tostring(i), ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
                     --execute
                 end
@@ -252,25 +231,18 @@ function Log.drawButtons(log)
         if log.getVar('delayed_repair') then
             buttonpos = Log.relativeButtonPosition(log, vector.add(REPAIR_DELAYED,{0,0.1,0.25}))
             log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_Delayed_Repair', ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
-            cmds_left = true
         end
         if log.getVar('delayed_fight_fire') then
             buttonpos = Log.relativeButtonPosition(log, vector.add(FIGHT_FIRE_DELAYED,{0,0.1,0.25}))
             log.createButton({['color'] = {0,1,0}, ['font_color'] = WHITE, ['click_function'] = 'Action_Execute_Action_Delayed_Fight_Fire', ['label'] = 'Execute', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
-            cmds_left = true
-        end
-        if not cmds_left and Log.GetReady(log)==false then
-            Log.SetReady(log,true)
-            Log.drawButtons(log)
-            UpdateNote()
         end
     end
     for i, offset in ipairs(ALL_ACTION_OFFSETS) do
         if not relativeHitCast(log, offset, isAction) then
-            if log.getTable('delayed')~=nil and log.getTable('delayed')[i]~=nil then
+            if Log.GetDelayedAction(log, i) then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,-0.6}))
                 log.createButton({['color'] = {0,0,1}, ['tooltip'] = "Click to un-delay this action slot", ['font_color'] = WHITE, ['click_function'] = 'Action_ClearDelay_Action_'..tostring(i), ['label'] = 'D', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 1100, ['font_size'] = 900})
-            elseif log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i] then
+            elseif Log.GetDisabledAction(log, i) then
                 buttonpos = Log.relativeButtonPosition(log, vector.add(offset,{0,0.1,-0.6}))
                 log.createButton({['color'] = {0.5,0.5,0.5}, ['tooltip'] = "Click to re-enable this action slot", ['font_color'] = WHITE, ['click_function'] = 'Action_Enable_Action_'..tostring(i), ['label'] = 'X', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 1100, ['font_size'] = 900})
             else
@@ -285,12 +257,7 @@ function Action_Enable_Action_2(log, player_color) Action_Enable_Action(log, pla
 function Action_Enable_Action_3(log, player_color) Action_Enable_Action(log, player_color, 3) end
 function Action_Enable_Action_4(log, player_color) Action_Enable_Action(log, player_color, 4) end
 function Action_Enable_Action(log, player_color, index)
-    local disabled_actions = log.getTable('disabled_actions')
-    if not disabled_actions then
-        disabled_actions = {}
-    end
-    disabled_actions[index] = false
-    log.setTable('disabled_actions',disabled_actions)
+    Log.SetDisabledAction(log, index, nil)
     Log.drawButtons(log)
 end
 function Action_Disable_Action_1(log, player_color) Action_Disable_Action(log, player_color, 1) end
@@ -303,12 +270,7 @@ function Action_Disable_Action(log, player_color, index)
     if action then
         printToColor("Can't disable filled slot",player_color,{1,0,0})
     else
-        local disabled_actions = log.getTable('disabled_actions')
-        if not disabled_actions then
-            disabled_actions = {}
-        end
-        disabled_actions[index] = true
-        log.setTable('disabled_actions',disabled_actions)
+        Log.SetDisabledAction(log, index, true)
     end
     Log.drawButtons(log)
 end
@@ -331,54 +293,29 @@ function Action_Delay_Action(log, player_color, index)
         elseif action.getName()=="Fight Fire" then
             Log.moveToken(log, action, vector.add(FIGHT_FIRE_DELAYED,{0,1,0}), FACEUP, UNLOCKED)
         end
-        delayed = log.getTable('delayed')
-        if delayed==nil then
-            delayed = {}
-        end
-        delayed[index] = action.getName()
-        log.setTable('delayed',delayed)
+        Log.SetDelayedAction(log,index, action.getName())
     end
-    Wait.frames(|| Log.drawButtons(log), 40)
+    Wait.time(function()
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 0.5,1)
 end
 function Action_ClearDelay_Action_1(log, player_color) Action_ClearDelay_Action(log, player_color, 1) end
 function Action_ClearDelay_Action_2(log, player_color) Action_ClearDelay_Action(log, player_color, 2) end
 function Action_ClearDelay_Action_3(log, player_color) Action_ClearDelay_Action(log, player_color, 3) end
 function Action_ClearDelay_Action_4(log, player_color) Action_ClearDelay_Action(log, player_color, 4) end
 function Action_ClearDelay_Action(log, player_color, index)
-    delayed = log.getTable('delayed')
-    if delayed==nil then
-        delayed = {}
-    end
-    delayed[index] = nil
-    log.setTable('delayed',delayed)
+    Log.SetDelayedAction(log, index, nil)
     Log.drawButtons(log)
 end
 function Action_Execute_Action_Delayed_Repair(log, player_color)
     log.setVar('delayed_repair',nil)
-    delayed = log.getTable('delayed')
-    if delayed~=nil then
-        for i,action_name in pairs(delayed) do
-            --printToAll("["..tostring(i).."] "..action_name)
-            if action_name=="Repair" then
-                delayed[i]=nil
-                log.setTable('delayed',delayed)
-            end
-        end
-    end
+    Log.SetDelayedActionByName(log, "Repair", nil)
     Action_Execute_Action(log, player_color, REPAIR_DELAYED)
 end
 function Action_Execute_Action_Delayed_Fight_Fire(log, player_color)
     log.setVar('delayed_fight_fire',nil)
-    delayed = log.getTable('delayed')
-    if delayed~=nil then
-        for i,action_name in pairs(delayed) do
-            --printToAll("["..tostring(i).."] "..action_name)
-            if action_name=="Fight Fire" then
-                delayed[i]=nil
-                log.setTable('delayed',delayed)
-            end
-        end
-    end
+    Log.SetDelayedActionByName(log, "Fight Fire", nil)
     Action_Execute_Action(log, player_color, FIGHT_FIRE_DELAYED)
 end
 function Action_Execute_Action_1(log, player_color) Action_Execute_Action(log, player_color, ALL_ACTION_OFFSETS[1]) end
@@ -391,7 +328,10 @@ function Action_Execute_Action(log, player_color, offset)
     if action then
         Log.returnAAction(log, action)
     end
-    Wait.frames(|| Log.drawButtons(log), 40)
+    Wait.time(function()
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 0.5,1)
 end
 
 function Action_Undo_Action_1(log) Action_Undo_Action(log, ALL_ACTION_OFFSETS[1]) end
@@ -405,7 +345,10 @@ function Action_Undo_Action(log, offset)
         Log.moveToken(log, action, action_offset, FACEUP, LOCKED)
 
     end
-    Wait.frames(|| Log.drawButtons(log), 40)
+    Wait.time(function()
+        Log.drawButtons(log)
+        KillReadyCountdown()
+    end, 0.5, 1)
 end
 function Action_Plan_Repair(log) Action_Plan_Action(log, "Repair") end
 function Action_Plan_Pump_Water(log) Action_Plan_Action(log, "Pump Water") end
@@ -426,13 +369,16 @@ function Action_Plan_Action(log, name)
     action = relativeHitCast(log, action_offset, isAction)
     if action then
         for i,offset in ipairs(ALL_ACTION_OFFSETS) do
-            if not relativeHitCast(log, offset, isAction) and (log.getTable('delayed')==nil or log.getTable('delayed')[i]==nil) then
+            if not Log.CheckSlotIsReserved(log, i) then
                 Log.moveToken(log, action, vector.add(offset,{0,0.5,0}), FACEDOWN, UNLOCKED)
                 break
             end
         end
     end
-    Wait.frames(|| Log.drawButtons(log), 40)
+    Wait.time(function()
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 0.25, 1)
 end
 function Action_Reload_Port_Ball_Shot(log)
     Action_Reload(log, "Ball Shot", PORT_DIR)
@@ -475,34 +421,137 @@ function Action_Reload(log, name, side)
     end
     to_offset = vector.add(to_offset,{0,1,0})
     relativeHitCast(log, offset, isAmmo, |obj| Log.moveToken(log, obj, to_offset, FACEDOWN, false))
-    Wait.frames(|| Log.drawButtons(log), 10)
+    Wait.time(function()
+        Log.drawButtons(log)
+        Log.CheckForAutoReady(log)
+    end, 0.5, 1)
+end
+function Log.AllLogsReady()
+    local ready = true
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            ready = ready and Log.GetReady(log)
+        end
+    end
+    return ready
+end
+count_down = nil
+countdown_pid = nil
+function KillReadyCountdown()
+    if countdown_pid then
+        Wait.stop(countdown_pid)
+        countdown_pid = nil
+    end
+    count_down = nil
+end
+function DecrementCountdown()
+    count_down=count_down-1
+    UpdateNote()
+    if count_down == 0 then
+        if Log.AllLogsReady() then
+            if current_phase == "start" then
+                Action_SetPlanning()
+            elseif current_phase == "planning" then
+                Action_SetAction()
+            elseif current_phase == "action" then
+                Action_SetMovement()
+            elseif current_phase == "move" then
+                Action_SetCombat()
+            elseif current_phase == "combat" then
+                Action_SetReloading()
+            elseif current_phase == "reload" then
+                Action_SetStart()
+            end
+        end
+    end
+end
+function CheckReady()
+    if countdown_pid==nil and Log.AllLogsReady() then
+        count_down = 3
+        countdown_pid = Wait.time(DecrementCountdown, 1, 3)
+    end
+end
+function Log.CheckAllForAutoReady()
+    for i,log in ipairs(getAllObjects()) do
+        if isLog(log) then
+            Log.CheckForAutoReady(log)
+        end
+    end
+end
+function Log.CheckForAutoReady(log)
+    if not Log.GetReady(log)  and not Log.GetDisabledAutoReady(log) then
+        if current_phase=="start" then
+            --Check fire/water
+            --wind ready button
+            return false
+        elseif current_phase=="planning" then
+            -- Called when you plan maneuver or plan action
+            ship = Log.GetShip(log)
+            for i, offset in ipairs(ALL_ACTION_OFFSETS) do
+                if not Log.CheckSlotIsReserved(log, i) then
+                    return false
+                end
+            end
+            --check planned maneuvers
+            if Ship.GetSpeed(ship)~='Anchored' then
+                if not Log.GetSecondary(log) or not Log.GetPrimary(log) then
+                    return false
+                end
+            end
+        elseif current_phase=="action" then
+            --Called when you execute or delay action
+            for i, offset in ipairs(ALL_ACTION_OFFSETS) do
+                action = relativeHitCast(log, offset, isAction)
+                if action and (action.getName()=="Repair" or action.getName()=="Fight Fire" or
+                                action.getName()=="Raise Sails" or action.getName()=="Lower Sails" or
+                                action.getName()=="'Grog (Single Use)'" or action.getName()=="Pump Water" or
+                                action.getName()=="Boarding") then
+                    return false
+                end
+            end
+            if log.getVar('delayed_repair') or log.getVar('delayed_fight_fire') then
+                return false
+            end
+        elseif current_phase=="move" then
+            --Not called. Action_Done sets ready directly
+            return false
+        elseif current_phase=="combat" then
+            --Called when you fire artillery or musketry
+            if (Log.isFiringPort(log) and Log.isPortLoaded(log)) or
+               (Log.isFiringStarboard(log) and Log.isStbdLoaded(log)) or
+                Log.canFireMusketry(log) then
+                return false
+            end
+        elseif current_phase=="reload" then
+            --Called when you reload
+            if Log.canReloadPort(log) or Log.canReloadPort(log) then
+                return false
+            end
+        end
+        Log.SetReady(log,true)
+        -- Log.drawButtons(log)
+        -- UpdateNote()
+    end
 end
 function Action_SetStart()
     broadcastToAll("Transitioning to Start Phase")
     current_phase = "start"
     ResetReady()
     RedrawShips()
-    for i,ship in ipairs(getAllObjects()) do
-        if isShip(ship) then
-            Clear_Arcs(ship)
-        end
-    end
+    Ship.clearAllArcs()
     for i,log in ipairs(getAllObjects()) do
         if isLog(log) then
             Log.clearAllActions(log)
         end
     end
+    Log.CheckAllForAutoReady()
 end
 function Action_SetPlanning()
     broadcastToAll("Transitioning to Planning Phase",{1,0.5,0.5})
     current_phase = "planning"
     ResetReady()
     RedrawShips()
-    for i,ship in ipairs(getAllObjects()) do
-        if isShip(ship) then
-            Clear_Arcs(ship)
-        end
-    end
+    Ship.clearAllArcs()
     for i,log in ipairs(getAllObjects()) do
         if isLog(log) then
             -- mark reserved delayed action slots
@@ -512,6 +561,7 @@ function Action_SetPlanning()
             log.setVar('delayed_fight_fire',fight_fire~=nil)
         end
     end
+    Log.CheckAllForAutoReady()
 end
 function Action_SetAction()
     broadcastToAll("Transitioning to Action Phase",{0.5,1,0.5})
@@ -520,6 +570,7 @@ function Action_SetAction()
     RedrawShips()
     Ship.clearAllArcs()
     Log.flipAllActionsFaceup()
+    Log.CheckAllForAutoReady()
 end
 function Action_SetMovement()
     broadcastToAll("Transitioning to Movement Phase",{0.5,0.5,1})
@@ -533,6 +584,7 @@ function Action_SetCombat()
     current_phase = "combat"
     ResetReady()
     RedrawShips()
+    Log.CheckAllForAutoReady()
 end
 -- FULLY AUTOMATED
 function Action_SetReloading()
@@ -542,7 +594,10 @@ function Action_SetReloading()
 
     RedrawShips()
     Ship.clearAllArcs()
-    Wait.frames(|| ResetReady(), 40)
+    Wait.time(function()
+        ResetReady()
+        Log.CheckAllForAutoReady()
+    end, 1, 1)
 end
 function RedrawShips()
     for i,item in ipairs(getAllObjects()) do
@@ -551,42 +606,51 @@ function RedrawShips()
         end
     end
 end
-function CheckReady()
-    local ready= true
-    for i,log in ipairs(getAllObjects()) do
-        if isLog(log) then
-            ready = ready and Log.GetReady(log)
-        end
-    end
-    if ready then
-        if current_phase == "start" then
-            Action_SetPlanning()
-        elseif current_phase == "planning" then
-            Action_SetAction()
-        elseif current_phase == "action" then
-            Action_SetMovement()
-        elseif current_phase == "move" then
-            Action_SetCombat()
-        elseif current_phase == "combat" then
-            Action_SetReloading()
-        elseif current_phase == "reload" then
-            Action_SetStart()
-        end
-    end
-end
+-- function CheckReady()
+--     local ready= true
+--     for i,log in ipairs(getAllObjects()) do
+--         if isLog(log) then
+--             ready = ready and Log.GetReady(log)
+--         end
+--     end
+--     if ready then
+--         if current_phase == "start" then
+--             Action_SetPlanning()
+--         elseif current_phase == "planning" then
+--             Action_SetAction()
+--         elseif current_phase == "action" then
+--             Action_SetMovement()
+--         elseif current_phase == "move" then
+--             Action_SetCombat()
+--         elseif current_phase == "combat" then
+--             Action_SetReloading()
+--         elseif current_phase == "reload" then
+--             Action_SetStart()
+--         end
+--     end
+-- end
 function ResetReady()
     for i,log in ipairs(getAllObjects()) do
         if isLog(log) then
+            Log.SetDisabledAutoReady(log, false)
             Log.SetReady(log,false)
-            Log.drawButtons(log)
+            --Log.drawButtons(log)
         end
     end
-    UpdateNote()
+    --UpdateNote()
 end
 function Action_SetLog_Ready(log)
-    Log.SetReady(log,not Log.GetReady(log))
-    Log.drawButtons(log)
-    UpdateNote()
+    ready = not Log.GetReady(log)
+    if not ready then
+        Log.SetDisabledAutoReady(log, true)
+    end
+    Log.SetReady(log,ready)
+    if ready then
+        CheckReady()
+    end
+    --If player manually disables ready, then don't let auto-transition trigger
+    -- Log.drawButtons(log)
+    -- UpdateNote()
 end
 function Action_ClearShip(log)
     --Disable Deck/Ship clearing
@@ -668,6 +732,45 @@ function Log.SetSpeed(log, speed)
     local ship = Log.GetShip(log)
     Ship.SetSpeed(ship, speed)
     Log.UpdateShipVars(log)
+end
+function Log.CheckSlotIsReserved(log, index)
+    offset = ALL_ACTION_OFFSETS[index]
+    return relativeHitCast(log, offset, isAction) or Log.GetDelayedAction(log, i) or Log.GetDisabledAction(log, i)
+end
+function Log.GetDisabledAction(log, index)
+    return log.getTable('disabled_actions')~=nil and log.getTable('disabled_actions')[i]
+end
+function Log.SetDisabledAction(log, index, disabled)
+    disabled_actions = log.getTable('disabled_actions')
+    if disabled_actions==nil then
+        disabled_actions = {}
+    end
+    disabled_actions[index] = disabled
+    log.setTable('disabled_actions',disabled_actions)
+end
+function Log.GetDelayedAction(log, index)
+    return log.getTable('delayed_actions')~=nil and log.getTable('delayed_actions')[i]
+end
+function Log.SetDelayedAction(log, index, delayed)
+    delayed_actions = log.getTable('delayed_actions')
+    if delayed_actions==nil then
+        delayed_actions = {}
+    end
+    delayed_actions[index] = delayed
+    log.setTable('delayed_actions',delayed_actions)
+end
+function Log.SetDelayedActionByName(log, name, delayed)
+    delayed_actions = log.getTable('delayed_actions')
+    if delayed_actions==nil then
+        delayed_actions = {}
+    end
+    for i,action_name in pairs(delayed) do
+        if action_name=="Repair" then
+            delayed_actions[i]=nil
+            log.setTable('delayed_actions',delayed_actions)
+            break
+        end
+    end
 end
 function Log.UpdateShipVars(log)
     local ship = Log.GetShip(log)
