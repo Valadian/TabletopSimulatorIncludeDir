@@ -142,15 +142,16 @@ function Log.drawButtons(log)
         if Ship.GetAbackLastTurn(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
         log.createButton({['click_function'] = 'Action_Toggle_AbackLastTurn', ['label'] = 'Aback Last Turn', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.45, 0.4, 0.1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1900, ['height'] = 600, ['font_size'] = 250})
 
-        if Log.GetReady(log) then color = {0, 1, 0}; font_color = WHITE
+        if Log.GetReady(log) then
+            color = {0, 1, 0}; font_color = WHITE; tooltip = "Ship is READY!"
         else
             if Log.GetDisabledAutoReady(log) then
-                color = RED; font_color = WHITE
+                color = RED; font_color = WHITE; tooltip = "Auto-Ready DISABLED"
             else
-                color = WHITE; font_color = BLACK
+                color = WHITE; font_color = BLACK; tooltip = "Click to Ready Ship"
             end
         end
-        log.createButton({['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-0.6, 0.4, 1.25}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
+        log.createButton({['tooltip'] = tooltip, ['click_function'] = 'Action_SetLog_Ready', ['label'] = 'Ready', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.15,0,3.5}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 2000, ['height'] = 2000, ['font_size'] = 700})
 
         desc = ship.getName().." ("..Ship.GetShipDefinition(ship)["PV"].."pts)"
 
