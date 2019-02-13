@@ -204,6 +204,7 @@ function SpawnShip(log, faction, shipname)
     --Wait.frames(function() Ship.SetShipDefinition(ship,shipdef) end,10)
     --printToAll("shipdef.center_arc==nil: "..tostring(Ship.GetShipDefinition(ship).center_arc==nil))
     --printToAll("shipdef.Rate: "..tostring(Ship.GetShipDefinition(ship).Rate))
+    log.setVar('initial_load',true)
     Log.drawButtons(log)
     Ship.onObjectDrop(ship)
     deck_source = getObjectFromGUID(DECK_SOURCES[shipdef.Deck])
@@ -243,6 +244,7 @@ function SpawnShip(log, faction, shipname)
         {position = {-0.99,0,0.9}},
         {position = {-1.42,0,0.9}}
     })
+    Wait.time(||Log.drawButtons(log),3,1)
 end
 function layout_deck(deck,log)
     Log.SetDeckName(log, deck.getName())

@@ -175,6 +175,34 @@ function Log.drawButtons(log)
     log.createButton({['click_function'] = 'Action_SetCombat', ['label'] = 'Combat', ['scale'] = {0.18,0.18,0.18}, ['position'] = {0.6, 0.4, -1.5}, ['color'] = {1,0,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
     log.createButton({['click_function'] = 'Action_SetReloading', ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.0, 0.4, -1.5}, ['color'] = {1,0.5,0}, ['font_color'] = {1,1,1}, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
+    if log.getVar('initial_load') then
+        local can_reload = false
+        if not Log.isPortLoaded(log) then
+            can_reload=true
+            for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
+                local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{PORT_DIR,1,1}))
+                if relativeHitCast(log, offset, isAmmo) then
+                    --local pos = Log.relativePosition(log,offset)
+                    local buttonpos = Log.relativeButtonPosition(log,offset) --vector.add(vector.scale( offset,{-1/5.52,1/5.52,1/5.52}),{0,0.5,0})
+                    log.createButton({['color'] = AMMO_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Reload_Port_'..key:gsub(' ','_'), ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                end
+            end
+        end
+        if not Log.isStbdLoaded(log) then
+            can_reload=true
+            for key,offset in pairs(AMMO_SPAWN_OFFSETS) do
+                local offset = vector.add(AMMO_SPAWN_ROW,vector.scale(offset,{STBD_DIR,1,1}))
+                if relativeHitCast(log, offset, isAmmo) then
+                    --local pos = Log.relativePosition(log,offset)
+                    local buttonpos = Log.relativeButtonPosition(log,offset) --vector.add(vector.scale( offset,{-1/5.52,1,1/5.52}),{0,0.5,0})
+                    log.createButton({['color'] = AMMO_COLOR[key], ['tooltip'] = key, ['click_function'] = 'Action_Reload_Stbd_'..key:gsub(' ','_'), ['label'] = 'Reload', ['scale'] = {0.18,0.18,0.18}, ['position'] = buttonpos, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 900, ['height'] = 400, ['font_size'] = 250})
+                end
+            end
+        end
+        if not can_reload then
+            log.setVar('initial_load', nil)
+        end
+    end
     if current_phase=="reload" then
         if Log.canReloadPort(log) then
             --printToAll("Log.canReloadPort(log)")
