@@ -55,6 +55,8 @@ function onload(saveData)
             end
         end
         world_wind = save['wind'] or "Mid"
+        wind_speed.setVar('pending_velocity',save['pending_velocity'])
+        wind_speed.setVar('pending_shift',save['pending_shift'])
     end
     drawWindButtons(wind_speed)
     Spawner.onload(saveData)
@@ -74,6 +76,8 @@ function onSave()
         end
     end
     save['wind']=world_wind
+    save['pending_velocity'] = wind_speed.getVar('pending_velocity')
+    save['pending_shift'] = wind_speed.getVar('pending_shift')
     Spawner.onSave(save)
     save_string = JSON.encode(save)
     return save_string

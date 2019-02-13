@@ -501,6 +501,7 @@ function DecrementCountdown()
     if count_down == 0 then
         if Log.AllLogsReady() then
             if current_phase == "start" then
+                Action_CalculateWind(wind_speed)
                 Action_SetPlanning()
             elseif current_phase == "planning" then
                 Action_SetAction()
@@ -531,13 +532,15 @@ function Log.CheckAllForAutoReady()
 end
 function Log.CheckForAutoReady(log)
     if not Log.GetReady(log)  and not Log.GetDisabledAutoReady(log) then
+        ship = Log.GetShip(log)
         if current_phase=="start" then
+            if Ship.GetHasFire(item) or Ship.GetHasLeak(ship) or log.getVar('initial_load') then
+                return false
+            end
             --Check fire/water
             --wind ready button
-            return false
         elseif current_phase=="planning" then
             -- Called when you plan maneuver or plan action
-            ship = Log.GetShip(log)
             for i, offset in ipairs(ALL_ACTION_OFFSETS) do
                 if not Log.CheckSlotIsReserved(log, i) then
                     return false

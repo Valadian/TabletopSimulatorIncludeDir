@@ -49,16 +49,19 @@ function Action_CalculateWind(wind_speed)
         if rand<=3 then
             printToAll("Pending Shift cancelled",{0.5,0.5,0.5})
             wind_speed.setVar('pending_shift',nil)
+            wind_dir.call("drawButtons")
             --pending shift CANCELLED
         elseif rand>7 then
             if wind_speed.getVar('pending_shift') == 'CCW' then
                 printToAll("Wind Shifts Counter-Clockwise to the left!",{1,0.3,0.3})
-                wind_dir.call("Action_Left", wind_dir)
                 wind_speed.setVar('pending_shift',nil)
+                wind_dir.call("Action_Left", wind_dir)
+                wind_dir.call("drawButtons")
             else
                 printToAll("Wind Shifts Clockwise to the right!",{0.3,1,0.3})
-                wind_dir.call("Action_Right", wind_dir)
                 wind_speed.setVar('pending_shift',nil)
+                wind_dir.call("Action_Right", wind_dir)
+                wind_dir.call("drawButtons")
             end
         else
             if wind_speed.getVar('pending_shift')=="CCW" then
@@ -74,10 +77,12 @@ function Action_CalculateWind(wind_speed)
         if rand<=3 then
             wind_speed.setVar('pending_shift', "CCW")
             printToAll("Wind hints that a left Counter-Clockwise shift may be coming... ",{0.8,0.5,0.5})
+            wind_dir.call("drawButtons")
             --pending left Shift
         elseif rand>7 then
             wind_speed.setVar('pending_shift', "CW")
             printToAll("Wind hints that a right Clockwise shift may be coming... ",{0.5,0.8,0.5})
+            wind_dir.call("drawButtons")
             --pending right shift
         else
             printToAll("No wind direction change",{0.5,0.5,0.5})
