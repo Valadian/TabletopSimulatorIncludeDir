@@ -43,6 +43,8 @@ function Ship.onSave(item)
     data["broke_mast"] = Ship.GetBrokeMast(item)
     data["ready"] = Ship.GetReadyToMove(item)
     data["backing"] = Ship.GetIsBacking(item)
+    data["leak"] = Ship.GetHasLeak(item)
+    data["fire"] = Ship.GetHasFire(item)
     -- data["arc"] = Ship.GetArc(item) and Ship.GetArc(item).getGUID() or nil
     local def = Ship.GetShipDefinition(item)
     --data["rear_arc"] = def.rear_arc
@@ -61,6 +63,8 @@ function Ship.onLoad(item, data)
     Ship.SetBrokeMast(item,data["broke_mast"])
     Ship.SetReadyToMove(item,data["ready"])
     Ship.SetIsBacking(item,data["backing"])
+    Ship.SetHasLeak(item, data["leak"])
+    Ship.SetHasFire(item, data["fire"])
     -- if data["arc"] then
     --     Ship.SetArc(item,getObjectFromGUID(data["arc"]))
     -- end
@@ -76,6 +80,10 @@ function isShip(ship)
     return ship.tag == 'Figurine' and ship.name ~= '' and (ship.getDescription():match '.*(ship)')=="ship" -- and isInPlay(ship)
 end
 
+function Ship.SetHasLeak(ship, leak) ship.setVar('leak', leak) end
+function Ship.GetHasLeak(ship) return ship.getVar('leak') end
+function Ship.SetHasFire(ship, fire) ship.setVar('fire', fire) end
+function Ship.GetHasFire(ship) return ship.getVar('fire') end
 function Ship.SetWind(ship, wind) ship.setVar('wind', wind) end
 function Ship.GetWind(ship) return ship.getVar('wind') end
 function Ship.SetSpeed(ship, speed) ship.setVar('speed', speed) end

@@ -136,11 +136,16 @@ function Log.drawButtons(log)
         if Ship.GetSpeed(ship)=='Anchored' then color = {9/255, 24/255, 52/255}; font_color = WHITE else color = WHITE; font_color = BLACK end
         log.createButton({['click_function'] = 'Action_SetLog_Anchored', ['label'] = 'Struck', ['scale'] = {0.18,0.18,0.18}, ['position'] = {1.41, 0.4, 0.55}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1100, ['height'] = 600, ['font_size'] = 250})
 
-        if Ship.GetBrokeMast(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        if Ship.GetBrokeMast(ship) then color = {0.2, 0.2, 0.25}; font_color = WHITE else color = WHITE; font_color = BLACK end
         log.createButton({['click_function'] = 'Action_SetLog_BrokenMast', ['label'] = 'Broke Mast', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-2.15, 0.4, 0.1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1700, ['height'] = 600, ['font_size'] = 250})
 
         if Ship.GetAbackLastTurn(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
         log.createButton({['click_function'] = 'Action_Toggle_AbackLastTurn', ['label'] = 'Aback Last Turn', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-1.45, 0.4, 0.1}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 1900, ['height'] = 600, ['font_size'] = 250})
+
+        if Ship.GetHasFire(ship) then color = {1, 0, 0}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_Toggle_Fire', ['label'] = 'Fire', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-2.35, 0.4, 0.4}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 700, ['height'] = 600, ['font_size'] = 250})
+        if Ship.GetHasLeak(ship) then color = {0.5, 0.6, 1}; font_color = WHITE else color = WHITE; font_color = BLACK end
+        log.createButton({['click_function'] = 'Action_Toggle_Leak', ['label'] = 'Leak', ['scale'] = {0.18,0.18,0.18}, ['position'] = {-2.35, 0.4, 0.7}, ['color'] = color, ['font_color'] = font_color, ['function_owner'] = self, ['rotation'] =  {0, 0, 0}, ['width'] = 700, ['height'] = 600, ['font_size'] = 250})
 
         if Log.GetReady(log) then
             color = {0, 1, 0}; font_color = WHITE; tooltip = "Ship is READY!"
@@ -301,6 +306,16 @@ function Action_Disable_Action(log, player_color, index)
     else
         Log.SetDisabledAction(log, index, true)
     end
+    Log.drawButtons(log)
+end
+function Action_Toggle_Fire(log)
+    local ship = Log.GetShip(log)
+    Ship.SetHasFire(ship, not Ship.GetHasFire(ship))
+    Log.drawButtons(log)
+end
+function Action_Toggle_Leak(log)
+    local ship = Log.GetShip(log)
+    Ship.SetHasLeak(ship, not Ship.GetHasLeak(ship))
     Log.drawButtons(log)
 end
 function Action_Toggle_AbackLastTurn(log)
