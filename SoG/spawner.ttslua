@@ -20,6 +20,15 @@ ACTION_SOURCE_GUID = '009a16'
 AMMO_SOURCE_GUID = 'ba173b'
 currently_spawning = true
 
+RULES = {
+    ['Let the Men Drink!'] =       {['basic'] = "Once per game, if no ship within half ruler, during plan phase, remove 1 crew damage.",
+                                    ['advanced'] = "Once per game, if no ship within half ruler, during plan phase can plan action, remove 1 crew damage on reveal."},
+    ['Gunners Lacking Training'] = {['basic'] = "Ammo is placed faceup, in ammo box. Next turn, cannot reload ammo, instead Ammo box is flipped face down.",
+                                    ['advanced'] = "Reload Broadside Actions are delayed actions"},
+
+}
+
+
 #include ship_db
 function Spawner.onload(saveData)
     local save = JSON.decode(saveData)
