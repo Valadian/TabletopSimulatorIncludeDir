@@ -1,6 +1,7 @@
 SHIPS = {}
 SHIPS["British"] = {}
 SHIPS["French"] = {}
+SHIPS["Spanish"] = {}
 
 ShipDefinition = {
     Name = "",
@@ -52,7 +53,7 @@ LOG_BORDER = "http://i.imgur.com/QVS6UBX.png"
 --#include ships/h_bucentaure_tonnant
 #include ships/i_victory
 --#include ships/j_ardent_intrepid_inflexible
---#include ships/k_mahonesa
+#include ships/k_mahonesa
 --#include ships/l_constitution
 #include ships/n_artesien
 --#include ships/o_east_indiaman

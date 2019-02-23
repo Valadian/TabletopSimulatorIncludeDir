@@ -14,6 +14,7 @@ DECK_SOURCES = {['A'] = '5b2acc',
                 ['G'] = '2246a2',
                 ['H'] = '46b6d4',
                 ['I'] = '21773d',
+                ['K'] = '71eda4',
                 ['N'] = 'a694f7',
                 ['O'] = 'e6c066'}
 ACTION_SOURCE_GUID = '009a16'
@@ -28,7 +29,14 @@ RULES = {
 
 }
 
+single_map = "http://cloud-3.steamusercontent.com/ugc/931562390049734792/3C16C4AD8E6A96C00F69201FB108203C706A60D1/"
+single_map_pos = {20.20,0.32, -10.97}
 
+double_map = "https://i.imgur.com/sKG1D95.jpg"
+double_map_pos = {-30.21,0.32, -10.97}
+
+map_guid = '15f138'
+double_map_guid = 'd2450e'
 #include ship_db
 function Spawner.onload(saveData)
     local save = JSON.decode(saveData)
@@ -110,6 +118,22 @@ function Spawner.drawButtons()
         ['font_color'] = font_color
         })
     if currently_spawning then
+        spawner.createButton({
+            ['click_function'] = 'Action_LargeMap',
+            ['label'] = "Large Map",
+            ['position'] = {-7,0,-3},
+            ['width'] = 4000,
+            ['height'] = 1200,
+            ['font_size'] = 500
+            })
+        spawner.createButton({
+            ['click_function'] = 'Action_NormalMap',
+            ['label'] = "Normal Map",
+            ['position'] = {-7,0,3},
+            ['width'] = 4000,
+            ['height'] = 1200,
+            ['font_size'] = 500
+            })
         for i=1,12 do
             spawner.createButton({
                 ['click_function'] = 'Action_Spawn_'..i,--|obj| Action_Spawn(i),
@@ -123,6 +147,28 @@ function Spawner.drawButtons()
                 })
         end
     end
+end
+function Action_LargeMap()
+    map = getObjectFromGUID(map_guid)
+    Hide(map)
+    double_map = getObjectFromGUID(double_map_guid)
+    Show(double_map)
+end
+function Action_NormalMap()
+    map = getObjectFromGUID(map_guid)
+    Show(map)
+    double_map = getObjectFromGUID(double_map_guid)
+    Hide(double_map)
+end
+function Hide(map)
+    map.setScale({0.1,0.1,0.1})
+    local pos = map.getPosition()
+    map.setPosition({pos[1],-1,pos[3]})
+end
+function Show(map)
+    map.setScale({2.53,2.53,2.53})
+    local pos = map.getPosition()
+    map.setPosition({pos[1],0.32,pos[3]})
 end
 function Action_SetBasic() current_difficulty="Basic"; Spawner.drawButtons() end
 function Action_SetStandard() current_difficulty="Standard"; Spawner.drawButtons() end
@@ -160,6 +206,8 @@ function Action_Log_Spawn_Unite(log) SpawnShip(log, "French", "Unite") end
 --function Action_Log_Spawn_Concorde(log) SpawnShip(log, "French", "Concorde") end
 function Action_Log_Spawn_Alligator(log) SpawnShip(log, "French", "Alligator") end
 function Action_Log_Spawn_Le_Fortune(log) SpawnShip(log, "French", "Le Fortune") end
+function Action_Log_Spawn_Mahonesa(log) SpawnShip(log, "Spanish", "Mahonesa") end
+function Action_Log_Spawn_Ninfa(log) SpawnShip(log, "Spanish", "Ninfa") end
 function SpawnShip(log, faction, shipname)
     log.clearButtons()
     shipdef = SHIPS[faction][shipname]
@@ -327,6 +375,10 @@ end
 function Action_Log_Faction_French(log)
     log.clearButtons()
     ShowShipSelection(log, "French")
+end
+function Action_Log_Faction_Spanish(log)
+    log.clearButtons()
+    ShowShipSelection(log, "Spanish")
 end
 function ShowShipSelection(log, faction)
 
