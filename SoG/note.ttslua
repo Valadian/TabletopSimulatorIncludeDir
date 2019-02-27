@@ -8,7 +8,7 @@ function UpdateNote()
     end
     noteString = ""
     if num_logs==0 then
-        noteString="Spawn Ships, Select difficulty, then Toggle off Ship Spawning to begin the game."
+        noteString="Spawn Ships, Select difficulty, then Toggle off Ship Spawning to begin the game.\n\nTo reassign player zones to other colors, click F3 and right click zones."
     elseif current_phase == "start" then
         noteString="***Start Phase ***\nUpdate [A0A0FF]Wind[-]\nFire Spreads\nWater Leaks"
         for i,log in ipairs(getAllObjects()) do

@@ -35,8 +35,15 @@ single_map_pos = {20.20,0.32, -10.97}
 double_map = "https://i.imgur.com/sKG1D95.jpg"
 double_map_pos = {-30.21,0.32, -10.97}
 
+double_wide_map = "https://i.imgur.com/Ed3R9KW.jpg"
+
 map_guid = '15f138'
 double_map_guid = 'd2450e'
+double_wide_map_guid = '8cbfe5'
+
+trays = {'6255a2','ec863d','45d25e','a017d0','407013','950668', '01f959','24ca03','6500cc','2cf2e2','14b22e','cf62cb'}
+large_table_log_offset = 17
+large_map_active = false
 #include ship_db
 function Spawner.onload(saveData)
     local save = JSON.decode(saveData)
@@ -59,6 +66,10 @@ function Spawner.onload(saveData)
         for i, log_guid in pairs(save['spawner_log_guids']) do
             logs[i] = getObjectFromGUID(log_guid)
         end
+    end
+    map = getObjectFromGUID(double_wide_map_guid)
+    if map.getScale()[1]>1 then
+        large_map_active = true
     end
     Spawner.drawButtons()
 end
@@ -127,9 +138,17 @@ function Spawner.drawButtons()
             ['font_size'] = 500
             })
         spawner.createButton({
+            ['click_function'] = 'Action_LongMap',
+            ['label'] = "Long Map",
+            ['position'] = {-7,0,-6},
+            ['width'] = 4000,
+            ['height'] = 1200,
+            ['font_size'] = 500
+            })
+        spawner.createButton({
             ['click_function'] = 'Action_NormalMap',
             ['label'] = "Normal Map",
-            ['position'] = {-7,0,3},
+            ['position'] = {-7,0,-9},
             ['width'] = 4000,
             ['height'] = 1200,
             ['font_size'] = 500
@@ -149,24 +168,67 @@ function Spawner.drawButtons()
     end
 end
 function Action_LargeMap()
-    map = getObjectFromGUID(map_guid)
-    Hide(map)
-    double_map = getObjectFromGUID(double_map_guid)
-    Show(double_map)
+    large_map_active = true
+    Hide(getObjectFromGUID(map_guid))
+    Show(getObjectFromGUID(double_wide_map_guid))
+    Hide(getObjectFromGUID(double_map_guid))
+    broadcastToAll("Use Gizmo (f8) to move hidden zones down above wooden trays!")
+    Spawner.drawButtons()
+    for _,guid in ipairs(trays) do
+        obj = getObjectFromGUID(guid)
+        pos = obj.getPosition()
+        if pos[3]>55 and pos[3]<61 then
+            obj.setPosition({pos[1],pos[2],pos[3]+17})
+        elseif pos[3]<-80 and pos[3]>-95 then
+            obj.setPosition({pos[1],pos[2],pos[3]-17})
+        end
+    end
+end
+function Action_LongMap()
+    large_map_active = false
+    Hide(getObjectFromGUID(map_guid))
+    Hide(getObjectFromGUID(double_wide_map_guid))
+    Show(getObjectFromGUID(double_map_guid))
+    Spawner.drawButtons()
+    for _,guid in ipairs(trays) do
+        obj = getObjectFromGUID(guid)
+        pos = obj.getPosition()
+        if pos[3]>65 then
+            obj.setPosition({pos[1],pos[2],pos[3]-17})
+        elseif pos[3]<-85then
+            obj.setPosition({pos[1],pos[2],pos[3]+17})
+        end
+    end
 end
 function Action_NormalMap()
-    map = getObjectFromGUID(map_guid)
-    Show(map)
-    double_map = getObjectFromGUID(double_map_guid)
-    Hide(double_map)
+    large_map_active = false
+    Show(getObjectFromGUID(map_guid))
+    Hide(getObjectFromGUID(double_wide_map_guid))
+    Hide(getObjectFromGUID(double_map_guid))
+    Spawner.drawButtons()
+    for _,guid in ipairs(trays) do
+        obj = getObjectFromGUID(guid)
+        pos = obj.getPosition()
+        if pos[3]>65 then
+            obj.setPosition({pos[1],pos[2],pos[3]-17})
+        elseif pos[3]<-85then
+            obj.setPosition({pos[1],pos[2],pos[3]+17})
+        end
+    end
 end
 function Hide(map)
-    map.setScale({0.1,0.1,0.1})
+    -- if map.getScale()[1]>1 then
+    --     map.setScale(vector.prod(map.getScale(),0.1))
+    -- end
+    --map.setScale({0.1,0.1,0.1})
     local pos = map.getPosition()
     map.setPosition({pos[1],-1,pos[3]})
 end
 function Show(map)
-    map.setScale({2.53,2.53,2.53})
+    if map.getScale()[1]<1 then
+        map.setScale(vector.prod(map.getScale(),10))
+    end
+    --map.setScale({2.53,2.53,2.53})
     local pos = map.getPosition()
     map.setPosition({pos[1],0.32,pos[3]})
 end
@@ -315,7 +377,11 @@ function Action_ToggleSpawning()
     Spawner.drawButtons()
 end
 function CalculateButtonOffset(i)
-    return {LOG_COLS_X[math.imod(i,6)], 0, BUTTON_ROW_Z[math.floor((i-1)/6)+1]}
+    z = BUTTON_ROW_Z[math.floor((i-1)/6)+1]
+    if large_map_active then
+        z = z*1.29
+    end
+    return {LOG_COLS_X[math.imod(i,6)], 0, z}
 end
 function CalculateButtonRotation(i)
     return {0,LOG_ROT[math.floor((i-1)/6+1)],0}
