@@ -1,0 +1,504 @@
+
+
+<Defaults>
+    <Button color="black" textColor="white" />
+    <Button class="tab" onClick="selectXwingAITab" height="40" width="80" color="#303030"/>
+    <Panel class="buttonPanel" color="gray" alignment="UpperLeft" preferredHeight="330" showAnimation="None" hideAnimation="None" />
+    <Text color="white" />
+</Defaults>
+
+<VerticalLayout color="black"
+    id="xwingPanel"
+    height="400"
+    width="400"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    rectAlignment="UpperRight"
+    offsetXY="0 -160"
+    >
+    <Text preferredHeight="30">X-Wing AI</Text>
+    <HorizontalLayout preferredHeight="40">
+        <Button text="Round Tracker"  id="roundTracker"  class="tab" />
+        <Button text="Ship Spawner"  id="shipSpawner"  class="tab" />
+    </HorizontalLayout>
+    <Panel id="roundTrackerPanel" class="buttonPanel" active="true">
+        <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
+        <VerticalLayout>
+            <Panel id="phase_panel" color="pink" preferredHeight="15">
+                <Text id="phase_text" color="black" fontStyle="bold" fontSize="20">Planning Phase</Text>
+            </Panel>
+            <Panel preferredHeight="5" color="black">
+                <ProgressBar id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
+                <Text id="turn_text">Turn 6/10</Text>
+            </Panel>
+            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="200">
+                <Row id="ship1">
+                    <Cell>
+                        <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship1indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship1ps_panel" color="#000000">
+                            <Text id="ship1ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship1icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship1name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Image id="ship1move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Text id="ship1move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship1status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+                <Row id="ship2">
+                    <Cell>
+                        <Panel id="ship2indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship2indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship2ps_panel" color="black">
+                            <Text id="ship2ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship2icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship2name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Image id="ship2move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Text id="ship2move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship2status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+                <Row id="ship3">
+                    <Cell>
+                        <Panel id="ship3indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship3indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship3ps_panel" color="#000000">
+                            <Text id="ship3ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship3icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship3name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Image id="ship3move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Text id="ship3move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship3status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+                <Row id="ship4">
+                    <Cell>
+                        <Panel id="ship4indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship4indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship4ps_panel" color="black">
+                            <Text id="ship4ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship4icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship4name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Image id="ship4move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Text id="ship4move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship4status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship5">
+                    <Cell>
+                        <Panel id="ship5indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship5indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship5ps_panel" color="#000000">
+                            <Text id="ship5ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship5icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship5name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Image id="ship5move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Text id="ship5move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship5status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship6">
+                    <Cell>
+                        <Panel id="ship6indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship6indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship6ps_panel" color="black">
+                            <Text id="ship6ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship6icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship6name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Image id="ship6move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Text id="ship6move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship6status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship7">
+                    <Cell>
+                        <Panel id="ship7indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship7indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship7ps_panel" color="#000000">
+                            <Text id="ship7ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship7icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship7name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Image id="ship7move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Text id="ship7move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship7status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship8">
+                    <Cell>
+                        <Panel id="ship8indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship8indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship8ps_panel" color="black">
+                            <Text id="ship8ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship8icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship8name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Image id="ship8move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Text id="ship8move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship8status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship9">
+                    <Cell>
+                        <Panel id="ship9indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship9indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship9ps_panel" color="#000000">
+                            <Text id="ship9ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship9icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship9name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Image id="ship9move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000" >
+                            <Text id="ship9move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Text id="ship9status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+
+                <Row id="ship10">
+                    <Cell>
+                        <Panel id="ship10indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                            <Text id="ship10indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text>PS</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel id="ship10ps_panel" color="black">
+                            <Text id="ship10ps_text" color="white" fontStyle="bold">2</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship10icon_image" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship10name_text" >Ship Placeholder</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Image id="ship10move_image" image="_S" color="white" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black" >
+                            <Text id="ship10move_text" color="white">3</Text>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Text id="ship10status_text" color="red" fontStyle="bold"></Text>
+                        </Panel>
+                    </Cell>
+                </Row>
+            </TableLayout>
+        </VerticalLayout>
+    </Panel>
+    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false">
+        <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
+        <Text>Ship Spawner</Text>
+    </Panel>
+</VerticalLayout>
+
+<!-- <Panel color="black"
+    id="rollerLayout"
+    height="280"
+    width="400"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    rectAlignment="UpperLeft"
+    offsetXY="300 -80"
+    >
+    <TableLayout>
+        <Row preferredHeight="40"><Cell>
+            <Text>X-Wing AI</Text>
+        </Cell></Row>
+        <Row preferredHeight="40"><Cell>
+            <HorizontalLayout height="40">
+                <Button text="Round Tracker"  id="roundTrackerTab"  class="tab" height="40" ></Button>
+                <Button text="Ship Spawner"  id="shipSpawnerTab"  class="tab" height="40" ></Button>
+            </HorizontalLayout>
+        </Cell></Row>
+        <Row preferredHeight="400"><Cell>
+            <Panel id="roundTrackerTab"
+                height="240"
+                width="400"
+                active="true">
+                    Round Tracker
+            </Panel>
+            <Panel id="shipSpawnerTab"
+                height="240"
+                width="400"
+                active="false">
+                    Ship Spawner
+            </Panel>
+        </Cell></Row>
+    </TableLayout>
+</Panel> -->

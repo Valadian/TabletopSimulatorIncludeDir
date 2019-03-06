@@ -172,7 +172,10 @@ ModelDB.data = {
                 meshes = {'http://cloud-3.steamusercontent.com/ugc/830199836523150434/792F09608618B0AC2FF114BAA88567BA214B4A62/'} },
             ['Scurrg H-6 Bomber Rebel'] = {
                 arcType = 'P',
-                meshes = {'http://cloud-3.steamusercontent.com/ugc/856096098866548845/FA5948D17379237DF015D8EE177A7F61B2452595/'} }
+                meshes = {'http://cloud-3.steamusercontent.com/ugc/856096098866548845/FA5948D17379237DF015D8EE177A7F61B2452595/'} },
+            ['Sheathipede-Class Shuttle'] = {
+                arcType = 'R',
+                meshes = {'https://drive.google.com/uc?export=download&id=12r1p78FIOiMXnpPuUONjIJ63pMKHTrWo'} },
         },
         ['large'] = {
             ['VCX-100'] = {
@@ -186,7 +189,15 @@ ModelDB.data = {
                 meshes = {'https://paste.ee/r/Ff0vZ', 'http://cloud-3.steamusercontent.com/ugc/82591194029079241/206F408212849DCBB3E1934A623FD7A8844AAE47/'} },
             ['U-Wing'] = {
                 arcType = 'P',
-                meshes = {'https://paste.ee/r/D4Jjb', 'http://cloud-3.steamusercontent.com/ugc/82591194029075014/E561AA8493F86562F48EE85AB0C02F9C4F54D1B3/', 'http://cloud-3.steamusercontent.com/ugc/89352927638740227/F17424FAEF4C4429CE544FEF03DAE0E7EA2A672E/'} }
+                meshes = {'https://paste.ee/r/D4Jjb', 'http://cloud-3.steamusercontent.com/ugc/82591194029075014/E561AA8493F86562F48EE85AB0C02F9C4F54D1B3/', 'http://cloud-3.steamusercontent.com/ugc/89352927638740227/F17424FAEF4C4429CE544FEF03DAE0E7EA2A672E/'} },
+            ['B/SF-17 Bomber'] = {
+                arcType = 'T',
+                meshes = {'https://drive.google.com/uc?export=download&id=199mquPHcEJgHx1UFp8wHVSXEeWpW4wxG'} },
+        },
+        ['huge'] = {
+            ['Rebel Transport'] = {
+                arcType = '-',
+                meshes = {'https://paste.ee/r/h5ND1'} },
         }
     },
 
@@ -221,7 +232,10 @@ ModelDB.data = {
                 meshes = {'https://paste.ee/r/GmKW8', 'http://cloud-3.steamusercontent.com/ugc/82591194029065993/9838180A02D9960D4DE949001BBFD05452DA90D2/', 'http://cloud-3.steamusercontent.com/ugc/89352769138031546/C70B323524602140897D8E195C19522DB450A7E0/'} },
             ['Scurrg H-6 Bomber Scum'] = {
                 arcType = 'P',
-                meshes = {'http://cloud-3.steamusercontent.com/ugc/830199511120337844/FA5948D17379237DF015D8EE177A7F61B2452595/'} }
+                meshes = {'http://cloud-3.steamusercontent.com/ugc/830199511120337844/FA5948D17379237DF015D8EE177A7F61B2452595/'} },
+            ['M12-L Kimogila Fighter'] = {
+                arcType = 'B',
+                meshes = {'https://drive.google.com/uc?export=download&id=1-h__m8DbhyN5hFKxU1DEx_yA8KFbIbsX'} },
         },
         ['large'] = {
             ['JumpMaster 5000'] = {
@@ -283,6 +297,12 @@ ModelDB.data = {
             ['Alpha-Class Star Wing'] = {
                 arcType = 'P',
                 meshes = {'http://cloud-3.steamusercontent.com/ugc/856107339832208499/B487E10204BD99C37E225603E914169A90B352AC/'} },
+            ['TIE Silencer'] = {
+                arcType = 'P',
+                meshes = {'https://drive.google.com/uc?export=download&id=1V-uML2bUYLOHSCP1bb-ESe5zuVK5bUMN'} },
+            ['TIE Reaper'] = {
+                arcType = 'P',
+                meshes = {'http://cloud-3.steamusercontent.com/ugc/946202126804766912/152452EBA77BF9C8395B4297ECCD064A2827CAF6/'} },
             ['Turbolaser'] = {
                 arcType = 'P4',
                 meshes = {'https://paste.ee/p/FyMOf'}}
@@ -303,6 +323,11 @@ ModelDB.data = {
             ['Generic'] = {
                 arcType = 'P',
                 meshes = {'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/'} }
+        },
+        ['huge'] = {
+            ['Imperial Assault Carrier'] = {
+                arcType = '-',
+                meshes = {'https://paste.ee/r/lXP3b'} },
         }
     }
 }

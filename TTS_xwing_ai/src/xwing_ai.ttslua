@@ -318,8 +318,8 @@ function check_ai(guid, move)
             printToAll('Position '..ship.getPosition()[1].." "..ship.getPosition()[2].." "..ship.getPosition()[3],{0,1,0})
             setpending(guid)
         elseif move == "ai next" then
+            local ship = getObjectFromGUID(guid)
             if currentphase == MoveSort then
-                local ship = getObjectFromGUID(guid)
                 GoToNextMove(ship)
             elseif currentphase == AttackSort then
                 Action_AiAttack(ship)
@@ -396,7 +396,7 @@ function auto(guid)
             printToAll(ai.getName().." declares target as [00FF00][u]" .. tgt.getName().."[/u][-]",{0,1,0})
             local aiPos = ai.getPosition()
             local tgtPos = tgt.getPosition()
-            local aiForward = vector.forward(tgt)
+            local aiForward = vector.forward(ai) --changed from tgt to ai
             local corners = findCorners(tgt)
             -- printToAll("AI Pos: "..vector.tostring(aiPos),{1,1,1})
             minAngle = 999999
@@ -653,10 +653,10 @@ function getMove(type, i_dir,range,far, flee)
     else
         if chooseClosing then
             move = def.closeMoves[i_dir][i_roll]
-            print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." close")
+            --print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." close")
         else
             move = def.farMoves[i_dir][i_roll]
-            print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." far")
+            --print("iDir: "..tostring(i_dir).." iRol: "..tostring(i_roll).." far")
         end
     end
 
@@ -864,10 +864,12 @@ function UpdateNote(sort, next,complete)
         ai_string = ai_string.."\n".."[0080FF][b][Complete][/b][-]"
     end
     setNotes(ai_string)
+    updateStatusUI(next, complete)
 end
 activation_started = false
 function UpdatePlanningNote()
     if currentphase == PlanningSort then
+        AiUiPlanningPollingUpdate()
         local ai_string = "*** [FF80FF]Planning Phase - Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()).."[-] ***"
         local total = 0
         local ready = 0
@@ -944,17 +946,22 @@ function ListAis(sort)
         prettyPrint(ship)
     end
 end
-function prettyString(ship,withtarget)
-    local skill_colors = {"666666","FF30FF","8030FF","3030FF","3080FF","30FFFF","30FF80","30FF30","80FF30","FFFF30","FF3030" }
-    --local type_colors = {TIE="666666",TFO="333333",INT="600000",ADV="c1440e",BOM="00FFFF",DEF="660066",PHA="2C75FF",DEC="808080",SHU="A0A0A0"}
-    local isAi = isAi(ship)
-    local isFriendly = isFriendlyAI(ship)
+local skill_colors = {"666666","FF30FF","8030FF","3030FF","3080FF","30FFFF","30FF80","30FF30","80FF30","FFFF30","FF3030" }
+function getSkillColor(ship)
     local skill = tostring(getSkill(ship))
     local skill_color
     if skill~="nil" then
         skill_color = skill_colors[tonumber(skill)+1]
     end
     if skill_color==nil then skill_color="000000" end
+    return skill_color
+end
+function prettyString(ship,withtarget)
+    --local type_colors = {TIE="666666",TFO="333333",INT="600000",ADV="c1440e",BOM="00FFFF",DEF="660066",PHA="2C75FF",DEC="808080",SHU="A0A0A0"}
+    local isAi = isAi(ship)
+    local isFriendly = isFriendlyAI(ship)
+    local skill = tostring(getSkill(ship))
+    local skill_color = getSkillColor(ship)
     if isAi then
         local type = tostring(getAiType(ship))
         local def = AI_DEFS[campaign][type]

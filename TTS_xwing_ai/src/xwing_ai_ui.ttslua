@@ -1,48 +1,179 @@
 --#include ../../util/table
-function selectXwingAITab(player, _, idValue)
-    local xml = UI.getXmlTable()
-    for i=1,#xml do
-        if(xml[i].attributes.id == "xwingPanel") then
-            --xml[i].attributes.height = "70"
-            --table.removeKey(xml[i].attributes, "offsetXY")
-            for j=1,#(xml[i].children) do
-                if(xml[i].children[j].attributes.class == "buttonPanel") then
-                    --if(xml[i].children[j].attributes.active=="true") then
-                    UI.hide(xml[i].children[j].attributes.id)
-                        --xml[i].children[j].attributes.active = "false"
-                    --end
-                end
+
+function AiUiPlanningPollingUpdate()
+    if currentphase == PlanningSort then
+        updateStatusUI()
+    end
+end
+function updateStatusUI(next, complete)
+    local phasename = {}
+    phasename[PlanningSort] = "Planning"
+    phasename[MoveSort] = "Activation"
+    phasename[AttackSort] = "Combat"
+    local phasecolor = {}
+    phasecolor[PlanningSort] = "FF80FF"
+    phasecolor[MoveSort] = "00FF80"
+    phasecolor[AttackSort] = "FF8000"
+    UI.setValue("turn_text","Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()))
+    UI.setAttribute("turn_progressbar", "percentage", math.min(100,100*getTurnNumber()/getTotalTurns()))
+    if getTurnNumber()>=getTotalTurns() then
+        UI.setAttribute("turn_progressbar", "fillImageColor", "#800000")
+    else
+        UI.setAttribute("turn_progressbar", "fillImageColor", "#008000")
+    end
+    if currentphase~=nil then
+        UI.setAttribute("phase_panel","color","#"..phasecolor[currentphase])
+        UI.setValue("phase_text",phasename[currentphase].." Phase")
+    else
+        UI.setAttribute("phase_panel","color","grey")
+        UI.setValue("phase_text","Setup")
+    end
+    if currentphase == PlanningSort then
+        index = 1
+        for i,ship in ipairs(getAllObjects()) do
+            if ship and isShip(ship) and isInPlay(ship) and not isAi(ship) then
+                updateShipRow(ship,index)
+                index=index+1
+            end
+        end
+        for j=index,20 do
+            local istr = tostring(j)
+            UI.hide("ship"..istr)
+        end
+    elseif currentphase == AttackSort or currentphase == MoveSort then
+        local ais = {}
+        local showPlayers = true
+        for i,ship in ipairs(getAllObjects()) do
+            if isInPlay(ship) and (isAi(ship) or (isShip(ship)  and showPlayers)) and getSkill(ship)~=nil then
+                table.insert(ais, ship)
+            end
+        end -- [end loop for all ships]
+        table.sort(ais,currentphase)
+        index = 1
+        local first = true
+        for i,ship in ipairs(ais) do
+            local current = next == nil and not complete and  first or next == ship.getGUID()
+            first = false
+            updateShipRow(ship,index,current)
+            index=index+1
+        end
+        for j=index,20 do
+            local istr = tostring(j)
+            UI.hide("ship"..istr)
+        end
+    else
+        for j=1,20 do
+            local istr = tostring(j)
+            UI.hide("ship"..istr)
+        end
+    end
+end
+function updateShipRow(ship, index, active)
+    local istr = tostring(index)
+    local modeldb = Global.call( 'API_ModelDB_GetData',ship)
+    local type = modeldb.type
+    --local type = tostring(getAiType(ship))
+    local def = findDefByName(campaign, type)
+    local type_color = def.typeColor
+    local skill = tostring(getSkill(ship))
+    local skill_color = getSkillColor(ship)
+    UI.setAttribute("ship"..istr.."ps_text", "color", "#"..skill_color)
+    UI.setValue("ship"..istr.."ps_text", skill)
+    UI.setAttribute("ship"..istr.."icon_image", "image", type)
+    UI.setAttribute("ship"..istr.."icon_image", "color", '#'..type_color)
+    color = ship.getName():match "%[(%w%w%w%w%w%w)]"
+    if color then
+        UI.setAttribute("ship"..istr.."name_text", "color", "#"..color)
+    else
+        UI.setAttribute("ship"..istr.."name_text", "color", "white")
+    end
+    UI.setValue("ship"..istr.."name_text", ship.getName():gsub("%[.-%]",""))
+
+    local found = ship.getVar('hasDial')
+    if found then
+        local maneuver = ship.getVar('Maneuver'):gsub("e","l")
+        local image = ""
+        local speed = maneuver:match '%d'
+        if maneuver=="s0" then
+            image = "_S0"
+        else
+            local prefix = maneuver:match '^%l+'
+            local suffix = maneuver:match '%l+$' or ""
+            image = "_"..string.upper(prefix)..string.upper(suffix)
+        end
+        if def.swerves[maneuver.."*"]!=nil then
+            UI.setAttribute("ship"..istr.."move_image", "color",'red')
+            UI.setAttribute("ship"..istr.."move_text", "color",'red')
+        else
+            UI.setAttribute("ship"..istr.."move_image", "color",'white')
+            UI.setAttribute("ship"..istr.."move_text", "color",'white')
+        end
+        UI.setAttribute("ship"..istr.."move_image", "image",image)
+        UI.setValue("ship"..istr.."move_text", speed)
+    else
+        UI.setAttribute("ship"..istr.."move_image", "image","BLANK")
+        UI.setValue("ship"..istr.."move_text", "")
+    end
+
+    if currentphase==PlanningSort then
+        if found then
+            UI.setAttribute("ship"..istr.."status_text", "color", "green")
+            UI.setValue("ship"..istr.."status_text", "READY")
+        else
+            UI.setAttribute("ship"..istr.."status_text", "color", "red")
+            UI.setValue("ship"..istr.."status_text", "WAITING")
+        end
+    elseif currentphase==AttackSort or currentphase==MoveSort then
+        UI.setValue("ship"..istr.."status_text", "")
+        if isAi(ship) then
+        UI.setAttribute("ship"..istr.."move_image", "color",'red')
+            if aitargets[ship.getGUID()] then
+                UI.setAttribute("ship"..istr.."move_image", "image","LOCK")
+                local nocolor = aitargets[ship.getGUID()].getName():gsub("%[.-%]","")
+                local short = string.sub(nocolor, 1,8)
+                local tgtcolor = aitargets[ship.getGUID()].getName():match "%[(%w%w%w%w%w%w)]" or "FFFFFF"
+                UI.setValue("ship"..istr.."status_text", short)
+                UI.setAttribute("ship"..istr.."status_text", "color", "#"..tgtcolor)
+            else
+                UI.setValue("ship"..istr.."status_text", "")
+                UI.setAttribute("ship"..istr.."move_image", "color","black")
             end
         end
     end
-    --UI.setXmlTable(xml)
-    --UI.setAttributes("buttonPanel", "active", false)
-    -- Wait.frames(function()
-    --     UI.setAttribute("xwingPanel", "height", 400)
-    --     UI.setAttribute(idValue.."Panel", "active", true)
-    -- end, 1)
-    UI.show(idValue.."Panel")
+    if active then
+        local phasecolor = {}
+        phasecolor[PlanningSort] = "FF80FF"
+        phasecolor[MoveSort] = "00FF80"
+        phasecolor[AttackSort] = "FF8000"
+        --outline
+        --UI.setAttribute("ship"..istr.."indicator_panel", "outlineSize", "2 0")
+        UI.setAttribute("ship"..istr.."indicator_panel", "outline", "#"..phasecolor[currentphase])
+    else
+        --UI.setAttribute("ship"..istr.."indicator_panel", "outlineSize", "0 0")
+        UI.setAttribute("ship"..istr.."indicator_panel", "outline", "#000000")
+    end
+    UI.show("ship"..istr)
 end
 function xwing_ai_ui_onload()
     local assets = {
         {
-            name = "AGGR",
+            name = "Aggressor",--AGGR",
             url = "https://i.imgur.com/2P9BOLq.png"
         },
         {
-            name = "ARC",
+            name = "ARC-170",--ARC",
             url = "https://i.imgur.com/ddXQAbm.png"
         },
         {
-            name = "AS",
+            name = "Attack Shuttle",--AS",
             url = "https://i.imgur.com/hwYblXp.png"
         },
         {
-            name = "AUZ",
+            name = "Auzituck Gunship", --AUZ",
             url = "https://i.imgur.com/IgYyoQE.png"
         },
         {
-            name = "AWNG",
+            name = "A-Wing", --AWNG",
             url = "https://i.imgur.com/xBSePLj.png"
         },
         {
@@ -62,31 +193,39 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/B0TyaDm.png"
         },
         {
-            name = "BSF",
+            name = "B/SF-17 Bomber", --BSF",
             url = "https://i.imgur.com/tJHWQrG.png"
         },
         {
-            name = "BWNG",
+            name = "B-Wing", --BWNG",
             url = "https://i.imgur.com/i0WD507.png"
         },
         {
-            name = "DEC",
+            name = "VT-49 Decimator", --DEC",
             url = "https://i.imgur.com/7hbk5Cz.png"
         },
         {
-            name = "EWNG",
+            name = "E-Wing", --EWNG",
             url = "https://i.imgur.com/DrjNhKV.png"
         },
         {
-            name = "FIRE",
+            name = "Firespray-31 Imperial", --FIRE",
             url = "https://i.imgur.com/BvCim6a.png"
         },
         {
-            name = "G1A",
+            name = "Firespray-31 Scum", --FIRE",
+            url = "https://i.imgur.com/BvCim6a.png"
+        },
+        {
+            name = "G-1A StarFighter", --G1A",
             url = "https://i.imgur.com/TP97KUg.png"
         },
         {
-            name = "HWK",
+            name = "HWK-290 Rebel", --HWK",
+            url = "https://i.imgur.com/YEqu5hY.png"
+        },
+        {
+            name = "HWK-290 Scum", --HWK",
             url = "https://i.imgur.com/YEqu5hY.png"
         },
         {
@@ -94,7 +233,7 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/AiTEfUY.png"
         },
         {
-            name = "JMP",
+            name = "JumpMaster 5000", --JMP",
             url = "https://i.imgur.com/BvuPpI7.png"
         },
         {
@@ -102,35 +241,35 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/JCZgTin.png"
         },
         {
-            name = "KIH",
+            name = "Kihraxz Fighter", --KIH",
             url = "https://i.imgur.com/cEnDdA6.png"
         },
         {
-            name = "KWNG",
+            name = "K-Wing", --KWNG",
             url = "https://i.imgur.com/7AuBhbi.png"
         },
         {
-            name = "SHU", --Lambda
+            name = "Lambda-Class Shuttle", --Lambda
             url = "https://i.imgur.com/e2Vz4Cz.png"
         },
         {
-            name = "LAN",
+            name = "Lancer-Class Pursuit Craft",
             url = "https://i.imgur.com/gZi1ToA.png"
         },
         {
-            name = "M3A",
+            name = "M3-A Interceptor",
             url = "https://i.imgur.com/kT5ngxA.png"
         },
         {
-            name = "PALL",--Pallas
+            name = "Imperial Assault Carrier",--Pallas
             url = "https://i.imgur.com/3Wdp1Z2.png"
         },
         {
-            name = "PROT",
+            name = "Protectorate Starfighter",
             url = "https://i.imgur.com/QW4CxRl.png"
         },
         {
-            name = "PUN",
+            name = "TIE Punisher",
             url = "https://i.imgur.com/Q1y8qgR.png"
         },
         {
@@ -150,51 +289,55 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/taQ9mph.png"
         },
         {
-            name = "SCU", --Scurrg
+            name = "Scurrg H-6 Bomber Rebel", --Scurrg
             url = "https://i.imgur.com/wXXbWFD.png"
         },
         {
-            name = "STAR",
+            name = "Scurrg H-6 Bomber Scum", --Scurrg
+            url = "https://i.imgur.com/wXXbWFD.png"
+        },
+        {
+            name = "Alpha-Class Star Wing",
             url = "https://i.imgur.com/mIDHF6l.png"
         },
         {
-            name = "T70",
+            name = "T-70 X-Wing",
             url = "https://i.imgur.com/IqUjKc3.png"
         },
         {
-            name = "TAP",
+            name = "TIE Adv. Prototype",
             url = "https://i.imgur.com/Ml1RnRW.png"
         },
         {
-            name = "ADV",
+            name = "TIE Advanced",
             url = "https://i.imgur.com/uhxMHMc.png"
         },
         {
-            name = "BOM",
+            name = "TIE Bomber",
             url = "https://i.imgur.com/XUL8jnk.png"
         },
         {
-            name = "DEF",
+            name = "TIE Defender",
             url = "https://i.imgur.com/HmT5l4j.png"
         },
         {
-            name = "TIE",
+            name = "TIE Fighter",
             url = "https://i.imgur.com/Ht6XW0n.png"
         },
         {
-            name = "TFO",
+            name = "TIE/fo Fighter",
             url = "https://i.imgur.com/cQ8w9nN.png"
         },
         {
-            name = "INT",
+            name = "TIE Interceptor",
             url = "https://i.imgur.com/5aTA6CO.png"
         },
         {
-            name = "PHA",
+            name = "TIE Phantom",
             url = "https://i.imgur.com/AD23sTo.png"
         },
         {
-            name = "TSF",
+            name = "TIE/sf Fighter",
             url = "https://i.imgur.com/C7Ta7ft.png"
         },
         {
@@ -210,7 +353,7 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/LU1x5vB.png"
         },
         {
-            name = "TRAN", --Transport
+            name = "Rebel Transport", --Transport
             url = "https://i.imgur.com/HoF0HHk.png"
         },
         {
@@ -218,41 +361,58 @@ function xwing_ai_ui_onload()
             url = "https://i.imgur.com/bN08BBo.png"
         },
         {
-            name = "UPS",--Upsilon
+            name = "Upsilon Class Shuttle",--Upsilon
             url = "https://i.imgur.com/6uHL81A.png"
         },
         {
-            name = "UWNG",
+            name = "U-Wing",
             url = "https://i.imgur.com/jdsclHD.png"
         },
         {
-            name = "VCX",
+            name = "VCX-100",
             url = "https://i.imgur.com/Rljq1cl.png"
         },
         {
-            name = "XWNG",
+            name = "X-Wing",
             url = "https://i.imgur.com/scbWpp9.png"
         },
         {
-            name = "YT13",
+            name = "YT-1300",
             url = "https://i.imgur.com/dkgLCG5.png"
         },
         {
-            name = "YT24",
+            name = "YT-2400",
             url = "https://i.imgur.com/tYgL6Sx.png"
         },
         {
-            name = "YV6",
+            name = "YV-666",
             url = "https://i.imgur.com/A4AnXtP.png"
         },
         {
-            name = "YWNG",
+            name = "Y-Wing Rebel",
             url = "https://i.imgur.com/ofwDCm4.png"
         },
         {
-            name = "Z95",
+            name = "Y-Wing Scum",
+            url = "https://i.imgur.com/ofwDCm4.png"
+        },
+        {
+            name = "Z-95 Headhunter Rebel",
             url = "https://i.imgur.com/XfnFvJM.png"
+        },
+        {
+            name = "Z-95 Headhunter Scum",
+            url = "https://i.imgur.com/XfnFvJM.png"
+        },
+        {
+            name = "BLANK",
+            url = "https://i.imgur.com/2ZqWgrf.png"
+        },
+        {
+            name = "LOCK",
+            url = "https://i.imgur.com/fymCEVz.png"
         }
     }
     UI.setCustomAssets(assets)
+    updateStatusUI()
 end
