@@ -25,3 +25,8 @@ function selectXwingAITab(player, _, idValue)
     ai = getObjectFromGUID('030220')
     ai.call('updateStatusUI')
 end
+
+function setPhase(player, _, idValue)
+    ai = getObjectFromGUID('030220')
+    ai.call("Action_"..idValue)
+end

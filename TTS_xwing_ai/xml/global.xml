@@ -3,38 +3,45 @@
 <Defaults>
     <Button color="black" textColor="white" />
     <Button class="tab" onClick="selectXwingAITab" height="40" width="80" color="#303030"/>
-    <Panel class="buttonPanel" color="gray" alignment="UpperLeft" preferredHeight="330" showAnimation="None" hideAnimation="None" />
+    <Panel class="buttonPanel" color="gray" alignment="UpperLeft" showAnimation="None" hideAnimation="None" />
     <Text color="white" />
+    <Button class="phase" color="#303030" onClick="setPhase" />
+
 </Defaults>
 
 <VerticalLayout color="black"
     id="xwingPanel"
-    height="400"
+    height="600"
     width="400"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
     offsetXY="0 -160"
     >
-    <Text preferredHeight="30">X-Wing AI</Text>
-    <HorizontalLayout preferredHeight="40">
+    <Text>X-Wing AI</Text>
+    <HorizontalLayout>
         <Button text="Round Tracker"  id="roundTracker"  class="tab" />
         <Button text="Ship Spawner"  id="shipSpawner"  class="tab" />
     </HorizontalLayout>
-    <Panel id="roundTrackerPanel" class="buttonPanel" active="true">
+    <Panel id="roundTrackerPanel" class="buttonPanel" active="true" preferredHeight="500">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
+        <Panel offsetXY="0 200">
+            <Text id="background_text" color="black" fontSize="18">
+Click Plan to start
+            </Text>
+        </Panel>
         <VerticalLayout>
-            <Panel id="phase_panel" color="pink" preferredHeight="15">
+            <!-- <Panel id="phase_panel" color="pink" preferredHeight="15">
                 <Text id="phase_text" color="black" fontStyle="bold" fontSize="20">Planning Phase</Text>
-            </Panel>
-            <Panel preferredHeight="5" color="black">
+            </Panel> -->
+            <Panel preferredHeight="10" color="black">
                 <ProgressBar id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
                 <Text id="turn_text">Turn 6/10</Text>
             </Panel>
-            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="200">
+            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="400">
                 <Row id="ship1">
                     <Cell>
-                        <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship1indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -76,7 +83,7 @@
                 </Row>
                 <Row id="ship2">
                     <Cell>
-                        <Panel id="ship2indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship2indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship2indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -118,7 +125,7 @@
                 </Row>
                 <Row id="ship3">
                     <Cell>
-                        <Panel id="ship3indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship3indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship3indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -160,7 +167,7 @@
                 </Row>
                 <Row id="ship4">
                     <Cell>
-                        <Panel id="ship4indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship4indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship4indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -200,10 +207,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship5">
                     <Cell>
-                        <Panel id="ship5indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship5indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship5indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -243,10 +249,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship6">
                     <Cell>
-                        <Panel id="ship6indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship6indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship6indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -286,10 +291,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship7">
                     <Cell>
-                        <Panel id="ship7indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship7indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship7indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -329,10 +333,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship8">
                     <Cell>
-                        <Panel id="ship8indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship8indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship8indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -372,10 +375,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship9">
                     <Cell>
-                        <Panel id="ship9indicator_panel" color="#000000" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship9indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship9indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -415,10 +417,9 @@
                         </Panel>
                     </Cell>
                 </Row>
-
                 <Row id="ship10">
                     <Cell>
-                        <Panel id="ship10indicator_panel" color="black" outline="#0080FF" outlineSize="2 0">
+                        <Panel id="ship10indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
                             <Text id="ship10indicator_text" color="#0080FF" fontStyle="bold"></Text>
                         </Panel>
                     </Cell>
@@ -459,9 +460,27 @@
                     </Cell>
                 </Row>
             </TableLayout>
+            <HorizontalLayout preferredHeight="20" color="#000000">
+                <Button text="Plan" id="Planning" class="phase" tooltip="Transition to Planning Phase" tooltipPosition="Below"/>
+                <Button text="Action"  id="Activation" class="phase" tooltip="Transition to Activation Phase" tooltipPosition="Below"/>
+                <Button text="Combat" id="Combat" class="phase" tooltip="Transition to Combat Phase" tooltipPosition="Below"/>
+                <Button text="End" id="End" class="phase" tooltip="Auto-Clean up Focus/Evade/Etc. End Turn" tooltipPosition="Below"/>
+            </HorizontalLayout>
         </VerticalLayout>
+        <HorizontalLayout width="200" offsetXY="0 335">
+            <Image id="timer_1" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_2" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_3" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_4" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_5" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_6" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_7" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_8" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_9" image="DOT" color="green" preserveAspect="1"/>
+            <Image id="timer_10" image="DOT" color="green" preserveAspect="1"/>
+        </HorizontalLayout>
     </Panel>
-    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false">
+    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="100">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
         <Text>Ship Spawner</Text>
     </Panel>

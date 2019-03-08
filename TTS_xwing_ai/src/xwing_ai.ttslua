@@ -745,6 +745,9 @@ end
 --end
 
 function Action_End()
+    UI.setValue("background_text","Auto-Cleaned up Focus/Evade/Etc\nMoved Turn Marker")
+    currentphase=nil
+    updateStatusUI()
     --TODO: clear all buttons
     for i,obj in ipairs(getAllObjects()) do
         if isShip(obj) then
@@ -771,8 +774,10 @@ function Action_End()
 end
 function delayPlanning()
     for i=1, 50, 1 do
+        SetTimer(math.floor(i/5))
         coroutine.yield(0)
     end
+    ClearTimer()
     Action_Planning()
     return true
 end
@@ -906,9 +911,11 @@ end
 function delayActivation()
     --activation_started = true
     for i=1, 10, 1 do
-        for i=1, 20, 1 do coroutine.yield(0) end
+        for i=1, 5, 1 do coroutine.yield(0) end
         start_delay = string.sub(start_delay ,3)
+        SetTimer(i)
     end
+    ClearTimer()
     local total = 0
     local ready = 0
     for i,ship in ipairs(getAllObjects()) do

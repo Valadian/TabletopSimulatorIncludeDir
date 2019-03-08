@@ -5,15 +5,32 @@ function AiUiPlanningPollingUpdate()
         updateStatusUI()
     end
 end
+phases = {"Planning","Activation","Combat","End"}
 function updateStatusUI(next, complete)
-    local phasename = {}
-    phasename[PlanningSort] = "Planning"
-    phasename[MoveSort] = "Activation"
-    phasename[AttackSort] = "Combat"
-    local phasecolor = {}
-    phasecolor[PlanningSort] = "FF80FF"
-    phasecolor[MoveSort] = "00FF80"
-    phasecolor[AttackSort] = "FF8000"
+    local PHASENAME = {}
+    PHASENAME[PlanningSort] = "Planning"
+    PHASENAME[MoveSort] = "Activation"
+    PHASENAME[AttackSort] = "Combat"
+    --phasename[nil] = "End"
+    local PHASECOLOR = {}
+    PHASECOLOR["Planning"] = "FF80FF"
+    PHASECOLOR["Activation"] = "00FF80"
+    PHASECOLOR["Combat"] = "FF8000"
+    PHASECOLOR["End"] = "FF0000"
+    --phasecolor[nil] = "FF0000"
+    current_phasename = currentphase and PHASENAME[currentphase] or "End"
+    for _, phasename in ipairs(phases) do
+        if phasename==current_phasename then
+            UI.setAttribute(phasename, "textColor", "black")
+            UI.setAttribute(phasename, "color", "#"..(PHASECOLOR[phasename] or "FF0000"))
+            --UI.setAttribute(phasename, "fontStyle", "bold")
+        else
+            --UI.setAttribute(phasename, "class", nil)
+            UI.setAttribute(phasename, "color", "#303030")
+            UI.setAttribute(phasename, "textColor", "white")
+            --UI.setAttribute(phasename, "fontStyle", "Normal")
+        end
+    end
     UI.setValue("turn_text","Turn "..tostring(getTurnNumber()).."/"..tostring(getTotalTurns()))
     UI.setAttribute("turn_progressbar", "percentage", math.min(100,100*getTurnNumber()/getTotalTurns()))
     if getTurnNumber()>=getTotalTurns() then
@@ -21,13 +38,13 @@ function updateStatusUI(next, complete)
     else
         UI.setAttribute("turn_progressbar", "fillImageColor", "#008000")
     end
-    if currentphase~=nil then
-        UI.setAttribute("phase_panel","color","#"..phasecolor[currentphase])
-        UI.setValue("phase_text",phasename[currentphase].." Phase")
-    else
-        UI.setAttribute("phase_panel","color","grey")
-        UI.setValue("phase_text","Setup")
-    end
+    -- if currentphase~=nil then
+    --     UI.setAttribute("phase_panel","color","#"..phasecolor[currentphase])
+    --     UI.setValue("phase_text",phasename[currentphase].." Phase")
+    -- else
+    --     UI.setAttribute("phase_panel","color","grey")
+    --     UI.setValue("phase_text","Setup")
+    -- end
     if currentphase == PlanningSort then
         index = 1
         for i,ship in ipairs(getAllObjects()) do
@@ -65,6 +82,20 @@ function updateStatusUI(next, complete)
         for j=1,20 do
             local istr = tostring(j)
             UI.hide("ship"..istr)
+        end
+    end
+end
+function ClearTimer()
+    for i=1,10 do
+        UI.setAttribute("timer_"..tostring(i),"color","black")
+    end
+end
+function SetTimer(value)
+    for i=1,10 do
+        if i<=value then
+            UI.setAttribute("timer_"..tostring(i),"color","green")
+        else
+            UI.setAttribute("timer_"..tostring(i),"color","grey")
         end
     end
 end
@@ -411,8 +442,15 @@ function xwing_ai_ui_onload()
         {
             name = "LOCK",
             url = "https://i.imgur.com/fymCEVz.png"
+        },
+        {
+            name = "DOT",
+            url = "https://i.imgur.com/TcpW3SE.png"
         }
     }
     UI.setCustomAssets(assets)
-    updateStatusUI()
+    Wait.time(function()   
+        ClearTimer()
+        updateStatusUI()
+    end, 1, 1)
 end
