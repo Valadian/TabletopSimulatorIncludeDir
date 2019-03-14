@@ -1494,7 +1494,6 @@ end
 function setNewLock(object, params)
     freshLock.call('manualSet', {color=params['player_color'], name=params['ship_name']})
 end
-
 function findNearestShip(pos)
     local nearest
     local minDist = 999999

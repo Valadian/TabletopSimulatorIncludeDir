@@ -147,6 +147,7 @@ function updateShipRow(ship, index, active)
     end
 
     if currentphase==PlanningSort then
+        UI.setAttribute("ship"..istr.."select_button","active","false")
         if found then
             UI.setAttribute("ship"..istr.."status_text", "color", "green")
             UI.setValue("ship"..istr.."status_text", "READY")
@@ -155,6 +156,13 @@ function updateShipRow(ship, index, active)
             UI.setValue("ship"..istr.."status_text", "WAITING")
         end
     elseif currentphase==AttackSort or currentphase==MoveSort then
+        --#000000|#00FF80|#008040|#000000
+        UI.setAttribute("ship"..istr.."select_button","active","true")
+        if currentphase==MoveSort then
+            UI.setAttribute("ship"..istr.."select_button","colors","transparent|#00FF80|#008040|transparent")
+        elseif currentphase==AttackSort then
+            UI.setAttribute("ship"..istr.."select_button","colors","transparent|#FF8000|#804000|transparent")
+        end
         UI.setValue("ship"..istr.."status_text", "")
         if isAi(ship) then
         UI.setAttribute("ship"..istr.."move_image", "color",'red')
@@ -184,6 +192,84 @@ function updateShipRow(ship, index, active)
         UI.setAttribute("ship"..istr.."indicator_panel", "outline", "#000000")
     end
     UI.show("ship"..istr)
+end
+function onClick_SelectShipByIndex(player, strindex, idValue)
+    local index = tonumber(strindex)
+    local ais = {}
+    local showPlayers = true
+    for i,ship in ipairs(getAllObjects()) do
+        if isInPlay(ship) and (isAi(ship) or (isShip(ship)  and showPlayers)) and getSkill(ship)~=nil then
+            table.insert(ais, ship)
+        end
+    end -- [end loop for all ships]
+    if currentphase~=nil then
+        table.sort(ais,currentphase)
+    end
+    for i,ship in ipairs(ais) do
+        if i==index then
+            if currentphase==MoveSort then
+                ship.highlightOn({0,0,1}, 5)
+                findAiTarget(ship.getGUID())
+                State_AIMove(ship)
+                UpdateNote(MoveSort, ship.getGUID())
+            elseif currentphase==AttackSort then
+                Render_Ruler(ship)
+                Render_AttackButton(ship)
+                UpdateNote(AttackSort, ship.getGUID())
+            end
+        else
+            ship.clearButtons()
+        end
+    end
+end
+function onClick_selectXwingAITab(player, _, idValue)
+    local xml = UI.getXmlTable()
+    for i=1,#xml do
+        if(xml[i].attributes.id == "xwingDisplay") then
+            local xwingPanel = xml[i]
+            --xml[i].attributes.height = "70"
+            --table.removeKey(xml[i].attributes, "offsetXY")
+            for j=1,#(xwingPanel.children) do
+                if(xwingPanel.children[j].attributes.class == "buttonPanel") then
+                    UI.hide(xwingPanel.children[j].attributes.id)
+                end
+            end
+        end
+    end
+    --UI.setXmlTable(xml)
+    --UI.setAttributes("buttonPanel", "active", false)
+    -- Wait.frames(function()
+    --     UI.setAttribute("xwingPanel", "height", 400)
+    --     UI.setAttribute(idValue.."Panel", "active", true)
+    -- end, 1)
+    UI.show(idValue.."Panel")
+    --UI.hide("ship7")
+    updateStatusUI()
+end
+function onClick_setPhase(player, _, idValue)
+    --ai = getObjectFromGUID('030220')
+    self.call("Action_"..idValue)
+end
+function onClick_ToggleUI(player, _, idValue)
+    if UI.getAttribute("xwingDisplay", "height")=="40" then
+        UI.show("title")
+        UI.show("roundTrackerPanel")
+        --UI.hide("shipSpawnerPanel")
+        UI.show("tabContainer")
+        UI.setAttribute("xwingDisplay", "height", "660")
+        UI.setAttribute("xwingDisplay", "width", "400")
+        UI.setAttribute("minimizeBtn", "colors", "transparent|#FF0000|#800000|transparent")
+        UI.setAttribute("minimizeBtn", "tooltip", "Minimize")
+    else
+        UI.hide("title")
+        UI.hide("roundTrackerPanel")
+        UI.hide("shipSpawnerPanel")
+        UI.hide("tabContainer")
+        UI.setAttribute("xwingDisplay", "height", "40")
+        UI.setAttribute("xwingDisplay", "width", "40")
+        UI.setAttribute("minimizeBtn", "colors", "transparent|#00FF00|#008000|transparent")
+        UI.setAttribute("minimizeBtn", "tooltip", "Display UI")
+    end
 end
 function xwing_ai_ui_onload()
     local assets = {
@@ -446,10 +532,14 @@ function xwing_ai_ui_onload()
         {
             name = "DOT",
             url = "https://i.imgur.com/TcpW3SE.png"
+        },
+        {
+            name = "ARROWDOWN",
+            url = "https://i.imgur.com/tddH4os.png"
         }
     }
     UI.setCustomAssets(assets)
-    Wait.time(function()   
+    Wait.time(function()
         ClearTimer()
         updateStatusUI()
     end, 1, 1)

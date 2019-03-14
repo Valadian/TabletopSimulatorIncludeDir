@@ -2,28 +2,31 @@
 
 <Defaults>
     <Button color="black" textColor="white" />
-    <Button class="tab" onClick="selectXwingAITab" height="40" width="80" color="#303030"/>
+    <Button class="tab" onClick="030220/onClick_selectXwingAITab" height="40" width="80" color="#303030"/>
     <Panel class="buttonPanel" color="gray" alignment="UpperLeft" showAnimation="None" hideAnimation="None" />
     <Text color="white" />
-    <Button class="phase" color="#303030" onClick="setPhase" />
+    <Button class="phase" color="#303030" onClick="030220/onClick_setPhase" />
 
 </Defaults>
 
 <VerticalLayout color="black"
-    id="xwingPanel"
-    height="600"
+    id="xwingDisplay"
+    height="660"
     width="400"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
     offsetXY="0 -160"
     >
-    <Text>X-Wing AI</Text>
-    <HorizontalLayout>
+    <HorizontalLayout color="transparent" preferredHeight="20">
+        <Text id="title" preferredWidth="360">X-Wing AI</Text>
+        <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Minimize" colors="transparent|#FF0000|#800000|transparent" />
+    </HorizontalLayout>
+    <HorizontalLayout id="tabContainer">
         <Button text="Round Tracker"  id="roundTracker"  class="tab" />
         <Button text="Ship Spawner"  id="shipSpawner"  class="tab" />
     </HorizontalLayout>
-    <Panel id="roundTrackerPanel" class="buttonPanel" active="true" preferredHeight="500">
+    <Panel id="roundTrackerPanel" class="buttonPanel" active="true" preferredHeight="560">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
         <Panel offsetXY="0 200">
             <Text id="background_text" color="black" fontSize="18">
@@ -38,11 +41,11 @@ Click Plan to start
                 <ProgressBar id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
                 <Text id="turn_text">Turn 6/10</Text>
             </Panel>
-            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="400">
+            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="500">
                 <Row id="ship1">
                     <Cell>
                         <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship1indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship1select_button" onClick="030220/onClick_SelectShipByIndex(1)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -84,7 +87,7 @@ Click Plan to start
                 <Row id="ship2">
                     <Cell>
                         <Panel id="ship2indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship2indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship2select_button" onClick="030220/onClick_SelectShipByIndex(2)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -126,7 +129,7 @@ Click Plan to start
                 <Row id="ship3">
                     <Cell>
                         <Panel id="ship3indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship3indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship3select_button" onClick="030220/onClick_SelectShipByIndex(3)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -168,7 +171,7 @@ Click Plan to start
                 <Row id="ship4">
                     <Cell>
                         <Panel id="ship4indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship4indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship4select_button" onClick="030220/onClick_SelectShipByIndex(4)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -210,7 +213,7 @@ Click Plan to start
                 <Row id="ship5">
                     <Cell>
                         <Panel id="ship5indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship5indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship5select_button" onClick="030220/onClick_SelectShipByIndex(5)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -252,7 +255,7 @@ Click Plan to start
                 <Row id="ship6">
                     <Cell>
                         <Panel id="ship6indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship6indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship6select_button" onClick="030220/onClick_SelectShipByIndex(6)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -294,7 +297,7 @@ Click Plan to start
                 <Row id="ship7">
                     <Cell>
                         <Panel id="ship7indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship7indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship7select_button" onClick="030220/onClick_SelectShipByIndex(7)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -336,7 +339,7 @@ Click Plan to start
                 <Row id="ship8">
                     <Cell>
                         <Panel id="ship8indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship8indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship8select_button" onClick="030220/onClick_SelectShipByIndex(8)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -378,7 +381,7 @@ Click Plan to start
                 <Row id="ship9">
                     <Cell>
                         <Panel id="ship9indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship9indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship9select_button" onClick="030220/onClick_SelectShipByIndex(9)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -420,7 +423,7 @@ Click Plan to start
                 <Row id="ship10">
                     <Cell>
                         <Panel id="ship10indicator_panel" color="black" outline="#0080FF" outlineSize="4 0">
-                            <Text id="ship10indicator_text" color="#0080FF" fontStyle="bold"></Text>
+                            <Button id="ship10select_button" onClick="030220/onClick_SelectShipByIndex(10)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -480,7 +483,7 @@ Click Plan to start
             <Image id="timer_10" image="DOT" color="green" preserveAspect="1"/>
         </HorizontalLayout>
     </Panel>
-    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="100">
+    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="560">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
         <Text>Ship Spawner</Text>
     </Panel>
