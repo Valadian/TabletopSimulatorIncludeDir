@@ -1,0 +1,275 @@
+local assets = {
+    {
+        name = "Aggressor",--AGGR",
+        url = "https://i.imgur.com/2P9BOLq.png"
+    },
+    {
+        name = "ARC-170",--ARC",
+        url = "https://i.imgur.com/ddXQAbm.png"
+    },
+    {
+        name = "Attack Shuttle",--AS",
+        url = "https://i.imgur.com/hwYblXp.png"
+    },
+    {
+        name = "Auzituck Gunship", --AUZ",
+        url = "https://i.imgur.com/IgYyoQE.png"
+    },
+    {
+        name = "A-Wing", --AWNG",
+        url = "https://i.imgur.com/xBSePLj.png"
+    },
+    {
+        name = "_BL",
+        url = "https://i.imgur.com/FResnVX.png"
+    },
+    {
+        name = "_BLS",
+        url = "https://i.imgur.com/gltk9zw.png"
+    },
+    {
+        name = "_BR",
+        url = "https://i.imgur.com/9qjQgjZ.png"
+    },
+    {
+        name = "_BRS",
+        url = "https://i.imgur.com/B0TyaDm.png"
+    },
+    {
+        name = "B/SF-17 Bomber", --BSF",
+        url = "https://i.imgur.com/tJHWQrG.png"
+    },
+    {
+        name = "B-Wing", --BWNG",
+        url = "https://i.imgur.com/i0WD507.png"
+    },
+    {
+        name = "VT-49 Decimator", --DEC",
+        url = "https://i.imgur.com/7hbk5Cz.png"
+    },
+    {
+        name = "E-Wing", --EWNG",
+        url = "https://i.imgur.com/DrjNhKV.png"
+    },
+    {
+        name = "Firespray-31 Scum", --FIRE",
+        url = "https://i.imgur.com/BvCim6a.png"
+    },
+    {
+        name = "Firespray-31 Imperial", --FIRE",
+        url = "https://i.imgur.com/BiQVAO7.png"
+    },
+    {
+        name = "G-1A StarFighter", --G1A",
+        url = "https://i.imgur.com/TP97KUg.png"
+    },
+    {
+        name = "HWK-290 Rebel", --HWK",
+        url = "https://i.imgur.com/YEqu5hY.png"
+    },
+    {
+        name = "HWK-290 Scum", --HWK",
+        url = "https://i.imgur.com/7HfeThI.png"
+    },
+    {
+        name = "EMPIRE",
+        url = "https://i.imgur.com/AiTEfUY.png"
+    },
+    {
+        name = "JumpMaster 5000", --JMP",
+        url = "https://i.imgur.com/BvuPpI7.png"
+    },
+    {
+        name = "_K",
+        url = "https://i.imgur.com/JCZgTin.png"
+    },
+    {
+        name = "Kihraxz Fighter", --KIH",
+        url = "https://i.imgur.com/cEnDdA6.png"
+    },
+    {
+        name = "K-Wing", --KWNG",
+        url = "https://i.imgur.com/7AuBhbi.png"
+    },
+    {
+        name = "Lambda-Class Shuttle", --Lambda
+        url = "https://i.imgur.com/e2Vz4Cz.png"
+    },
+    {
+        name = "Lancer-class Pursuit Craft",
+        url = "https://i.imgur.com/gZi1ToA.png"
+    },
+    {
+        name = "StarViper",
+        url = "https://i.imgur.com/1M3GXnk.png"
+    },
+    {
+        name = "M3-A Interceptor",
+        url = "https://i.imgur.com/kT5ngxA.png"
+    },
+    {
+        name = "Imperial Assault Carrier",--Pallas
+        url = "https://i.imgur.com/3Wdp1Z2.png"
+    },
+    {
+        name = "Protectorate Starfighter",
+        url = "https://i.imgur.com/QW4CxRl.png"
+    },
+    {
+        name = "TIE Punisher",
+        url = "https://i.imgur.com/Q1y8qgR.png"
+    },
+    {
+        name = "_REBELLION",
+        url = "https://i.imgur.com/Dak1r93.png"
+    },
+    {
+        name = "_S",
+        url = "https://i.imgur.com/4fiHvAf.png"
+    },
+    {
+        name = "_S0",
+        url = "https://i.imgur.com/FvmLfys.png"
+    },
+    {
+        name = "_SCUM",
+        url = "https://i.imgur.com/taQ9mph.png"
+    },
+    {
+        name = "Scurrg H-6 Bomber Rebel", --Scurrg
+        url = "https://i.imgur.com/wXXbWFD.png"
+    },
+    {
+        name = "Scurrg H-6 Bomber Scum", --Scurrg
+        url = "https://i.imgur.com/wXXbWFD.png"
+    },
+    {
+        name = "Alpha-Class Star Wing",
+        url = "https://i.imgur.com/mIDHF6l.png"
+    },
+    {
+        name = "T-70 X-Wing",
+        url = "https://i.imgur.com/IqUjKc3.png"
+    },
+    {
+        name = "TIE Adv. Prototype",
+        url = "https://i.imgur.com/Ml1RnRW.png"
+    },
+    {
+        name = "TIE Advanced",
+        url = "https://i.imgur.com/uhxMHMc.png"
+    },
+    {
+        name = "TIE Bomber",
+        url = "https://i.imgur.com/XUL8jnk.png"
+    },
+    {
+        name = "TIE Defender",
+        url = "https://i.imgur.com/HmT5l4j.png"
+    },
+    {
+        name = "TIE Fighter",
+        url = "https://i.imgur.com/Ht6XW0n.png"
+    },
+    {
+        name = "TIE/fo Fighter",
+        url = "https://i.imgur.com/cQ8w9nN.png"
+    },
+    {
+        name = "TIE Interceptor",
+        url = "https://i.imgur.com/5aTA6CO.png"
+    },
+    {
+        name = "TIE Phantom",
+        url = "https://i.imgur.com/AD23sTo.png"
+    },
+    {
+        name = "TIE/sf Fighter",
+        url = "https://i.imgur.com/C7Ta7ft.png"
+    },
+    {
+        name = "_TL",
+        url = "https://i.imgur.com/NyZ8nEz.png"
+    },
+    {
+        name = "_TLT",
+        url = "https://i.imgur.com/25A20hn.png"
+    },
+    {
+        name = "_TR",
+        url = "https://i.imgur.com/LU1x5vB.png"
+    },
+    {
+        name = "Rebel Transport", --Transport
+        url = "https://i.imgur.com/HoF0HHk.png"
+    },
+    {
+        name = "_TRT",
+        url = "https://i.imgur.com/bN08BBo.png"
+    },
+    {
+        name = "Upsilon Class Shuttle",--Upsilon
+        url = "https://i.imgur.com/6uHL81A.png"
+    },
+    {
+        name = "U-Wing",
+        url = "https://i.imgur.com/jdsclHD.png"
+    },
+    {
+        name = "VCX-100",
+        url = "https://i.imgur.com/Rljq1cl.png"
+    },
+    {
+        name = "X-Wing",
+        url = "https://i.imgur.com/scbWpp9.png"
+    },
+    {
+        name = "YT-1300",
+        url = "https://i.imgur.com/dkgLCG5.png"
+    },
+    {
+        name = "YT-2400",
+        url = "https://i.imgur.com/tYgL6Sx.png"
+    },
+    {
+        name = "YV-666",
+        url = "https://i.imgur.com/A4AnXtP.png"
+    },
+    {
+        name = "Y-Wing Rebel",
+        url = "https://i.imgur.com/ofwDCm4.png"
+    },
+    {
+        name = "Y-Wing Scum",
+        url = "https://i.imgur.com/VupYzPK.png"
+    },
+    {
+        name = "Z-95 Headhunter Rebel",
+        url = "https://i.imgur.com/XfnFvJM.png"
+    },
+    {
+        name = "Z-95 Headhunter Scum",
+        url = "https://i.imgur.com/usz6VY0.png"
+    },
+    {
+        name = "BLANK",
+        url = "https://i.imgur.com/2ZqWgrf.png"
+    },
+    {
+        name = "LOCK",
+        url = "https://i.imgur.com/fymCEVz.png"
+    },
+    {
+        name = "DOT",
+        url = "https://i.imgur.com/TcpW3SE.png"
+    },
+    {
+        name = "ARROWDOWN",
+        url = "https://i.imgur.com/tddH4os.png"
+    },
+    {
+        name = "BASE",
+        url = "https://i.imgur.com/cSquhmA.png"
+    }
+}
+UI.setCustomAssets(assets)

@@ -98,6 +98,7 @@ function onload(save_string)
     initialize_ai()
     xwing_ai_ui_onload()
 end
+#include ai_defs
 #include xwing_ai_ui
 function onSave()
     local save = {}
@@ -184,7 +185,6 @@ function buildButton(label, def)
     if def.function_owner==nil then def.function_owner = self end
     return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size}
 end
-#include ai_defs
 function mirrorMoveTable(tbl,leftAlts)
     mirrorRow(tbl,4,6,leftAlts)
     mirrorRow(tbl,3,7,leftAlts)
