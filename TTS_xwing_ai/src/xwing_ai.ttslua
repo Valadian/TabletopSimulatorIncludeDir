@@ -2259,7 +2259,10 @@ function countSquad(squad)
     end
     return number
 end
-function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, temp_pos)
+function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, temp_pos, shipnum_override)
+    if shipnum_override then
+        shipnum = shipnum_override
+    end
     if isHostile==nil then
         isHostile = true
     end

@@ -93,7 +93,7 @@ function initialize_ai()
     AI_DEFS['HOTAC']['TIE'] = HostileAiDefinition:new{
         faction = EMPIRE,
         shipType = 'TIE Fighter',
-        description = 'Acadamy Pilot',
+        description = 'Academy Pilot',
         ignoresHugeShips = true,
         mesh = 'https://paste.ee/r/Yz0kt',
         diffuse = 'http://i.imgur.com/otxKcUx.png',
@@ -1739,6 +1739,7 @@ function initialize_ai()
         faction = SCUM,
         shipType = 'Aggressor',
         description = 'IG-88',
+        isLargeShip = true,
         mesh = '',
         diffuse = '',
         collider = '',
