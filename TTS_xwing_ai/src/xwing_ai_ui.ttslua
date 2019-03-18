@@ -392,21 +392,24 @@ function onClick_spawnAiType(player, value, idValue)
         UI.setAttribute("spawnAiType_"..type,"textColor","white")
     end
 end
+local spawn_point = {-57.25,5,30 }
 function onClick_spawn(player, _, _)
     if mission_ps==nil then
         local ps = CalculatePlayerSkill()
         printToAll("Calculated player PS: "..tostring(ps))
     end
-    local elite = ""
     --printToAll("spawnElite: "..tostring(UI.getAttribute("spawnElite","isOn")))
-    if spawnUIElite then
-        elite = "[ELITE] "
-    end
+
     local wingName = spawnUIWingName
     if spawnUIWingNameOverride~=nil and spawnUIWingNameOverride~="" then
         wingName = spawnUIWingNameOverride
     end
-    local card = math.random(pilot_card_num[campaign][spawnUIShipSubType])
+    local def = getAiDefByType(spawnUIShipSubType)
+    --local card = math.random(pilot_card_num[campaign][spawnUIShipSubType])
+    local card = math.random(#def.pilotCards)
+    if spawnUIElite then
+        card = math.random(#def.elitePilotCards)
+    end
     local next = false
     for i,wing in ipairs(WINGS) do
         if next then
@@ -417,14 +420,20 @@ function onClick_spawn(player, _, _)
             next=true
         end
     end
+    local ship_spawn_point = vector.add(spawn_point,{spawnUIStartNum*6,0,0})
     for i,off in ipairs(squad_offsets) do
         if 5-i<=spawnUICount then
-            Spawn_Ship(true, spawnUIShipSubType, wingName, spawnUIElite, spawnUIAiType, card, vector.add(off, {25,1.5,0}), 180, vector.add(off, {25,1.5,0}),spawnUIStartNum)
+            Spawn_Ship(true, spawnUIShipSubType, wingName, spawnUIElite, spawnUIAiType, card, vector.add(ship_spawn_point, off), 180, vector.add(ship_spawn_point, vector.add(off,{0,0,5}) ),spawnUIStartNum)
             spawnUIStartNum = spawnUIStartNum+1
         end
     end
     --spawnUIStartNum = spawnUIStartNum+spawnUICount
     UI.setAttribute("spawnStartNum","text",tostring(spawnUIStartNum))
+
+    -- local elite = ""
+    -- if spawnUIElite then
+    --     elite = "[ELITE] "
+    -- end
     --printToAll("Spawn "..tostring(spawnUICount).." "..elite..wingName.." ["..spawnUIShipSubType.."] "..spawnUIShipType)
 end
 function onValueChanged_spawnElite(player, value, id)

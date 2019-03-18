@@ -2194,7 +2194,8 @@ function Spawn_Squad(squad, more_after_lgs)
 
     end
     local quantity = countSquad(squad)
-    if AI_DEFS[campaign][squad.type].isLargeShip and squad_orig=="*" then
+    local def = getAiDefByType(type)
+    if def.isLargeShip and squad_orig=="*" then
         again = true
         quantity = 1
     end
@@ -2205,7 +2206,10 @@ function Spawn_Squad(squad, more_after_lgs)
     local position = {0,0,0 }
     local temp_position = {0,0,0}
     local rotation = 180
-    local card = math.random(pilot_card_num[campaign][squad.type])
+    local card = math.random(#def.pilotCards) --math.random(pilot_card_num[campaign][squad.type])
+    if squad.elite then
+        card = math.random(#def.elitePilotCards)
+    end
     local adjust = {0,0,0}
     temp_position = calculateTempPosition(squad)
     if squad.vector=="copy" then
@@ -2315,25 +2319,25 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
     if not isHostile then
         hostility = "FR"
     end
-    if def.isLargeShip then size = " LGS" end
-    if hostility==nil then
-        printToAll("hostility==nil")
-    end
-    if type==nil then
-        printToAll("type==nil")
-    end
-    if ps==nil then
-        printToAll("ps==nil")
-    end
-    if name==nil then
-        printToAll("name==nil")
-    end
-    if size==nil then
-        printToAll("size==nil")
-    end
-    newship.setName("["..hostility..":"..type..":"..ps.."] "..name.."#"..tostring(shipnum)..size)
+    --if def.isLargeShip then size = " LGS" end
+    -- if hostility==nil then
+    --     printToAll("hostility==nil")
+    -- end
+    -- if type==nil then
+    --     printToAll("type==nil")
+    -- end
+    -- if ps==nil then
+    --     printToAll("ps==nil")
+    -- end
+    -- if name==nil then
+    --     printToAll("name==nil")
+    -- end
+    -- if size==nil then
+    --     printToAll("size==nil")
+    -- end
+    newship.setName("["..hostility..":"..type..":"..ps.."] "..name.."#"..tostring(shipnum)) --..size --Don't put LGS in the name
     if ai=="strike" then newship.setDescription("ai strike") end
-    Spawn_Card(type, name, temp_pos, shipnum, card)
+    Spawn_Card(type, name, temp_pos, shipnum, card, elite)
     shipnum = shipnum + 1
 
     --newship.lock()
@@ -2370,23 +2374,47 @@ function updateObstacle(object, params)
 end
 decks = {}
 cards = {}
-function Spawn_Card(type, name, position, shipnum, card)
-    if pilot_card_num[campaign][type]==nil then return end
-    local pilots = findObjectByNameAndType(campaign.." AI","Infinite")
-    local params = {}
-    -- params.position = pilots.getPosition()
-    -- params.position[1] = params.position[1]+5
-    -- params.position[2] = 5
-    local offset = {col_index,0,0}
-    col_index = (col_index + 1.5) % 50
-    params.position = vector.add({-54,5,37 },offset)
-    params.callback = 'drawCard'
-    params.callback_owner = self
-    local index = pilot_card_offsets[campaign][type]+card-1 --math.random(pilot_card_num[type])-1
-    printToAll("Drawing card "..index,{0,1,0})
-    params.params = {index = index, shipnum = shipnum, name = name, position = position }
-    decks[shipnum] = pilots.takeObject(params)
+function Spawn_Card(type, name, position, shipnum, card, elite)
+    --printToAll("card: "..card)
+    local def = getAiDefByType(type)
+    if def==nil then return end
+    -- local pilots = findObjectByNameAndType(campaign.." AI","Infinite")
+    local custom = {}
+    custom.thickness=0.05
+    custom.merge_distance = 25
+    if elite then
+        custom.image = def.elitePilotCards[card]
+    else
+        custom.image = def.pilotCards[card]
+    end
+    --printToAll("image: "..custom.image)
+    local name = name.."#"..tostring(shipnum)
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Token'
+    obj_parameters.position = position
+    obj_parameters.rotation = {0,180,0}
+    obj_parameters.scale = {0.685,0.685,0.685}
+    local card_token = spawnObject(obj_parameters)
+    card_token.setName(name)
+    card_token.setCustomObject(custom)
 end
+-- function Spawn_Card(type, name, position, shipnum, card)
+--     if pilot_card_num[campaign][type]==nil then return end
+--     local pilots = findObjectByNameAndType(campaign.." AI","Infinite")
+--     local params = {}
+--     -- params.position = pilots.getPosition()
+--     -- params.position[1] = params.position[1]+5
+--     -- params.position[2] = 5
+--     local offset = {col_index,0,0}
+--     col_index = (col_index + 1.5) % 50
+--     params.position = vector.add({-54,5,37 },offset)
+--     params.callback = 'drawCard'
+--     params.callback_owner = self
+--     local index = pilot_card_offsets[campaign][type]+card-1 --math.random(pilot_card_num[type])-1
+--     printToAll("Drawing card "..index,{0,1,0})
+--     params.params = {index = index, shipnum = shipnum, name = name, position = position }
+--     decks[shipnum] = pilots.takeObject(params)
+-- end
 function drawCard(object, params)
     local p = {}
     p.position = vector.add(params.position,{0,3,5}) --{22,5,14 }

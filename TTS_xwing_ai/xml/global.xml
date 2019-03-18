@@ -25,13 +25,12 @@
     <HorizontalLayout id="tabContainer">
         <Button text="Round Tracker"  id="roundTracker"  class="tab" />
         <Button text="Ship Spawner"  id="shipSpawner"  class="tab" />
+        <Button text="Missions"  id="missionSpawner"  class="tab" />
     </HorizontalLayout>
-    <Panel id="roundTrackerPanel" class="buttonPanel" active="true" preferredHeight="560">
+    <Panel id="roundTrackerPanel" class="buttonPanel" active="true" preferredHeight="560" color="black">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
         <Panel offsetXY="0 200">
-            <Text id="background_text" color="black" fontSize="18">
-Click Plan to start
-            </Text>
+            <Text id="background_text" color="white" fontSize="18">Click Plan to start</Text>
         </Panel>
         <VerticalLayout>
             <!-- <Panel id="phase_panel" color="pink" preferredHeight="15">
@@ -483,9 +482,8 @@ Click Plan to start
             <Image id="timer_10" image="DOT" color="green" preserveAspect="1"/>
         </HorizontalLayout>
     </Panel>
-    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="560">
+    <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="560" color="black">
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
-        <Text>Ship Spawner</Text>
         <TableLayout id="spawnerTable" columnWidths="80 350" preferredHeight="500" cellBackgroundColor="black">
             <Row preferredHeight="180">
                 <Cell><Panel color="black"><Text>Type</Text></Panel></Cell>
@@ -627,7 +625,7 @@ Click Plan to start
                     <HorizontalLayout>
                         <Button id="spawnAiType_attack" color="green" onClick="030220/onClick_spawnAiType(attack)">Attack</Button>
                         <Button id="spawnAiType_strike" color="#303030" onClick="030220/onClick_spawnAiType(strike)">Strike</Button>
-                        <Button id="spawnAiType_flee" color="#303030" onClick="030220/onClick_spawnAiType(flee)">Flee</Button>
+                        <!-- <Button id="spawnAiType_flee" color="#303030" onClick="030220/onClick_spawnAiType(flee)">Flee</Button> -->
                     </HorizontalLayout>
                 </Panel></Cell>
             </Row>
@@ -636,5 +634,28 @@ Click Plan to start
                 <Cell><Panel color="black"><Button width="80%" height="60%" color="#303030" onClick="030220/onClick_spawn">Spawn!</Button></Panel></Cell>
             </Row>
         </TableLayout>
+    </Panel>
+    <Panel id="missionSpawnerPanel" class="buttonPanel" active="false" preferredHeight="560" color="black">
+        <VerticalLayout padding="10 10 10 10" spacing="10">
+            <Text alignment="LowerLeft">Campaign:</Text>
+            <Dropdown preferredHeight="40" onValueChanged="030220/onValueChanged_missionCampaign">
+                <Option selected="true">[HOTAC] Heroes of the Aturi Cluster</Option>
+                <Option>[Pallas] Battlestar Pallas</Option>
+                <Option>[DOTE] Defense of the Empire</Option>
+            </Dropdown>
+            <Text alignment="LowerLeft">Mission:</Text>
+            <Dropdown preferredHeight="40" onValueChanged="030220/onValueChanged_missionMission">
+                <Option selected="true">Local Trouble</Option>
+                <Option>Rescue Rebel Operatives</Option>
+                <Option>Capture Refueling Station</Option>
+                <Option>Tread Softly</Option>
+            </Dropdown>
+            <Text></Text>
+            <Button color="#303030" onClick="030220/onClick_missionPresetup">Pre-Setup</Button>
+            <InputField id="missionPlayerCount" onEndEdit="030220/onEndEdit_missionPlayerCount" characterValidation="Integer" placeholder="Player Count"></InputField>
+            <InputField id="missionPlayerPS" onEndEdit="030220/onEndEdit_missionPlayerPS" characterValidation="Integer" placeholder="Avg. Player Skill"></InputField>
+            <Button color="#303030" onClick="030220/onClick_mission">Setup!</Button>
+            <Button color="#303030" onClick="030220/onClick_missionClearMap">Clear Map</Button>
+        </VerticalLayout>
     </Panel>
 </VerticalLayout>
