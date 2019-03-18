@@ -1680,6 +1680,20 @@ function getAiDef(ai)
     local type = getAiType(ai)
     return AI_DEFS[campaign][type]
 end
+function getAiDefByType(type)
+    if AI_DEFS[campaign][type]~=nil then
+        return AI_DEFS[campaign][type]
+    else
+        printToAll("Searching all campaigns")
+        for i,camp in ipairs(campaigns) do
+            if AI_DEFS[camp][type]~=nil then
+                printToAll("Found it: "..camp.." "..type)
+                return AI_DEFS[camp][type]
+            end
+        end
+    end
+
+end
 function getAiType(ai)
     local type =  ai.getName():match '^%[%u*:?(%u*):?%d*].*'
     --local validTypes = {"TIE","TFO","INT","ADV","BOM","DEF","PHA","DEC","SHU" }
@@ -1776,8 +1790,8 @@ function Action_SetPS7() SetPS(7) end
 function Action_SetPS8() SetPS(8) end
 function Action_SetPS9() SetPS(9) end
 function Action_SetPS10() SetPS(10) end
-function SetPS(num) mission_ps = num printToAll("Setting Average Pilot Skill (PS) of Players to: "..num,{0,1,1}) end
-
+function SetPS(num) mission_ps = num printToAll("Setting Average Pilot Skill (PS) of Players to: "..tostring(num),{0,1,1}) end
+function GetPS() return mission_ps end
 --ELITE_ICON = "http://i.imgur.com/n9dywTO.png"
 
 core_source = nil
@@ -2266,7 +2280,8 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
     if isHostile==nil then
         isHostile = true
     end
-    local def = AI_DEFS[campaign][type]
+    --local def = AI_DEFS[campaign][type]
+    local def = getAiDefByType(type)
     local obj_parameters = {}
     obj_parameters.type = 'Custom_Model'
     obj_parameters.position = position
@@ -2285,10 +2300,14 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
     newship.setCustomObject(custom)
     local ps = def.elitePilotSkills[1]
     if elite then
-        if mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[5] --8
-        elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[4] --6
-        elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[3] --4
-        else ps = def.elitePilotSkills[2]
+        if #def.elitePilotSkills==1 then
+            printToAll("Definition does not have an elite version",{1,0,0})
+        else
+            if mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[5] --8
+            elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[4] --6
+            elseif mission_ps >= def.eliteLimits[3] then ps = def.elitePilotSkills[3] --4
+            else ps = def.elitePilotSkills[2]
+            end
         end
     end
     local size = ""
@@ -2297,6 +2316,21 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
         hostility = "FR"
     end
     if def.isLargeShip then size = " LGS" end
+    if hostility==nil then
+        printToAll("hostility==nil")
+    end
+    if type==nil then
+        printToAll("type==nil")
+    end
+    if ps==nil then
+        printToAll("ps==nil")
+    end
+    if name==nil then
+        printToAll("name==nil")
+    end
+    if size==nil then
+        printToAll("size==nil")
+    end
     newship.setName("["..hostility..":"..type..":"..ps.."] "..name.."#"..tostring(shipnum)..size)
     if ai=="strike" then newship.setDescription("ai strike") end
     Spawn_Card(type, name, temp_pos, shipnum, card)

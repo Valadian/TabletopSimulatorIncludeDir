@@ -12,14 +12,14 @@
 <VerticalLayout color="black"
     id="xwingDisplay"
     height="660"
-    width="400"
+    width="250"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
     offsetXY="0 -160"
     >
     <HorizontalLayout color="transparent" preferredHeight="20">
-        <Text id="title" preferredWidth="360">X-Wing AI</Text>
+        <Text id="title" preferredWidth="210">X-Wing AI</Text>
         <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Minimize" colors="transparent|#FF0000|#800000|transparent" />
     </HorizontalLayout>
     <HorizontalLayout id="tabContainer">
@@ -38,24 +38,24 @@ Click Plan to start
                 <Text id="phase_text" color="black" fontStyle="bold" fontSize="20">Planning Phase</Text>
             </Panel> -->
             <Panel preferredHeight="10" color="black">
-                <ProgressBar id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
+                <ProgressBar width="200" id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
                 <Text id="turn_text">Turn 6/10</Text>
             </Panel>
-            <TableLayout id="roundTrackerTable" columnWidths="20 30 20 30 0 30 20 80" preferredHeight="500"  cellBackgroundColor="black">
+            <TableLayout id="roundTrackerTable" columnWidths="10 20 30 0 20 20 60" preferredHeight="500"  cellBackgroundColor="black">
                 <Row id="ship1">
                     <Cell>
                         <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
                             <Button id="ship1select_button" onClick="030220/onClick_SelectShipByIndex(1)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="#000000">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship1ps_panel" color="#000000">
-                            <Text id="ship1ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship1ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -90,14 +90,14 @@ Click Plan to start
                             <Button id="ship2select_button" onClick="030220/onClick_SelectShipByIndex(2)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="black">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship2ps_panel" color="black">
-                            <Text id="ship2ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship2ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -132,14 +132,14 @@ Click Plan to start
                             <Button id="ship3select_button" onClick="030220/onClick_SelectShipByIndex(3)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="#000000">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship3ps_panel" color="#000000">
-                            <Text id="ship3ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship3ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -174,14 +174,14 @@ Click Plan to start
                             <Button id="ship4select_button" onClick="030220/onClick_SelectShipByIndex(4)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="black">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship4ps_panel" color="black">
-                            <Text id="ship4ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship4ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -216,14 +216,14 @@ Click Plan to start
                             <Button id="ship5select_button" onClick="030220/onClick_SelectShipByIndex(5)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="#000000">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship5ps_panel" color="#000000">
-                            <Text id="ship5ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship5ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -258,14 +258,14 @@ Click Plan to start
                             <Button id="ship6select_button" onClick="030220/onClick_SelectShipByIndex(6)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="black">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship6ps_panel" color="black">
-                            <Text id="ship6ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship6ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -300,14 +300,14 @@ Click Plan to start
                             <Button id="ship7select_button" onClick="030220/onClick_SelectShipByIndex(7)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="#000000">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship7ps_panel" color="#000000">
-                            <Text id="ship7ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship7ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -342,14 +342,14 @@ Click Plan to start
                             <Button id="ship8select_button" onClick="030220/onClick_SelectShipByIndex(8)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="black">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship8ps_panel" color="black">
-                            <Text id="ship8ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship8ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -384,14 +384,14 @@ Click Plan to start
                             <Button id="ship9select_button" onClick="030220/onClick_SelectShipByIndex(9)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="#000000">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship9ps_panel" color="#000000">
-                            <Text id="ship9ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship9ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -426,14 +426,14 @@ Click Plan to start
                             <Button id="ship10select_button" onClick="030220/onClick_SelectShipByIndex(10)" color="#FFFFFF" colors="transparent|#00FF80|#008040|transparent" tooltip="Select Ship" tooltipPosition="Left"></Button>
                         </Panel>
                     </Cell>
-                    <Cell>
+                    <!-- <Cell>
                         <Panel color="black">
                             <Text>PS</Text>
                         </Panel>
-                    </Cell>
+                    </Cell> -->
                     <Cell>
                         <Panel id="ship10ps_panel" color="black">
-                            <Text id="ship10ps_text" color="white" fontStyle="bold">2</Text>
+                            <Text id="ship10ps_text" color="white" fontStyle="bold" tooltip="Player Skill" tooltipPosition="Left">2</Text>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -470,7 +470,7 @@ Click Plan to start
                 <Button text="End" id="End" class="phase" tooltip="Auto-Clean up Focus/Evade/Etc. End Turn" tooltipPosition="Below"/>
             </HorizontalLayout>
         </VerticalLayout>
-        <HorizontalLayout width="200" offsetXY="0 335">
+        <HorizontalLayout width="180" offsetXY="-20 335">
             <Image id="timer_1" image="DOT" color="green" preserveAspect="1"/>
             <Image id="timer_2" image="DOT" color="green" preserveAspect="1"/>
             <Image id="timer_3" image="DOT" color="green" preserveAspect="1"/>
@@ -487,16 +487,16 @@ Click Plan to start
         <!-- preferredHeight="330" color="gray" alignment="UpperLeft"> -->
         <Text>Ship Spawner</Text>
         <TableLayout id="spawnerTable" columnWidths="80 350" preferredHeight="500" cellBackgroundColor="black">
-            <Row preferredHeight="120">
+            <Row preferredHeight="180">
                 <Cell><Panel color="black"><Text>Type</Text></Panel></Cell>
                 <Cell><Panel color="black">
-                    <HorizontalLayout>
-                        <VerticalLayout preferredWidth="40">
+                    <VerticalLayout>
+                        <HorizontalLayout preferredHeight="20">
                             <Button id="spawnEmpireButton" onClick="030220/onClick_spawnFaction(Empire)" color="#0B007C" icon="EMPIRE" tooltip="Empire" tooltipPosition="Left" tooltipBackgroundColor="rgba(0,0,0,1)"/>
                             <Button id="spawnRebellionButton" onClick="030220/onClick_spawnFaction(Rebellion)" color="#303030" icon="_REBELLION" iconColor="#505050" tooltip="Rebellion" tooltipPosition="Left" tooltipBackgroundColor="rgba(0,0,0,1)"/>
                             <Button id="spawnScumButton" onClick="030220/onClick_spawnFaction(Scum)" color="#303030" icon="_SCUM" iconColor="#505050" tooltip="Scum" tooltipPosition="Left" tooltipBackgroundColor="rgba(0,0,0,1)"/>
-                        </VerticalLayout>
-                        <GridLayout id="spawnEmpireShips" preferredWidth="310" cellSize="40 40">
+                        </HorizontalLayout>
+                        <GridLayout id="spawnEmpireShips" preferredHeight="160" cellSize="40 40">
                             <Panel id="spawnTIEFighter_panel" color="green"><Button id="spawnTIEFighter" icon="TIE Fighter" tooltip="TIE Fighter" iconColor="#395567" class="shipType"/></Panel>
                             <Panel id="spawnTIEInterceptor_panel"><Button id="spawnTIEInterceptor" icon="TIE Interceptor" tooltip="TIE Interceptor" iconColor="#88111D" class="shipType"/></Panel>
                             <Panel id="spawnTIEBomber_panel"><Button id="spawnTIEBomber" icon="TIE Bomber" tooltip="TIE Bomber" iconColor="#E6E7EA" class="shipType"/></Panel>
@@ -524,6 +524,10 @@ Click Plan to start
                             <Panel id="spawnAWing_panel"><Button id="spawnAWing" icon="A-Wing" tooltip="A-Wing" iconColor="#819076" class="shipType"/></Panel>
                             <Panel id="spawnARC170_panel"><Button id="spawnARC170" icon="ARC-170" tooltip="ARC-170" iconColor="#BB7071" class="shipType"/></Panel>
                             <Panel id="spawnAttackShuttle_panel"><Button id="spawnAttackShuttle" icon="Attack Shuttle" tooltip="Attack Shuttle" iconColor="#717171" class="shipType"/></Panel>
+                            <Panel id="spawnVCX100_panel"><Button id="spawnVCX100" icon="VCX-100" tooltip="VCX-100" iconColor="#A65233" class="shipType"/></Panel>
+                            <Panel id="spawnT70XWing_panel"><Button id="spawnT70XWing" icon="T-70 X-Wing" tooltip="T-70 X-Wing" iconColor="#F5A17D" class="shipType"/></Panel>
+                            <!-- VCX-100-->
+                            <!-- T-70 X-Wing -->
                         </GridLayout>
                         <GridLayout id="spawnScumShips" preferredWidth="310" cellSize="40 40" active="false">
                             <Panel id="spawnM3AInterceptor_panel"><Button id="spawnM3AInterceptor" icon="M3-A Interceptor" tooltip="M3-A Interceptor" iconColor="#6E5552" class="shipType"/></Panel>
@@ -538,15 +542,16 @@ Click Plan to start
                             <Panel id="spawnAggressor_panel"><Button id="spawnAggressor" icon="Aggressor" tooltip="Aggressor" iconColor="#354AAE" class="shipType"/></Panel>
                             <Panel id="spawnZ95HeadhunterScum_panel"><Button id="spawnZ95HeadhunterScum" icon="Z-95 Headhunter Scum" tooltip="Z-95 Headhunter" iconColor="#FDCC7C" class="shipType"/></Panel>
                             <Panel id="spawnYWingScum_panel"><Button id="spawnYWingScum" icon="Y-Wing Scum" tooltip="Y-Wing" iconColor="#B1991F" class="shipType"/></Panel>
+                            <Panel></Panel> <!-- Prevents resizing -->
                             <!-- <Panel id="spawnHWK290Scum_panel"><Button id="spawnHWK290Scum" icon="HWK-290 Scum" tooltip="HWK-290" iconColor="#A38D72" class="shipType"/></Panel> -->
                         </GridLayout>
-                    </HorizontalLayout>
+                    </VerticalLayout>
                 </Panel></Cell>
             </Row>
-            <Row preferredHeight="80">
+            <Row preferredHeight="40">
                 <Cell><Panel color="black"><Text>Number</Text></Panel></Cell>
                 <Cell>
-                    <TableLayout id="spawnSmallCount" color="black" columnWidths="40 40" cellBackgroundColor="black">
+                    <!-- <TableLayout id="spawnSmallCount" color="black" columnWidths="40 40" cellBackgroundColor="black">
                         <Row>
                             <Cell><Panel color="black"><Button id="spawnCount4" onClick="030220/onClick_spawnSetCount(4)" color="white" icon="BASE" iconColor="#202020" tooltip="4 Ships" tooltipPosition="Left" colors="transparent|#303030|#202020|transparent"/></Panel></Cell>
                             <Cell><Panel color="black"><Button id="spawnCount3" onClick="030220/onClick_spawnSetCount(3)" color="white" icon="BASE" iconColor="#202020" tooltip="3 Ships" tooltipPosition="Right" colors="transparent|#303030|#202020|transparent" /></Panel></Cell>
@@ -562,23 +567,30 @@ Click Plan to start
                                 <Button color="white" icon="BASE" iconColor="green" tooltip="1 Ship" tooltipPosition="Right" colors="transparent|#303030|#202020|transparent" />
                             </Panel></Cell>
                         </Row>
-                    </TableLayout>
-                    <!-- <Panel color="black"><Dropdown onValueChanged="optionSelected" rectAlignment="MiddleLeft" width="200">
-                    <Option selected="true">1</Option>
-                    <Option>2</Option>
-                    <Option>3</Option>
-                    <Option>4</Option>
-                </Dropdown></Panel> -->
+                    </TableLayout> -->
+                    <Panel color="black"><Dropdown onValueChanged="030220/onValueChanged_spawnSetCount" rectAlignment="MiddleLeft" width="150">
+                        <Option selected="true">1</Option>
+                        <Option>2</Option>
+                        <Option>3</Option>
+                        <Option>4</Option>
+                    </Dropdown></Panel>
                 </Cell>
             </Row>
-            <Row preferredHeight="80">
+            <Row preferredHeight="60">
                 <Cell><Panel color="black"><Text>SubType</Text></Panel></Cell>
-                <Cell><Panel color="black"><ToggleGroup id="spawnSubTypeContainer" >
+                <Cell><Panel color="black">
+                    <!--Can't set Option values???-->
+                    <!-- <Dropdown id="spawnSubTypeContainer" onValueChanged="030220/onValueChanged_spawnSubtype" rectAlignment="MiddleLeft" width="150">
+                        <Option id="spawnSubType1" selected="true">[TIE] Acadamy Pilot (Hotac)</Option>
+                        <Option id="spawnSubType2">[TIEE] Black Squadron Pilot (Pallas)</Option>
+                    </Dropdown> -->
+                    <ToggleGroup id="spawnSubTypeContainer" >
                     <VerticalLayout color="black">
                         <Toggle id="spawnSubType1" onClick="030220/onClick_spawnShipSubType" textColor="white" isOn="True">[TIE] Acadamy Pilot (Hotac)</Toggle>
                         <Toggle id="spawnSubType2" onClick="030220/onClick_spawnShipSubType" textColor="white">[TIEE] Black Squadron Pilot (Pallas)</Toggle>
                     </VerticalLayout>
-                </ToggleGroup></Panel></Cell>
+                </ToggleGroup>
+                </Panel></Cell>
             </Row>
             <Row preferredHeight="40">
                 <Cell><Panel color="black"><Text>Name</Text></Panel></Cell>
@@ -595,15 +607,29 @@ Click Plan to start
             </Row>
             <Row>
                 <Cell><Panel color="black"></Panel></Cell>
-                <Cell><Panel color="black"><InputField id="spawnWingOverride" onEndEdit="030220/onEndEdit_spawnWingOverride" placeholder="Wing Name Override" rectAlignment="MiddleLeft" width="200"></InputField></Panel></Cell>
+                <Cell><Panel color="black"><InputField id="spawnWingOverride" onEndEdit="030220/onEndEdit_spawnWingOverride" placeholder="Wing Name Override" rectAlignment="MiddleLeft" width="150"></InputField></Panel></Cell>
             </Row>
             <Row>
                 <Cell><Panel color="black"></Panel></Cell>
-                <Cell><Panel color="black"><Toggle id="spawnElite" onValueChanged="030220/onValueChanged_spawnElite" textColor="#D4AF37" rectAlignment="MiddleLeft" width="200">Elite</Toggle></Panel></Cell>
+                <Cell><Panel color="black"><Toggle id="spawnElite" onValueChanged="030220/onValueChanged_spawnElite" textColor="#D4AF37" rectAlignment="MiddleLeft" width="150">Elite</Toggle></Panel></Cell>
+            </Row>
+            <Row id="spawnPSOverrideContainer" active="false">
+                <Cell><Panel color="black"></Panel></Cell>
+                <Cell><Panel color="black"><InputField id="spawnPSOverride" onEndEdit="030220/onEndEdit_spawnPSOverride" characterValidation="Integer" placeholder="Player Skill Override" rectAlignment="MiddleLeft" width="150"></InputField></Panel></Cell>
             </Row>
             <Row>
                 <Cell><Panel color="black"><Text>Start Numbering: </Text></Panel></Cell>
-                <Cell><Panel color="black"><InputField id="spawnStartNum" onEndEdit="030220/onEndEdit_spawnStartNum" characterValidation="Integer" placeholder="Start Numbering" rectAlignment="MiddleLeft" width="200"></InputField></Panel></Cell>
+                <Cell><Panel color="black"><InputField id="spawnStartNum" onEndEdit="030220/onEndEdit_spawnStartNum" characterValidation="Integer" placeholder="Start Numbering" rectAlignment="MiddleLeft" width="150">1</InputField></Panel></Cell>
+            </Row>
+            <Row preferredHeight="30">
+                <Cell><Panel color="black"></Panel></Cell>
+                <Cell><Panel color="black">
+                    <HorizontalLayout>
+                        <Button id="spawnAiType_attack" color="green" onClick="030220/onClick_spawnAiType(attack)">Attack</Button>
+                        <Button id="spawnAiType_strike" color="#303030" onClick="030220/onClick_spawnAiType(strike)">Strike</Button>
+                        <Button id="spawnAiType_flee" color="#303030" onClick="030220/onClick_spawnAiType(flee)">Flee</Button>
+                    </HorizontalLayout>
+                </Panel></Cell>
             </Row>
             <Row preferredHeight="80">
                 <Cell><Panel color="black"></Panel></Cell>
@@ -612,39 +638,3 @@ Click Plan to start
         </TableLayout>
     </Panel>
 </VerticalLayout>
-
-<!-- <Panel color="black"
-    id="rollerLayout"
-    height="280"
-    width="400"
-    allowDragging="true"
-    returnToOriginalPositionWhenReleased="false"
-    rectAlignment="UpperLeft"
-    offsetXY="300 -80"
-    >
-    <TableLayout>
-        <Row preferredHeight="40"><Cell>
-            <Text>X-Wing AI</Text>
-        </Cell></Row>
-        <Row preferredHeight="40"><Cell>
-            <HorizontalLayout height="40">
-                <Button text="Round Tracker"  id="roundTrackerTab"  class="tab" height="40" ></Button>
-                <Button text="Ship Spawner"  id="shipSpawnerTab"  class="tab" height="40" ></Button>
-            </HorizontalLayout>
-        </Cell></Row>
-        <Row preferredHeight="400"><Cell>
-            <Panel id="roundTrackerTab"
-                height="240"
-                width="400"
-                active="true">
-                    Round Tracker
-            </Panel>
-            <Panel id="shipSpawnerTab"
-                height="240"
-                width="400"
-                active="false">
-                    Ship Spawner
-            </Panel>
-        </Cell></Row>
-    </TableLayout>
-</Panel> -->
