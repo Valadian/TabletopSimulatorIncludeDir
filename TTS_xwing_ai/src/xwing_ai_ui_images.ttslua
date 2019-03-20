@@ -1,4 +1,5 @@
-local assets = {
+local assets = UI.getCustomAssets()
+local new_assets = {
     {
         name = "Aggressor",--AGGR",
         url = "https://i.imgur.com/2P9BOLq.png"
@@ -272,4 +273,8 @@ local assets = {
         url = "https://i.imgur.com/cSquhmA.png"
     }
 }
+for _, item in ipairs(new_assets) do
+    table.insert(assets, item)
+end
+printToAll("#assets: "..tostring(#assets))
 UI.setCustomAssets(assets)

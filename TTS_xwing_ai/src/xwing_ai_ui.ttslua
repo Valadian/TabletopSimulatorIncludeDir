@@ -165,7 +165,7 @@ function updateShipRow(ship, index, active)
         end
         UI.setValue("ship"..istr.."status_text", "")
         if isAi(ship) then
-        UI.setAttribute("ship"..istr.."move_image", "color",'red')
+            UI.setAttribute("ship"..istr.."move_image", "color",'red')
             if aitargets[ship.getGUID()] then
                 UI.setAttribute("ship"..istr.."move_image", "image","LOCK")
                 local nocolor = aitargets[ship.getGUID()].getName():gsub("%[.-%]","")
@@ -181,6 +181,22 @@ function updateShipRow(ship, index, active)
             end
         end
     end
+    if isAi(ship) then
+        local type = getAiType(ship)
+        --local def = getAiDef(ship)
+        UI.setAttribute("ship"..istr.."maneuver","image", type.."_maneuver")
+        UI.setAttribute("ship"..istr.."maneuver","width", 500)
+        UI.setAttribute("ship"..istr.."maneuver","height", 500)
+        --printToAll(type.."_"..tostring(aielite[ship.getGUID()]).."_"..aicards[ship.getGUID()])
+        UI.setAttribute("ship"..istr.."shipCard","image", type.."_"..tostring(aielite[ship.getGUID()]).."_"..aicards[ship.getGUID()])
+        UI.setAttribute("ship"..istr.."shipCard","width", 350)
+        UI.setAttribute("ship"..istr.."shipCard","height", 500)
+    else
+        UI.setAttribute("ship"..istr.."maneuver","width", 0)
+        UI.setAttribute("ship"..istr.."maneuver","height", 0)
+        UI.setAttribute("ship"..istr.."shipCard","width", 0)
+        UI.setAttribute("ship"..istr.."shipCard","height", 0)
+    end
     if active then
         local phasecolor = {}
         phasecolor[PlanningSort] = "FF80FF"
@@ -191,7 +207,7 @@ function updateShipRow(ship, index, active)
         UI.setAttribute("ship"..istr.."indicator_panel", "outline", "#"..phasecolor[currentphase])
     else
         --UI.setAttribute("ship"..istr.."indicator_panel", "outlineSize", "0 0")
-        UI.setAttribute("ship"..istr.."indicator_panel", "outline", "#000000")
+        UI.setAttribute("ship"..istr.."indicator_panel", "outline", UI.getAttribute("ship"..istr.."indicator_panel",'color'))
     end
     UI.show("ship"..istr)
 end
@@ -276,7 +292,14 @@ local spawnUIWingName = "Alpha"
 local spawnUIWingNameOverride = ""
 local spawnUIElite = false
 local spawnUIStartNum = 1
+local spawnUIAiHostile = true
 local spawnUIAiType = "attack"
+local spawnUIMissionCampaign = "HOTAC"
+local spawnUIMission = {
+    ["HOTAC"] ="Local Trouble",
+    ["PALLAS"]="Flying School",
+    ["DOTE"]=""
+}
 local WINGS = {"Alpha","Beta","Delta","Epsilon","Gamma","Zeta"}
 local AITYPES = {"attack","strike","flee"}
 local FACTION_COLORS = {}
@@ -393,6 +416,18 @@ function onClick_spawnAiType(player, value, idValue)
         UI.setAttribute("spawnAiType_"..type,"textColor","white")
     end
 end
+function onClick_spawnAiFaction(player, value, idValue)
+    spawnUIAiHostile = value=="hostile"
+    if spawnUIAiHostile then
+        UI.setAttribute("spawnAiFaction_hostile", "color", "red")
+        UI.setAttribute("spawnAiFaction_friendly", "color", "#303030")
+    else
+        UI.setAttribute("spawnAiFaction_hostile", "color", "#303030")
+        UI.setAttribute("spawnAiFaction_friendly", "color", "blue")
+    end
+    UI.setAttribute("spawnAiFaction_hostile","textColor","white")
+    UI.setAttribute("spawnAiFaction_friendly","textColor","white")
+end
 local spawn_point = {-57.25,5,30 }
 function onClick_spawn(player, _, _)
     if mission_ps==nil then
@@ -424,7 +459,7 @@ function onClick_spawn(player, _, _)
     local ship_spawn_point = vector.add(spawn_point,{spawnUIStartNum*6,0,0})
     for i,off in ipairs(squad_offsets) do
         if 5-i<=spawnUICount then
-            Spawn_Ship(true, spawnUIShipSubType, wingName, spawnUIElite, spawnUIAiType, card, vector.add(ship_spawn_point, off), 180, vector.add(ship_spawn_point, vector.add(off,{0,0,5}) ),spawnUIStartNum)
+            Spawn_Ship(spawnUIAiHostile, spawnUIShipSubType, wingName, spawnUIElite, spawnUIAiType, card, vector.add(ship_spawn_point, off), 180, vector.add(ship_spawn_point, vector.add(off,{0,0,5}) ),spawnUIStartNum)
             spawnUIStartNum = spawnUIStartNum+1
         end
     end
@@ -452,7 +487,89 @@ function onEndEdit_spawnStartNum(player, value, id)
     spawnUIStartNum = tonumber(value)
     --spawnUIStartNum = tonumber(value)
 end
+function onValueChanged_missionCampaign(player, value, id)
+    spawnUIMissionCampaign = value:match '%[(.*)%]'
+    for i,camp in ipairs(campaigns) do
+        if camp==spawnUIMissionCampaign then
+            UI.show('missionSpawner_'..camp..'_missions')
+            UI.setAttribute('missionSpawner_'..camp..'_missions','active','true')
+            onValueChanged_missionMission(nil, spawnUIMission[spawnUIMissionCampaign], 'missionSpawner_'..camp..'_missions')
+        else
+            UI.hide('missionSpawner_'..camp..'_missions')
+            UI.setAttribute('missionSpawner_'..camp..'_missions','active','false')
+        end
+    end
+end
+function onClick_missionPresetup()
+    local players = CountPlayers()
+    local skill = CalculatePlayerSkill()
+    UI.setAttribute('missionPlayerCount','text',players)
+    UI.setAttribute('missionPlayerPS','text',skill)
+end
+function onValueChanged_missionMission(player, value, id)
+    if string.starts(value,"-") or value=="" then
+        spawnUIMission[spawnUIMissionCampaign] = ""
+        UI.setAttribute(id, 'color','#803030')
+        UI.setAttribute(id, 'textColor','white')
+        UI.setAttribute(id, 'itemTextColor','black')
+    else
+        spawnUIMission[spawnUIMissionCampaign] = value
+        UI.setAttribute(id, 'color','white')
+        UI.setAttribute(id, 'textColor','black')
+        UI.setAttribute(id, 'itemTextColor','black')
+    end
+    --printToAll("Mission: "..spawnUIMission[spawnUIMissionCampaign])
+end
+function onClick_missionSetup()
+    Setup_Mission(spawnUIMission[spawnUIMissionCampaign])
+end
+function onClick_missionClearMap()
+    Action_setupclear()
+end
+function addVisibility(id, color)
+    local visibility = UI.getAttribute(id,'visibility')
+    if visibility==nil then
+        visibility=""
+    end
+    UI.setAttribute(id,'visibility',visibility..'|'..color)
+    return visibility
+end
+function removeVisibility(id, color)
+    local visibility = UI.getAttribute(id,'visibility')
+    if visibility==nil then
+        visibility=""
+    end
+    visibility = string.gsub(visibility,color,"")
+    visibility = string.gsub(visibility,'||',"|")
+    visibility = string.gsub(visibility,'^|',"")
+    visibility = string.gsub(visibility,'|$',"")
+    UI.setAttribute(id,'visibility',visibility)
+    return visibility
+end
+function onMouseEnter_revealManeuver(player, value, id)
+    addVisibility(value..'maneuver', player.color)
+    UI.show(value..'maneuver')
+end
+function onMouseExit_hideManeuver(player, value, id)
+    local visibility = removeVisibility(value..'maneuver', player.color)
+    if visibility=="" then
+        UI.hide(value..'maneuver')
+        UI.setAttribute(value..'maneuver',"active","false")
+    end
+end
+function onMouseEnter_revealShipCard(player, value, id)
+    addVisibility(value..'shipCard', player.color)
+    UI.show(value..'shipCard')
+end
+function onMouseExit_hideShipCard(player, value, id)
+    local visibility = removeVisibility(value..'shipCard', player.color)
+    if visibility=="" then
+        UI.hide(value..'shipCard')
+        UI.setAttribute(value..'shipCard',"active","false")
+    end
+end
 function xwing_ai_ui_onload()
+    printToAll('xwing_ai_ui_onload')
 #include xwing_ai_ui_images
     Wait.time(function()
         printToAll("Setting XML")

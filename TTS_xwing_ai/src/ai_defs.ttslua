@@ -27,6 +27,7 @@ local pilot_card_num = {} --{TIE=1,INT=6,BOM=6,ADV=4,DEF=4,PHA=4,SHU=4}
 --     return AI_DEFS[campaign]
 -- end
 function initialize_ai()
+    printToAll("initialize_ai")
     for _,campaign in ipairs(campaigns) do
 	    AI_DEFS[campaign] = {}
         pilot_card_offsets[campaign] = {}
@@ -154,7 +155,7 @@ function initialize_ai()
         elitePilotSkillDeckEntries = 6,
         pilotCards = {'https://i.imgur.com/SKX1Hge.png','https://i.imgur.com/NeP9wzw.png','https://i.imgur.com/y6M2YMQ.png','https://i.imgur.com/bKHagWB.png','https://i.imgur.com/NL4ZmKN.png','https://i.imgur.com/UfPkR0o.png'},
         elitePilotCards = {'https://i.imgur.com/SKX1Hge.png','https://i.imgur.com/NeP9wzw.png','https://i.imgur.com/y6M2YMQ.png','https://i.imgur.com/bKHagWB.png','https://i.imgur.com/NL4ZmKN.png','https://i.imgur.com/UfPkR0o.png'},
-        manueverCard = 'https://i.imgur.com/2eyGeHq.jpg',
+        maneuverCard = 'https://i.imgur.com/2eyGeHq.jpg',
         closeMoves = {{'bl2','br2','s2','s2','k5*','k5*'},
                       {'s2','br2','br2','k5*','k5*','tr1' },
                       {'tr1','tr1','tr2','tr2','k3*','k5*'},
@@ -403,7 +404,7 @@ function initialize_ai()
         elitePilotSkillDeckEntries = 4,
         pilotCards = {'https://i.imgur.com/sxplWWh.png','https://i.imgur.com/tWHUaj2.png','https://i.imgur.com/iMb9VLT.png','https://i.imgur.com/G3L67Kc.png'},
         elitePilotCards = {'https://i.imgur.com/sxplWWh.png','https://i.imgur.com/tWHUaj2.png','https://i.imgur.com/iMb9VLT.png','https://i.imgur.com/G3L67Kc.png'},
-        manueverCard = 'https://i.imgur.com/kMkJ8U0.jpg',
+        maneuverCard = 'https://i.imgur.com/kMkJ8U0.jpg',
         closeMoves =   {{'s0*','s0*','s0*','s1','br1','bl1'},
                         {'s0*','s1','br1','br1','br1','tr2*' },
                         {'s0*','tr2*','tr2*','tr2*','br1','br2'},
@@ -1250,7 +1251,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['HSTP'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCS']))
     AI_DEFS['DOTE']['HSTP'].description = 'Tansarii Point Veteran'
     AI_DEFS['DOTE']['HSTP'].diffuse = 'http://i.imgur.com/ojOpBFC.jpg'
-    AI_DEFS['DOTE']['HSTP'].pilotCards = 'https://i.imgur.com/V2VD48t.png'
+    AI_DEFS['DOTE']['HSTP'].pilotCards = {'https://i.imgur.com/V2VD48t.png'}
     AI_DEFS['DOTE']['HSTP'].maneuverCard = 'https://i.imgur.com/roY4URD.png'
     AI_DEFS['DOTE']['HSTP'].elitePilotSkills = {5,6,7,9,10}
     AI_DEFS['DOTE']['LSCS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCS']))
@@ -1856,9 +1857,11 @@ function initialize_ai()
     -- '", "NumWidth": '..numWidth..
     -- ', "NumHeight": '..numHeight..
     -- ', "BackIsHidden": false, "UniqueBack": true } } }'
+    local assets = {}
     for _,campaign_key in ipairs(campaigns) do
         local offset = 0
         for key,ai in pairs(AI_DEFS[campaign_key]) do
+            --printToAll("key: "..key)
             --printToAll("Mirroring: "..campaign_key.." "..key,{1,1,1})
             mirrorMoveTable(ai.closeMoves,ai.leftAlts)
             mirrorMoveTable(ai.farMoves,ai.leftAlts)
@@ -1873,8 +1876,27 @@ function initialize_ai()
             end
             escaped_name = string.gsub(ai.shipType,"[%.%s-%/]","")
             table.insert(SHIP_TYPES, escaped_name)
+            table.insert(assets, {
+                name = key.."_maneuver",
+                url = ai.maneuverCard
+            })
+            for i,pilotCard in ipairs(ai.pilotCards) do
+                table.insert(assets, {
+                    name = key.."_false_"..tostring(i),
+                    url = ai.pilotCards[i]
+                })
+            end
+            for i,pilotCard in ipairs(ai.elitePilotCards) do
+                table.insert(assets, {
+                    name = key.."_true_"..tostring(i),
+                    url = ai.elitePilotCards[i]
+                })
+            end
+            --printToAll(key.." "..ai.maneuverCard)
         end
     end
+    --printToAll("#assets: "..tostring(#assets))
+    UI.setCustomAssets(assets)
     -- AI_DEFS['TEMP'] = HostileAiDefinition:new{
     --     isLargeShip = false,
     --     mesh = '',

@@ -16,6 +16,8 @@ target = nil --'c81580'
 aitype = {}
 striketarget = {}
 striketargetgroup = {}
+aicards = {}
+aielite = {}
 -- aicardguid = '2d84be'
 squadleader = {}
 squadmove = {}
@@ -91,6 +93,8 @@ function onload(save_string)
         striketargetgroup = data.striketargetgroup
         campaign = data.campaign
         isEpicMap = data.isEpicMap
+        aicards = data.aicards or {}
+        aielite = data.aielite or {}
     end
     Render_Menu_v2()
     turn_marker = findObjectByName("Turn Marker")
@@ -107,6 +111,8 @@ function onSave()
     save.striketargetgroup = striketargetgroup
     save.campaign = campaign
     save.isEpicMap = isEpicMap
+    save.aicards = aicards
+    save.aielite = aielite
     local save_string = JSON.encode_pretty(save)
     return save_string
 end
@@ -595,7 +601,7 @@ end
 function Render_SwerveLeft(object)
     local move = aimove[object.getGUID()]
     --printToAll("[:807] For: "..object.getGUID().." "..move,{1,1,1})
-    local def = AI_DEFS[campaign][getAiType(object)]
+    local def = getAiDef(object) --AI_DEFS[campaign][getAiType(object)]
     local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
     --printToAll("[:810] Swerve is: "..tostring(swerves[1]).." "..tostring(swerves[2]),{1,1,1})
     if swerves ~= nil and swerves[1] ~= nil then -- and aiswerved[object.getGUID()]~=true
@@ -606,14 +612,14 @@ function Render_SwerveLeft(object)
 end
 function Action_SwerveLeft(object)
     local move = aimove[object.getGUID()]
-    local def = AI_DEFS[campaign][getAiType(object)]
+    local def = getAiDef(object) --AI_DEFS[campaign][getAiType(object)]
     local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
     aiswerved[object.getGUID()] = true
     object.setDescription("q "..swerves[1])
 end
 function Render_SwerveRight(object)
     local move = aimove[object.getGUID()]
-    local def = AI_DEFS[campaign][getAiType(object)]
+    local def = getAiDef(object) --AI_DEFS[campaign][getAiType(object)]
     local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
     if swerves ~= nil and swerves[2] ~= nil then -- and aiswerved[object.getGUID()]~=true
     local swerve = {['click_function'] = 'Action_SwerveRight', ['function_owner'] = self, ['label'] = swerves[2], ['position'] = {1.0, BTN_Y, 1.6}, ['rotation'] =  {0, 0, 0}, ['width'] = 450, ['height'] = 300, ['font_size'] = 300}
@@ -622,7 +628,7 @@ function Render_SwerveRight(object)
 end
 function Action_SwerveRight(object)
     local move = aimove[object.getGUID()]
-    local def = AI_DEFS[campaign][getAiType(object)]
+    local def = getAiDef(object) --AI_DEFS[campaign][getAiType(object)]
     local swerves = def.swerves[move] --getSwerve(getAiType(object),move)
     aiswerved[object.getGUID()] = true
     object.setDescription("q "..swerves[2])
@@ -643,7 +649,7 @@ function getMove(type, i_dir,range,far, flee)
     --TODO: Implement border crossing resolution.
     -- Check corners, if different
     -- take heading, compare to direction vector rotate towards pie slice in that direction.
-    local def = AI_DEFS[campaign][type]
+    local def = getAiDefByType(type) --AI_DEFS[campaign][type]
     local move = ""
     if flee==true then
         move = def.farMoves[i_dir][i_roll]
@@ -696,7 +702,7 @@ function Action_Activation()
     for i,ship in ipairs(getAllObjects()) do
         if isShip(ship) and isInPlay(ship) then
             ship.clearButtons()
-            if AI_DEFS[campaign][getAiType(ship)].hasCloak then --getAiType(ship)=="PHA"
+            if getAiDef(ship).hasCloak then --getAiType(ship)=="PHA"
                 Render_AiDecloak(ship)
             end
             -- Set MOVE button
@@ -971,7 +977,7 @@ function prettyString(ship,withtarget)
     local skill_color = getSkillColor(ship)
     if isAi then
         local type = tostring(getAiType(ship))
-        local def = AI_DEFS[campaign][type]
+        local def = getAiDef(ship) --AI_DEFS[campaign][type]
         local type_color = def.typeColor --type_colors[type]
         if type_color == nil then type_color = "000000" end
         local squad = getAiSquad(ship)
@@ -1678,26 +1684,27 @@ function isFriendlyAI(ai)
 end
 function getAiDef(ai)
     local type = getAiType(ai)
-    return AI_DEFS[campaign][type]
+    return getAiDefByType(type) --AI_DEFS[campaign][type]
 end
 function getAiDefByType(type)
     if AI_DEFS[campaign][type]~=nil then
         return AI_DEFS[campaign][type]
     else
-        printToAll("Searching all campaigns")
+        --printToAll("AI_DEFS["..campaign.."]["..type.."] Not Found")
+        --printToAll("Searching all campaigns")
         for i,camp in ipairs(campaigns) do
             if AI_DEFS[camp][type]~=nil then
-                printToAll("Found it: "..camp.." "..type)
+                --printToAll("Found it: "..camp.." "..type)
                 return AI_DEFS[camp][type]
             end
         end
     end
-
+    return nil
 end
 function getAiType(ai)
     local type =  ai.getName():match '^%[%u*:?(%u*):?%d*].*'
     --local validTypes = {"TIE","TFO","INT","ADV","BOM","DEF","PHA","DEC","SHU" }
-    if contains(table.Keys(AI_DEFS[campaign]),type) then
+    if getAiDefByType(type)~=nil then --contains(table.Keys(AI_DEFS[campaign]),type) then
         return type
     else
         -- printToAll("Error: "..ai.getName() .. " does not define valid type in format '[AI:{type}:{PS}] Name'",{1,0,0})
@@ -1962,6 +1969,10 @@ d12 = {1,2,3,4,5,6,7,8,9,10,11,12}
 d6 = {1,2,3,4,5,6}
 d6plus6 = {7,8,9,10,11,12}
 function Action_setup(object)
+    local mission = object.getName():match '^Mission: (.*)'
+    Setup_Mission(mission)
+end
+function Setup_Mission(mission)
     col_index = 0
     obs_index = 0
     --BAD
@@ -1969,7 +1980,7 @@ function Action_setup(object)
     if mission_ps == nil or mission_players == nil then
         printToAll("Must select Number of players and Average Player Skill", {1,0,0})
     else
-        local mission = object.getName():match '^Mission: (.*)'
+        --local mission = object.getName():match '^Mission: (.*)'
         --local squads = {}
         epic = false
         missionsquads = {}
@@ -2194,7 +2205,7 @@ function Spawn_Squad(squad, more_after_lgs)
 
     end
     local quantity = countSquad(squad)
-    local def = getAiDefByType(type)
+    local def = getAiDefByType(squad.type)
     if def.isLargeShip and squad_orig=="*" then
         again = true
         quantity = 1
@@ -2339,7 +2350,10 @@ function Spawn_Ship(isHostile, type, name, elite, ai, card, position, rotation, 
     if ai=="strike" then newship.setDescription("ai strike") end
     Spawn_Card(type, name, temp_pos, shipnum, card, elite)
     shipnum = shipnum + 1
-
+    Wait.frames(function()
+        aielite[newship.getGUID()] = elite
+        aicards[newship.getGUID()] = card
+    end, 1)
     --newship.lock()
 end
 
