@@ -73,7 +73,11 @@ function initialize_ai()
         leftAlts = {},
 	    fleeMoves = {},
 	    swerves = {},
-        eliteLimits = {4,6,8}
+        eliteLimits = {4,6,8},
+        attack = 0,
+        evade = 0,
+        hull = 0,
+        shield = 0
 	}
 	FriendlyAiDefinition = table.ShallowCopy(HostileAiDefinition)
 	FriendlyAiDefinition.isHostile = false
@@ -127,7 +131,11 @@ function initialize_ai()
                       ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'}, ['s5'] = {'bl3','br3'},
                       ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
                       ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                      ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' } }
+                      ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' } },
+        attack = 2,
+        evade = 3,
+        hull = 3,
+        shield = 0
     }
     AI_DEFS['PALLAS']['TIE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
     AI_DEFS['PALLAS']['TIEE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['TIE']))
@@ -176,7 +184,11 @@ function initialize_ai()
                       ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
                       ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                       ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                      ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3' }}
+                      ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3' }},
+        attack = 3,
+        evade = 3,
+        hull = 3,
+        shield = 0
     }
     AI_DEFS['PALLAS']['INT'] = AI_DEFS['HOTAC']['INT']
 
@@ -216,7 +228,11 @@ function initialize_ai()
                         ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
                         ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
                         ['tr2*'] = {'br2',nil }, ['tr3'] = {'br3',nil },
-                        ['k5*'] = {'bl3','br3' }}
+                        ['k5*'] = {'bl3','br3' }},
+        attack = 2,
+        evade = 2,
+        hull = 6,
+        shield = 0
     }
     AI_DEFS['PALLAS']['BOM'] = AI_DEFS['HOTAC']['BOM']
 
@@ -257,7 +273,11 @@ function initialize_ai()
                         ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
                         ['br1'] = {'s2','tr2' }, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                         ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                        ['k4*'] = {'bl3','br3' }}
+                        ['k4*'] = {'bl3','br3' }},
+          attack = 2,
+          evade = 3,
+          hull = 3,
+          shield = 2
     }
     AI_DEFS['PALLAS']['ADV'] = AI_DEFS['HOTAC']['ADV']
 
@@ -297,7 +317,11 @@ function initialize_ai()
                         ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
                         ['br1'] = {'s2','tr1*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
                         ['tr1*'] = {'br1',nil }, ['tr2*'] = {'br2',nil }, ['tr3'] = {'br3',nil },
-                        ['k4'] = {'bl3','br3' }}
+                        ['k4'] = {'bl3','br3' }},
+          attack = 3,
+          evade = 3,
+          hull = 3,
+          shield = 3
     }
     AI_DEFS['PALLAS']['DEF'] = AI_DEFS['HOTAC']['DEF']
 
@@ -340,7 +364,11 @@ function initialize_ai()
                         ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
                         ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                         ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                        ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' }}
+                        ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3' }},
+          attack = 4,
+          evade = 2,
+          hull = 2,
+          shield = 2
     }
     AI_DEFS['PALLAS']['PHA'] = AI_DEFS['HOTAC']['PHA']
 
@@ -379,7 +407,11 @@ function initialize_ai()
                         ['bl1'] = {'tl2','s1'},  ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3','s3'},
                         ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},
                         ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
-                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil }}
+                        ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil }},
+        attack = 3,
+        evade = 0,
+        hull = 12,
+        shield = 4
     }
     AI_DEFS['PALLAS']['DEC'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['HOTAC']['DEC']))
     AI_DEFS['PALLAS']['DEC'].description = 'Patrol Leader (Elite)'
@@ -421,7 +453,11 @@ function initialize_ai()
                         ['bl1'] = {'tl2*','s1'}, ['bl2'] = {'tl2*','s2'}, ['bl3*'] = {'tl2*','s3'},
                         ['s0*'] = {'bl1','br1'}, ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3*','br3*'},
                         ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3*'] = {'s3','tr2*'},
-                        ['tr2*'] = {'br2',nil} }
+                        ['tr2*'] = {'br2',nil} },
+        attack = 3,
+        evade = 1,
+        hull = 5,
+        shield = 5
 
     }
     AI_DEFS['PALLAS']['SHU'] = AI_DEFS['HOTAC']['SHU']
@@ -466,7 +502,11 @@ function initialize_ai()
                         ['tr1'] = {'br2',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
                         ['bl2s*'] = {'tl2','k4*'},
                         ['k4*'] = {'bl2s*','br2s*'},
-                        ['br2s*'] = {'k4*','tr2'} } }
+                        ['br2s*'] = {'k4*','tr2'} },
+        attack = 2,
+        evade = 3,
+        hull = 3,
+        shield = 1 }
     AI_DEFS['PALLAS']['TFOE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['TFO']))
     AI_DEFS['PALLAS']['TFOE'].description = "Omega Squadron Pilot"
     AI_DEFS['PALLAS']['TFOE'].elitePilotSkills = {2, 4, 5, 7, 9}
@@ -509,7 +549,11 @@ function initialize_ai()
                    ['bl1'] = {'tl1*','s1'}, ['bl2'] = {'tl2','s2'},  ['bl3'] = {'tl3*','s3'},
                    ['s0*'] = {'bl1','br1'},  ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},
                    ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3*'},
-                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil}}
+                   ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil}},
+       attack = 4,
+       evade = 1,
+       hull = 6,
+       shield = 6
     }
     --TODO: TAP TIE Adv. Prototype
     AI_DEFS['PALLAS']['TAP'] = HostileAiDefinition:new{
@@ -550,7 +594,11 @@ function initialize_ai()
                       ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},  ['s4'] = {'bl3','br3'},  ['s5'] = {'bl3','br3'},
                       ['br1'] = {'s2','tr1'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                       ['tr1'] = {'br1',nil },  ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                      ['k4*'] = {'bl3','br3'}}
+                      ['k4*'] = {'bl3','br3'}},
+      attack = 2,
+      evade = 3,
+      hull = 2,
+      shield = 2
     }
     --TODO: TSF TIE S/F
     AI_DEFS['PALLAS']['TSF'] = HostileAiDefinition:new{
@@ -589,7 +637,12 @@ function initialize_ai()
                    ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3*'},
                    ['tr1*'] = {'br1', nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                    ['bl3s*'] = {'tl3*','s3'},
-                   ['br3s*'] = {'s3','tr3*'} } }
+                   ['br3s*'] = {'s3','tr3*'} },
+        attack = 2,
+        evade = 2,
+        hull = 3,
+        shield = 3
+    }
     --TODO: PUN Punisher
     AI_DEFS['PALLAS']['PUN'] = HostileAiDefinition:new{
         faction = EMPIRE,
@@ -627,7 +680,11 @@ function initialize_ai()
                       ['s1'] = {'bl1','br1'},  ['s2'] = {'bl2','br2'},  ['s3'] = {'bl3','br3'},
                       ['br1'] = {'s1','tr2*'},  ['br2'] = {'s2','tr2*'},  ['br3'] = {'s3','tr3'},
                       ['tr2*'] = {'br2',nil },  ['tr3'] = {'br3',nil },
-                      ['k4*'] = {'bl3','br3'}}
+                      ['k4*'] = {'bl3','br3'}},
+        attack = 2,
+        evade = 1,
+        hull = 6,
+        shield = 3
     }
     --TODO: BWI B-wing
     AI_DEFS['PALLAS']['BBLU'] = FriendlyAiDefinition:new{
@@ -667,7 +724,11 @@ function initialize_ai()
                      ['br1'] = {'s1','tr1*'},  ['br2'] = {'s2','tr2'},  ['br3*'] = {'s3','tr2'},
                      ['tr1*'] = {'br1',nil },  ['tr2'] = {'br2',nil },
                      ['k2*'] = {'bl2','br2'}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
+        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'},
+        attack = 3,
+        evade = 1,
+        hull = 3,
+        shield = 5
     }
     AI_DEFS['DOTE']['BBLU'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['BBLU']))
     AI_DEFS['DOTE']['BBLU'].description = 'Blue Squadron Pilot'
@@ -723,7 +784,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                         ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
                         ['k3*'] = {'bl3','br3'}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'}
+        hyperdriveMoves = {'s1','s1','s2','s2','br2','bl2'},
+        attack = 2,
+        evade = 2,
+        hull = 2,
+        shield = 2
     }
     AI_DEFS['DOTE']['ZBAN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
     AI_DEFS['DOTE']['ZBAN'].description = 'Bandit Squadron Pilot'
@@ -795,7 +860,11 @@ function initialize_ai()
                       ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                       ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
                       ['k4*'] = {'bl3','br3'}},
-        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'}
+        hyperdriveMoves = {'s1','s1','s2','s2','br1','bl1'},
+        attack = 3,
+        evade = 2,
+        hull = 3,
+        shield = 2
     }
     AI_DEFS['DOTE']['XROO'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['XRED']))
     AI_DEFS['DOTE']['XROO'].description = 'Rookie Pilot'
@@ -858,7 +927,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr3'},
                         ['tr2'] = {'br2',nil },  ['tr3'] = {'br3',nil },
                         ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
-        hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'}
+        hyperdriveMoves = {'s1','s2','s3','s3','br1','bl1'},
+        attack = 3,
+        evade = 3,
+        hull = 2,
+        shield = 3
     }
     AI_DEFS['DOTE']['EKNA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['EBLM']))
     AI_DEFS['DOTE']['EKNA'].description = 'Knave Squadron Pilot'
@@ -886,6 +959,7 @@ function initialize_ai()
         diffuse = 'http://i.imgur.com/gi6Ju20.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
         typeColor = 'E4834D',
+        has360Turret = true,
         hasFreeFocus = true,
         hasConditionalTargetLock = true,
         hasConditionalSlam = true,
@@ -913,7 +987,11 @@ function initialize_ai()
                         ['tr2'] = {'br2',nil} },
         hyperdriveMoves = {}, --NO HYPERDRIVE
         alternate = "KGUA",
-        alternateLevel = 7
+        alternateLevel = 7,
+        attack = 2,
+        evade = 1,
+        hull = 5,
+        shield = 4
     }
     AI_DEFS['DOTE']['KGUA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['KWAR']))
     AI_DEFS['DOTE']['KGUA'].description = 'Guardian Squadron Pilot'
@@ -962,7 +1040,11 @@ function initialize_ai()
                         ['k4*'] = {'bl3','br3'} },
         hyperdriveMoves = {'s1','s1','s1','s1','s2','s2'},
         alternate = "YGRE",
-        alternateLevel = 6
+        alternateLevel = 6,
+        attack = 2,
+        evade = 1,
+        hull = 5,
+        shield = 3
     }
     AI_DEFS['DOTE']['YGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['YGOL']))
     AI_DEFS['DOTE']['YGRE'].description = 'Grey Squadron Pilot'
@@ -1056,7 +1138,11 @@ function initialize_ai()
                         ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3*','br3*'}, ['s4*'] = {'bl3*','br3*'},
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3*'] = {'s3','tr2'},
                         ['tr2'] = {'br2',nil} },
-        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'},
+        attack = 1,
+        evade = 2,
+        hull = 4,
+        shield = 1
     }
     AI_DEFS['DOTE']['HWKS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HWK']))
     AI_DEFS['DOTE']['HWKS'].faction = SCUM
@@ -1108,7 +1194,11 @@ function initialize_ai()
                     ['br1'] = {'s1','tr1'},  ['br2'] = {'s2','tr2'},  ['br3'] = {'s3','tr2'},
                     ['tr1'] = {'br1',nil },  ['tr2'] = {'br2',nil },
                     ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'}},
-        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'},
+        attack = 2,
+        evade = 1,
+        hull = 6,
+        shield = 4
     }
     AI_DEFS['DOTE']['ORS'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ORS']))
     AI_DEFS['DOTE']['ORS'].description = 'Outer Rim Smuggler'
@@ -1123,6 +1213,7 @@ function initialize_ai()
         diffuse = 'http://i.imgur.com/suojpQZ.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
         typeColor = 'B4A89A',
+	    has360Turret = true,
 	    hasFreeFocus = true,
 	    hasConditionalFocus = false,
 	    hasConditionalTargetLock = true,
@@ -1151,7 +1242,11 @@ function initialize_ai()
                       ['br1'] = {'s1','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
                       ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
                       ['k4*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'}
+        hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'},
+        attack = 2,
+        evade = 2,
+        hull = 5,
+        shield = 5
     }
 
 
@@ -1194,7 +1289,11 @@ function initialize_ai()
                         ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
         hyperdriveMoves = {'s5','s5','tr2','tr2','tl2','tl2'},
         alternate = 'AGRE',
-        alternateLevel = 4
+        alternateLevel = 4,
+        attack = 2,
+        evade = 3,
+        hull = 2,
+        shield = 2
     }
     AI_DEFS['DOTE']['AGRE'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['APRO']))
     AI_DEFS['DOTE']['AGRE'].description = 'Green Squadron Pilot'
@@ -1245,7 +1344,11 @@ function initialize_ai()
                         ['br1'] = {'s2','tr1'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr2'},
                         ['tr1'] = {'br1',nil}, ['tr2'] = {'br2',nil},
                         ['k3*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s2','s2','s3','s3','bl1','br1'}
+        hyperdriveMoves = {'s2','s2','s3','s3','bl1','br1'},
+        attack = 2,
+        evade = 3,
+        hull = 2,
+        shield = 1
     }
     AI_DEFS['DOTE']['HSTP'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['HSCS']))
     AI_DEFS['DOTE']['HSTP'].description = 'Tansarii Point Veteran'
@@ -1297,7 +1400,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
                         ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
                         ['k3*'] = {'bl3','br3'}, ['k4*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s1','s1','bl1','br1','s2','s2'}
+        hyperdriveMoves = {'s1','s1','bl1','br1','s2','s2'},
+        attack = 3,
+        evade = 2,
+        hull = 6,
+        shield = 4
     }
 
     AI_DEFS['DOTE']['PZEA'] = HostileAiDefinition:new{
@@ -1338,7 +1445,11 @@ function initialize_ai()
                         ['tr2t*'] = {'br2',nil} },
         hyperdriveMoves = {'bl2','bl2','br2','br2','tl2','tr2'},
         alternate = 'PCON',
-        alternateLevel = 7
+        alternateLevel = 7,
+        attack = 3,
+        evade = 3,
+        hull = 4,
+        shield = 0
     }
     AI_DEFS['DOTE']['PCON'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['PZEA']))
     AI_DEFS['DOTE']['PCON'].description = 'Concord Dawn Veteran'
@@ -1387,7 +1498,11 @@ function initialize_ai()
                         ['k4*'] = {'bl3','br3'}, ['k5*'] = {'bl3','br3'} },
         hyperdriveMoves = {'bl1','bl1','br1','br1','bl2','br2'},
         alternate = 'KZBL',
-        alternateLevel = 7
+        alternateLevel = 7,
+        attack = 3,
+        evade = 2,
+        hull = 4,
+        shield = 1
     }
     AI_DEFS['DOTE']['KZBL'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['KZCA'])) --KZBL Scum Kihraxz Black Sun
     AI_DEFS['DOTE']['KZBL'].description = 'Black Sun Ace'
@@ -1438,7 +1553,11 @@ function initialize_ai()
                         ['br3s*'] = {'s3','tr2'} },
         hyperdriveMoves = {'s1','s1','s2','s2','bl1','br1'},
         alternate = 'SVVI',
-        alternateLevel = 8
+        alternateLevel = 8,
+        attack = 3,
+        evade = 3,
+        hull = 4,
+        shield = 1
     }
     AI_DEFS['DOTE']['SVVI'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['SVEN'])) --SVVI Scum StarViper Black Sun Vigo
     AI_DEFS['DOTE']['SVVI'].description = 'Black Sun Vigo'
@@ -1458,6 +1577,7 @@ function initialize_ai()
         diffuse = 'http://i.imgur.com/D58bZNz.jpg',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964883/B11F61E5ED25B90F87C047EB6252D3B18EBB09F1/',
         typeColor = 'B06C73',
+        has360turret = true,
         hasFreeFocus = true,
         hasConditionalFocus = false,
         hasBarrelRoll = true,
@@ -1492,7 +1612,11 @@ function initialize_ai()
                         ['bl2s'] = {'tl2','k4*'},
                         ['k4*'] = {'bl2s','br2s*'},
                         ['br2s*'] = {'k4*','tr2'} },
-        hyperdriveMoves = {'s1','s2','bl1','bl1','br1','br1'}
+        hyperdriveMoves = {'s1','s2','bl1','bl1','br1','br1'},
+        attack = 2,
+        evade = 2,
+        hull = 5,
+        shield = 4
     }
     --TODO: Lancer
     --mesh: https://paste.ee/r/1af5C
@@ -1535,7 +1659,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3'},
                         ['tr2'] = {'br2',nil}, ['tr3'] = {'br3',nil},
                         ['k5*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s3','s4','tl3','bl3','br3','tr3'}
+        hyperdriveMoves = {'s3','s4','tl3','bl3','br3','tr3'},
+        attack = 3,
+        evade = 2,
+        hull = 7,
+        shield = 3
     }
 
     --TODO: G-1A Starfighter
@@ -1575,7 +1703,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3*'] = {'s3','tr2'},
                         ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil},
                         ['k3*'] = {'bl3*','br3*'}, ['k4*'] = {'bl3*','br3*'} },
-        hyperdriveMoves = {'s1','s2','s3','s3','bl1','br1'}
+        hyperdriveMoves = {'s1','s2','s3','s3','bl1','br1'},
+        attack = 3,
+        evade = 1,
+        hull = 4,
+        shield = 4
     }
 
     --TODO: ARC-170
@@ -1613,7 +1745,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr2'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
                         ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                         ['k4*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'bl1','s1','br1','bl2','s2','br2'}
+        hyperdriveMoves = {'bl1','s1','br1','bl2','s2','br2'},
+        attack = 2,
+        evade = 1,
+        hull = 6,
+        shield = 3
     }
 
     --TODO: YV-666
@@ -1651,7 +1787,11 @@ function initialize_ai()
                         ['s0*'] = {'bl1','br1'}, ['s1'] = {'bl1','br1'}, ['s2'] = {'bl2','br2'}, ['s3'] = {'bl3','br3'}, ['s4'] = {'bl3','br3'},
                         ['br1'] = {'s1','tr2*'}, ['br2'] = {'s2','tr2*'}, ['br3'] = {'s3','tr3'},
                         ['tr2*'] = {'br2',nil}, ['tr3'] = {'br3',nil} },
-        hyperdriveMoves = {'s1','s1','bl1','br1','s2','s3'}
+        hyperdriveMoves = {'s1','s1','bl1','br1','s2','s3'},
+        attack = 3,
+        evade = 1,
+        hull = 6,
+        shield = 6
     }
 
     --TODO: Attack Shuttle
@@ -1691,7 +1831,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
                         ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                         ['k4*'] = {'bl3','br3'} },
-        hyperdriveMoves = {} --NO HYPERDRIVE
+        hyperdriveMoves = {}, --NO HYPERDRIVE
+        attack = 3,
+        evade = 2,
+        hull = 2,
+        shield = 2
     }
 
     --TODO: VCX-100
@@ -1731,7 +1875,11 @@ function initialize_ai()
                         ['br1'] = {'s1','tr1*'}, ['br2'] = {'s2','tr2'}, ['br3'] = {'s3','tr3*'},
                         ['tr1*'] = {'br1',nil}, ['tr2'] = {'br2',nil}, ['tr3*'] = {'br3',nil},
                         ['k5*'] = {'bl3','br3'} },
-        hyperdriveMoves = {'s1','s2','bl2','bl2','br2','br2'}
+        hyperdriveMoves = {'s1','s2','bl2','bl2','br2','br2'},
+        attack = 4,
+        evade = 0,
+        hull = 10,
+        shield = 6
     }
 
     --TODO: Aggressor (IG-88)
@@ -1775,7 +1923,11 @@ function initialize_ai()
                         ['bl3s*'] = {'tl2','k4*'},
                         ['k4*'] = {'bl3s*','br3s*'},
                         ['br3s*'] = {'k4*','tr2'} },
-        hyperdriveMoves = {'bl2','bl3','s2','s3','br2','br3'}
+        hyperdriveMoves = {'bl2','bl3','s2','s3','br2','br3'},
+        attack = 3,
+        evade = 3,
+        hull = 4,
+        shield = 4
     }
 
     --TODO: T-70 X-Wing
@@ -1816,7 +1968,11 @@ function initialize_ai()
                         ['tl3t*'] = {nil,'bl3'},
                         ['k4*'] = {'bl3','br3'},
                         ['tr3t*'] = {'br3',nil} },
-        hyperdriveMoves = {'bl1','br1','s1','s2','s3','s3'}
+        hyperdriveMoves = {'bl1','br1','s1','s2','s3','s3'},
+        attack = 3,
+        evade = 2,
+        hull = 3,
+        shield = 3
     }
 
     -- AI_DEFS['MISC'][''] = HostileAiDefinition:new{
