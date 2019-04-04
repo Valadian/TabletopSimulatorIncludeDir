@@ -7,6 +7,7 @@ function AiUiPlanningPollingUpdate()
 end
 phases = {"Planning","Activation","Combat","End"}
 function updateStatusUI(next, complete)
+    --printToAll("updateStatusUI")
     local PHASENAME = {}
     PHASENAME[PlanningSort] = "Planning"
     PHASENAME[MoveSort] = "Activation"
@@ -191,6 +192,13 @@ function updateShipRow(ship, index, active)
         UI.setAttribute("ship"..istr.."shipCard","image", type.."_"..tostring(aielite[ship.getGUID()]).."_"..aicards[ship.getGUID()])
         UI.setAttribute("ship"..istr.."shipCard","width", 350)
         UI.setAttribute("ship"..istr.."shipCard","height", 500)
+        if aielite[ship.getGUID()] then
+            UI.setAttribute("ship"..istr.."elite_image", "image","ELITE")
+            UI.setAttribute("ship"..istr.."elite_image", "color","yellow")
+        else
+            UI.setAttribute("ship"..istr.."elite_image", "image","BLANK")
+            UI.setAttribute("ship"..istr.."elite_image", "color","black")
+        end
     else
         UI.setAttribute("ship"..istr.."maneuver","width", 0)
         UI.setAttribute("ship"..istr.."maneuver","height", 0)
@@ -558,6 +566,7 @@ function onMouseExit_hideManeuver(player, value, id)
     end
 end
 function onMouseEnter_revealShipCard(player, value, id)
+    --printToAll(UI.getAttribute(value..'shipCard','image'))
     addVisibility(value..'shipCard', player.color)
     UI.show(value..'shipCard')
 end
@@ -569,13 +578,13 @@ function onMouseExit_hideShipCard(player, value, id)
     end
 end
 function xwing_ai_ui_onload()
-    printToAll('xwing_ai_ui_onload')
-#include xwing_ai_ui_images
+    -- printToAll('xwing_ai_ui_onload')
+--#include xwing_ai_ui_images
     Wait.time(function()
-        printToAll("Setting XML")
-        -- UI.setXml(UI.getXml())
-        -- UI.show('xwingDisplay')
-        ClearTimer()
-        updateStatusUI()
+    --     printToAll("Setting XML")
+    --     -- UI.setXml(UI.getXml())
+    --     -- UI.show('xwingDisplay')
+         ClearTimer()
+         updateStatusUI()
     end, 1, 1)
 end

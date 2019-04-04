@@ -148,7 +148,6 @@ function initialize_ai()
         typeColor = '88111D',
         hasFreeFocus = true,
         hasBoost = true,
-        hasBarrelRoll = true,
         hasConditionalFocus = false,
         hasConditionalEvade = true,
         elitePilotSkills = {1,4, 6, 8, 10},
@@ -1876,27 +1875,29 @@ function initialize_ai()
             end
             escaped_name = string.gsub(ai.shipType,"[%.%s-%/]","")
             table.insert(SHIP_TYPES, escaped_name)
-            table.insert(assets, {
-                name = key.."_maneuver",
-                url = ai.maneuverCard
-            })
-            for i,pilotCard in ipairs(ai.pilotCards) do
-                table.insert(assets, {
-                    name = key.."_false_"..tostring(i),
-                    url = ai.pilotCards[i]
-                })
-            end
-            for i,pilotCard in ipairs(ai.elitePilotCards) do
-                table.insert(assets, {
-                    name = key.."_true_"..tostring(i),
-                    url = ai.elitePilotCards[i]
-                })
-            end
+            -- table.insert(assets, {
+            --     name = key.."_maneuver",
+            --     url = ai.maneuverCard
+            -- })
+            -- for i,pilotCard in ipairs(ai.pilotCards) do
+            --     table.insert(assets, {
+            --         name = key.."_false_"..tostring(i),
+            --         url = ai.pilotCards[i]
+            --     })
+            --     printToAll(key.."_false_"..tostring(i))
+            -- end
+            -- for i,pilotCard in ipairs(ai.elitePilotCards) do
+            --     table.insert(assets, {
+            --         name = key.."_true_"..tostring(i),
+            --         url = ai.elitePilotCards[i]
+            --     })
+            --     printToAll(key.."_true_"..tostring(i))
+            -- end
             --printToAll(key.." "..ai.maneuverCard)
         end
     end
     --printToAll("#assets: "..tostring(#assets))
-    UI.setCustomAssets(assets)
+    --UI.setCustomAssets(assets)
     -- AI_DEFS['TEMP'] = HostileAiDefinition:new{
     --     isLargeShip = false,
     --     mesh = '',

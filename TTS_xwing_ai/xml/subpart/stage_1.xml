@@ -1,0 +1,7 @@
+<Panel preferredWidth="40" >
+    <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+    <Text class="heading" offsetXY="8 -3" alignment="UpperLeft">1</Text>
+</Panel>
+<Panel class="maneuverColumn">
+    <VerticalLayout childForceExpandHeight="false">
+        <Text class="heading"  preferredHeight="40" >Select Target</Text>

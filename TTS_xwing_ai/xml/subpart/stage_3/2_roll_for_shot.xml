@@ -1,0 +1,5 @@
+<HorizontalLayout class="row" preferredHeight="20">
+    <Text>2) </Text>
+    <Image preferredWidth="18" class="icon" image="roll"/>
+    <Text>to get a shot</Text>
+</HorizontalLayout>

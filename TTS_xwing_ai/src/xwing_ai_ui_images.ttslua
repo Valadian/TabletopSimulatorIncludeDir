@@ -271,10 +271,15 @@ local new_assets = {
     {
         name = "BASE",
         url = "https://i.imgur.com/cSquhmA.png"
+    },
+    {
+        name = "ELITE",
+        url = "https://i.imgur.com/4lxAwM9.png"
     }
 }
 for _, item in ipairs(new_assets) do
     table.insert(assets, item)
 end
 printToAll("#assets: "..tostring(#assets))
-UI.setCustomAssets(assets)
+--Does this break the UI showing on first load???
+--UI.setCustomAssets(assets)

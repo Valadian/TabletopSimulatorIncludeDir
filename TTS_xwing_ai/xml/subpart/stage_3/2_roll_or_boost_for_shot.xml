@@ -1,0 +1,7 @@
+<HorizontalLayout class="row" preferredHeight="20">
+    <Text>2) </Text>
+    <Image preferredWidth="18" class="icon" image="roll"/>
+    <Text>or</Text>
+    <Image preferredWidth="18" class="icon" image="boost"/>
+    <Text>to get a shot</Text>
+</HorizontalLayout>

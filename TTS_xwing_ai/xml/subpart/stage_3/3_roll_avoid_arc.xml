@@ -1,0 +1,8 @@
+<HorizontalLayout class="row" preferredHeight="20">
+    <Text>3) </Text>
+    <Image preferredWidth="18" class="icon" image="roll"/>
+    <Text>to avoid target&#39;s arc, </Text>
+</HorizontalLayout>
+<HorizontalLayout class="row" preferredHeight="20">
+    <Text>and keep target in your arc</Text>
+</HorizontalLayout>

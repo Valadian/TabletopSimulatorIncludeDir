@@ -8,10 +8,25 @@
     <Button class="phase" color="#303030" onClick="030220/onClick_setPhase" />
     <Button class="shipType" color="black" onClick="030220/onClick_spawnShipType" tooltipPosition="Below" tooltipBackgroundColor="rgba(0,0,0,1)"/>
     <Image class="maneuverCard"  height="500" width="500" preserveAspect="true" rectAlignment="UpperRight" offsetXY="-250 -200"/>
-    <Image class="shipCard"  height="500" width="350" preserveAspect="true" rectAlignment="UpperRight" offsetXY="-250 -200"/>
+    <Panel class="maneuverCard"  height="500" width="250" preserveAspect="true" rectAlignment="UpperRight" offsetXY="-250 -200"/>
+    <Image class="shipCard"  height="500" width="250" preserveAspect="true" rectAlignment="UpperRight" offsetXY="-250 -200"/>
+    <Panel class="maneuverColumn" preferredWidth="210"/>
+    <Text class="heading" fontStyle="bold" fontSize="24" alignment="MiddleLeft"/>
+    <HorizontalLayout class="row" childForceExpandWidth="false" childForceExpandHeight="false" spacing="5"/>
+    <Image class="icon" preserveAspect="true" height="15" width="15"/>
+    <Text class="attr" preferredWidth="40"  fontStyle="bold" fontSize="24" alignment="MiddleRight"/>
+    <Text class="attack" color="#F3174C"/>
+    <Text class="evade" color="#82BC4F"/>
+    <Text class="hull" color="#F1EC35"/>
+    <Text class="shield" color="#80CFE1"/>
+    <Image class="attr" preferredWidth="20" preserveAspect="true" />
+    <Image class="attack" color="#F3174C"/>
+    <Image class="evade" color="#82BC4F"/>
+    <Image class="hull" color="#F1EC35"/>
+    <Image class="shield" color="#80CFE1"/>
 </Defaults>
 
-<Image id="ship1maneuver" image="TIE_maneuver" class="maneuverCard" active="false"/>
+<!-- <Image id="ship1maneuver" image="TIE_maneuver" class="maneuverCard" active="false"/>
 <Image id="ship2maneuver" image="TIE_maneuver" class="maneuverCard" active="false"/>
 <Image id="ship3maneuver" image="TIE_maneuver" class="maneuverCard" active="false"/>
 <Image id="ship4maneuver" image="TIE_maneuver" class="maneuverCard" active="false"/>
@@ -31,7 +46,92 @@
 <Image id="ship7shipCard" image="TIE_false_1" class="shipCard" active="false"/>
 <Image id="ship8shipCard" image="TIE_false_1" class="shipCard" active="false"/>
 <Image id="ship9shipCard" image="TIE_false_1" class="shipCard" active="false"/>
-<Image id="ship10shipCard" image="TIE_false_1" class="shipCard" active="false"/>
+<Image id="ship10shipCard" image="TIE_false_1" class="shipCard" active="false"/> -->
+<!-- <Panel id="TIE_Fighter_maneuver" class="maneuverCard">
+    <VerticalLayout childForceExpandHeight="false" >
+        <HorizontalLayout preferredHeight="125">
+            <Panel preferredWidth="40" >
+                <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+                <Text class="heading" offsetXY="8 -3" alignment="UpperLeft">1</Text>
+            </Panel>
+            <Panel preferredWidth="210">
+                <VerticalLayout childForceExpandHeight="false">
+                    <Text class="heading"  preferredHeight="40" >Select Target</Text>
+                    <Text preferredHeight="40" alignment="MiddleLeft" rectAlignment="UpperLeft">1) Nearest Enemy in Arc and at Range 1-3</Text>
+                    <Text preferredHeight="20" alignment="MiddleLeft" rectAlignment="UpperLeft">2) Nearest Enemy</Text>
+                </VerticalLayout>
+            </Panel>
+        </HorizontalLayout>
+
+        <HorizontalLayout preferredHeight="125">
+            <Panel preferredWidth="40" >
+                <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+                <Text class="heading" offsetXY="8 -3" alignment="UpperLeft">2</Text>
+            </Panel>
+            <Panel preferredWidth="210">
+                <VerticalLayout childForceExpandHeight="false">
+                    <Text class="heading"  preferredHeight="40">Select Maneuver</Text>
+                    <Text alignment="MiddleLeft" rectAlignment="UpperLeft" preferredHeight="60">Check Target&#39;s Range <![CDATA[&]]> Direction, Roll on the matching table</Text>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>+ Skip step 3 on </Text>
+                        <Text color="red"> red </Text>
+                        <Text> moves</Text>
+                    </HorizontalLayout>
+                </VerticalLayout>
+            </Panel>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="180">
+            <Panel preferredWidth="40" >
+                <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+                <Text class="heading" offsetXY="8 -3" alignment="UpperLeft">3</Text>
+            </Panel>
+            <Panel preferredWidth="210">
+                <VerticalLayout childForceExpandHeight="false">
+                    <Text class="heading" preferredHeight="40">Action Selection</Text>
+                    <HorizontalLayout class="row"  preferredHeight="20">
+                        <Text>1) Remove Stress or Resolve</Text>
+                        <Image preferredWidth="18" class="icon" image="crit"/>
+                    </HorizontalLayout>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>2) </Text>
+                        <Image preferredWidth="18" class="icon" image="roll"/>
+                        <Text>to get a shot</Text>
+                    </HorizontalLayout>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>3) </Text>
+                        <Image preferredWidth="18" class="icon" image="roll"/>
+                        <Text>to avoid target&#39;s arc, </Text>
+                    </HorizontalLayout>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>and keep target in your arc</Text>
+                    </HorizontalLayout>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>4) </Text>
+                        <Image preferredWidth="18" class="icon" image="focus"/>
+                        <Text>if you have a shot</Text>
+                    </HorizontalLayout>
+                    <HorizontalLayout class="row" preferredHeight="20">
+                        <Text>5) </Text>
+                        <Image preferredWidth="18" class="icon" image="evade"/>
+                    </HorizontalLayout>
+                </VerticalLayout>
+            </Panel>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="60">
+            <Panel preferredWidth="40" >
+                <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+                <Image rectAlignment="UpperLeft" offsetXY="2 -2" image="attr_attack" color="red" height="25" width="25" preserveAspect="true" />
+            </Panel>
+            <Panel preferredWidth="210">
+                <VerticalLayout childForceExpandHeight="false">
+                    <Text class="heading"  preferredHeight="40">Attack Target</Text>
+                    <Text alignment="MiddleLeft" rectAlignment="UpperLeft" preferredHeight="20">1) Nearest Enemy</Text>
+                </VerticalLayout>
+            </Panel>
+        </HorizontalLayout>
+    </VerticalLayout>
+</Panel> -->
+<Include src="ships/TIE.xml"/>
 <VerticalLayout color="black"
     id="xwingDisplay"
     height="660"
@@ -63,7 +163,7 @@
                 <ProgressBar width="200" id="turn_progressbar" percentage="60" fillImageColor="#008000" height="10" color="#404040"></ProgressBar>
                 <Text id="turn_text">Turn 6/10</Text>
             </Panel>
-            <TableLayout id="roundTrackerTable" columnWidths="10 20 30 0 20 20 60" preferredHeight="500"  cellBackgroundColor="black">
+            <TableLayout id="roundTrackerTable" columnWidths="10 20 30 15 0 20 20 60" preferredHeight="500"  cellBackgroundColor="black">
                 <Row id="ship1">
                     <Cell>
                         <Panel id="ship1indicator_panel" color="#000000" outline="#0080FF" outlineSize="4 0">
@@ -83,6 +183,11 @@
                     <Cell>
                         <Panel color="#000000">
                             <Image id="ship1icon_image" onMouseEnter="030220/onMouseEnter_revealManeuver(ship1)" onMouseExit="030220/onMouseExit_hideManeuver(ship1)" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship1elite_image" image="BLANK" color="black" preserveAspect="true"/>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -129,6 +234,11 @@
                     </Cell>
                     <Cell>
                         <Panel color="black">
+                            <Image id="ship2elite_image" image="BLANK" color="black" preserveAspect="true"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
                             <Text id="ship2name_text" onMouseEnter="030220/onMouseEnter_revealShipCard(ship2)" onMouseExit="030220/onMouseExit_hideShipCard(ship2)">Ship Placeholder</Text>
                         </Panel>
                     </Cell>
@@ -167,6 +277,11 @@
                     <Cell>
                         <Panel color="#000000">
                             <Image id="ship3icon_image" onMouseEnter="030220/onMouseEnter_revealManeuver(ship3)" onMouseExit="030220/onMouseExit_hideManeuver(ship3)" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship3elite_image" image="BLANK" color="black" preserveAspect="true"/>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -213,6 +328,11 @@
                     </Cell>
                     <Cell>
                         <Panel color="black">
+                            <Image id="ship4elite_image" image="BLANK" color="black" preserveAspect="true"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
                             <Text id="ship4name_text" onMouseEnter="030220/onMouseEnter_revealShipCard(ship4)" onMouseExit="030220/onMouseExit_hideShipCard(ship4)">Ship Placeholder</Text>
                         </Panel>
                     </Cell>
@@ -251,6 +371,11 @@
                     <Cell>
                         <Panel color="#000000">
                             <Image id="ship5icon_image" onMouseEnter="030220/onMouseEnter_revealManeuver(ship5)" onMouseExit="030220/onMouseExit_hideManeuver(ship5)" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship5elite_image" image="BLANK" color="black" preserveAspect="true"/>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -297,6 +422,11 @@
                     </Cell>
                     <Cell>
                         <Panel color="black">
+                            <Image id="ship6elite_image" image="BLANK" color="black" preserveAspect="true"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
                             <Text id="ship6name_text" onMouseEnter="030220/onMouseEnter_revealShipCard(ship6)" onMouseExit="030220/onMouseExit_hideShipCard(ship6)">Ship Placeholder</Text>
                         </Panel>
                     </Cell>
@@ -335,6 +465,11 @@
                     <Cell>
                         <Panel color="#000000">
                             <Image id="ship7icon_image" onMouseEnter="030220/onMouseEnter_revealManeuver(ship7)" onMouseExit="030220/onMouseExit_hideManeuver(ship7)" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
+                            <Image id="ship7elite_image" image="BLANK" color="black" preserveAspect="true"/>
                         </Panel>
                     </Cell>
                     <Cell>
@@ -381,6 +516,11 @@
                     </Cell>
                     <Cell>
                         <Panel color="black">
+                            <Image id="ship8elite_image" image="BLANK" color="black" preserveAspect="true"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
                             <Text id="ship8name_text" onMouseEnter="030220/onMouseEnter_revealShipCard(ship8)" onMouseExit="030220/onMouseExit_hideShipCard(ship8)">Ship Placeholder</Text>
                         </Panel>
                     </Cell>
@@ -423,6 +563,11 @@
                     </Cell>
                     <Cell>
                         <Panel color="#000000">
+                            <Image id="ship9elite_image" image="BLANK" color="black" preserveAspect="true"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="#000000">
                             <Text id="ship9name_text" onMouseEnter="030220/onMouseEnter_revealShipCard(ship9)" onMouseExit="030220/onMouseExit_hideShipCard(ship9)">Ship Placeholder</Text>
                         </Panel>
                     </Cell>
@@ -461,6 +606,11 @@
                     <Cell>
                         <Panel color="black">
                             <Image id="ship10icon_image" onMouseEnter="030220/onMouseEnter_revealManeuver(ship10)" onMouseExit="030220/onMouseExit_hideManeuver(ship10)" image="TIE Fighter" color="#600000" preserveAspect="1"/>
+                        </Panel>
+                    </Cell>
+                    <Cell>
+                        <Panel color="black">
+                            <Image id="ship10elite_image" image="BLANK" color="black" preserveAspect="true"/>
                         </Panel>
                     </Cell>
                     <Cell>
