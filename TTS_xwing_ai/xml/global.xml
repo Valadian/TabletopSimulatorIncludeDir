@@ -12,7 +12,8 @@
     <Image class="shipCard"  height="500" width="250" preserveAspect="true" rectAlignment="UpperRight" offsetXY="-250 -200"/>
     <Panel class="maneuverColumn" preferredWidth="210"/>
     <Text class="heading" fontStyle="bold" fontSize="24" alignment="MiddleLeft"/>
-    <HorizontalLayout class="row" childForceExpandWidth="false" childForceExpandHeight="false" spacing="5"/>
+    <HorizontalLayout class="row" preferredHeight="20" childForceExpandWidth="false" childForceExpandHeight="false" spacing="5" childAlignment="MiddleLeft"/>
+    <Panel class="row" preferredHeight="20" childForceExpandWidth="false" childForceExpandHeight="false" spacing="5"/>
     <Image class="icon" preserveAspect="true" height="15" width="15"/>
     <Text class="attr" preferredWidth="40"  fontStyle="bold" fontSize="24" alignment="MiddleRight"/>
     <Text class="attack" color="#F3174C"/>

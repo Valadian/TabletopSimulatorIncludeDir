@@ -1,5 +1,5 @@
-<HorizontalLayout class="row" preferredHeight="20">
-    <Text>4) </Text>
+<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">4) </Text>
     <Image preferredWidth="18" class="icon" image="focus"/>
-    <Text>if you have a shot</Text>
+    <Text verticalOverflow="Overflow">if you have a shot</Text>
 </HorizontalLayout>

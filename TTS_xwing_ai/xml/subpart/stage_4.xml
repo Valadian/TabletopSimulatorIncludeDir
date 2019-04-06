@@ -1,0 +1,7 @@
+<Panel preferredWidth="40" >
+    <Image rectAlignment="UpperLeft" offsetXY="0 0" image="circle" height="30" width="30" preserveAspect="true" />
+    <Image rectAlignment="UpperLeft" offsetXY="2 -2" image="attr_attack" color="red" height="25" width="25" preserveAspect="true" />
+</Panel>
+<Panel class="maneuverColumn">
+    <VerticalLayout childForceExpandHeight="false">
+        <Text class="heading" preferredHeight="40">Attack Target</Text>

@@ -1,0 +1,5 @@
+<HorizontalLayout class="row"  preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">Clear</Text>
+    <Image preferredWidth="18" class="icon" image="LOCK"/>
+    <Text verticalOverflow="Overflow">if unspent</Text>
+</HorizontalLayout>

@@ -1,4 +1,4 @@
-
+#include ai_elite_abilities
 local AI_DEFS = {}
 local campaigns = {'HOTAC','PALLAS','DOTE','MISC'}
 local REBELLION = "Rebellion"
@@ -144,6 +144,36 @@ function initialize_ai()
     AI_DEFS['PALLAS']['TIEE'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['TIEE'].pilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
     AI_DEFS['PALLAS']['TIEE'].elitePilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
+    AI_DEFS['PALLAS']['TIEE'].eliteabilities = {
+        {
+            {'SHIELD_UPGRADE'},
+            {'PREDATOR'},
+            {'SCOURGE'},
+            {'NIGHT_BEAST'},
+            {'DARK_CURSE'}
+        },
+        {
+            {'STEALTH_DEVICE'},
+            {'JUKE'},
+            {'BACKSTABBER'},
+            {'SOONTIR_FEL'},
+            {'MAULER_MITHEL'}
+        },
+        {
+            {'AUTOTHRUSTERS'},
+            {'CRACK_SHOT'},
+            {'FELS_WRATH'},
+            {'CHASER'},
+            {'WINGED_GUNDARK'},
+        },
+        {
+            {'HULL_UPGRADE'},
+            {'FEARLESSNESS'},
+            {'HOWLRUNNER'},
+            {'ZETA_ACE'},
+            {'OMEGA_LEADER'}
+        }
+    }
 
     AI_DEFS['HOTAC']['INT'] = HostileAiDefinition:new{
         faction = EMPIRE,
@@ -156,6 +186,7 @@ function initialize_ai()
         typeColor = '88111D',
         hasFreeFocus = true,
         hasBoost = true,
+        hasBarrelRoll = true,
         hasConditionalFocus = false,
         hasConditionalEvade = true,
         elitePilotSkills = {1,4, 6, 8, 10},
@@ -188,7 +219,51 @@ function initialize_ai()
         attack = 3,
         evade = 3,
         hull = 3,
-        shield = 0
+        shield = 0,
+        eliteAbilities = {
+                    {
+                        {'HULL_UPGRADE'},
+                        {'SHIELD_UPGRADE', 'EXPOSE'},
+                        {'TARGETING_COMPUTER'},
+                        {'OPPORTUNIST'},
+                        {'TURR_PHENNIR'}
+                    },
+                    {
+                        {'AUTOTHRUSTERS'},
+                        {'SHIELD_UPGRADE', 'PUSH_THE_LIMIT'},
+                        {'CAPTAIN_KAGI'},
+                        {'EXPERT_HANDLING'},
+                        {'SOONTIR_FEL'}
+                    },
+                    {
+                        {'HULL_UPGRADE'},
+                        {'AUTOTHRUSTERS', 'OUTMANEUVER'},
+                        {'BACKSTABBER'},
+                        {'CALCULATION'},
+                        {'REAR_ADMIRAL_CHIRANEAU'}
+                    },
+                    {
+                        {'STEALTH_DEVICE'},
+                        {'AUTOTHRUSTERS', 'PREDATOR'},
+                        {'REXLER_BRATH'},
+                        {'LONE_WOLF'},
+                        {'MAULER_MITHEL'}
+                    },
+                    {
+                        {'AUTOTHRUSTERS'},
+                        {'STEALTH_DEVICE','EXPERT_HANDLING'},
+                        {'WHISPER'},
+                        {'ELUSIVENESS'},
+                        {'DARK_CURSE'}
+                    },
+                    {
+                        {'STEALTH_DEVICE'},
+                        {'HULL_UPGRADE','SQUAD_LEADER'},
+                        {'EXPERIMENTAL_INTERFACE'},
+                        {'SWARM_TACTICS'},
+                        {'COMMANDER_KENKIRK'}
+                    }
+              }
     }
     AI_DEFS['PALLAS']['INT'] = AI_DEFS['HOTAC']['INT']
 
@@ -232,7 +307,51 @@ function initialize_ai()
         attack = 2,
         evade = 2,
         hull = 6,
-        shield = 0
+        shield = 0,
+        eliteAbilities = {
+                    {
+                        {'ADVANCED_PROTON_TORPEDOES'},
+                        {'EXTRA_MUNITIONS','SHIELD_UPGRADE'},
+                        {'MAJOR_RHYMER'},
+                        {'OPPORTUNIST'},
+                        {'COMMANDER_KENKIRK'}
+                    },
+                    {
+                        {'ION_PULSE_MISSILE'},
+                        {'EXTRA_MUNITIONS','SWARM_TACTICS'},
+                        {'HOWLRUNNER'},
+                        {'OUTMANEUVER'},
+                        {'DARK_CURSE'}
+                    },
+                    {
+                        {'ASSAULT_MISSILES'},
+                        {'EXTRA_MUNITIONS','OUTMANEUVER'},
+                        {'REDLINE'},
+                        {'RUTHLESSNESS'},
+                        {'KIR_KANOS'}
+                    },
+                    {
+                        {'FLECHETTE_TORPEDO'},
+                        {'EXTRA_MUNITIONS','CALCULATION'},
+                        {'NIGHT_BEAST'},
+                        {'PREDATOR'},
+                        {'KATH_SCARLET'}
+                    },
+                    {
+                        {'CLUSTER_MISSILES'},
+                        {'EXTRA_MUNITIONS','MARKMANSHIP'},
+                        {'COMMANDER_ALOZEN'},
+                        {'PREDATOR'},
+                        {'MAJOR_RHYMER'}
+                    },
+                    {
+                        {'HOMING_MISSILE'},
+                        {'EXTRA_MUNITIONS','CALCULATION'},
+                        {'LIEUTENANT_COLZET'},
+                        {'ELUSIVENESS'},
+                        {'REXLER_BRATH'}
+                    }
+                }
     }
     AI_DEFS['PALLAS']['BOM'] = AI_DEFS['HOTAC']['BOM']
 
@@ -277,7 +396,38 @@ function initialize_ai()
           attack = 2,
           evade = 3,
           hull = 3,
-          shield = 2
+          shield = 2,
+          eliteAbilities = {
+                    {
+                        {'ADVANCED_SENSORS'},
+                        {'PROTON_ROCKET','INTIMIDATION'},
+                        {'ZERTIK_STROM'},
+                        {'PUSH_THE_LIMIT'},
+                        {'MAULER_MITHEL'}
+                    },
+                    {
+                        {'ACCURACY_CORRECTOR'},
+                        {'SHIELD_UPGRADE','SWARM_TACTICS'},
+                        {'COLONEL_JENDON'},
+                        {'SQUAD_LEADER'},
+                        {'HOWLRUNNER'}
+                    },
+                    {
+                        {'SENSOR_JAMMER'},
+                        {'SHIELD_UPGRADE','EXPERT_HANDLING'},
+                        {'CAPTAIN_KAGI'},
+                        {'ELUSIVENESS'},
+                        {'CARNOR JAX'}
+                    },
+                    {
+                        {'ADVANCED_TARGETING_COMPUTER'},
+                        {'STEALTH_DEVICE', 'EXPOSE'},
+                        {'EXPERIMENTAL_INTERFACE'},
+                        {'WHISPER'},
+                        {'OPPORTUNIST'}
+                    }
+                }
+          }
     }
     AI_DEFS['PALLAS']['ADV'] = AI_DEFS['HOTAC']['ADV']
 
@@ -321,7 +471,38 @@ function initialize_ai()
           attack = 3,
           evade = 3,
           hull = 3,
-          shield = 3
+          shield = 3,
+          eliteAbilities = {
+                    {
+                        {'MANGLER_CANNON'},
+                        {'SHIELD_UPGRADE','CALCULATION'},
+                        {'KATH_SCARLET'},
+                        {'RUTHLESSNESS'},
+                        {'REAR_ADMIRAL_CHIRANEAU'}
+                    },
+                    {
+                        {'ION_CANNON'},
+                        {'SHIELD_UPGRADE','OUTMANEUVER'},
+                        {'BACKSTABBER'},
+                        {'SWARM_TACTICS'},
+                        {'HOWLRUNNER'}
+                    },
+                    {
+                        {'HEAVY_LASER_CANNON'},
+                        {'HULL_UPGRADE','PUSH_THE_LIMIT'},
+                        {'KIR_KANOS'},
+                        {'OUTMANEUVER'},
+                        {'REXLER_BRATH'}
+                    },
+                    {
+                        {'FLECHETTE_CANNON'},
+                        {'STEALTH_DEVICE','ELUSIVENESS'},
+                        {'WHISPER'},
+                        {'LONE_WOLF'},
+                        {'NIGHT_BEAST'}
+                    }
+                }
+
     }
     AI_DEFS['PALLAS']['DEF'] = AI_DEFS['HOTAC']['DEF']
 
@@ -368,7 +549,37 @@ function initialize_ai()
           attack = 4,
           evade = 2,
           hull = 2,
-          shield = 2
+          shield = 2,
+          eliteAbilities = {
+                    {
+                        {'RECON_SPECIALIST'},
+                        {'ADVANCED_CLOAKING_DEVICE','SENSOR_JAMMER'},
+                        {'LONE_WOLF'},
+                        {'ELUSIVENESS'},
+                        {'DARK_CURSE'}
+                    },
+                    {
+                        {'GUNNER'},
+                        {'ADVANCED_CLOAKING_DEVICE','FIRE_CONTROL_SYSTEM'},
+                        {'BACKSTABBER'},
+                        {'OUTMANEUVER'},
+                        {'SOONTIR_FEL'}
+                    },
+                    {
+                        {'MARA_JADE'},
+                        {'ADVANCED_CLOAKING_DEVICE','SENSOR_JAMMER'},
+                        {'MAULER_MITHEL'},
+                        {'PREDATOR'},
+                        {'CARNOR_JAX'}
+                    },
+                    {
+                        {'TACTICIAN'},
+                        {'ADVANCED_CLOAKING_DEVICE','ADVANCED_SENSORS'},
+                        {'EXPOSE'},
+                        {'CAPTAIN_KAGI'},
+                        {'REXLER_BRATH'}
+                    }
+                }
     }
     AI_DEFS['PALLAS']['PHA'] = AI_DEFS['HOTAC']['PHA']
 
@@ -419,6 +630,36 @@ function initialize_ai()
     AI_DEFS['PALLAS']['DEC'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['DEC'].pilotCards = {'https://i.imgur.com/p4QjitY.png','https://i.imgur.com/3hIY2CE.png','https://i.imgur.com/Y9oLlN7.png','https://i.imgur.com/e8HoQzQ.png'}
     AI_DEFS['PALLAS']['DEC'].elitePilotCards = {'https://i.imgur.com/p4QjitY.png','https://i.imgur.com/3hIY2CE.png','https://i.imgur.com/Y9oLlN7.png','https://i.imgur.com/e8HoQzQ.png'}
+    AI_DEFS['PALLAS']['DEC'].eliteabilities = {
+        {
+            {'TACTICIAN'},
+            {'VETERAN_INSTINCTS'},
+            {'AGENT_KALLUS'},
+            {'HOTSHOT_COPILOT'},
+            {'COUNTERMEASURES'},
+        },
+        {
+            {'MARA_JADE'},
+            {'PLASMA_TORPEDOES', 'EXTRA_MUNITIONS'},
+            {'OPERATIONS_SPECIALIST'},
+            {'SNAP_SHOT'},
+            {'EXPERTISE'}
+        },
+        {
+            {'WEAPONS_ENGINEER'},
+            {'PROTON_TORPEDOES', 'EXTRA_MUNITIONS'},
+            {'YSANNE_ISARD'},
+            {'GUIDANCE_CHIPS'},
+            {'REBEL_CAPTIVE'}
+        },
+        {
+            {'MOFF_JERJERROD'},
+            {'INTIMIDATION'},
+            {'SHIELD_UPGRADE'},
+            {'ION_PROJECTOR'},
+            {'DAUNTLESS'},
+        }
+    }
 
     AI_DEFS['HOTAC']['SHU'] = HostileAiDefinition:new{
         faction = EMPIRE,
@@ -457,8 +698,37 @@ function initialize_ai()
         attack = 3,
         evade = 1,
         hull = 5,
-        shield = 5
-
+        shield = 5,
+        eliteAbilities = {
+                  {
+                      {'SENSOR_JAMMER'},
+                      {'FLIGHT_INSTRUCTOR','DRAW_THEIR_FIRE'},
+                      {'CAPTAIN_KAGI'},
+                      {'REBEL_CAPTIVE'},
+                      {'ELUSIVENESS'}
+                  },
+                  {
+                      {'ANTIPIRSUIT_LASERS'},
+                      {'ENHANCED_SCOPES','MARA_JADE'},
+                      {'ZERTIK_STROM'},
+                      {'TACTICIAN'},
+                      {'CARNOR_JAX'}
+                  },
+                  {
+                      {'FLEET_OFFICER'},
+                      {'ADVANCED_SENSORS','TACTICAL_JAMMER'},
+                      {'CAPTAIN_YORR'},
+                      {'SWARM_TACTICS'},
+                      {'HOWLRUNNER'}
+                  },
+                  {
+                      {'WEAPONS_ENGINEER'},
+                      {'ADVANCED_SENSORS','SQUAD_LEADER'},
+                      {'COLONEL_JENDON'},
+                      {'GUNNER'},
+                      {'REXLER_BRATH'}
+                  }
+              }
     }
     AI_DEFS['PALLAS']['SHU'] = AI_DEFS['HOTAC']['SHU']
 
@@ -513,6 +783,7 @@ function initialize_ai()
     AI_DEFS['PALLAS']['TFOE'].elitePilotSkillDeckEntries = 4
     AI_DEFS['PALLAS']['TFOE'].pilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
     AI_DEFS['PALLAS']['TFOE'].elitePilotCards = {'https://i.imgur.com/MczsnBQ.png','https://i.imgur.com/g6TMYWQ.png','https://i.imgur.com/zccpGoI.png','https://i.imgur.com/07RCcGC.png'}
+    AI_DEFS['PALLAS']['TFOE'].eliteabilities=AI_DEFS['PALLAS']['TIEE'].eliteabilities
 
     --TODO: UPS Upsilon Shuttle
     AI_DEFS['PALLAS']['UPS'] = HostileAiDefinition:new{
@@ -598,7 +869,37 @@ function initialize_ai()
       attack = 2,
       evade = 3,
       hull = 2,
-      shield = 2
+      shield = 2,
+      eliteabilities = {
+          {
+              {'STEALTH_DEVICE'},
+              {'PREDATOR','SHIELD_UPGRADE'},
+              {'FELS_WRATH'},
+              {'CARNOR_JAX'},
+              {'THE_INQUISITOR'}
+          },
+          {
+              {'CONCUSSION_MISSILES'},
+              {'GUIDANCE_CHIPS','MUNITIONS_FAILSAFE'},
+              {'EXTRA_MUNITIONS'},
+              {'LIEUTENANT_LORRIR'},
+              {'REXLER_BRATH'}
+          },
+          {
+              {'VETERAN_INSTINCTS'},
+              {'LONE_WOLF','CRACK_SHOT'},
+              {'SNAP_SHOT'},
+              {'TRICK_SHOT'}, --Expertise????
+              {'CALCULATION'}
+          },
+          {
+              {'CLUSTER_MISSILES'},
+              {'GUIDANCE_CHIPS', 'TIEV1'},
+              {'DEADEYE'},
+              {'VALEN_RUDOR'},
+              {'ADRENALINE_RUSH'}
+          }
+      }
     }
     --TODO: TSF TIE S/F
     AI_DEFS['PALLAS']['TSF'] = HostileAiDefinition:new{
@@ -684,7 +985,37 @@ function initialize_ai()
         attack = 2,
         evade = 1,
         hull = 6,
-        shield = 3
+        shield = 3,
+        eliteabilities = {
+            {
+                {'GUIDANCE_CHIPS','PLASMA_TORPEDOES'},
+                {'THERMAL_DETONATORS','EXTRA_MUNITIONS'},
+                {'MUNITIONS_FAILSAFE'},
+                {'CARNOR_JAX'},
+                {'OMEGA_LEADER'}
+            },
+            {
+                {'GUIDANCE_CHIPS','ASSAULT_MISSILES'},
+                {'NIGHT_BEAST','EXTRA_MUNITIONS'},
+                {'DEADEYE'},
+                {'CONNOR_NET'},
+                {'DEATHFIRE'},
+            },
+            {
+                {'ADVANCED_HOMING_MISSILES','PROTON_TORPEDOES'},
+                {'SENSOR_JAMMER','LIGHTWEIGHT_FRAME'},
+                {'CHASER'},
+                {'REAR_ADMIRAL_CHIRANEAU'},
+                {'MAJOR_RHYMER'}
+            },
+            {
+                {'PLASMA_TORPEDOES','ADVANCED_PROTON_TORPEDOES'},
+                {'GUIDANCE_CHIPS','CRACK_SHOT'},
+                {'SHIELD_UPGRADE'},
+                {'SCOURGE'},
+                {'KATH_SCARLET'}
+            }
+        }
     }
     --TODO: BWI B-wing
     AI_DEFS['PALLAS']['BBLU'] = FriendlyAiDefinition:new{

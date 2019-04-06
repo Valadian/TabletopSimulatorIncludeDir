@@ -1,0 +1,10 @@
+<VerticalLayout childForceExpandHeight="false">
+<HorizontalLayout class="row"  preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">1) Enemy you have</Text>
+    <Image preferredWidth="18" class="icon" image="LOCK"/>
+    <Text verticalOverflow="Overflow">on</Text>
+</HorizontalLayout>
+<HorizontalLayout class="row"  preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">2) Nearest Enemy</Text>
+</HorizontalLayout>
+</VerticalLayout>

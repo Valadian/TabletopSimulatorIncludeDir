@@ -1,0 +1,3 @@
+<HorizontalLayout class="row"  preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">1) Nearest Enemy</Text>
+</HorizontalLayout>

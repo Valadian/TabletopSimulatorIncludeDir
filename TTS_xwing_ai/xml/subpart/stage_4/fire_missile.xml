@@ -1,0 +1,5 @@
+<HorizontalLayout class="row"  preferredHeight="20" childAlignment="MiddleLeft">
+    <Text color="red" verticalOverflow="Overflow">Fire</Text>
+    <Image preferredWidth="18" class="icon" image="item_missile" color="red"/>
+    <Text color="red" verticalOverflow="Overflow">if possible</Text>
+</HorizontalLayout>

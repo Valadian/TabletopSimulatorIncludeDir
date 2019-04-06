@@ -1,1 +1,3 @@
-<Text preferredHeight="20" alignment="MiddleLeft" rectAlignment="UpperLeft">2) Nearest Enemy</Text>
+<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
+    <Text preferredHeight="20" alignment="MiddleLeft" rectAlignment="UpperLeft">2) Nearest Enemy</Text>
+</HorizontalLayout>

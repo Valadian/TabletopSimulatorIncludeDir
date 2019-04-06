@@ -1,5 +1,5 @@
-<HorizontalLayout class="row" preferredHeight="20">
-    <Text>+ Skip step 3 on </Text>
-    <Text color="red"> red </Text>
-    <Text> moves</Text>
+<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
+    <Text verticalOverflow="Overflow">+ Skip step 3 on </Text>
+    <Text color="red" verticalOverflow="Overflow"> red </Text>
+    <Text verticalOverflow="Overflow"> moves</Text>
 </HorizontalLayout>
