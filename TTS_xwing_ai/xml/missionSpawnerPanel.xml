@@ -1,0 +1,76 @@
+<Panel id="missionSpawnerPanel" class="buttonPanel" active="false" preferredHeight="560" color="black">
+    <VerticalLayout padding="5 5 5 5" spacing="10">
+        <Text alignment="LowerLeft">Campaign:</Text>
+        <Dropdown preferredHeight="20" onValueChanged="030220/onValueChanged_missionCampaign">
+            <Option selected="true">[HOTAC] Heroes of the Aturi Cluster</Option>
+            <Option>[PALLAS] Battlestar Pallas</Option>
+            <Option>[DOTE] Defense of the Empire</Option>
+        </Dropdown>
+        <Text alignment="LowerLeft">Mission:</Text>
+        <Dropdown id="missionSpawner_HOTAC_missions" active="true" preferredHeight="20" onValueChanged="030220/onValueChanged_missionMission">
+            <Option selected="true">Local Trouble</Option>
+            <Option>--- Refueling Station ---</Option>
+            <Option>Rescue Rebel Operatives</Option>
+            <Option>Disable Sensor Net</Option>
+            <Option>Capture Refueling Station</Option>
+            <Option>--- Minefields ---</Option>
+            <Option>Tread Softly</Option>
+            <Option>Imperial Entanglements</Option>
+            <Option>Care Package</Option>
+            <Option>--- Chasing Phantoms ---</Option>
+            <Option>Needle in a Haystack</Option>
+            <Option>Bait</Option>
+            <Option>Cloak and Dagger</Option>
+            <Option>Revenge</Option>
+            <Option>--- Capture Officer ---</Option>
+            <Option>Capture Officer</Option>
+            <Option>Nobody Home</Option>
+            <Option>Miner's Strike</Option>
+            <Option>--- Defection ---</Option>
+            <Option>Secure Holonet Receiver</Option>
+            <Option>Defector</Option>
+            <Option>Pride of the Empire</Option>
+        </Dropdown>
+        <Dropdown id="missionSpawner_PALLAS_missions" active="false" preferredHeight="20" onValueChanged="030220/onValueChanged_missionMission">
+            <Option>--- Special Missions ---</Option>
+            <!-- <Option>Pallas Trouble</Option> -->
+            <Option>Attack on the Pallas S1</Option>
+            <Option>Attack on the Pallas S2</Option>
+            <Option>Attack on the Pallas S3</Option>
+            <Option>Retrieve the T70 prototype</Option>
+            <Option>Retrieve the K-Wing prototype</Option>
+            <Option>Win the E-Wing prototype</Option>
+            <Option>YT-1300 Combat Refit</Option>
+            <Option>Earn the YT-2400</Option>
+            <Option>--- Season 1 ---</Option>
+            <Option selected="true">Flying School</Option>
+            <Option>Covert Ops</Option>
+            <Option>Escape</Option>
+            <Option>Meeting</Option>
+            <Option>Arms race</Option>
+            <Option>Resources</Option>
+            <Option>Babysitters</Option>
+            <Option>Assassination games</Option>
+            <Option>Traitor Hunt</Option>
+            <Option>Attack on the mining station</Option>
+            <Option>---[NOT IMPLEMENTED] Season 2 ---</Option>
+            <Option>---[NOT IMPLEMENTED] Season 3 ---</Option>
+        </Dropdown>
+        <Dropdown id="missionSpawner_DOTE_missions" active="false" preferredHeight="20" onValueChanged="030220/onValueChanged_missionMission">
+            <Option>---[NOT IMPLEMENTED] ---</Option>
+        </Dropdown>
+        <Text></Text>
+        <Button tooltipPosition="Left" tooltip="Calculate Player Count and Average Player Skill" color="#303030" onClick="030220/onClick_missionPresetup">Pre-Setup</Button>
+        <HorizontalLayout preferredHeight="20" >
+            <Text preferredWidth="10">#</Text>
+            <InputField preferredWidth="200" id="missionPlayerCount" textAlignment="MiddleLeft" onEndEdit="030220/onEndEdit_missionPlayerCount" characterValidation="Integer" placeholder="Player Count"></InputField>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="20" >
+            <Text preferredWidth="10">PS</Text>
+            <InputField preferredWidth="200" id="missionPlayerPS" textAlignment="MiddleLeft" onEndEdit="030220/onEndEdit_missionPlayerPS" characterValidation="Integer" placeholder="Avg. Player Skill"></InputField>
+        </HorizontalLayout>
+        <Text></Text>
+        <Button color="#308030" onClick="030220/onClick_missionSetup">Setup!</Button>
+        <Button color="#803030" onClick="030220/onClick_missionClearMap">Clear Map</Button>
+    </VerticalLayout>
+</Panel>

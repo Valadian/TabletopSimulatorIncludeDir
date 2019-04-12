@@ -13,7 +13,7 @@ ABILITIES = {
             phase="attack", turn="self"},
     ['ADVANCED_HOMING_MISSILES'] = {icon="item_missile", title="Advanced Homing Missiles", redsubtitle="Range 2, Attack 3",
             text="Attack (target lock): Discard this card to perform this attack. If this attack hits, deal 1 faceup Damage card to the defender. Then cancel all dice results.",
-            has_missile=true, discardable=true, requires_lock=true
+            has_missile=true, discardable=true, requires_lock=true,
             phase="attack", turn="self"},
     ['ADVANCED_SENSORS'] = {icon="item_system",title="Advanced Sensors",
             text="Do not skip Action Selection after a collision with an obstacle or ship, or after executing a Red maneuver.",
@@ -50,7 +50,7 @@ ABILITIES = {
             text="When defending, if you are beyond Range 2 or outside the attacker's firing arc, change 1 of your blank results to an Evade result.",
             phase="attack", turn="all"},
     ['BACKSTABBER'] = {icon="item_title", title="Backstabber",
-            text="When attacking from outside the defender's firing arc, roll 1 additional attack die. Prioritize targets that trigger this ability."
+            text="When attacking from outside the defender's firing arc, roll 1 additional attack die. Prioritize targets that trigger this ability.",
             phase="attack", turn="self"},
     ['BLACK_MARKET_SLICER_TOOLS'] = {icon="item_illicit", title="Black Market Slicer Tools",
             text="Action: (Prioritize over focus) Choose a stressed enemy ship at Range 1-2 and roll 1 attack die. On a Hit or Crit result, remove 1 stress token and deal it 1 facedown Damage card.",
@@ -59,7 +59,7 @@ ABILITIES = {
             text="When attacking or defending, you may reroll 1 of your dice for each enemy ship at Range 1.",
             phase="attack", turn="all"},
     ['CALCULATION'] = {icon="ELITE", title="Calculation",
-            text="When attacking, change 1 Focus result to a Critical result."
+            text="When attacking, change 1 Focus result to a Critical result.",
             phase="attack", turn="self"},
     ['CAPTAIN_KAGI'] = {icon="item_title", title="Captain Kagi",
             text="When an enemy ship acquires a target lock, it must lock onto your ship if able",
@@ -243,7 +243,7 @@ ABILITIES = {
             has_cannon=true,
             phase="attack", turn="self"},
     ['HOMING_MISSILE'] = {icon="item_missile", title="Homing Missile", redsubtitle="Range 2-3. Attack 4",
-            text="Attack (target lock): Discard this card to perform this attack. The defender cannot spend evade tokens during this attack."
+            text="Attack (target lock): Discard this card to perform this attack. The defender cannot spend evade tokens during this attack.",
             has_missile=true, discardable=true, requires_lock=true,
             phase="attack", turn="self"},
     ['HORTON_SALM'] = {icon="item_title", title="Horton Salm",
@@ -307,7 +307,7 @@ ABILITIES = {
             text="When attacking a ship outside your firing arc, roll 1 additional attack die.",
             phase="attack", turn="self"},
     ['KIR_KANOS'] = {icon="item_title", title="Kir Kanos",
-            text="When attacking at Range 2-3, add 1 Hit result to your roll."
+            text="When attacking at Range 2-3, add 1 Hit result to your roll.",
             phase="attack", turn="self"},
     ['KYLE_KATARN'] = {icon="item_title", title="Kyle Katarn",
             text="At the start of the combat phase if you are not in an enemy arc assign your focus token to a friendly ship at range 1-3 who is in an enemy arc.",
@@ -507,7 +507,7 @@ ABILITIES = {
             text="When attacking or defending, double the effect of your range combat bonuses.",
             phase="attack", turn="all"},
     ['TARGETING_ASTROMECH'] = {icon="item_astromech", title="Targeting Astromech",
-            text="Acquire a Lock after red moves."
+            text="Acquire a Lock after red moves.",
             free_lock=true,
             phase="action", turn="all"},
     ['TARGETING_COMPUTER'] = {icon="item_modification", title="Targeting Computer",

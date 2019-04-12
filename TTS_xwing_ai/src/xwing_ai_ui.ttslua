@@ -7,6 +7,9 @@ function AiUiPlanningPollingUpdate()
 end
 phases = {"Planning","Activation","Combat","End"}
 function updateStatusUI(next, complete)
+    if true then
+        return
+    end
     --printToAll("updateStatusUI")
     local PHASENAME = {}
     PHASENAME[PlanningSort] = "Planning"
@@ -111,7 +114,7 @@ function updateShipRow(ship, index, active)
     local skill_color = getSkillColor(ship)
     UI.setAttribute("ship"..istr.."ps_text", "color", "#"..skill_color)
     UI.setValue("ship"..istr.."ps_text", skill)
-    UI.setAttribute("ship"..istr.."icon_image", "image", type)
+    UI.setAttribute("ship"..istr.."icon_image", "image", type:gsub(" Rebel$",""):gsub(" Scum$", ""):gsub(" Imperial$",""))
     UI.setAttribute("ship"..istr.."icon_image", "color", '#'..type_color)
     color = ship.getName():match "%[(%w%w%w%w%w%w)]"
     if color then
@@ -600,11 +603,13 @@ function onMouseExit_hideShipCard(player, value, id)
 end
 function xwing_ai_ui_onload()
     -- printToAll('xwing_ai_ui_onload')
---#include xwing_ai_ui_images
+#include xwing_ai_ui_images
     Wait.time(function()
     --     printToAll("Setting XML")
     --     -- UI.setXml(UI.getXml())
     --     -- UI.show('xwingDisplay')
+        local xml = Global.UI.getXmlTable()
+        Global.UI.setXmlTable(xml)
          ClearTimer()
          updateStatusUI()
     end, 1, 1)

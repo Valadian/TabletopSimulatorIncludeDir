@@ -432,7 +432,6 @@ function initialize_ai()
                         {'OPPORTUNIST'}
                     }
                 }
-          }
     }
     AI_DEFS['PALLAS']['ADV'] = AI_DEFS['HOTAC']['ADV']
 
@@ -1472,7 +1471,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['YGRE'].eliteLimits = {6,8,10}
     -- AI_DEFS['DOTE']['YGRE'].elitePilotSkillDeckEntries = 2
     AI_DEFS['DOTE']['YGRE'].pilotCards = {'https://i.imgur.com/IKosfUo.png'}
-    AI_DEFS['DOTE']['YGRE'].elitePilotCards = {'https://i.imgur.com/byyt0V9.png','https://i.imgur.com/ciR5NKa.png'},
+    AI_DEFS['DOTE']['YGRE'].elitePilotCards = {'https://i.imgur.com/byyt0V9.png','https://i.imgur.com/ciR5NKa.png'}
     AI_DEFS['DOTE']['YGRE'].maneuverCard = 'https://i.imgur.com/T7FvHSp.png'
     AI_DEFS['DOTE']['YGRE'].alternate = nil
     AI_DEFS['DOTE']['YGRE'].alternateLevel = nil
@@ -1970,7 +1969,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['PCON'].elitePilotSkills = {3,4,6,8,10}
     AI_DEFS['DOTE']['PCON'].eliteLimits = {6,8,10}
     AI_DEFS['DOTE']['PCON'].pilotCards = {'https://i.imgur.com/qikLAwX.png'}
-    AI_DEFS['DOTE']['PCON'].elitePilotCards = {'https://i.imgur.com/2FLq8ll.png','https://i.imgur.com/n0xAOek.png'},
+    AI_DEFS['DOTE']['PCON'].elitePilotCards = {'https://i.imgur.com/2FLq8ll.png','https://i.imgur.com/n0xAOek.png'}
     AI_DEFS['DOTE']['PCON'].maneuverCard = 'https://i.imgur.com/nuatq3y.png'
     AI_DEFS['DOTE']['PCON'].alternate = nil
     AI_DEFS['DOTE']['PCON'].alternateLevel = nil

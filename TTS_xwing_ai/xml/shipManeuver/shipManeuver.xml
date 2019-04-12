@@ -1,0 +1,44 @@
+<Panel id="ship1_maneuver" class="maneuverCard" height="620">
+    <VerticalLayout childForceExpandHeight="false">
+        <HorizontalLayout preferredHeight="60">
+            <Image id="ship1_type_image" preferredWidth="40" image="TIE Fighter" preserveAspect="true"/>
+            <Text id="ship1_type_text" preferredWidth="160" class="heading">TIE Fighter</Text>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="30" childForceExpandWidth="false">
+            <Text id="ship1_attack_text" class="attr attack">2</Text>
+            <Image id="ship1_attack_image" class="attr attack" image="attr_attack"/>
+            <Text id="ship1_evade_text" class="attr evade">3</Text>
+            <Image id="ship1_evade_image" class="attr evade" image="attr_evade"/>
+            <Text id="ship1_hull_text" class="attr hull">3</Text>
+            <Image id="ship1_hull_image" class="attr hull" image="attr_hull"/>
+            <Text id="ship1_shield_text" class="attr shield">0</Text>
+            <Image id="ship1_shield_image" class="attr shield" image="attr_shield"/>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="90"><Include src="subpart/stage_1.xml"/>
+            <Include src="subpart/stage_1/nearest_in_arc.xml"/>
+            <Include src="subpart/stage_1/nearest.xml"/>
+            <Panel id="ship1_free_focus" class="row"> <Include src="subpart/stage_1/free_focus.xml"/> </Panel>
+            <Panel id="ship1_free_target_lock" class="row"> <Include src="subpart/stage_1/free_target_lock.xml"/> </Panel>
+        <Include src="subpart/stage_suffix.xml"/>
+        <HorizontalLayout preferredHeight="90"><Include src="subpart/stage_2.xml"/>
+            <Include src="subpart/stage_2/check_range.xml"/>
+            <Include src="subpart/stage_2/skip_on_red.xml"/>
+        <Include src="subpart/stage_suffix.xml"/>
+        <HorizontalLayout preferredHeight="200"><Include src="subpart/stage_3.xml"/>
+            <Include src="subpart/stage_3/1_stress_or_crit.xml"/>
+            <Panel id="ship1_conditional_barrel_roll1" class="row"> <Include src="subpart/stage_3/2_roll_for_shot.xml"/> </Panel>
+            <Panel id="ship1_conditional_barrel_roll2" class="row" preferredHeight="40"> <Include src="subpart/stage_3/3_roll_avoid_arc.xml"/> </Panel>
+            <Panel id="ship1_conditional_barrel_roll_boost1" class="row"> <Include src="subpart/stage_3/2_roll_or_boost_for_shot.xml"/> </Panel>
+            <Panel id="ship1_conditional_barrel_roll_boost2" class="row" preferredHeight="40"> <Include src="subpart/stage_3/3_roll_or_boost_avoid_arc.xml"/> </Panel>
+            <Panel id="ship1_conditional_focus" class="row"> <Include src="subpart/stage_3/4_focus.xml"/> </Panel>
+            <Panel id="ship1_conditional_evade4" class="row"> <Include src="subpart/stage_3/4_evade.xml"/> </Panel>
+            <Panel id="ship1_conditional_evade5" class="row"> <Include src="subpart/stage_3/5_evade.xml"/> </Panel>
+        <Include src="subpart/stage_suffix.xml"/>
+        <HorizontalLayout preferredHeight="120"> <Include src="subpart/stage_4.xml"/>
+            <Panel id="ship1_nearest" class="row"> <Include src="subpart/stage_4/1_nearest_enemy.xml"/> </Panel>
+            <Panel id="ship1_nearest_target_lock" class="row" preferredHeight="40"> <Include src="subpart/stage_4/1_nearest_enemy_target_lock.xml"/> </Panel>
+            <Panel id="ship1_fire_missile" class="row" preferredHeight="20"> <Include src="subpart/stage_4/fire_missile.xml"/> </Panel>
+            <Panel id="ship1_clear_target_lock" class="row" preferredHeight="20"> <Include src="subpart/stage_4/clear_target_lock.xml"/> </Panel>
+        <Include src="subpart/stage_suffix.xml"/>
+    </VerticalLayout>
+</Panel>

@@ -78,13 +78,15 @@ function onload(save_string)
     -- campaign
     -- isEpicMap
 
-    enemy_target_locks = findObjectByNameAndType("Enemy Target Locks", "Infinite").getGUID()
-    focus = findObjectByNameAndType("Focus", "Infinite").getGUID()
-    evade = findObjectByNameAndType("Evade", "Infinite").getGUID()
-    cloak = findObjectByNameAndType("Cloak", "Infinite").getGUID()
-    stress = findObjectByNameAndType("Stress", "Infinite").getGUID()
-    target = findObjectByNameAndType("Target Locks", "Infinite").getGUID()
-    playmat = findObjectByName("Epic Playmat").getGUID()
+    if findObjectByNameAndType("Enemy Target Locks", "Infinite")~=nil then
+        enemy_target_locks = findObjectByNameAndType("Enemy Target Locks", "Infinite").getGUID()
+        focus = findObjectByNameAndType("Focus", "Infinite").getGUID()
+        evade = findObjectByNameAndType("Evade", "Infinite").getGUID()
+        cloak = findObjectByNameAndType("Cloak", "Infinite").getGUID()
+        stress = findObjectByNameAndType("Stress", "Infinite").getGUID()
+        target = findObjectByNameAndType("Target Locks", "Infinite").getGUID()
+        playmat = findObjectByName("Epic Playmat").getGUID()
+    end
 
     if save_string~="" then
         local data = JSON.decode(save_string)
@@ -114,6 +116,7 @@ function onSave()
     save.aicards = aicards
     save.aielite = aielite
     local save_string = JSON.encode_pretty(save)
+    --UI.setCustomAssets({{ name='ARROWDOWN', url='https://i.imgur.com/tddH4os.png'}})
     return save_string
 end
 function update()
