@@ -155,7 +155,7 @@ SHIPS["Star Dreadnought Command Prototype"] = HugeShip:new{
 }
 SHIPS["Star Dreadnought Assault Prototype"] = HugeShip:new{
     mesh = "https://paste.ee/r/aDtaX",
-    diffuse = "https://i.imgur.com/cki4QP5.png",
+    diffuse = "https://i.imgur.com/vtVwZYj.jpg",
     ruler = "https://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
@@ -163,7 +163,7 @@ SHIPS["Star Dreadnought Assault Prototype"] = HugeShip:new{
 }
 SHIPS["Executor I-class Star Dreadnought"] = HugeShip:new{
     mesh = "https://paste.ee/r/aDtaX",
-    diffuse = "https://i.imgur.com/cki4QP5.png",
+    diffuse = "https://i.imgur.com/DssvgWd.jpg",
     ruler = "https://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
@@ -171,7 +171,7 @@ SHIPS["Executor I-class Star Dreadnought"] = HugeShip:new{
 }
 SHIPS["Executor II-class Star Dreadnought"] = HugeShip:new{
     mesh = "https://paste.ee/r/aDtaX",
-    diffuse = "https://i.imgur.com/cki4QP5.png",
+    diffuse = "https://i.imgur.com/CN2Oefq.jpg",
     ruler = "https://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
