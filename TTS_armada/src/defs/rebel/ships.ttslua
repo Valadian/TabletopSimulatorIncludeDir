@@ -1,0 +1,162 @@
+SHIPS["GR-75 Medium Transports"] = SmallShip:new{
+    mesh = "https://paste.ee/p/XZLIh",
+    diffuse = "http://i.imgur.com/2A2pAEI.png",
+    ruler = "http://paste.ee/r/FSip2",
+    maneuver = {{"II"},{"I","II"},{"-","I","II"}},
+    defense_tokens = {DEF_SCATTER, DEF_EVADE},
+    shields = {1,1,1,1}
+}
+SHIPS["GR-75 Combat Retrofits"] = SmallShip:new{
+    mesh = "https://paste.ee/p/XZLIh",
+    diffuse = "http://i.imgur.com/dO7rAWL.png",
+    ruler = "http://paste.ee/r/FSip2",
+    maneuver = {{"II"},{"I","II"},{"-","I","II"}},
+    defense_tokens = {DEF_SCATTER, DEF_EVADE},
+    shields = {1,1,1,1}
+}
+SHIPS["CR90 Corvette A"] = SmallShip:new{
+    mesh = "http://paste.ee/r/ciL22",
+    diffuse = "http://i.imgur.com/0kAY3h2.png",
+    ruler = "http://paste.ee/r/H13ZL",
+    maneuver = {{"II"},{"I","II"},{"-","I","II"},{"-","I","I","II"}},
+    defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT},
+    shields = {2,2,2,1}
+}
+SHIPS["CR90 Corvette B"] = SmallShip:new{
+    mesh = "http://paste.ee/r/ciL22",
+    diffuse = "http://i.imgur.com/k7I0BOQ.png",
+    ruler = "http://paste.ee/r/H13ZL",
+    maneuver = {{"II"},{"I","II"},{"-","I","II"},{"-","I","I","II"}},
+    defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT},
+    shields = {2,2,2,1}
+}
+SHIPS["Nebulon-B Support Refit"] = SmallShip:new{
+    mesh = "http://paste.ee/r/5jlFC",
+    diffuse = "http://i.imgur.com/4LZROT5.png",
+    ruler = "http://paste.ee/r/xI908",
+    maneuver = {{"II"},{"I","I"},{"-","I","II"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
+    shields = {3,1,1,2}
+}
+SHIPS["Nebulon-B Escort Frigate"] = SmallShip:new{
+    mesh = "http://paste.ee/r/5jlFC",
+    diffuse = "http://i.imgur.com/avcsD9I.png",
+    ruler = "http://paste.ee/r/xI908",
+    maneuver = {{"II"},{"I","I"},{"-","I","II"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
+    shields = {3,1,1,2}
+}
+SHIPS["MC30c Scout Frigate"] = SmallShip:new{
+    mesh = "http://paste.ee/r/oErZc",
+    diffuse = "http://i.imgur.com/u3vlpCP.png",
+    ruler = "http://paste.ee/r/g71A1",
+    maneuver = {{"I"},{"I","I"},{"-","I","II"},{"-","I","I","-"}},
+    defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT, DEF_REDIRECT},
+    shields = {3,3,3,2}
+}
+SHIPS["MC30c Torpedo Frigate"] = SmallShip:new{
+    mesh = "http://paste.ee/r/oErZc",
+    diffuse = "http://i.imgur.com/ijQ9qP3.png",
+    ruler = "http://paste.ee/r/g71A1",
+    maneuver = {{"I"},{"I","I"},{"-","I","II"},{"-","I","I","-"}},
+    defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT, DEF_REDIRECT},
+    shields = {3,3,3,2}
+}
+SHIPS["Modified Pelta-class Command Ship"] = SmallShip:new{
+    mesh = "http://paste.ee/p/bBiGO",
+    diffuse = "http://i.imgur.com/KIlZlxH.png",
+    ruler = "http://paste.ee/p/RDjaZ",
+    maneuver = {{"II"},{"I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
+    shields = {3,2,2,1}
+}
+SHIPS["Modified Pelta-class Assault Ship"] = SmallShip:new{
+    mesh = "http://paste.ee/p/bBiGO",
+    diffuse = "http://i.imgur.com/erI0mWb.png",
+    ruler = "http://paste.ee/p/RDjaZ",
+    maneuver = {{"II"},{"I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
+    shields = {3,2,2,1}
+}
+
+SHIPS["Hammerhead Scout Corvette"] = SmallShip:new{
+    mesh = "https://paste.ee/p/1zKki",
+    diffuse = "http://i.imgur.com/m9jyRy6.png",
+    ruler = "https://paste.ee/p/DA9vu",
+    maneuver = {{"II"},{"II","I"},{"I","I","-"}},
+    defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {2,1,1,1}
+}
+SHIPS["Hammerhead Torpedo Corvette"] = SmallShip:new{
+    mesh = "https://paste.ee/p/1zKki",
+    diffuse = "http://i.imgur.com/21escRb.png",
+    ruler = "https://paste.ee/p/DA9vu",
+    maneuver = {{"II"},{"II","I"},{"I","I","-"}},
+    defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {2,1,1,1}
+}
+
+SHIPS["Assault Frigate Mark II A"] = MediumShip:new{
+    mesh = "http://paste.ee/r/ZdluE",
+    diffuse = "http://i.imgur.com/5gcQx98.png",
+    ruler = "http://paste.ee/r/kmnpd",
+    maneuver = {{"I"},{"I","I"},{"-","I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
+    shields = {4,3,3,2}
+}
+SHIPS["Assault Frigate Mark II B"] = MediumShip:new{
+    mesh = "http://paste.ee/r/ZdluE",
+    diffuse = "http://i.imgur.com/T1u6SU1.png",
+    ruler = "http://paste.ee/r/kmnpd",
+    maneuver = {{"I"},{"I","I"},{"-","I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
+    shields = {4,3,3,2}
+}
+SHIPS["MC80 Command Cruiser"] = LargeShip:new{
+    mesh = "http://paste.ee/r/am8JC",
+    diffuse = "http://i.imgur.com/pW1iM1a.png",
+    ruler = "http://paste.ee/r/YcTl3",
+    maneuver = {{"I"},{"I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {4,4,4,3}
+}
+SHIPS["MC80 Assault Cruiser"] = LargeShip:new{
+    mesh = "http://paste.ee/r/am8JC",
+    diffuse = "http://i.imgur.com/xklILcW.png",
+    ruler = "http://paste.ee/r/YcTl3",
+    maneuver = {{"I"},{"I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {4,4,4,3}
+}
+SHIPS["MC80 Star Cruiser"] = LargeShip:new{
+    mesh = "http://paste.ee/r/eEzbI",
+    diffuse = "http://i.imgur.com/Cb3Nexq.png",
+    ruler = "http://paste.ee/r/XjDg0",
+    maneuver = {{"I"},{"I","-"},{"I","-","I"}},
+    defense_tokens = {DEF_BRACE, DEF_BRACE, DEF_REDIRECT},
+    shields = {5,2,2,2}
+}
+SHIPS["MC80 Battle Cruiser"] = LargeShip:new{
+    mesh = "http://paste.ee/r/eEzbI",
+    diffuse = "http://i.imgur.com/DHGrZcJ.png",
+    ruler = "http://paste.ee/r/XjDg0",
+    maneuver = {{"I"},{"I","-"},{"I","-","I"}},
+    defense_tokens = {DEF_BRACE, DEF_BRACE, DEF_REDIRECT},
+    shields = {5,2,2,2}
+}
+SHIPS["MC75 Ordnance Cruiser"] = LargeShip:new{
+    mesh = "https://paste.ee/p/YMNKb",
+    diffuse = "https://i.imgur.com/EAhqyNY.png",
+    ruler = "https://paste.ee/r/qw6fH",
+    maneuver = {{"II"},{"I","I"},{"-","I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_CONTAIN},
+    shields = {4,3,3,3}
+}
+SHIPS["MC75 Armored Cruiser"] = LargeShip:new{
+    mesh = "https://paste.ee/p/YMNKb",
+    diffuse = "https://i.imgur.com/04pINuN.png",
+    ruler = "https://paste.ee/r/qw6fH",
+    maneuver = {{"II"},{"I","I"},{"-","I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_CONTAIN},
+    shields = {4,3,3,3}
+}
