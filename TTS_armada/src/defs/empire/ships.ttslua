@@ -153,3 +153,27 @@ SHIPS["Star Dreadnought Command Prototype"] = HugeShip:new{
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
     shields = {6,3,3,2,3,3}
 }
+SHIPS["Star Dreadnought Assault Prototype"] = HugeShip:new{
+    mesh = "https://paste.ee/r/aDtaX",
+    diffuse = "https://i.imgur.com/cki4QP5.png",
+    ruler = "https://paste.ee/p/xLzvA",
+    maneuver = {{"-"},{"-","-"}},
+    defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
+    shields = {6,3,3,2,3,3}
+}
+SHIPS["Executor I-class Star Dreadnought"] = HugeShip:new{
+    mesh = "https://paste.ee/r/aDtaX",
+    diffuse = "https://i.imgur.com/cki4QP5.png",
+    ruler = "https://paste.ee/p/xLzvA",
+    maneuver = {{"-"},{"-","-"}},
+    defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
+    shields = {6,5,5,3,5,5}
+}
+SHIPS["Executor II-class Star Dreadnought"] = HugeShip:new{
+    mesh = "https://paste.ee/r/aDtaX",
+    diffuse = "https://i.imgur.com/cki4QP5.png",
+    ruler = "https://paste.ee/p/xLzvA",
+    maneuver = {{"-"},{"-","-"}},
+    defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
+    shields = {6,5,5,3,5,5}
+}
