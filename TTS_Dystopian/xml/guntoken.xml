@@ -1,0 +1,94 @@
+<Defaults>
+    <Image class="arc" width="400" height="400" position="0 0 4" raycastTarget="false"/>
+    <Image class="weapon" width="100" height="100" preserveAspect="true" tooltipPosition="Above"/>
+    <InputField class="field" colors="#FFFFFFE0|#FFFFFFE0|#FFFFFFE0|#FFFFFFE0" />
+    <ToggleButton class="weaponSelector" color="gray" fontSize="20" colors="white|grey|gray|black" onValueChanged="weaponSelector_onValueChanged"/>
+    <ToggleButton class="arcSelector" color="gray" fontSize="30" width="120" height="60" colors="white|grey|gray|black" onValueChanged="arcSelector_onValueChanged"/>
+    <ToggleButton class="toggleEdit" color="gray" fontSize="60" width="240" height="120" colors="white|grey|gray|black" onValueChanged="toggleEdit_onValueChanged"/>
+    <Button class="color" onClick="color_onClick"/>
+</Defaults>
+<Panel position="0 0 10" scale="0.25 0.25 0.25" rotation="0 180 0">
+    <ToggleButton class="toggleEdit" id="toggleEdit">Edit</ToggleButton>
+</Panel>
+<Panel position="0 0 -1" scale="0.25 0.25 0.25">
+    <Image active="false" id="fore" image="arc_fore" class="arc"/>
+    <Image active="false" id="port" image="arc_port" class="arc"/>
+    <Image active="false" id="stbd" image="arc_stbd" class="arc"/>
+    <Image active="false" id="aft" image="arc_aft" class="arc"/>
+    <Panel active="false" id="fore_indicator" color="red" height="60" width="400" position="0 230 0"/>
+    <Panel active="false" id="port_indicator" color="red" height="400" width="60" position="-230 0 0"/>
+    <Panel active="false" id="stbd_indicator" color="red" height="400" width="60" position="230 0 0"/>
+    <Panel active="false" id="aft_indicator" color="red" height="60" width="400" position="0 -230 0"/>
+    <HorizontalLayout position="0 85 -1" height="110" width="360" color="#000000F0" childForceExpandWidth="false" childAlignment="MiddleCenter">
+        <Image active="false" id="aerial" image="aerial" class="weapon" tooltip="Aerial: Can't attack targets with submerged, use Aerial Defences"/>
+        <Image active="false" id="bomb" image="bomb" class="weapon" tooltip="Bomb: Ignore Shield Generators. Can only target Surface/Submerged &#60;=5&#34;"/>
+        <Image active="false" id="fusillade" image="fusillade" class="weapon" tooltip="Fusillade: Point Blank re-roll blanks unless target is Aerial"/>
+        <Image active="false" id="gunnery" image="gunnery" class="weapon" tooltip="Gunnery: Size 1 are treated as Obscured (Exploding Hits = 1 damage)"/>
+        <Image active="false" id="ramming" image="ramming" class="weapon" tooltip="Ramming: Action Pool = Hull+distance moved+ramming. After Roll 1 dice. Hit=1 damage, exploding=2 damage+disorder"/>
+        <Image active="false" id="submerged" image="submerged" class="weapon" tooltip="Submerged: Ignore Target's Shield Generators. Can't attack targets with Aerial, use submerged Defenses."/>
+        <Image active="false" id="torpedo" image="torpedo" class="weapon" tooltip="Torpedo: Can only attack Surface/Submerged &#60;5&#34;. Blocked line of sight cancels all dice. Ignores Submerged Unit rule" />
+
+        <Image active="false" id="sustained" image="sustained" class="weapon" tooltip="Sustained: Can re-roll any action dice"/>
+        <Image active="false" id="arc" image="arc" class="weapon" tooltip="Arc: Ignore Shield Generators. If crit, gain additional disorder"/>
+        <Image active="false" id="blast" image="blast" class="weapon" tooltip="Blast: Use blast template touching initial target. Apply results to all targets"/>
+        <Image active="false" id="piercing" image="piercing" class="weapon" tooltip="Piercing: Any damage suffers Critical Hit"/>
+        <Image active="false" id="hazardous" image="hazard" class="weapon" tooltip="Hazardous: Any damage suffers Disorder"/>
+        <Image active="false" id="indirect" image="indirect" class="weapon" tooltip="Indirect: Ignore line of sight. Can't target Aerial as initial target. Treat target is obscured"/>
+        <Image active="false" id="extremerange" image="extreme_range" class="weapon" tooltip="Extreme Range: Long Range Band is 20-40&#34;"/>
+    </HorizontalLayout>
+    <VerticalLayout id="leftModifiers" position="-325 0 0" height="400" width="250" active="false">
+        <ToggleButton class="weaponSelector" id="aerial_select" icon="aerial">Aerial</ToggleButton>
+        <ToggleButton class="weaponSelector" id="bomb_select" icon="bomb">Bomb</ToggleButton>
+        <ToggleButton class="weaponSelector" id="fusillade_select" icon="fusillade">Fusillade</ToggleButton>
+        <ToggleButton class="weaponSelector" id="gunnery_select" icon="gunnery">Gunnery</ToggleButton>
+        <ToggleButton class="weaponSelector" id="ramming_select" icon="ramming">Ramming</ToggleButton>
+        <ToggleButton class="weaponSelector" id="submerged_select" icon="submerged">Submerged</ToggleButton>
+        <ToggleButton class="weaponSelector" id="torpedo_select" icon="torpedo">Torpedo</ToggleButton>
+    </VerticalLayout>
+    <VerticalLayout id="rightModifiers" position="325 0 0" height="400" width="250" active="false">
+        <ToggleButton class="weaponSelector" id="sustained_select" icon="sustained">Sustained</ToggleButton>
+        <ToggleButton class="weaponSelector" id="arc_select" icon="arc">Arc</ToggleButton>
+        <ToggleButton class="weaponSelector" id="blast_select" icon="blast">Blast</ToggleButton>
+        <ToggleButton class="weaponSelector" id="piercing_select" icon="piercing">Piercing</ToggleButton>
+        <ToggleButton class="weaponSelector" id="hazardous_select" icon="hazard">Hazardous</ToggleButton>
+        <ToggleButton class="weaponSelector" id="indirect_select" icon="indirect">Indirect</ToggleButton>
+        <ToggleButton class="weaponSelector" id="extremerange_select" icon="extreme_range">Extreme Range</ToggleButton>
+    </VerticalLayout>
+    <Panel id="arcModifiers" position="0 300 0" height="200" width="200" active="false">
+        <ToggleButton id="port_select" class="arcSelector" position="-80 0 0">PORT</ToggleButton>
+        <ToggleButton id="fore_select" class="arcSelector" position="0 60 0">FORE</ToggleButton>
+        <ToggleButton id="stbd_select" class="arcSelector" position="80 0 0">STBD</ToggleButton>
+        <ToggleButton id="aft_select" class="arcSelector" position="0 -60 0">AFT</ToggleButton>
+    </Panel>
+    <InputField id="shipname" class="field" interactable="false" raycastTarget="false" text="Battleship" width="360" height="40" fontSize="18" textAlignment="MiddleCenter" color="#000000F0" textColor="white" position="0 170 0"/><!-- color="#000000C0"-->
+
+    <!-- <Image image="arc" width="360" height="360"color="red"/> -->
+    <InputField id="name" class="field" interactable="false" text="Broadside" width="360" height="60" fontSize="28" textAlignment="MiddleCenter" color="#000000F0" textColor="white" position="0 -10 0" onEndEdit="name_onEndEdit"/>
+    <Panel id="range_1" position="-66 -70 0" width="240" height="50" color="#000000C0">
+        <Text color="white" fontSize="28" >0"-10"</Text>
+    </Panel>
+    <Panel id="range_2" position="0 -70 0" width="240" height="50" color="#0000FFC0">
+        <Text color="white" fontSize="28" >10"-20"</Text>
+    </Panel>
+    <Panel id="range_3" position="66 -70 0" width="240" height="50" color="#FF0000C0">
+        <Text color="black" fontSize="28" >20"-30"</Text>
+    </Panel>
+    <InputField id="primary" class="field" interactable="false" text="10" width="180" height="80" fontSize="56" textAlignment="MiddleCenter" color="#000000F0" textColor="white" position="-100 -140 0" onEndEdit="primary_onEndEdit"/>
+    <InputField id="support" class="field" interactable="false" text="5" width="180" height="80" fontSize="56" textAlignment="MiddleCenter" color="#000000F0" textColor="white" position="100 -140 0" onEndEdit="support_onEndEdit"/>
+    <Text text="(       )" width="180" height="120" fontSize="56" color="white" textAlignment="MiddleCenter"  position="100 -130 0"/>
+
+    <Button id="associate" color="gray" fontSize="20" width="200" height="60" position="0 -235 0" colors="white|grey|gray|black" onClick="associate_onClick">Associate</Button>
+
+    <HorizontalLayout id="colors" active="false" position="0 -300 0" width="500" height="50">
+        <Button id="red" class="color" width="50" height="50" color="#E6194B"/>
+        <Button id="orange" class="color" width="50" height="50" color="#F58231"/>
+        <Button id="yellow" class="color" width="50" height="50" color="#FFE119"/>
+        <Button id="lime" class="color" width="50" height="50" color="#BFEF45"/>
+        <Button id="green" class="color" width="50" height="50" color="#3cb44b"/>
+        <Button id="cyan" class="color" width="50" height="50" color="#42d4f4"/>
+        <Button id="blue" class="color" width="50" height="50" color="#4363d8"/>
+        <Button id="purple" class="color" width="50" height="50" color="#911eb4"/>
+        <Button id="magenta" class="color" width="50" height="50" color="#f032e6"/>
+        <Button id="grey" class="color" width="50" height="50" color="#a9a9a9"/>
+    </HorizontalLayout>
+</Panel>
