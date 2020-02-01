@@ -12,8 +12,12 @@ shield = {
 
 statsObj = "6c1b20"
 
+ui_initialized = false
+
 function onLoad(save_state)
-  if save_state ~= "" and self.getDescription() ~= "" then
+  ui_initialized = self.UI~=nil and self.UI.getXml()~=nil and self.UI.getXml()~=""
+  --printToAll(self.getName().." initialized: "..tostring(ui_initialized))
+  if save_state ~= "" and save_state~=nil then -- and self.getDescription() ~= "" 
     saved_data = JSON.decode(save_state)
     if saved_data.statNames then statNames = saved_data.statNames end
     if saved_data.health then
@@ -37,16 +41,18 @@ function checkLoaded()
 end
 
 function checkStats()
-  for i,j in pairs(statNames) do
-    if j == true then
-      self.UI.setAttribute(i, "active", true)
+  if ui_initialized then
+      for i,j in pairs(statNames) do
+        if j > 0 then
+          self.UI.setAttribute(i, "active", true)
+        end
+      end
+      Wait.frames(function() self.UI.setAttribute("statePanel", "width", 300*2 + (getStatsCount()-1)*350*2) end, 1)
+      local num = self.getName():match("%d+")
+      if num ~= nil then
+        self.UI.setAttribute("number", "image", num)
+      end
     end
-  end
-  Wait.frames(function() self.UI.setAttribute("statePanel", "width", 300*2 + (getStatsCount()-1)*350*2) end, 1)
-  local num = self.getName():match("%d+")
-  if num ~= nil then
-    self.UI.setAttribute("number", "image", num)
-  end
 end
 
 function onSave()
@@ -57,21 +63,24 @@ end
 
 function createBtns()
     self.clearButtons()
-    if self.UI.getAttribute("editPanel", "active") == "True" then
-        local buttonParameter = {click_function = "add", function_owner = self, font_color={241/255, 236/255, 53/255, 100}, position = {0.2, 0.15, 0.55}, label = "▲", width = 250, height = 250, font_size = 200, color = {0,0,0,0}}
-        self.createButton(buttonParameter)
-        buttonParameter.position = {0.2, 0.15, 1.15}
-        buttonParameter.click_function = "sub"
-        buttonParameter.label = "▼"
-        self.createButton(buttonParameter)
-    end
-    if self.UI.getAttribute("editShieldPanel", "active") == "True" then
-        local buttonParameter = {click_function = "addShield", function_owner = self, font_color={128/255, 207/255, 225/255,100}, position = {0.6, 0.15, 0.55}, label = "▲", width = 250, height = 250, font_size = 200, color = {0,0,0,0}}
-        self.createButton(buttonParameter)
-        buttonParameter.position = {0.6, 0.15, 1.15}
-        buttonParameter.click_function = "subShield"
-        buttonParameter.label = "▼"
-        self.createButton(buttonParameter)
+    if ui_initialized then
+        --printToAll(self.getName()..": getXml~=nil")
+        if self.UI.getAttribute("editPanel", "active") == "True" then
+            local buttonParameter = {click_function = "add", function_owner = self, font_color={241/255, 236/255, 53/255, 100}, position = {0.2, 0.15, 0.55}, label = "▲", width = 250, height = 250, font_size = 200, color = {0,0,0,0}}
+            self.createButton(buttonParameter)
+            buttonParameter.position = {0.2, 0.15, 1.15}
+            buttonParameter.click_function = "sub"
+            buttonParameter.label = "▼"
+            self.createButton(buttonParameter)
+        end
+        if self.UI.getAttribute("editShieldPanel", "active") == "True" then
+            local buttonParameter = {click_function = "addShield", function_owner = self, font_color={128/255, 207/255, 225/255,100}, position = {0.6, 0.15, 0.55}, label = "▲", width = 250, height = 250, font_size = 200, color = {0,0,0,0}}
+            self.createButton(buttonParameter)
+            buttonParameter.position = {0.6, 0.15, 1.15}
+            buttonParameter.click_function = "subShield"
+            buttonParameter.label = "▼"
+            self.createButton(buttonParameter)
+        end
     end
 end
 
@@ -79,6 +88,15 @@ function add() onClick(-1, - 1, "add") end
 function sub() onClick(-1, - 1, "sub") end
 function addShield() onClick(-1, - 1, "addShield") end
 function subShield() onClick(-1, - 1, "subShield") end
+function API_UI_initialize(params)
+    ui_initialized = true
+    health.value = params.hull
+    health.max = params.hull
+    shield.value = params.shield
+    shield.max = params.shield
+    Wait.frames(setHealth,5)
+    Wait.frames(setShield,5)
+end
 function API_onClick(id)
     local has_id = statNames[id]>0
     if has_id then
@@ -241,25 +259,32 @@ function incrementStat(id)
 end
 
 function getStatsCount()
-  local count = 0
-  for i,j in pairs(statNames) do
-    if self.UI.getAttribute(i, "active") == "True" then
-      count = count + 1
+    if ui_initialized then
+        local count = 0
+        for i,j in pairs(statNames) do
+            if self.UI.getAttribute(i, "active") == "True" then
+                count = count + 1
+            end
+        end
+        return count
     end
-  end
-  return count
+    return 0
 end
 
 function setHealth()
-  self.UI.setAttribute("progressBar", "percentage", health.value / health.max * 100)
-  self.UI.setAttribute("editButton", "text", health.value .. "/" .. health.max)
-  self.setDescription(health.value .. "/" .. health.max)
-  self.UI.setAttribute("editButton", "textColor", "#000000")
+    if ui_initialized then
+        self.UI.setAttribute("progressBar", "percentage", health.value / health.max * 100)
+        self.UI.setAttribute("editButton", "text", health.value .. "/" .. health.max)
+        --self.setDescription(health.value .. "/" .. health.max.." "..shield.value .. "/" .. shield.max)
+        self.UI.setAttribute("editButton", "textColor", "#000000")
+    end
 end
 
 function setShield()
-  self.UI.setAttribute("shieldProgressBar", "percentage", shield.value / shield.max * 100)
-  self.UI.setAttribute("shieldEditButton", "text", shield.value .. "/" .. shield.max)
-  self.setDescription(shield.value .. "/" .. shield.max)
-  self.UI.setAttribute("shieldEditButton", "textColor", "#000000")
+    if ui_initialized then
+        self.UI.setAttribute("shieldProgressBar", "percentage", shield.value / shield.max * 100)
+        self.UI.setAttribute("shieldEditButton", "text", shield.value .. "/" .. shield.max)
+        --self.setDescription(health.value .. "/" .. health.max.." "..shield.value .. "/" .. shield.max)
+        self.UI.setAttribute("shieldEditButton", "textColor", "#000000")
+    end
 end

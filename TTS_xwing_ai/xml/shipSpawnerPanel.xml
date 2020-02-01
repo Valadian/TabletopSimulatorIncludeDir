@@ -23,12 +23,12 @@
         </GridLayout>
         <GridLayout id="spawnRebellionShips" cellSize="38 38" active="false">
             <Panel id="spawnBWing_panel"><Button id="spawnBWing" icon="B-Wing" tooltip="B-Wing" iconColor="#33567D" class="shipType"/></Panel>
-            <Panel id="spawnZ95HeadhunterRebel_panel"><Button id="spawnZ95HeadhunterRebel" icon="Z-95 Headhunter Rebel" tooltip="Z-95 Headhunter" iconColor="#FDCC7C" class="shipType"/></Panel>
+            <Panel id="spawnZ95HeadhunterRebel_panel"><Button id="spawnZ95HeadhunterRebel" icon="Z-95 Headhunter" tooltip="Z-95 Headhunter" iconColor="#FDCC7C" class="shipType"/></Panel>
             <Panel id="spawnXWing_panel"><Button id="spawnXWing" icon="X-Wing" tooltip="X-Wing" iconColor="#8B392E" class="shipType"/></Panel>
             <Panel id="spawnEWing_panel"><Button id="spawnEWing" icon="E-Wing" tooltip="E-Wing" iconColor="#B9302B" class="shipType"/></Panel>
             <Panel id="spawnKWing_panel"><Button id="spawnKWing" icon="K-Wing" tooltip="K-Wing" iconColor="#E4834D" class="shipType"/></Panel>
-            <Panel id="spawnYWingRebel_panel"><Button id="spawnYWingRebel" icon="Y-Wing Rebel" tooltip="Y-Wing" iconColor="#B1991F" class="shipType"/></Panel>
-            <Panel id="spawnHWK290Rebel_panel"><Button id="spawnHWK290Rebel" icon="HWK-290 Rebel" tooltip="HWK-290" iconColor="#A38D72" class="shipType"/></Panel>
+            <Panel id="spawnYWingRebel_panel"><Button id="spawnYWingRebel" icon="Y-Wing" tooltip="Y-Wing" iconColor="#B1991F" class="shipType"/></Panel>
+            <Panel id="spawnHWK290Rebel_panel"><Button id="spawnHWK290Rebel" icon="HWK-290" tooltip="HWK-290" iconColor="#A38D72" class="shipType"/></Panel>
             <Panel id="spawnYT1300_panel"><Button id="spawnYT1300" icon="YT-1300" tooltip="YT-1300" iconColor="#CAC8C6" class="shipType"/></Panel>
             <Panel id="spawnYT2400_panel"><Button id="spawnYT2400" icon="YT-2400" tooltip="YT-2400" iconColor="#B4A89A" class="shipType"/></Panel>
             <Panel id="spawnAWing_panel"><Button id="spawnAWing" icon="A-Wing" tooltip="A-Wing" iconColor="#819076" class="shipType"/></Panel>
@@ -41,7 +41,7 @@
         </GridLayout>
         <GridLayout id="spawnScumShips" cellSize="38 38" active="false">
             <Panel id="spawnM3AInterceptor_panel"><Button id="spawnM3AInterceptor" icon="M3-A Interceptor" tooltip="M3-A Interceptor" iconColor="#6E5552" class="shipType"/></Panel>
-            <Panel id="spawnFirespray31Scum_panel"><Button id="spawnFirespray31Scum" icon="Firespray-31 Scum" tooltip="Firespray-31" iconColor="#505343" class="shipType"/></Panel>
+            <Panel id="spawnFirespray31Scum_panel"><Button id="spawnFirespray31Scum" icon="Firespray-31" tooltip="Firespray-31" iconColor="#505343" class="shipType"/></Panel>
             <Panel id="spawnProtectorateStarfighter_panel"><Button id="spawnProtectorateStarfighter" icon="Protectorate Starfighter" tooltip="Protectorate Starfighter" iconColor="#446178" class="shipType"/></Panel>
             <Panel id="spawnKihraxzFighter_panel"><Button id="spawnKihraxzFighter" icon="Kihraxz Fighter" tooltip="Kihraxz Fighter" iconColor="#E1984F" class="shipType"/></Panel>
             <Panel id="spawnStarViper_panel"><Button id="spawnStarViper" icon="StarViper" tooltip="StarViper" iconColor="#4A365A" class="shipType"/></Panel>
@@ -50,8 +50,8 @@
             <Panel id="spawnG1AStarFighter_panel"><Button id="spawnG1AStarFighter" icon="G-1A StarFighter" tooltip="G-1A StarFighter" iconColor="#57302F" class="shipType"/></Panel>
             <Panel id="spawnYV666_panel"><Button id="spawnYV666" icon="YV-666" tooltip="YV-666" iconColor="#A77946" class="shipType"/></Panel>
             <Panel id="spawnAggressor_panel"><Button id="spawnAggressor" icon="Aggressor" tooltip="Aggressor" iconColor="#354AAE" class="shipType"/></Panel>
-            <Panel id="spawnZ95HeadhunterScum_panel"><Button id="spawnZ95HeadhunterScum" icon="Z-95 Headhunter Scum" tooltip="Z-95 Headhunter" iconColor="#FDCC7C" class="shipType"/></Panel>
-            <Panel id="spawnYWingScum_panel"><Button id="spawnYWingScum" icon="Y-Wing Scum" tooltip="Y-Wing" iconColor="#B1991F" class="shipType"/></Panel>
+            <Panel id="spawnZ95HeadhunterScum_panel"><Button id="spawnZ95HeadhunterScum" icon="Z-95 Headhunter" tooltip="Z-95 Headhunter" iconColor="#FDCC7C" class="shipType"/></Panel>
+            <Panel id="spawnYWingScum_panel"><Button id="spawnYWingScum" icon="Y-Wing" tooltip="Y-Wing" iconColor="#B1991F" class="shipType"/></Panel>
             <Panel></Panel> <!-- 3rd row -->
             <!-- <Panel id="spawnHWK290Scum_panel"><Button id="spawnHWK290Scum" icon="HWK-290 Scum" tooltip="HWK-290" iconColor="#A38D72" class="shipType"/></Panel> -->
         </GridLayout>

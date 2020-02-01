@@ -7,9 +7,9 @@ function AiUiPlanningPollingUpdate()
 end
 phases = {"Planning","Activation","Combat","End"}
 function updateStatusUI(next, complete)
-    if true then
-        return
-    end
+    -- if true then
+    --     return
+    -- end
     --printToAll("updateStatusUI")
     local PHASENAME = {}
     PHASENAME[PlanningSort] = "Planning"
@@ -57,7 +57,7 @@ function updateStatusUI(next, complete)
                 index=index+1
             end
         end
-        for j=index,20 do
+        for j=index,22 do
             local istr = tostring(j)
             UI.hide("ship"..istr)
         end
@@ -78,12 +78,12 @@ function updateStatusUI(next, complete)
             updateShipRow(ship,index,current)
             index=index+1
         end
-        for j=index,20 do
+        for j=index,22 do
             local istr = tostring(j)
             UI.hide("ship"..istr)
         end
     else
-        for j=1,20 do
+        for j=1,22 do
             local istr = tostring(j)
             UI.hide("ship"..istr)
         end

@@ -1032,7 +1032,7 @@ function initialize_ai()
         faction = REBELLION,
         shipType = 'B-Wing',
         description = 'Blue Squadron Pilot (Wingman)',
-        mesh = 'http://cloud-3.steamusercontent.com/ugc/82591194029071704/78677576E07A2F091DEC4CE58129B42714E8A19E/',
+        mesh = 'https://paste.ee/p/ySIkc',
         diffuse = 'http://i.imgur.com/JihQH1r.png',
         collider = 'http://cloud-3.steamusercontent.com/ugc/856097073971964332/9FA07C37B1615A416F306081D9152902A9BFE9EE/',
         typeColor = '33567D',
@@ -1169,6 +1169,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['ZTAL'].abilities={"GUIDANCE_CHIPS","CONCUSSION_MISSILES"}
     AI_DEFS['DOTE']['ZBIN'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['PALLAS']['ZBAN']))
     AI_DEFS['DOTE']['ZBIN'].faction = SCUM
+    AI_DEFS['DOTE']['ZBIN'].diffuse = 'http://i.imgur.com/WpLP0Tl.jpg'
     AI_DEFS['DOTE']['ZBIN'].shipType = 'Z-95 Headhunter Scum'
     AI_DEFS['DOTE']['ZBIN'].description = 'Binayre Pirate'
     AI_DEFS['DOTE']['ZBIN'].elitePilotSkills = {1,nil,nil,nil,nil}
@@ -1181,6 +1182,7 @@ function initialize_ai()
     AI_DEFS['DOTE']['ZBIN'].abilities ={"BLACK_MARKET_SLICER_TOOLS"}
     AI_DEFS['DOTE']['ZBLA'] = HostileAiDefinition:new(table.ShallowCopy(AI_DEFS['DOTE']['ZBIN']))
     AI_DEFS['DOTE']['ZBLA'].description = 'Black Sun Soldier'
+    AI_DEFS['DOTE']['ZBIN'].diffuse = 'http://i.imgur.com/mFcy9oM.jpg'
     AI_DEFS['DOTE']['ZBLA'].elitePilotSkills = {3,nil,nil,nil,nil}
     AI_DEFS['DOTE']['ZBLA'].hasConditionalTargetLock = true
     AI_DEFS['DOTE']['ZBLA'].pilotCards = {'https://i.imgur.com/fEmvLdA.png'}
@@ -2211,8 +2213,8 @@ function initialize_ai()
         shipType = 'Lancer-class Pursuit Craft',
         description = 'Shadowport Hunter',
         isLargeShip = true,
-        mesh = 'https://paste.ee/r/1af5C',
-        diffuse = 'http://i.imgur.com/D58bZNz.jpg',
+        mesh = 'http://cloud-3.steamusercontent.com/ugc/89352769134140020/49113B3BA0A5C67FD7D40A3F61B6AFAFF02E0D1F/', --'https://paste.ee/r/1af5C',
+        diffuse = 'http://cloud-3.steamusercontent.com/ugc/89352769134151271/4D46ACF8B833733F2D9E113DCC1279E592227FAC/', --'http://i.imgur.com/D58bZNz.jpg',
         collider = 'https://paste.ee/r/v8OYL',
         typeColor = '9E8C2E',
         hasFreeTargetLock = true,
