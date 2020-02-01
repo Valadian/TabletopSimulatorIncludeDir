@@ -31,3 +31,8 @@ end
 function string.strip(str)
     return  string.gsub(str, '^%s*(.-)%s*$', '%1')
 end
+
+function string.hexToColor(stringColor)
+    color_table = {tonumber("0x"..stringColor:sub(1,2),16)/255, tonumber("0x"..stringColor:sub(3,4),16)/255, tonumber("0x"..stringColor:sub(5,6),16)/255}
+    return color_table
+end
