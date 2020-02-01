@@ -1,0 +1,192 @@
+#include ../../util/vector
+countdown = 0
+count = 0
+last_exploding = 0
+dice_src = nil
+function onLoad()
+    dice_src = getObjectFromGUID('c535ff')
+end
+function roll(player, _, id)
+    local addition = tonumber(id)
+    countdown = countdown + 1
+    --printToAll("countdown: "..tostring(countdown))
+    local old = count
+    count = count + addition
+    --printToAll("About to spawn all dice")
+    --Wait.frames(|| spawnAllDice(old,count-1), 1)
+    spawnAllDice(old,count-1)
+    Wait.time(countRoll, 4, 1)
+end
+function spawnAllDice(startZIndex, stopZIndex)
+    for z_i=startZIndex,stopZIndex do
+        spawnDice(z_i)
+    end
+    --Wait.time(checkRoll, 0.1, 1)
+end
+-- function checkRoll()
+--     countdown = countdown-1
+--     if countdown==0 then
+--         printToAll("physics cast")
+--         local hitList = Physics.cast({
+--             origin       = vector.add(self.getPosition(),{0,2,0}),
+--             direction    = {0,-1,0},
+--             type         = 3,
+--             size         = {30,1,25},
+--             max_distance = 0,
+--             debug        = true
+--         })
+--         printToAll("flicking: "..tostring(#hitList))
+--
+--         for i,hit in ipairs(hitList) do
+--             hit.hit_object.addForce({0,15+math.random()*15,0},4)
+--             hit.hit_object.addTorque({math.random()*80-40,math.random()*80-40,math.random()*80-40},4)
+--         end
+--         Wait.time(countRoll, 3.0, 1)
+--     else
+--         printToAll("skipping due to countdown: "..tostring(countdown))
+--     end
+-- end
+function clear()
+    local hitList = getDice()
+    for i,hit in ipairs(hitList) do
+        hit.hit_object.destruct()
+    end
+    count = 0
+    last_exploding = 0
+end
+function getDice()
+    return Physics.cast({
+        origin       = vector.add(self.getPosition(),{0,2,0}),
+        direction    = {0,-1,0},
+        type         = 3,
+        size         = {30,6,25},
+        max_distance = 0,
+        debug        = true
+    })
+end
+function countRoll(reset_exploding)
+    if not reset_exploding then
+        countdown = countdown-1
+    end
+
+    --printToAll("countdown: "..tostring(countdown))
+    if countdown==0 then
+        local hitList = getDice()
+        local results = {[1]=0,[2]=0,[3]=0,[4]=0,[5]=0,[6]=0}
+        for i,hit in ipairs(hitList) do
+            if not hit.hit_object.getLock() then
+                local value = hit.hit_object.getRotationValue()
+                if results[value]==nil then
+                    results[value] = 1
+                else
+                    results[value] = results[value]+1
+                end
+            end
+        end
+        if reset_exploding then
+            new_exploding = results[6]
+            last_exploding = results[6]
+        else
+            new_exploding = results[6] - last_exploding
+            last_exploding = results[6]
+        end
+        self.UI.setAttribute("exploding_hit","text",tostring(results[6]).." ("..tostring(new_exploding)..")")
+        self.UI.setAttribute("hit","text",results[5])
+        self.UI.setAttribute("glancing_hit","text",results[4])
+        self.UI.setAttribute("counter","text",results[3])
+        self.UI.setAttribute("light_counter","text",results[2])
+
+        local exploding_scalar = 2
+        if toggles["obstructed"]=="True" then
+            exploding_scalar = 1
+        end
+        local light_counter_scalar = 1
+        if toggles["ignoreLight"]=="True" then
+            light_counter_scalar = 0
+        end
+        self.UI.setAttribute("hit_total","text",results[6]*exploding_scalar + results[5] + results[4])
+        self.UI.setAttribute("counter_total","text",results[2]*light_counter_scalar + results[3]*2)
+    else
+        --printToAll("Skipping due to countdown: "..tostring(countdown))
+    end
+
+end
+function cancelGlancing_onClick(id, _, player)
+    local hitList = getDice()
+    local removed = 0
+    for i,hit in ipairs(hitList) do
+        if not hit.hit_object.getLock() then
+            local value = hit.hit_object.getRotationValue()
+            if value==4 then
+                hit.hit_object.destruct()
+                removed = removed+1
+            end
+        end
+    end
+    printToAll("Removed: "..tostring(removed).." glancing hits")
+    Wait.frames(|| countRoll(true),1)
+end
+function spawnDice(zIndex)
+    local x = zIndex % 10
+    local y = math.floor(zIndex/10)
+
+    local start = vector.add(self.getPosition(),{-10, 2, 8})
+    local pos = vector.add(start, {x*2,0, y*-2})
+    dice_src.takeObject({
+        position = pos,
+        rotation = {math.random()*360,math.random()*360,math.random()*360},
+        --smooth = false,
+        callback_function = flickDice
+    })
+    -- local dice = spawnObject({
+    --     type = 'Custom_Dice',
+    --     position = vector.add(start, {x*2,0, y*-2}),
+    --     rotation = {math.random()*360,math.random()*360,math.random()*360},
+    --     callback_function = flickDice
+    -- })
+    -- dice.setCustomObject({
+    --     image = "https://i.imgur.com/YY25RfL.png",
+    --     type = 1 --6-sided
+    -- })
+    --dice.lock()
+end
+min_flick_power = 10
+max_flick_power = 15
+rotational_flick_power = 30
+function flickDice(dice)
+    --printToAll("flicking dice")
+    -- Wait.frames(function()
+    dice.addForce({0,min_flick_power+math.random()*(max_flick_power-min_flick_power),0},4)
+    dice.addTorque({math.random()*rotational_flick_power*2-rotational_flick_power,math.random()*rotational_flick_power*2-rotational_flick_power,math.random()*rotational_flick_power*2-rotational_flick_power},4)
+    -- end, 2)
+end
+toggles = {}
+function reroll()
+    hitList = getDice()
+    for _,hit in ipairs(hitList) do
+        local value = hit.hit_object.getRotationValue()
+        if ((toggles["reroll_1"]=="True" and value==1) or
+            (toggles["reroll_2"]=="True" and value==2) or
+            (toggles["reroll_3"]=="True" and value==3) or
+            (toggles["reroll_4"]=="True" and value==4) or
+            (toggles["reroll_5"]=="True" and value==5) or
+            (toggles["reroll_6"]=="True" and value==6)) then
+            hit.hit_object.setRotation({math.random()*360,math.random()*360,math.random()*360})
+            flickDice(hit.hit_object)
+        end
+    end
+    Wait.time(|| countRoll(true), 2.0, 1)
+end
+function toggle_onValueChanged(player, isOn, id)
+    toggles[id]=isOn
+    if isOn=="True" then
+        self.UI.setAttribute(id, "color", "green")
+        self.UI.setAttribute(id, "textColor", "white")
+    else
+        self.UI.setAttribute(id, "color", "#404040")
+        self.UI.setAttribute(id, "textColor", "#606060")
+    end
+    if id=="obstructed" or id=="ignoreLight" then
+        countRoll(true)
+    end
+end

@@ -32,6 +32,12 @@ end
 function surface_onClick(player, _, id)
     foreach_ship(player, "surface")
 end
+function attack(player, _, id)
+    foreach_ship(player, "attack")
+end
+function reset_attack(player, _, id)
+    foreach_ship(player, "reset_attack")
+end
 function foreach_ship(player, func_name, params)
     for _,ship in ipairs(player.getSelectedObjects()) do
         if isShip(ship) then

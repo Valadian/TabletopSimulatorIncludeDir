@@ -8,13 +8,17 @@
 </Defaults>
 <VerticalLayout
     id="selectedDisplay"
-    height="660"
+    height="540"
     width="150"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
-    offsetXY="0 -160"
+    offsetXY="0 -250"
     >
+    <HorizontalLayout preferredHeight="40">
+        <Button text="Attack" onClick="attack"/>
+        <Button text="Clear Attack" onClick="reset_attack"/>
+    </HorizontalLayout>
     <HorizontalLayout preferredHeight="40">
         <Button icon="extreme_range" onClick="arc"/>
         <Button text="Zero" onClick="zero"/>
@@ -31,8 +35,8 @@
             <Text position="70 0 0">0</Text>
         </Panel>
     </VerticalLayout>-->
-    <Panel preferredHeight="620">
-        <Panel id="navFore" scale="0.33 0.33 0.33" position="0 0 0">
+    <Panel preferredHeight="420">
+        <Panel id="navFore" scale="0.33 0.33 0.33" position="0 -70 0">
             <Panel id="frontHull" position="0 200 -20">
                 <Button onClick="move(0.2)" position="0 40 0" class="hpip"/>
                 <Button onClick="move(0.4)" position="0 80 0" class="hpip"/>
@@ -59,7 +63,7 @@
                 <Panel rotation="0 0 -5"> <Button id="right_05" onClick="rotate(5)" text='' position="-50 400 0" class="pip"/> </Panel>
             </Panel>
         </Panel>
-        <Panel id="navAft" scale="0.33 0.33 0.33" position="0 133 0">
+        <Panel id="navAft" scale="0.33 0.33 0.33" position="0 63 0">
             <Panel width="50" height="50" color="red" position="0 -200 0"/>
             <Panel id="aftHull" position="0 -200 -20">
                 <Button onClick="move(-0.2)" position="0 -40 0" class="hpip"/>
@@ -89,8 +93,8 @@
         </Panel>
     </Panel>
     <HorizontalLayout preferredHeight="40">
-    <Button text="Deep Dive" onClick="deepdive_onClick"/>
-    <Button text="Surface" onClick="surface_onClick"/>
-    <Button text="Flying High" onClick="flyinghigh_onClick"/>
+        <Button text="Deep Dive" onClick="deepdive_onClick"/>
+        <Button text="Surface" onClick="surface_onClick"/>
+        <Button text="Flying High" onClick="flyinghigh_onClick"/>
     </HorizontalLayout>
 </VerticalLayout>

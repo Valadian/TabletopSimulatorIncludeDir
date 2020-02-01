@@ -1,0 +1,55 @@
+<Defaults>
+    <Button class="dice" width="75" height="65" fontSize="50" color="#404040" textColor="white" onClick="roll"/>
+    <Button class="bottomrow" width="90" height="45" fontSize="30" color="black" textColor="white"/>
+    <Text class="bottomrow" scale="0.5 0.5 0.5" width="200" height="80" color="white" fontSize="60" alignment="MiddleLeft"/>
+</Defaults>
+<Panel scale="3.5 1 0.38" position="0 0 -60">
+    <Panel offsetXY="0 -500">
+        <Button id="40" offsetXY="460 0" class="dice">40</Button>
+        <Button id="30" offsetXY="380 0" class="dice">30</Button>
+        <Button id="20" offsetXY="300 0" class="dice">20</Button>
+        <Button id="10" offsetXY="220 0" class="dice">10</Button>
+        <Button id="9" offsetXY="140 0" class="dice">9</Button>
+        <Button id="8" offsetXY="60 0" class="dice">8</Button>
+        <Button id="7" offsetXY="-20 0" class="dice">7</Button>
+        <Button id="6" offsetXY="-100 0" class="dice">6</Button>
+        <Button id="5" offsetXY="-180 0" class="dice">5</Button>
+        <Button id="4" offsetXY="-260 0" class="dice">4</Button>
+        <Button id="3" offsetXY="-340 0" class="dice">3</Button>
+        <Button id="2" offsetXY="-420 0" class="dice">2</Button>
+        <Button id="1" offsetXY="-500 0" class="dice">1</Button>
+        <ToggleButton id="obstructed" offsetXY="-400 -100" height="65" fontSize="30" color="#404040" textColor="#606060" width="300" onValueChanged="toggle_onValueChanged" icon="Obscured" tooltipPosition="Below" tooltip="target has = armoured decking, reinforced waterline, submerged (unless attack is submerged)\nself has = conscripted crew, submerged wave lurker">Obstructed</ToggleButton>
+        <Button id="cancelGlancing" offsetXY="0 -100" height="65" fontSize="20" color="#404040" textColor="white" width="300" onClick="cancelGlancing_onClick" icon="glancing_hit">Cancel Glancing Hits</Button>
+        <ToggleButton id="ignoreLight" offsetXY="400 -100" height="65" fontSize="20" color="#404040" textColor="#606060" width="300" onValueChanged="toggle_onValueChanged" icon="light_counter">Ignore Light Counters</ToggleButton>
+        <Text offsetXY="-450 -200" height="65" fontSize="30" color="white" width="200">Reroll:</Text>
+        <ToggleButton id="reroll_1" offsetXY="-300 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged"></ToggleButton>
+        <ToggleButton id="reroll_2" offsetXY="-200 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged" icon="light_counter"></ToggleButton>
+        <ToggleButton id="reroll_3" offsetXY="-100 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged" icon="counter"></ToggleButton>
+        <ToggleButton id="reroll_4" offsetXY="0 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged" icon="glancing_hit"></ToggleButton>
+        <ToggleButton id="reroll_5" offsetXY="100 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged" icon="hit"></ToggleButton>
+        <ToggleButton id="reroll_6" offsetXY="200 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="65" onValueChanged="toggle_onValueChanged" icon="exploding_hit"></ToggleButton>
+        <!-- <ToggleButton id="rerollHits" offsetXY="-300 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="150" onClick="obstructed" icon="hit" onValueChanged="toggle_onValueChanged">Hits</ToggleButton>
+        <ToggleButton id="rerollCounters" offsetXY="-100 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="150" onClick="obstructed" icon="counter" onValueChanged="toggle_onValueChanged">Counters</ToggleButton>
+        <ToggleButton id="rerollBlanks" offsetXY="100 -200" height="65" fontSize="30" color="#404040" textColor="#606060" width="150" onClick="obstructed" onValueChanged="toggle_onValueChanged">Blanks</ToggleButton> -->
+        <Button offsetXY="400 -200" height="65" fontSize="30" color="#404040" textColor="white" width="300" onClick="reroll">Reroll</Button>
+    </Panel>
+    <Panel offsetXY="-66 467">
+        <Image offsetXY="-400 0" width="40" height="40" image="exploding_hit"/>
+        <Text id="exploding_hit" offsetXY="-320 0" class="bottomrow">0</Text>
+        <Image offsetXY="-250 0" width="40" height="40" image="hit"/>
+        <Text id="hit" offsetXY="-170 0" class="bottomrow">0</Text>
+        <Image offsetXY="-100 0" width="40" height="40" image="glancing_hit"/>
+        <Text id="glancing_hit" offsetXY="-20 0" class="bottomrow">0</Text>
+        <Image offsetXY="50 0" width="40" height="40" image="counter"/>
+        <Text id="counter" offsetXY="130 0" class="bottomrow">0</Text>
+        <Image offsetXY="200 0" width="40" height="40" image="light_counter"/>
+        <Text id="light_counter" offsetXY="280 0" class="bottomrow">0</Text>
+
+        <Text offsetXY="-320 50" width="400" class="bottomrow">Hit Total:</Text>
+        <Text id="hit_total" offsetXY="-120 50" class="bottomrow" color="red">0</Text>
+        <Text offsetXY="130 50" width="400" class="bottomrow">Counter Total:</Text>
+        <Text id="counter_total" offsetXY="330 50" class="bottomrow" color="blue">0</Text>
+
+        <Button offsetXY="520 -467" height="65" fontSize="50" color="#404040" textColor="white" width="160" onClick="clear">Clear</Button>
+    </Panel>
+</Panel>

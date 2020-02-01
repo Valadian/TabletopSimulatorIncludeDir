@@ -4,8 +4,8 @@
     <Button class="hpip" width="40" height="20" fontSize="30" color="blue" />
 </Defaults>
 <Panel id="scaleWrapper" active="false">
-    <Button onClick="aim" id="aim" text="Aim" width="120" height="100" fontSize="60" position="0 0 -100"/>
-    <Button onClick="zero" id="zero" text="Zero" width="120" height="80" fontSize="40" position="0 100 -100"/>
+    <!-- <Button onClick="aim" id="aim" text="Aim" width="120" height="100" fontSize="60" position="0 0 -100"/>
+    <Button onClick="zero" id="zero" text="Zero" width="120" height="80" fontSize="40" position="0 100 -100"/> -->
     <Button onClick="showNavFore" id="move" text="^" width="40" height="40" fontSize="30" position="0 200 -100"/>
     <Button onClick="showNavAft" id="moveBack" text="V" width="40" height="40" fontSize="30" position="0 -200 -100"/>
     <Panel id="navFore" active="true">

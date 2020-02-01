@@ -8,8 +8,10 @@ function onload(save_string)
         state = JSON.decode(save_string)
         Wait.frames(function()
             for id,isOn in pairs(state) do
+                if id=="origin" then
+
                 --printToAll("parsing: "..id.." "..isOn)
-                if id=="shipguid" then
+                elseif id=="shipguid" then
                     ship = getObjectFromGUID(isOn)
                     if ship~=nil then
                         self.UI.setAttribute("shipname","text",ship.getName())
@@ -208,8 +210,26 @@ function associate_onClick(player, _, id)
         state["shipguid"]=ship.getGUID()
         self.UI.setAttribute("shipname","text",ship.getName())
         self.setName(ship.getName())
+        ship.call("associate",{token = self})
+        colorstring = ship.call("getColor")
+        state['color'] = "#"..colorstring
+        --if (red*0.299 + green*0.587 + blue*0.114) > 186
+        self.UI.setAttribute("shipname", "color", state["color"])
+
+        colortable = string.hexToColor(colorstring)
+        if colortable[1]*0.299 + colortable[2]*0.587 + colortable[3]*0.114 > 0.73 then
+            self.UI.setAttribute("shipname", "textColor", "#000000")
+        else
+            self.UI.setAttribute("shipname", "textColor", "#FFFFFF")
+        end
+        state['origin'] = {ship.getPosition()[1], ship.getPosition()[2], ship.getPosition()[3]}
     end
     toggleEdit_onValueChanged(nil, "false","toggleEdit")
+end
+function reset()
+    self.lock()
+    self.setPosition(state['origin'])
+    self.setRotation({0,0,0})
 end
 #include ../../util/vector
 function isShip(ship)
