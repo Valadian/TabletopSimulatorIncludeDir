@@ -177,3 +177,19 @@ SHIPS["Executor II-class Star Dreadnought"] = HugeShip:new{
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
     shields = {6,5,5,3,5,5}
 }
+SHIPS["Onager-class Testbed"] = LargeShip:new{
+    mesh = "https://paste.ee/p/JnCw5",
+    diffuse = "https://i.imgur.com/UPNF3Ko.jpg",
+    ruler = "https://paste.ee/p/OS2w9",
+    maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
+    shields = {5,2,2,1}
+}
+SHIPS["Onager-class Star Destroyer"] = LargeShip:new{
+    mesh = "https://paste.ee/p/JnCw5",
+    diffuse = "https://i.imgur.com/pyxN3xi.jpg",
+    ruler = "https://paste.ee/p/OS2w9",
+    maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
+    shields = {5,2,2,1}
+}

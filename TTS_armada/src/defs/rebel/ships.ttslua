@@ -160,3 +160,19 @@ SHIPS["MC75 Armored Cruiser"] = LargeShip:new{
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_CONTAIN},
     shields = {4,3,3,3}
 }
+SHIPS["Starhawk-class Battleship Mark I"] = LargeShip:new{
+    mesh = "https://paste.ee/p/rlHYL",
+    diffuse = "https://i.imgur.com/Gl6TmZs.jpg",
+    ruler = "https://paste.ee/p/TFbWH",
+    maneuver = {{"I"},{"I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
+    shields = {6,4,4,2}
+}
+SHIPS["Starhawk-class Battleship Mark II"] = LargeShip:new{
+    mesh = "https://paste.ee/p/rlHYL",
+    diffuse = "https://i.imgur.com/8lWT9EV.jpg",
+    ruler = "https://paste.ee/p/TFbWH",
+    maneuver = {{"I"},{"I","I"}},
+    defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
+    shields = {6,4,4,2}
+}

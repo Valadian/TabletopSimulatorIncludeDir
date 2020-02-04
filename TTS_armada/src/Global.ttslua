@@ -24,6 +24,10 @@ local CMD_MESHES = {
     "http://i.imgur.com/kCZ8ogN.jpg", --navigate
     "http://i.imgur.com/BRFhnnN.jpg", --concentrate
     "http://i.imgur.com/mlC12j8.jpg"} --squadron
+
+local TARGETING_MESHES = {
+    "https://i.imgur.com/mFwOs6T.jpg"
+}
 local SQUAD = "http://paste.ee/r/nAMCQ"
 local A_COLOR = {0,0.5,1.0 }
 local B_COLOR = {1.0,0.25,0}
@@ -741,7 +745,91 @@ function onObjectDropped( player_color, dropped_object )
             dropped_object.setColorTint({1-(1-color.r)/2,1-(1-color.g)/2,1-(1-color.b)/2})
         end
     end
+
+    local isChip = dropped_object.tag == "Chip"
+    if isChip then
+        local isRulerChip = table.contains(RULER_DESCRIPTIONS, dropped_object.getDescription())
+        local isTargeting = custom~=nil and table.contains(TARGETING_MESHES,custom.diffuse)
+        if isRulerChip then
+            Draw_token_buttons(dropped_object)
+        end
+    end
 end
+RULER_DESCRIPTIONS = {"R,C-L", "D,1", "D,3"} --, "R,C", "R,M", "R,L", "D,1-5",
+token_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 150,width = 300,font_size = 100}
+flipped_token_button_def = {position = {0,-0.3,0},rotation = {0,180,180},height = 150,width = 300,font_size = 100}
+dark_token_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 150,width = 300,font_size = 100, color={0,0,0}, font_color={0.83,0.26,0.1}}
+dark_flipped_token_button_def = {position = {0,-0.3,0},rotation = {0,180,180},height = 150,width = 300,font_size = 100, color={0,0,0}, font_color={0.56,0.74,0.87}}
+function get_token_def(token, dark)
+    rot = token.getRotation()
+    if rot[3]>160 and rot[3]<200 then --FLIPPED
+        if dark ~= nil then
+            return dark_flipped_token_button_def
+        else
+            return flipped_token_button_def
+        end
+    else
+        if dark ~= nil then
+            return dark_token_button_def
+        else
+            return token_button_def
+        end
+    end
+end
+function Draw_token_buttons(token)
+    token.clearButtons()
+    local ruler = token.getVar('ruler')
+    if not token.getLock() then
+        token.createButton(buildRelativeButton(token, "Lock",{click_function="Action_lock_token",color={0,0.8,0},font_color={1,1,1}},get_token_def(token)))
+    else
+        tokendef = get_token_def(token,1)
+        token.createButton(buildRelativeButton(token, "Ruler",{click_function="Action_ruler_token",position=vector.add(tokendef.position,{0,0,-1})},tokendef))
+        if ruler~=nil then
+            tokendef = get_token_def(token)
+            token.createButton(buildRelativeButton(token, "Delete",{click_function="Action_delete_token", position=vector.add(tokendef.position,{0,0,1}), color={0.8,0,0}, font_color={1,1,1}}, tokendef))
+        end
+    end
+end
+function Action_lock_token(token)
+    token.lock()
+    Draw_token_buttons(token)
+end
+function Action_delete_token(token)
+    local ruler = token.getVar('ruler')
+    ruler.destruct()
+    token.destruct()
+end
+function Action_ruler_token(token)
+    local ruler = token.getVar('ruler')
+    if ruler == nil then
+        token.lock()
+        --local mesh = ship.getVar("rulerMesh")
+        local obj_parameters = {}
+        obj_parameters.type = 'Custom_Model'
+        obj_parameters.position = token.getPosition()
+        -- obj_parameters.rotation = token.getRotation()
+        local newruler = spawnObject(obj_parameters)
+        local custom = {}
+        if token.getDescription()=="R,C-L" then
+            custom.mesh = 'https://paste.ee/p/EyvUW'
+        elseif token.getDescription()=="D,3" then
+            custom.mesh = 'https://paste.ee/p/LSrUO'
+        elseif token.getDescription()=="D,1" then
+            custom.mesh= 'https://paste.ee/p/veBPe'
+        end
+        custom.collider = 'https://paste.ee/p/B97T2'
+        custom.material = 3
+        newruler.setCustomObject(custom)
+        newruler.lock()
+        newruler.setColorTint({0.45, 0.13, 0.13})
+        token.setVar('ruler',newruler)
+    else
+        ruler.destruct()
+        token.setVar('ruler',nil)
+    end
+    Draw_token_buttons(token)
+end
+
 function findShip(position)
     for i,ship in ipairs(getAllObjects()) do
         if ship.tag == "Figurine" then
@@ -798,7 +886,11 @@ function buildRelativeButton(object, label, def, defaults)
     if def.font_size==nil then def.font_size = defaults.font_size / scale end
     if def.click_function==nil then def.click_function = 'Action_'..label end
     if def.function_owner==nil then def.function_owner = self end
-    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size}
+    if defaults.color==nil then defaults.color = {1,1,1} end
+    if defaults.font_color==nil then defaults.font_color = {0,0,0} end
+    if def.color==nil then def.color = defaults.color end
+    if def.font_color==nil then def.font_color = defaults.font_color end
+    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size, ['color'] = def.color, ['font_color'] = def.font_color}
 end
 function buildButton(label, def, defaults)
     if def.position==nil then def.position = defaults.position end

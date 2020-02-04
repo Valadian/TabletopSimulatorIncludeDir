@@ -151,13 +151,14 @@ function drawButtons()
         self.createButton(buildButton('+',{click_function='Action_AddRuler',position={-0.2,z,0.9}}))
     end
     self.createButton(buildButton('Done',{click_function='Action_ClearRuler',position={0,z,0.7},width=300}))
+
+    local ship = self.getVar('ship')
+    if ship~=nil and self.getVar('moved')~=true and (#cmds>0 or self.getRotation()[2]~=ship.getRotation()[2]) then
+        self.createButton(buildButton('Move',{position={0,z,0.5},width=300}))
+    end
     if #cmds>0 then
-        if self.getVar('moved')~=true then
-            self.createButton(buildButton('Move',{position={0,z,0.5},width=300}))
-        end
         self.createButton(buildButton('-',{click_function='Action_RemoveRuler',position={0.2,z,0.9}}))
     end
-    local ship = self.getVar('ship')
     if ship~=nil then
         local prev_transforms = ship.getTable('prev_transforms')
         if prev_transforms~=nil and #prev_transforms>0 then--last_pos~=nil and last_rot~=nil and last_moved~=nil then
@@ -171,7 +172,14 @@ function drawButtons()
             end
         end
     end
-    local y = 1.2
+    local y = 1.1
+    if #cmds==0 then
+        self.createButton(buildButton('<',{click_function='Action_RulerLeft0',position={0.2,z,y}}))
+        self.createButton(buildButton('0',{click_function='DoNothing',position={0,z,y},color={0.8,0,0},font_color={1,1,1}}))
+        self.createButton(buildButton('>',{click_function='Action_RulerRight0',position={-0.2,z,y}}))
+
+    end
+    y = y + 0.25
     for i,cmd in ipairs(cmds) do
         if tonumber(cmd)>-2 then
             self.createButton(buildButton('<',{click_function='Action_RulerLeft'..i,position={0.2,z,y}}))
@@ -200,7 +208,7 @@ function drawButtons()
                     color = {1,0,0}
                     font_color = {0,0,0}
                 end
-                self.createButton(buildButton(segment,{click_function='DoNothing',position={0.5,z,0.95+0.25*j},color=color,font_color=font_color})) --1-i*0.2
+                self.createButton(buildButton(segment,{click_function='DoNothing',position={0.5,z,1.1+0.25*j},color=color,font_color=font_color})) --1-i*0.2
             end
         end
         --end
@@ -221,6 +229,15 @@ function Action_RulerRight2() RotateRuler(2,1) end
 function Action_RulerRight3() RotateRuler(3,1) end
 function Action_RulerRight4() RotateRuler(4,1) end
 function Action_RulerRight5() RotateRuler(5,1) end
+
+function Action_RulerLeft0()
+    self.setRotation({self.getRotation()[1],self.getRotation()[2]-22.5,self.getRotation()[3]})
+    drawButtons()
+end
+function Action_RulerRight0()
+    self.setRotation({self.getRotation()[1],self.getRotation()[2]+22.5,self.getRotation()[3]})
+    drawButtons()
+end
 -- last_pos = nil
 -- last_rot = nil
 -- last_moved = nil
@@ -233,8 +250,11 @@ function Action_Move()
     end
     printToAll("Moving: "..ship.getName(),{1,0,0})
     local offset = vector.sub(ship.getPosition(),self.getPosition())
-    local lastRuler = rulers[#rulers]
-    local yRot = lastRuler.getRotation()[2] - self.getRotation()[2]
+    local lastRuler = self
+    if #rulers>0 then
+        lastRuler = rulers[#rulers]
+    end
+    local yRot = lastRuler.getRotation()[2] - ship.getRotation()[2]
     local rotatedOffset = vector.rotate(offset,yRot)
     last_pos = ship.getPosition()
     last_rot = ship.getRotation()

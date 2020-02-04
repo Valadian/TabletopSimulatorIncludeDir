@@ -3,6 +3,7 @@ DEF_CONTAIN = '68abfc'
 DEF_EVADE = 'c09d88'
 DEF_REDIRECT = '36f595'
 DEF_SCATTER = '895e91'
+DEF_SALVO = '5028b2'
 
 function update()
     for _,card in ipairs(getAllObjects()) do
