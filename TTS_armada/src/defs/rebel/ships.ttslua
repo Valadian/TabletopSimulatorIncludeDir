@@ -34,7 +34,7 @@ SHIPS["Nebulon-B Support Refit"] = SmallShip:new{
     mesh = "http://paste.ee/r/5jlFC",
     diffuse = "http://i.imgur.com/4LZROT5.png",
     ruler = "http://paste.ee/r/xI908",
-    maneuver = {{"II"},{"I","I"},{"-","I","II"}},
+    maneuver = {{"I"},{"I","I"},{"-","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
     shields = {3,1,1,2}
 }
@@ -42,7 +42,7 @@ SHIPS["Nebulon-B Escort Frigate"] = SmallShip:new{
     mesh = "http://paste.ee/r/5jlFC",
     diffuse = "http://i.imgur.com/avcsD9I.png",
     ruler = "http://paste.ee/r/xI908",
-    maneuver = {{"II"},{"I","I"},{"-","I","II"}},
+    maneuver = {{"I"},{"I","I"},{"-","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
     shields = {3,1,1,2}
 }

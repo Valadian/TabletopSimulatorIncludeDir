@@ -492,6 +492,7 @@ end
 ATTACK_RULERS = {
     "http://paste.ee/r/b5yCa",
     "http://paste.ee/r/Gwytv",
+    "http://paste.ee/r/yBgAR",
     "http://paste.ee/r/yBgAR"
 }
 RANGE_RULER_MESH = {
