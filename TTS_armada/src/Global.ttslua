@@ -36,6 +36,7 @@ local B_COLOR = {1.0,0.25,0}
 local A_SECONDARY_COLOR = {0,0.3,0.375 }
 local B_SECONDARY_COLOR = {0.375,0.3,0}
 ruler = nil
+rulers = {}
 shield_dials = nil
 
 local BOTTOM_REF_WHITE_GUID = 'e60d1a'
@@ -854,13 +855,13 @@ function Action_Done(squad)
     ruler.destruct()
     squad.lock()
 end
-function Action_ruler_left(ship)
-    moveRuler(ship, -1)
+function Action_ruler_left(ship, player_clicker_color, alt_click)
+    moveRuler(ship, -1, player_clicker_color)
 end
-function Action_ruler_right(ship)
-    moveRuler(ship, 1)
+function Action_ruler_right(ship, player_clicker_color, alt_click)
+    moveRuler(ship, 1, player_clicker_color)
 end
-function moveRuler(ship, direction)
+function moveRuler(ship, direction, player_clicker_color)
     ship.lock()
     local size = ship.getVar('size')
     local b_pos = ship_size[size]
@@ -869,11 +870,15 @@ function moveRuler(ship, direction)
     local rotated = vector.rotate(pos, rot)
     --if size>3 then rot=rot+180 end
 
-    ruler.setPosition(vector.add(ship.getPosition(),rotated))
-    ruler.setRotation({0,rot,0 })
-    ruler.lock()
-    ruler.setVar('ship',ship)
-    ruler.setTable('maneuver',ship.getTable('maneuver'))
+    if rulers[player_clicker_color]==nil then
+        rulers[player_clicker_color]=ruler.clone()
+    end
+    myruler = rulers[player_clicker_color]
+    myruler.setPosition(vector.add(ship.getPosition(),rotated))
+    myruler.setRotation({0,rot,0 })
+    myruler.lock()
+    myruler.setVar('ship',ship)
+    myruler.setTable('maneuver',ship.getTable('maneuver'))
 end
 ship_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 200,width = 200,font_size = 200}
 squad_button_def = {position = {0,0.17,0},rotation = {0,0,0},height = 150,width = 125,font_size = 150}
