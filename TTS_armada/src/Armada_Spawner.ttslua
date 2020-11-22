@@ -72,7 +72,7 @@ function LargeShip:new (o)
     return o
 end
 HugeShip = {
-    collider = "https://paste.ee/r/ClCL3",
+    collider = "http://paste.ee/r/ClCL3",
     convex = true,
     type = 1,
     material = 3,
@@ -113,49 +113,62 @@ function onObjectLeaveContainer(Container, object)
         -- data[13] = {}
         -- object.setTable('Details', data)
         if string.starts(object.getDescription(),"Custom") then
+            -- printToAll("/begin desc",{1,1,1})
+            -- printToAll(object.getDescription(),{1,1,1})
+            -- printToAll("/end desc",{1,1,1})
             -- Custom|Ship|Large|mesh|diffuse|ruler|II|I,II|-,I,II
             local model_data = string:split(object.getDescription(),'\n',nil,false)
             local ship_data = {}
-            if model_data[2]=="Ship" then
+            -- printToAll(model_data[2],{1,1,1})
+            -- printToAll(string.starts(model_data[2],"Ship"),{1,1,1})
+            -- printToAll(model_data[3],{1,1,1})
+            -- printToAll(string.starts(model_data[3],"Small"),{1,1,1})
+            if string.strip(model_data[2])=="Ship" then
+                -- 7 will be shields (F,L,R,B)
+                -- local shields = list(map(int,string:split(model_data[7],",",nil,false)))
+                -- local defense_tokens = string:split(model_data[8],",",nil,false)
+                -- 8 will be defense
                 local maneuver = {}
                 -- lolnope loadstring("maneuver = "..model_data[7])
-                table.insert(maneuver,string:split(model_data[7],",",nil,false))
+                table.insert(maneuver,string:split(string.strip(model_data[7]),",",nil,false))
                 if #model_data>7 then
-                    table.insert(maneuver,string:split(model_data[8],",",nil,false))
+                    table.insert(maneuver,string:split(string.strip(model_data[8]),",",nil,false))
                 end
                 if #model_data>8 then
-                    table.insert(maneuver,string:split(model_data[9],",",nil,false))
+                    table.insert(maneuver,string:split(string.strip(model_data[9]),",",nil,false))
                 end
                 if #model_data>9 then
-                    table.insert(maneuver,string:split(model_data[10],",",nil,false))
+                    table.insert(maneuver,string:split(string.strip(model_data[10]),",",nil,false))
                 end
-                if model_data[3]=="Small" then
+                if string.strip(model_data[3])=="Small" then
                     ship_data = {
-                        mesh = model_data[4],
-                        diffuse = model_data[5],
-                        ruler = model_data[6],
+                        mesh = string.strip(model_data[4]),
+                        diffuse = string.strip(model_data[5]),
+                        ruler = string.strip(model_data[6]),
                         maneuver = maneuver,
+                        --defense_tokens = defense_tokens,
+                        --shields = shields,
                         convex = true,
                         type = 1,
                         material = 3,
                         collider = SmallShip.collider
                     }
-                elseif model_data[3]=="Medium" then
+                elseif string.strip(model_data[3])=="Medium" then
                     ship_data = {
-                        mesh = model_data[4],
-                        diffuse = model_data[5],
-                        ruler = model_data[6],
+                        mesh = string.strip(model_data[4]),
+                        diffuse = string.strip(model_data[5]),
+                        ruler = string.strip(model_data[6]),
                         maneuver = maneuver,
                         convex = true,
                         type = 1,
                         material = 3,
                         collider = MediumShip.collider
                     }
-                elseif model_data[3]=="Large" then
+                elseif string.strip(model_data[3])=="Large" then
                     ship_data = {
-                        mesh = model_data[4],
-                        diffuse = model_data[5],
-                        ruler = model_data[6],
+                        mesh = string.strip(model_data[4]),
+                        diffuse = string.strip(model_data[5]),
+                        ruler = string.strip(model_data[6]),
                         maneuver = maneuver,
                         convex = true,
                         type = 1,
@@ -163,13 +176,13 @@ function onObjectLeaveContainer(Container, object)
                         collider = LargeShip.collider
                     }
                 end
-            elseif model_data[2]=="Squadron" then
+            elseif string.strip(model_data[2])=="Squadron" then
                 -- Custom|Squadron|mesh|diffuse|health|move
                 ship_data = {
-                    mesh = model_data[3],
-                    diffuse = model_data[4],
-                    health =  model_data[5],
-                    move = model_data[6],
+                    mesh = string.strip(model_data[3]),
+                    diffuse = string.strip(model_data[4]),
+                    health =  string.strip(model_data[5]),
+                    move = string.strip(model_data[6]),
                     collider = "http://paste.ee/r/nAMCQ",
                     convex = false,
                     type = 1,
@@ -275,6 +288,9 @@ function vector.rotate(direction, yRotation)
     local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
     local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
     return {xDistance, direction[2], zDistance}
+end
+function string.strip(str)
+    return  string.gsub(str, '^%s*(.-)%s*$', '%1')
 end
 function string.starts(String,Start)
     return string.sub(String,1,string.len(Start))==Start

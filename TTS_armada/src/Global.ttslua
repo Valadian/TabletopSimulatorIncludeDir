@@ -3,22 +3,26 @@ local SQUAD_MOVE_RULER = 1
 local SQUAD_ATTACK_RULER = 2
 local SQUAD_ATTACK_CLOSE_RULER = 3
 local SQUAD_RULERS = {
-    'https://paste.ee/p/wJNgc', --'http://pastebin.com/raw/QspzqNUx',
-    'https://paste.ee/p/nhteg', -- 'http://pastebin.com/raw/v9PG9iFC'
-    'https://paste.ee/p/ZLGDu'
+    'http://paste.ee/p/wJNgc', --'http://pastebin.com/raw/QspzqNUx',
+    'http://paste.ee/p/nhteg', -- 'http://pastebin.com/raw/v9PG9iFC'
+    'http://paste.ee/p/ZLGDu'
 }
 local SQUAD_SPEED_RULERS = {
-    'https://paste.ee/p/nhteg',
-    'https://paste.ee/p/PJ46a',
-    'https://paste.ee/p/IThnr',
-    'https://paste.ee/p/8bBxJ',
-    'https://paste.ee/p/7IG7T'
+    'http://paste.ee/p/nhteg',
+    'http://paste.ee/p/PJ46a',
+    'http://paste.ee/p/IThnr',
+    'http://paste.ee/p/8bBxJ',
+    'http://paste.ee/p/7IG7T'
 }
 local SHIPS = {
     "http://paste.ee/r/eDbf1",
     "http://paste.ee/r/6LYTT",
     "http://paste.ee/r/a7mfW",
-    "https://paste.ee/r/ClCL3"}
+    "http://paste.ee/r/ClCL3"}
+    -- "https://paste.ee/r/eDbf1",
+    -- "https://paste.ee/r/6LYTT",
+    -- "https://paste.ee/r/a7mfW",
+    -- "https://paste.ee/r/ClCL3"}
 local CMD_MESHES = {
     "http://i.imgur.com/q0kgzJZ.jpg", --repair
     "http://i.imgur.com/kCZ8ogN.jpg", --navigate
@@ -26,9 +30,10 @@ local CMD_MESHES = {
     "http://i.imgur.com/mlC12j8.jpg"} --squadron
 
 local TARGETING_MESHES = {
-    "https://i.imgur.com/mFwOs6T.jpg"
+    "http://i.imgur.com/mFwOs6T.jpg"
 }
 local SQUAD = "http://paste.ee/r/nAMCQ"
+local SQUAD_HTTPS = "https://paste.ee/r/nAMCQ"
 local A_COLOR = {0,0.5,1.0 }
 local B_COLOR = {1.0,0.25,0}
 --local A_SECONDARY_COLOR = {0.5,0,1.0 }
@@ -499,8 +504,8 @@ ATTACK_RULERS = {
 RANGE_RULER_MESH = {
     "http://paste.ee/p/zS6HS",
     "http://paste.ee/p/j8OxD",
-    "https://paste.ee/p/ayQRT",
-    "https://paste.ee/p/qk78n"
+    "http://paste.ee/p/ayQRT",
+    "http://paste.ee/p/qk78n"
 }
 function Action_cmds(ship)
     printCmds(ship)
@@ -633,7 +638,7 @@ function isShip(ship)
 --        or name:match " SR$" or name:match " MR$" or name:match " LR$")
 end
 function isSquad(ship)
-    return SQUAD ==ship.getCustomObject().collider
+    return SQUAD ==ship.getCustomObject().collider or SQUAD_HTTPS ==ship.getCustomObject().collider
 --    local name = ship.getName()
 --    return ship.tag == "Figurine" and name:match " Sq$"
 end
@@ -813,13 +818,13 @@ function Action_ruler_token(token)
         local newruler = spawnObject(obj_parameters)
         local custom = {}
         if token.getDescription()=="R,C-L" then
-            custom.mesh = 'https://paste.ee/p/EyvUW'
+            custom.mesh = 'http://paste.ee/p/EyvUW'
         elseif token.getDescription()=="D,3" then
-            custom.mesh = 'https://paste.ee/p/LSrUO'
+            custom.mesh = 'http://paste.ee/p/LSrUO'
         elseif token.getDescription()=="D,1" then
-            custom.mesh= 'https://paste.ee/p/veBPe'
+            custom.mesh= 'http://paste.ee/p/veBPe'
         end
-        custom.collider = 'https://paste.ee/p/B97T2'
+        custom.collider = 'http://paste.ee/p/B97T2'
         custom.material = 3
         newruler.setCustomObject(custom)
         newruler.lock()
