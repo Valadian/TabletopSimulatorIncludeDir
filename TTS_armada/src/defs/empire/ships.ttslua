@@ -31,16 +31,16 @@ SHIPS["Raider II-class Corvette"] = SmallShip:new{
     shields = {2,2,2,2}
 }
 SHIPS["Gladiator I-class Star Destroyer"] = SmallShip:new{
-    mesh = "http://paste.ee/r/8150f",
-    diffuse = "http://i.imgur.com/CBFTsv3.png",
+    mesh = "http://paste.ee/r/MnAu6",
+    diffuse = "http://i.imgur.com/XWOtLVv.jpg",
     ruler = "http://paste.ee/r/PnVAt",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
     shields = {3,2,2,1}
 }
 SHIPS["Gladiator II-class Star Destroyer"] = SmallShip:new{
-    mesh = "http://paste.ee/r/8150f",
-    diffuse = "http://i.imgur.com/KFO7rmN.png",
+    mesh = "http://paste.ee/r/MnAu6",
+    diffuse = "http://i.imgur.com/XAMg2ke.jpg",
     ruler = "http://paste.ee/r/PnVAt",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
