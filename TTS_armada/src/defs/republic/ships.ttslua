@@ -1,0 +1,33 @@
+SHIPS["Consular-class Armed Cruiser"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/i9SWj",
+    maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {2,2,2,1}
+}
+SHIPS["Consular-class Charger C70"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/i9SWj",
+    maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
+    defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
+    shields = {2,2,2,1}
+}
+
+SHIPS["Acclamator I-class Assault Ship"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/r0umF",
+    maneuver = {{"I"},{"I","-"},{"-","I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {4,2,2,2}
+}
+SHIPS["Acclamator II-class Assault Ship"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/r0umF",
+    maneuver = {{"I"},{"I","-"},{"-","I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {4,2,2,2}
+}

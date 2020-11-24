@@ -1,0 +1,48 @@
+ship = {
+    mesh = "",
+    diffuse = "",
+    health = 3,
+    move = 4,
+    defense_tokens = {}}
+-- AI: Anti-Squadron, Swarm
+SHIPS["Vulture-class Droid Fighter Squadron"] = Squadron:new(table.copy(ship))
+
+ship.diffuse = ""
+ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
+-- AI: Anti-Squadron, Swarm, Intel
+SHIPS["DFS-311"] = Squadron:new(table.copy(ship))
+SHIPS["DFS-311"].mesh = ""
+
+-- AI: Anti-Squadron, Swarm
+SHIPS["Haor Chall Prototypes"] = Squadron:new(table.copy(ship))
+
+ship = {
+    mesh = "",
+    diffuse = "",
+    health = 0, --TODO
+    move = 4,
+    defense_tokens = {}}
+--  AI: Battery, Bomber, Heavy
+SHIPS["Hyena-class Droid Bomber Squadron"] = Squadron:new(table.copy(ship))
+--General Grievous ???
+
+ship = {
+    mesh = "",
+    diffuse = "",
+    health = 0, --TODO
+    move = 0, --TODO
+    defense_tokens = {}}
+--  Counter, Swarm, AI: ???
+SHIPS["Droid Tri-fighter Squadron"] = Squadron:new(table.copy(ship))
+--Phlac-Arphocc-Prototype ???
+--DIS-T81 ???
+
+ship = {
+    mesh = "",
+    diffuse = "",
+    health = 0, --TODO
+    move = 0, --TODO
+    defense_tokens = {}}
+--  Relay, Screen
+SHIPS["Belbullab-22 Squadron"] = Squadron:new(table.copy(ship))
+--General Grievous ???

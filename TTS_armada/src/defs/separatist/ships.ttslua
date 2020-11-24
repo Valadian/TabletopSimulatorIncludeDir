@@ -1,0 +1,33 @@
+SHIPS["Hardcell-class Transport"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/NxRRi",
+    maneuver = {{"-"},{"-","-"}},
+    defense_tokens = {},
+    shields = {1,1,1,1}
+}
+SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/NxRRi",
+    maneuver = {{"-"},{"-","-"}},
+    defense_tokens = {},
+    shields = {1,1,1,1}
+}
+
+SHIPS["Munificent-class Comms Frigate"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/wq1eM",
+    maneuver = {{"I"},{"I","II"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {4,3,3,2}
+}
+SHIPS["Munificent-class Star Frigate"] = SmallShip:new{
+    mesh = "",
+    diffuse = "",
+    ruler = "http://paste.ee/r/wq1eM",
+    maneuver = {{"I"},{"I","II"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {4,3,3,2}
+}
