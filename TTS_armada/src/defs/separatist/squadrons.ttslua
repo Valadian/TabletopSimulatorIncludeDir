@@ -1,48 +1,59 @@
 ship = {
-    mesh = "",
-    diffuse = "",
+    mesh = "http://paste.ee/r/3Eh1O",
+    diffuse = "http://i.imgur.com/W2Wl2ub.jpg",
     health = 3,
     move = 4,
     defense_tokens = {}}
 -- AI: Anti-Squadron, Swarm
 SHIPS["Vulture-class Droid Fighter Squadron"] = Squadron:new(table.copy(ship))
-
-ship.diffuse = ""
+ship.diffuse = "http://i.imgur.com/Erytkzv.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
--- AI: Anti-Squadron, Swarm, Intel
-SHIPS["DFS-311"] = Squadron:new(table.copy(ship))
-SHIPS["DFS-311"].mesh = ""
-
 -- AI: Anti-Squadron, Swarm
 SHIPS["Haor Chall Prototypes"] = Squadron:new(table.copy(ship))
+-- AI: Anti-Squadron, Swarm, Intel
+SHIPS["DFS-311"] = Squadron:new(table.copy(ship))
+SHIPS["DFS-311"].mesh = "http://paste.ee/r/OZWGz"
 
 ship = {
-    mesh = "",
-    diffuse = "",
-    health = 0, --TODO
+    mesh = "http://paste.ee/r/3td2d",
+    diffuse = "http://i.imgur.com/BK6UDh0.jpg",
+    health = 4,
     move = 4,
     defense_tokens = {}}
 --  AI: Battery, Bomber, Heavy
 SHIPS["Hyena-class Droid Bomber Squadron"] = Squadron:new(table.copy(ship))
---General Grievous ???
+ship.diffuse = "http://i.imgur.com/e9qw9lm.jpg"
+ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
+--  AI: Battery, Bomber, Heavy
+SHIPS["Baktoid Prototypes"] = Squadron:new(table.copy(ship))
+--  AI: Battery, Bomber, Heavy
+SHIPS["DBS-404"] = Squadron:new(table.copy(ship))
 
 ship = {
-    mesh = "",
-    diffuse = "",
-    health = 0, --TODO
-    move = 0, --TODO
+    mesh = "http://paste.ee/r/HWBYU",
+    diffuse = "http://i.imgur.com/P8mRY2S.jpg",
+    health = 3,
+    move = 5,
     defense_tokens = {}}
---  Counter, Swarm, AI: ???
-SHIPS["Droid Tri-fighter Squadron"] = Squadron:new(table.copy(ship))
---Phlac-Arphocc-Prototype ???
---DIS-T81 ???
+--  Counter, Swarm, AI:Anti-squadron
+SHIPS["Droid Tri-Fighter Squadron"] = Squadron:new(table.copy(ship))
+ship.diffuse = "http://i.imgur.com/LChnyEc.jpg"
+ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
+--  Counter, Swarm, AI:Anti-squadron
+SHIPS["Phlac-Arphocc Prototypes"] = Squadron:new(table.copy(ship))
+--  Counter, Swarm, AI:Anti-squadron, snipe 3
+SHIPS["DIS-T81"] = Squadron:new(table.copy(ship))
+SHIPS["DIS-T81"].mesh = "http://paste.ee/r/hTmLO"
 
 ship = {
-    mesh = "",
-    diffuse = "",
-    health = 0, --TODO
-    move = 0, --TODO
+    mesh = "http://paste.ee/r/MDASs",
+    diffuse = "http://i.imgur.com/h3AjIPZ.jpg",
+    health = 5,
+    move = 4,
     defense_tokens = {}}
 --  Relay, Screen
-SHIPS["Belbullab-22 Squadron"] = Squadron:new(table.copy(ship))
---General Grievous ???
+SHIPS["Belbullab-22 Starfighter Squadron"] = Squadron:new(table.copy(ship))
+--Relay, Screen
+SHIPS["General Grievous"] = Squadron:new(table.copy(ship))
+SHIPS["General Grievous"].diffuse = "http://i.imgur.com/N0vbpyq.jpg"
+SHIPS["General Grievous"].defense_tokens = {DEF_BRACE,DEF_BRACE}

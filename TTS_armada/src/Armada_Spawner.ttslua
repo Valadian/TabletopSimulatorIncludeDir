@@ -223,6 +223,14 @@ function onload()
 
 #include defs/rebel/squadrons
 #include defs/empire/squadrons
+    local ship = nil
+
+#include defs/republic/ships
+#include defs/separatist/ships
+    local ship = nil
+
+#include defs/republic/squadrons
+#include defs/separatist/squadrons
     for _,ship in ipairs(getAllObjects()) do
         if ship.tag == 'Figurine' then
             for key,ship_def in pairs(SHIPS) do

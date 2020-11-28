@@ -1,31 +1,31 @@
 SHIPS["Hardcell-class Transport"] = SmallShip:new{
-    mesh = "",
-    diffuse = "",
+    mesh = "http://paste.ee/r/lgCV8",
+    diffuse = "http://i.imgur.com/ALhJKGI.jpg",
     ruler = "http://paste.ee/r/NxRRi",
-    maneuver = {{"-"},{"-","-"}},
-    defense_tokens = {},
-    shields = {1,1,1,1}
+    maneuver = {{"II"},{"I","I"},{"I","I","-"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
+    shields = {3,1,1,2}
 }
 SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
-    mesh = "",
-    diffuse = "",
+    mesh = "http://paste.ee/r/lgCV8",
+    diffuse = "http://i.imgur.com/KQiWyCh.jpeg",
     ruler = "http://paste.ee/r/NxRRi",
-    maneuver = {{"-"},{"-","-"}},
-    defense_tokens = {},
-    shields = {1,1,1,1}
+    maneuver = {{"II"},{"I","I"},{"I","I","-"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
+    shields = {3,1,1,2}
 }
 
-SHIPS["Munificent-class Comms Frigate"] = SmallShip:new{
-    mesh = "",
-    diffuse = "",
+SHIPS["Munificent-class Comms Frigate"] = MediumShip:new{
+    mesh = "http://paste.ee/r/qZ9t9",
+    diffuse = "http://i.imgur.com/UHhtE2H.png",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,3,3,2}
 }
-SHIPS["Munificent-class Star Frigate"] = SmallShip:new{
-    mesh = "",
-    diffuse = "",
+SHIPS["Munificent-class Star Frigate"] = MediumShip:new{
+    mesh = "http://paste.ee/r/qZ9t9",
+    diffuse = "http://i.imgur.com/drGaSmk.jpg",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
