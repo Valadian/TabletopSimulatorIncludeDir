@@ -1,0 +1,28 @@
+Turbolaser = {
+    type="Turbolaser"
+    back = ""
+}
+function Turbolaser:new (o)
+    o = o or {}
+    setmetatable(o, Turbolaser)
+    Turbolaser.__index = Turbolaser
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+--Republic/Separatist
+Turbolaser:new{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg"}--modification
+
+--generic
+Turbolaser:new{name="Dual Turbolaser Turrets", front="https://i.imgur.com/RfHrc24.jpg"} --modification
+Turbolaser:new{name="Enhanced Armament", front="https://i.imgur.com/fixRACB.jpg"} --modification
+Turbolaser:new{name="H9 Turbolasers", front="https://i.imgur.com/vPAmdyc.jpg"} --modification
+Turbolaser:new{name="Heavy Fire Zone", front="https://i.imgur.com/f0phD19.jpg"}
+Turbolaser:new{name="Heavy Turbolaser Turrets", front="https://i.imgur.com/1BzH8yv.jpg"}
+Turbolaser:new{name="Linked Turbolaser Towers", front="https://i.imgur.com/Zxt5U1V.jpg"}
+Turbolaser:new{name="Quad Battery Turrets", front="https://i.imgur.com/OpE4elu.jpg"} --modification
+Turbolaser:new{name="Quad Turbolaser Cannons", front="https://i.imgur.com/QdRydD8.jpg"} --modification
+Turbolaser:new{name="Slaved Turrets", front="https://i.imgur.com/J9NmUDb.jpg"} --modification
+Turbolaser:new{name="Spinal Armament", front="https://i.imgur.com/0eLX7ML.jpg"} --modification
+Turbolaser:new{name="Turbolaser Reroute Circuits", front="https://i.imgur.com/6faOpzf.jpg"}
+Turbolaser:new{name="XI7 Turbolasers", front="https://i.imgur.com/leeZbxw.jpg"}
+Turbolaser:new{name="XX-9 Turbolasers", front="https://i.imgur.com/ttbae06.jpg"}

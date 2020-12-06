@@ -1,0 +1,108 @@
+Title = {
+    type="Title"
+    back = ""
+}
+function Title:new (o)
+    o = o or {}
+    setmetatable(o, Title)
+    Title.__index = Title
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+--rebel
+Title:new{name="Bright Hope", front="https://i.imgur.com/ppRWBhH.jpg"}
+Title:new{name="Quantum Storm", front="https://i.imgur.com/Zvki0aa.jpg"}
+
+Title:new{name="Dodonna's Pride", front="https://i.imgur.com/XoROjrp.jpg"}
+Title:new{name="Jaina's Light", front="https://i.imgur.com/v5gczKg.jpg"}
+Title:new{name="Liberator", front="https://i.imgur.com/zPLLjv2.jpg"}
+Title:new{name="Tantive IV", front="https://i.imgur.com/THWav9j.jpg"}
+
+Title:new{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg"}
+Title:new{name="Task Force Antilles", front="https://i.imgur.com/NWw9f29.jpg"}
+Title:new{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg"}
+
+Title:new{name="Redemption", front="https://i.imgur.com/Dp0ayI3.jpg"}
+Title:new{name="Salvation", front="https://i.imgur.com/xjIXfVD.jpg"}
+Title:new{name="Vanguard", front="https://i.imgur.com/4a6la8P.jpg"}
+Title:new{name="Yavaris", front="https://i.imgur.com/qtHU4B2.jpg"}
+
+Title:new{name="Phoenix Home", front="https://i.imgur.com/4pKVy0F.jpg"}
+
+Title:new{name="Admonition", front="https://i.imgur.com/rRIV5mH.jpg"}
+Title:new{name="Foresight", front="https://i.imgur.com/HpSit4j.jpg"}
+
+Title:new{name="Gallant Haven", front="https://i.imgur.com/Foap6UL.jpg"}
+Title:new{name="Paragon", front="https://i.imgur.com/1lMOUvu.jpg"}
+
+Title:new{name="Defiance", front="https://i.imgur.com/cBm6bOA.jpg"}
+Title:new{name="Home One", front="https://i.imgur.com/ao1aUWd.jpg"}
+Title:new{name="Independence", front="https://i.imgur.com/eeJ4K4e.jpg"}
+
+Title:new{name="Endeavor", front="https://i.imgur.com/YQO9jve.jpg"}
+Title:new{name="Liberty", front="https://i.imgur.com/gnoxT5J.jpg"}
+Title:new{name="Mon Karren", front="https://i.imgur.com/JbMnQpC.jpg"}
+
+Title:new{name="Aspiration", front="https://i.imgur.com/O0n3gY9.jpg"}
+Title:new{name="Profundity", front="https://i.imgur.com/P0LQ9NC.jpg"}
+
+Title:new{name="Mon Calamari Exodus Fleet", front="https://i.imgur.com/Gi02xgi.jpg"}
+
+Title:new{name="Amity", front="https://i.imgur.com/BcOXgXM.jpg"}
+Title:new{name="Concord", front="https://i.imgur.com/76LdzqR.jpg"}
+Title:new{name="Unity", front="https://i.imgur.com/RP1KPrl.jpg"}
+--imperial
+Title:new{name="Suppressor", front="https://i.imgur.com/11G4bE0.jpg"}
+Title:new{name="Vector", front="https://i.imgur.com/h7NhmMa.jpg"}
+
+Title:new{name="Impetuous", front="https://i.imgur.com/3fOmzlk.jpg"}
+Title:new{name="Instigator", front="https://i.imgur.com/dht3fJ6.jpg"}
+Title:new{name="Corvus", front="https://i.imgur.com/huKZyhu.jpg"}
+
+Title:new{name="Centicore", front="https://i.imgur.com/y41PoZy.jpg"}
+Title:new{name="Hand of Justice", front="https://i.imgur.com/gfeIVpM.jpg"}
+
+Title:new{name="Demolisher", front="https://i.imgur.com/lIICVGX.jpg"}
+Title:new{name="Insidious", front="https://i.imgur.com/lJU1Qr0.jpg"}
+
+Title:new{name="Pursuant", front="https://i.imgur.com/8971Me7.jpg"}
+Title:new{name="Squall", front="https://i.imgur.com/IPQVSGM.jpg"}
+Title:new{name="Stronghold", front="https://i.imgur.com/1UwT76i.jpg"}
+
+Title:new{name="Corrupter", front="https://i.imgur.com/n8Plm1g.jpg"}
+Title:new{name="Dominator", front="https://i.imgur.com/d03SuuK.jpg"}
+Title:new{name="Harrow", front="https://i.imgur.com/2j7zspi.jpg"}
+Title:new{name="Warlord", front="https://i.imgur.com/E8oYSJj.jpg"}
+
+Title:new{name="Interdictor", front="https://i.imgur.com/sIO1x2W.jpg"}
+
+Title:new{name="Cataclysm", front="https://i.imgur.com/BJwwHvW.jpg"}
+Title:new{name="Rakehell", front="https://i.imgur.com/R3NVdce.jpg"}
+Title:new{name="Sunder", front="https://i.imgur.com/tjMOmDP.jpg"}
+
+Title:new{name="Avenger", front="https://i.imgur.com/UOIKPqu.jpg"}
+Title:new{name="Chimaera", front="https://i.imgur.com/o5AtxcG.jpg"}
+Title:new{name="Devastator", front="https://i.imgur.com/nKieVmI.jpg"}
+Title:new{name="Relentless", front="https://i.imgur.com/AT9rKe4.jpg"}
+Title:new{name="Sovereign", front="https://i.imgur.com/AnJZEFb.jpg"}
+
+Title:new{name="Seventh Fleet Star Destroyer", front="https://i.imgur.com/G90ZE7x.jpg"}
+
+Title:new{name="Annihilator", front="https://i.imgur.com/R9rr8vA.jpg"}
+Title:new{name="Eclipse", front="https://i.imgur.com/Vnmp8CR.jpg"}
+Title:new{name="Executor", front="https://i.imgur.com/OGaToRQ.jpg"}
+Title:new{name="Ravager", front="https://i.imgur.com/AcTzTTY.jpg"}
+
+--republic
+Title:new{name="Radiant VII", front="https://i.imgur.com/kTBiAsS.jpg"}
+Title:new{name="Swift Return", front="https://i.imgur.com/lVSb7xQ.jpeg"}
+
+Title:new{name="Implacable", front="https://i.imgur.com/Y8uSW2V.jpeg"}
+Title:new{name="Nevoota Bee", front="https://i.imgur.com/bBFNBzc.jpeg"}
+
+--separatist
+Title:new{name="Beast of Burden", front="https://i.imgur.com/0dOnlMq.jpeg"}
+Title:new{name="Foreman's Labor", front="https://i.imgur.com/cfJ004t.jpeg"}
+
+Title:new{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg"}
+Title:new{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg"}

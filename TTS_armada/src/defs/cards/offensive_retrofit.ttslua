@@ -1,0 +1,30 @@
+OffensiveRetrofit = {
+    type="OffensiveRetrofit"
+    back = ""
+}
+function OffensiveRetrofit:new (o)
+    o = o or {}
+    setmetatable(o, OffensiveRetrofit)
+    OffensiveRetrofit.__index = OffensiveRetrofit
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+--republic
+OffensiveRetrofit:new{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg"}
+
+--separatist
+OffensiveRetrofit:new{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg"}
+
+--generic
+OffensiveRetrofit:new{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg"} --modification
+OffensiveRetrofit:new{name="Boosted Comms", front="https://i.imgur.com/pq9oDK2.jpg"}
+OffensiveRetrofit:new{name="Disposable Capacitors", front="https://i.imgur.com/sujhLdx.jpg"}
+OffensiveRetrofit:new{name="Expanded Hangar Bay", front="https://i.imgur.com/uHXkIP2.jpg"}
+OffensiveRetrofit:new{name="Flag Bridge", front="https://i.imgur.com/qJksgmR.jpg"} --modification
+OffensiveRetrofit:new{name="Hardened Bulkheads", front="https://i.imgur.com/Cz9oxBt.jpg"}
+OffensiveRetrofit:new{name="Phylon Q7 Tractor Beams", front="https://i.imgur.com/x7VhJXM.jpg"}
+OffensiveRetrofit:new{name="Point Defense Reroute", front="https://i.imgur.com/IAIYK4H.jpg"}
+OffensiveRetrofit:new{name="Proximity Mines", front="https://i.imgur.com/e93H1wf.jpg"}
+OffensiveRetrofit:new{name="Quad Laser Turrets", front="https://i.imgur.com/HKfQx0O.jpg"}
+OffensiveRetrofit:new{name="Rapid Launch Bays", front="https://i.imgur.com/PHiQ5fk.jpg"}
+OffensiveRetrofit:new{name="Reserve Hangar Deck", front="https://i.imgur.com/CuuMCQr.jpg"}

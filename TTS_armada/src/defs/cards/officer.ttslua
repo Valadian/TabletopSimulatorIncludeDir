@@ -1,0 +1,81 @@
+Officer = {
+    type="Officer"
+    back = ""
+}
+function Officer:new (o)
+    o = o or {}
+    setmetatable(o, Officer)
+    Officer.__index = Officer
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+-- Rebels
+Officer:new{name="Adar Tallon", front="http://i.imgur.com/htbjXKu.jpg"}
+Officer:new{name="Ahsoka Tano", front="http://i.imgur.com/Qu7q6hP.jpg"}
+-- Officer:new{name="Bail Organa", front=""}
+Officer:new{name="Captain Rex", front="https://i.imgur.com/AEeHqHn.jpeg"}
+Officer:new{name="Ezra Bridger", front="https://i.imgur.com/7K3X4Po.jpeg"}
+Officer:new{name="General Draven", front="https://i.imgur.com/d3Qyp8a.jpeg"}
+Officer:new{name="Kyrsta Agate", front="https://i.imgur.com/Fwdfoev.jpeg"}
+Officer:new{name="Lando Calrissian", front="https://i.imgur.com/fw8Qm7S.jpeg"}
+Officer:new{name="Leia Organa", front="https://i.imgur.com/bJcJynH.jpg"}
+Officer:new{name="Major Derlin", front="https://i.imgur.com/Q8rOdcb.jpeg"}
+Officer:new{name="Raymus Antilles", front="https://i.imgur.com/1Ae4QfL.jpg"}
+Officer:new{name="Sabine Wren", front="https://i.imgur.com/s6dTW50.jpg"}
+Officer:new{name="Toryn Farr", front="https://i.imgur.com/kjyMTLq.jpeg"}
+Officer:new{name="Walex Blissex", front="https://i.imgur.com/X0OgdJp.jpeg"}
+Officer:new{name="Wedge Antilles", front="https://i.imgur.com/OSOELtb.jpeg"}
+
+--Imperial
+Officer:new{name="Admiral Chiraneau", front="https://i.imgur.com/MnfDupy.jpg"}
+Officer:new{name="Admiral Montferrat", front="https://i.imgur.com/Y7lJDlF.jpg"}
+Officer:new{name="Admiral Ozzel", front="https://i.imgur.com/hPkP4Nf.jpeg"}
+Officer:new{name="Admiral Titus", front="https://i.imgur.com/Rm0hVoL.jpeg"}
+Officer:new{name="Agent Kallus", front="https://i.imgur.com/Wuz7UVA.jpeg"}
+Officer:new{name="Captain Brunson", front="https://i.imgur.com/KJFYNXO.jpg"}
+Officer:new{name="Captain Needa", front="https://i.imgur.com/qeUR8rK.jpeg"}
+Officer:new{name="Commandant Aresko", front="https://i.imgur.com/3md8wnE.jpeg"}
+Officer:new{name="Commander Beck", front="https://i.imgur.com/VPsl8a9.jpeg"}
+Officer:new{name="Commander Gherant", front="https://i.imgur.com/IAt9Puz.jpeg"}
+Officer:new{name="Commander Vanto", front="https://i.imgur.com/vyMS9Vl.jpeg"}
+Officer:new{name="Commander Woldar", front="https://i.imgur.com/nsUrWcO.jpeg"}
+Officer:new{name="Darth Vader", front="https://i.imgur.com/wUS7LNn.jpg"}
+Officer:new{name="Director Isard", front="https://i.imgur.com/2OKtNz1.jpg"}
+Officer:new{name="Director Krennic", front="https://i.imgur.com/MWbTBAg.jpg"}
+Officer:new{name="Emperor Palpatine", front="https://i.imgur.com/SAJT8HA.jpg"}
+-- Officer:new{name="Governor Pryce", front=""}
+Officer:new{name="Iden Versio", front="https://i.imgur.com/GspJT2q.jpg"}
+Officer:new{name="Instructor Goran", front="https://i.imgur.com/ZpxS19K.jpg"}
+Officer:new{name="Lira Wessex", front="https://i.imgur.com/A9ZQ2mz.jpg"}
+Officer:new{name="Minister Tua", front="https://i.imgur.com/oBLlFVB.jpg"}
+Officer:new{name="Reeva Demesne", front="https://i.imgur.com/hPWCUbI.jpg"}
+Officer:new{name="Taskmaster Grint", front="https://i.imgur.com/9U4hKcc.jpg"}
+Officer:new{name="The Grand Inquisitor", front="https://i.imgur.com/xzcI49o.jpg"}
+Officer:new{name="Wulff Yularen", front="https://i.imgur.com/dvWsOm8.jpg"}
+
+--republic
+Officer:new{name="Clone Captain Zak", front="https://i.imgur.com/A1FePh3.jpeg"}
+Officer:new{name="Clone Navigation Officer", front="https://i.imgur.com/Mt2SoH7.jpg"}
+
+--separatist
+Officer:new{name="Rune Haako", front="https://i.imgur.com/aEgMSwp.jpg"}
+Officer:new{name="Wat Tambor", front="https://i.imgur.com/MYpNhXT.jpeg"}
+Officer:new{name="T-Series Tactical Droid", front="https://i.imgur.com/8H1wATK.jpeg"}
+
+--generic
+Officer:new{name="Chart Officer", front="https://i.imgur.com/HVWr1Ru.jpg"}
+Officer:new{name="Damage Control Officer", front="https://i.imgur.com/jsuMjsT.jpg"}
+Officer:new{name="Defense Liaison", front="https://i.imgur.com/FqhDYBp.jpg"}
+Officer:new{name="Engineering Captain", front="https://i.imgur.com/gOLEgHZ.jpg"}
+Officer:new{name="Expert Shield Tech", front="https://i.imgur.com/bB1tz0h.jpg"}
+Officer:new{name="Flight Commander", front="https://i.imgur.com/IqzvNR7.jpg"}
+Officer:new{name="Hondo Ohnaka", front="https://i.imgur.com/ka4vK2h.jpg"}
+Officer:new{name="Intel Officer", front="https://i.imgur.com/VvdtHvv.jpg"}
+Officer:new{name="Navigation Officer", front="https://i.imgur.com/VKrSVRL.jpg"}
+Officer:new{name="Skilled First Officer", front="https://i.imgur.com/6ipZf4i.jpg"}
+-- Officer:new{name="Strategic Adviser", front=""}
+Officer:new{name="Support Officer", front="https://i.imgur.com/fEdzGRr.jpg"}
+Officer:new{name="Tactical Expert", front="https://i.imgur.com/aAvvHM6.jpg"}
+Officer:new{name="Veteran Captain", front="https://i.imgur.com/GCmA53j.jpg"}
+Officer:new{name="Weapons Liaison", front="https://i.imgur.com/XxbObBi.jpg"}
+Officer:new{name="Wing Commander", front="https://i.imgur.com/FjHlkZC.jpg"}

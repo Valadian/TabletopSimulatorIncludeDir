@@ -35,8 +35,16 @@ SmallShip = {
     defense_tokens = {},
     shields = {1,1,1,1}
 }
-function SmallShip:new (o)
+function SmallShip:new (o,...)
     o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                o[k] = v
+            end
+        end
+    end
     setmetatable(o, SmallShip)
     SmallShip.__index = SmallShip
     return o
@@ -50,8 +58,16 @@ MediumShip = {
     defense_tokens = {},
     shields = {1,1,1,1}
 }
-function MediumShip:new (o)
+function MediumShip:new (o,...)
     o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                o[k] = v
+            end
+        end
+    end
     setmetatable(o, MediumShip)
     MediumShip.__index = MediumShip
     return o
@@ -65,8 +81,16 @@ LargeShip = {
     defense_tokens = {},
     shields = {1,1,1,1}
 }
-function LargeShip:new (o)
+function LargeShip:new (o,...)
     o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                o[k] = v
+            end
+        end
+    end
     setmetatable(o, LargeShip)
     LargeShip.__index = LargeShip
     return o
@@ -80,8 +104,16 @@ HugeShip = {
     defense_tokens = {},
     shields = {1,1,1,1,1,1}
 }
-function HugeShip:new (o)
+function HugeShip:new (o,...)
     o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                o[k] = v
+            end
+        end
+    end
     setmetatable(o, HugeShip)
     HugeShip.__index = HugeShip
     return o
@@ -93,14 +125,25 @@ Squadron = {
     material = 1,
     defense_tokens = {}
 }
-function Squadron:new (o)
+function Squadron:new (o, ...)
     o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        -- printToAll("Found args: "..tostring(#{...}),{0,1,1})
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                -- printToAll("Copying over: "..k)
+                o[k] = v
+            end
+        end
+    end
     setmetatable(o, Squadron)
     Squadron.__index = Squadron
     return o
 end
 
 SHIPS = {}
+CARDS = {}
 function onObjectSpawn(object)
     --Create a Button on the card for leaving a container
     if object.tag ~= "Figurine" and (SHIPS[object.getName()] != nil or string.starts(object.getDescription(),"Custom")) then
@@ -231,6 +274,10 @@ function onload()
 
 #include defs/republic/squadrons
 #include defs/separatist/squadrons
+    setRulerMeshes()
+    drawListSpawnerButtons()
+end
+function setRulerMeshes()
     for _,ship in ipairs(getAllObjects()) do
         if ship.tag == 'Figurine' then
             for key,ship_def in pairs(SHIPS) do
@@ -242,6 +289,31 @@ function onload()
             end
         end
     end
+end
+function drawListSpawnerButtons()
+    for _,listSpawner in ipairs(getAllObjects()) do
+        if listSpawner.getName()=="List Spawner" then
+            Action_CloseListSpawner(listSpawner)
+        end
+    end
+end
+function Action_CloseListSpawner(listSpawner)
+    listSpawner.clearButtons()
+    listSpawner.createButton({label = ">", click_function = 'Action_OpenListSpawner', rotation = {0, 0, 0}, scale={1,1,1},
+    position = {0, 0, -4}, width = 40, height = 40, font_size = 30, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+
+end
+function Action_OpenListSpawner(listSpawner)
+    listSpawner.clearButtons()
+    listSpawner.createButton({label = "<", click_function = 'Action_CloseListSpawner', rotation = {0, 0, 0},
+        position = {0, 0, -4}, width = 40, height = 40, font_size = 30, function_owner = self, color={1,0,0}, font_color={0,0,0}})
+    listSpawner.createInput({label = "paste list here", input_function = 'Input_UpdateList', rotation = {0, 0, 0},
+        position = {0, 2, 0.5}, width = 400, height = 400, font_size = 30, function_owner = self, font_color={0,0,0}})
+    listSpawner.createButton({label = "Spawn!", click_function = 'Action_SpawnListSpawner', rotation = {0, 0, 0},
+        position = {0, 2, 4}, width = 400, height = 80, font_size = 60, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+end
+function Input_UpdateList(obj, color, input, stillEditing)
+    obj.setVar("list",input)
 end
 function spawnShip(name,pos,count,rotation)
     local ship_def = SHIPS[name]

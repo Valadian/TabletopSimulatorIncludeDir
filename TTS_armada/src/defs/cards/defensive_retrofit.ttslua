@@ -1,0 +1,18 @@
+DefensiveRetrofit = {
+    type="DefensiveRetrofit"
+    back = ""
+}
+function DefensiveRetrofit:new (o)
+    o = o or {}
+    setmetatable(o, DefensiveRetrofit)
+    DefensiveRetrofit.__index = DefensiveRetrofit
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+DefensiveRetrofit:new{name="Advanced Projectors", front="https://i.imgur.com/fREeP77.jpg"}
+DefensiveRetrofit:new{name="Cluster Bombs", front="https://i.imgur.com/Ngqc1s9.jpg"}
+DefensiveRetrofit:new{name="Early Warning System", front="https://i.imgur.com/PBh5gdb.jpg"}
+DefensiveRetrofit:new{name="Electronic Countermeasures", front="https://i.imgur.com/LF2AEZT.jpg"}
+DefensiveRetrofit:new{name="Reactive Gunnery", front="https://i.imgur.com/rKp36un.jpg"}
+DefensiveRetrofit:new{name="Redundant Shields", front="https://i.imgur.com/3CmOh4B.jpg"}
+DefensiveRetrofit:new{name="Reinforced Blast Doors", front="https://i.imgur.com/OVWDAVK.jpg"}

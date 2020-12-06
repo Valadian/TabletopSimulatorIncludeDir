@@ -1,0 +1,22 @@
+WeaponsTeamAndOffensiveRetrofit = {
+    type="WeaponsTeamAndOffensiveRetrofit"
+    back = ""
+}
+function WeaponsTeamAndOffensiveRetrofit:new (o)
+    o = o or {}
+    setmetatable(o, WeaponsTeamAndOffensiveRetrofit)
+    WeaponsTeamAndOffensiveRetrofit.__index = WeaponsTeamAndOffensiveRetrofit
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+--rebel
+WeaponsTeamAndOffensiveRetrofit:new{name="Cham Syndulla", front="https://i.imgur.com/1UBq5nW.jpg"}
+WeaponsTeamAndOffensiveRetrofit:new{name="Jyn Erso", front="https://i.imgur.com/PJTbNuK.jpg"}
+WeaponsTeamAndOffensiveRetrofit:new{name="Shriv Suurgav", front="https://i.imgur.com/0y9SkmF.jpg"}
+
+--imperial
+WeaponsTeamAndOffensiveRetrofit:new{name="Darth Vader", front="https://i.imgur.com/8Xu7fJp.jpg"}
+
+--generic
+WeaponsTeamAndOffensiveRetrofit:new{name="Boarding Engineers", front="https://i.imgur.com/iIj1jTC.jpg"}
+WeaponsTeamAndOffensiveRetrofit:new{name="Boarding Troopers", front="https://i.imgur.com/U9MB7cI.jpg"}

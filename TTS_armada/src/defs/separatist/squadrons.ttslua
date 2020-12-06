@@ -1,3 +1,6 @@
+SEPARATISTS_SQUAD = {
+    back = "https://i.imgur.com/qUkhvV9.jpg"
+}
 ship = {
     mesh = "http://paste.ee/r/3Eh1O",
     diffuse = "http://i.imgur.com/W2Wl2ub.jpg",
@@ -5,14 +8,20 @@ ship = {
     move = 4,
     defense_tokens = {}}
 -- AI: Anti-Squadron, Swarm
-SHIPS["Vulture-class Droid Fighter Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["Vulture-class Droid Fighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/851EiGY.jpeg"
+})
 ship.diffuse = "http://i.imgur.com/Erytkzv.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 -- AI: Anti-Squadron, Swarm
-SHIPS["Haor Chall Prototypes"] = Squadron:new(table.copy(ship))
+SHIPS["Haor Chall Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/sMYjVpK.jpeg"
+})
 -- AI: Anti-Squadron, Swarm, Intel
-SHIPS["DFS-311"] = Squadron:new(table.copy(ship))
-SHIPS["DFS-311"].mesh = "http://paste.ee/r/OZWGz"
+SHIPS["DFS-311"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/ph9wqQ7.jpeg",
+    mesh = "http://paste.ee/r/OZWGz"
+})
 
 ship = {
     mesh = "http://paste.ee/r/3td2d",
@@ -21,13 +30,19 @@ ship = {
     move = 4,
     defense_tokens = {}}
 --  AI: Battery, Bomber, Heavy
-SHIPS["Hyena-class Droid Bomber Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["Hyena-class Droid Bomber Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/4zpFWdk.jpeg"
+})
 ship.diffuse = "http://i.imgur.com/e9qw9lm.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  AI: Battery, Bomber, Heavy
-SHIPS["Baktoid Prototypes"] = Squadron:new(table.copy(ship))
+SHIPS["Baktoid Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/kQGXd4d.jpg"
+})
 --  AI: Battery, Bomber, Heavy
-SHIPS["DBS-404"] = Squadron:new(table.copy(ship))
+SHIPS["DBS-404"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/IJojXUS.jpg"
+})
 
 ship = {
     mesh = "http://paste.ee/r/HWBYU",
@@ -36,14 +51,20 @@ ship = {
     move = 5,
     defense_tokens = {}}
 --  Counter, Swarm, AI:Anti-squadron
-SHIPS["Droid Tri-Fighter Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["Droid Tri-Fighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/gju4n8W.jpeg"
+})
 ship.diffuse = "http://i.imgur.com/LChnyEc.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  Counter, Swarm, AI:Anti-squadron
-SHIPS["Phlac-Arphocc Prototypes"] = Squadron:new(table.copy(ship))
+SHIPS["Phlac-Arphocc Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/AUJ1HKt.jpg"
+})
 --  Counter, Swarm, AI:Anti-squadron, snipe 3
-SHIPS["DIS-T81"] = Squadron:new(table.copy(ship))
-SHIPS["DIS-T81"].mesh = "http://paste.ee/r/hTmLO"
+SHIPS["DIS-T81"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/wUiIUcJ.jpeg",
+    mesh = "http://paste.ee/r/hTmLO"
+})
 
 ship = {
     mesh = "http://paste.ee/r/MDASs",
@@ -52,8 +73,12 @@ ship = {
     move = 4,
     defense_tokens = {}}
 --  Relay, Screen
-SHIPS["Belbullab-22 Starfighter Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["Belbullab-22 Starfighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/AYE4WqR.jpeg"
+})
 --Relay, Screen
-SHIPS["General Grievous"] = Squadron:new(table.copy(ship))
-SHIPS["General Grievous"].diffuse = "http://i.imgur.com/N0vbpyq.jpg"
-SHIPS["General Grievous"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["General Grievous"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+    front = "https://i.imgur.com/AYE4WqR.jpeg",
+    diffuse = "http://i.imgur.com/N0vbpyq.jpg",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})

@@ -1,5 +1,7 @@
 SHIPS["Hardcell-class Transport"] = SmallShip:new{
-    mesh = "http://paste.ee/r/lgCV8",
+    front = "https://i.imgur.com/T7QWSb4.jpeg",
+    back = "https://i.imgur.com/c9yNLyu.jpg",
+    mesh = "http://paste.ee/r/XbByc",
     diffuse = "http://i.imgur.com/ALhJKGI.jpg",
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
@@ -7,7 +9,9 @@ SHIPS["Hardcell-class Transport"] = SmallShip:new{
     shields = {3,1,1,2}
 }
 SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
-    mesh = "http://paste.ee/r/lgCV8",
+    front = "https://i.imgur.com/X96bJDW.jpeg",
+    back = "https://i.imgur.com/Q46N3zb.jpeg",
+    mesh = "http://paste.ee/r/XbByc",
     diffuse = "http://i.imgur.com/KQiWyCh.jpeg",
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
@@ -16,7 +20,9 @@ SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
 }
 
 SHIPS["Munificent-class Comms Frigate"] = MediumShip:new{
-    mesh = "http://paste.ee/r/qZ9t9",
+    front = "https://i.imgur.com/T5LCaof.jpeg",
+    back = "https://i.imgur.com/5BgxeQS.jpeg",
+    mesh = "http://paste.ee/r/5vQzm",
     diffuse = "http://i.imgur.com/UHhtE2H.png",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
@@ -24,7 +30,9 @@ SHIPS["Munificent-class Comms Frigate"] = MediumShip:new{
     shields = {4,3,3,2}
 }
 SHIPS["Munificent-class Star Frigate"] = MediumShip:new{
-    mesh = "http://paste.ee/r/qZ9t9",
+    front = "https://i.imgur.com/kN6lJzW.jpeg",
+    back = "https://i.imgur.com/8qP8mto.jpeg",
+    mesh = "http://paste.ee/r/5vQzm",
     diffuse = "http://i.imgur.com/drGaSmk.jpg",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},

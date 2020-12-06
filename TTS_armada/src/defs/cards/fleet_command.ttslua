@@ -1,0 +1,16 @@
+FleetCommand = {
+    type="FleetCommand"
+    back = ""
+}
+function FleetCommand:new (o)
+    o = o or {}
+    setmetatable(o, FleetCommand)
+    FleetCommand.__index = FleetCommand
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+FleetCommand:new{name="All Fighters, Follow Me!", front="https://i.imgur.com/pRqJy8Z.jpg"}
+FleetCommand:new{name="Entrapment Formation!", front="https://i.imgur.com/7ipOGiT.jpg"}
+FleetCommand:new{name="Intensify Firepower!", front="https://i.imgur.com/X4Pkv96.jpg"}
+FleetCommand:new{name="Shields to Maximum!", front="https://i.imgur.com/2I3JN7G.jpg"}
+FleetCommand:new{name="Take Evasive Action!", front="https://i.imgur.com/Grqrp2Y.jpg"}

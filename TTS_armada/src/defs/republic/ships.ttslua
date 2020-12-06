@@ -1,5 +1,7 @@
 SHIPS["Consular-class Armed Cruiser"] = SmallShip:new{
-    mesh = "http://paste.ee/r/887nL",
+    front = "https://i.imgur.com/CV9k4Fz.jpeg",
+    back = "https://i.imgur.com/nzWUP25.jpg",
+    mesh = "http://paste.ee/r/EVWCx",
     diffuse = "http://i.imgur.com/qNEdxDn.jpg",
     ruler = "http://paste.ee/r/i9SWj",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
@@ -7,7 +9,9 @@ SHIPS["Consular-class Armed Cruiser"] = SmallShip:new{
     shields = {2,2,2,1}
 }
 SHIPS["Consular-class Charger c70"] = SmallShip:new{
-    mesh = "http://paste.ee/r/887nL",
+    front = "https://i.imgur.com/CXHwzPR.jpeg",
+    back = "https://i.imgur.com/vpvKfAO.jpeg",
+    mesh = "http://paste.ee/r/EVWCx",
     diffuse = "http://i.imgur.com/SbZMyrq.jpg",
     ruler = "http://paste.ee/r/i9SWj",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
@@ -16,7 +20,9 @@ SHIPS["Consular-class Charger c70"] = SmallShip:new{
 }
 
 SHIPS["Acclamator I-class Assault Ship"] = MediumShip:new{
-    mesh = "http://paste.ee/r/NeyuM",
+    front = "https://i.imgur.com/6JbZwXG.jpeg",
+    back = "https://i.imgur.com/T9fOJEE.jpg",
+    mesh = "http://paste.ee/r/TUCP2",
     diffuse = "http://i.imgur.com/0MglVoM.jpg",
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
@@ -24,7 +30,9 @@ SHIPS["Acclamator I-class Assault Ship"] = MediumShip:new{
     shields = {4,2,2,2}
 }
 SHIPS["Acclamator II-class Assault Ship"] = MediumShip:new{
-    mesh = "http://paste.ee/r/NeyuM",
+    front = "https://i.imgur.com/NhED6cA.jpg",
+    back = "https://i.imgur.com/IpDPpzX.jpeg",
+    mesh = "http://paste.ee/r/TUCP2",
     diffuse = "http://i.imgur.com/wfn0n32.jpg",
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},

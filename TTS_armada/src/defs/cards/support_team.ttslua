@@ -1,0 +1,22 @@
+SupportTeam = {
+    type="SupportTeam"
+    back = ""
+}
+function SupportTeam:new (o)
+    o = o or {}
+    setmetatable(o, SupportTeam)
+    SupportTeam.__index = SupportTeam
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+--separatist
+SupportTeam:new{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg"}
+
+--generic
+SupportTeam:new{name="Auxilliary Shields Team", front="https://i.imgur.com/SkNnm5P.jpg"}
+SupportTeam:new{name="Engine Techs", front="https://i.imgur.com/5oEvYoq.jpg"}
+SupportTeam:new{name="Engineering Team", front="https://i.imgur.com/ZmpFl4q.jpg"}
+SupportTeam:new{name="Fighter Coordination Team", front="https://i.imgur.com/wKI96Sb.jpg"}
+SupportTeam:new{name="Medical Team", front="https://i.imgur.com/jwf6kLG.jpg"}
+SupportTeam:new{name="Nav Team", front="https://i.imgur.com/GdjIeBj.jpg"}
+SupportTeam:new{name="Projection Experts", front="https://i.imgur.com/0hPAHTI.jpg"}

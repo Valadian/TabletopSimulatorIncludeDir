@@ -1,3 +1,6 @@
+REPUBLIC_SQUAD = {
+    back = "https://i.imgur.com/8s63Ngl.png"
+}
 ship = {
     mesh = "http://paste.ee/r/BcONh",
     diffuse = "http://i.imgur.com/P0IPxg5.jpeg",
@@ -5,16 +8,23 @@ ship = {
     move = 3,
     defense_tokens = {}}
 -- Escort, Swarm
-SHIPS["V-19 Torrent Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["V-19 Torrent Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/aiyBkpn.jpeg"
+})
+
 ship.diffuse = "http://i.imgur.com/OTeOC0F.jpeg"
 
 -- Escort, Swarm
-SHIPS['\"Axe\"'] = Squadron:new(table.copy(ship))
-SHIPS['\"Axe\"'].defense_tokens = {DEF_BRACE,DEF_EVADE}
+SHIPS['\"Axe\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/h9d4P44.jpeg",
+    defense_tokens = {DEF_BRACE,DEF_EVADE}
+})
 
 -- Escort, Swarm
-SHIPS['\"Kickback\"'] = Squadron:new(table.copy(ship))
-SHIPS['\"Kickback\"'].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS['\"Kickback\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/crnCDLq.jpeg",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 
 ship = {
     mesh = "http://paste.ee/r/hBJ41",
@@ -23,28 +33,38 @@ ship = {
     move = 4,
     defense_tokens = {}}
 -- Adept, Counter, Dodge
-SHIPS["Delta-7 Aethersprite Squadron"] = Squadron:new(table.copy(ship))
+SHIPS["Delta-7 Aethersprite Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/huDC10s.jpeg"
+})
 -- ship.diffuse = ""
 -- Adept, Counter, Grit
-SHIPS["Ahsoka Tano"] = Squadron:new(table.copy(ship))
-SHIPS["Ahsoka Tano"].mesh = "http://paste.ee/r/AFr6l"
-SHIPS["Ahsoka Tano"].diffuse = "http://i.imgur.com/9TnSFSZ.jpg"
-SHIPS["Ahsoka Tano"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
+SHIPS["Ahsoka Tano"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/W0HDKSn.jpg",
+    mesh = "http://paste.ee/r/AFr6l",
+    diffuse = "http://i.imgur.com/9TnSFSZ.jpg",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
 -- Adept, Counter
-SHIPS["Luminara Unduli"] = Squadron:new(table.copy(ship))
-SHIPS["Luminara Unduli"].mesh = "http://paste.ee/r/kfzQY"
-SHIPS["Luminara Unduli"].diffuse = "http://i.imgur.com/E6gsfFM.jpg"
-SHIPS["Luminara Unduli"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
+SHIPS["Luminara Unduli"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/hjjJXia.jpeg",
+    mesh = "http://paste.ee/r/kfzQY",
+    diffuse = "http://i.imgur.com/E6gsfFM.jpg",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
 -- Adept, Counter, Intel
-SHIPS["Kit Fisto"] = Squadron:new(table.copy(ship))
-SHIPS["Kit Fisto"].mesh = "http://paste.ee/r/eQa85"
-SHIPS["Kit Fisto"].diffuse = "http://i.imgur.com/uS5J8ju.jpg"
-SHIPS["Kit Fisto"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["Kit Fisto"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/gpGELBf.jpeg",
+    mesh = "http://paste.ee/r/eQa85",
+    diffuse = "http://i.imgur.com/uS5J8ju.jpg",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 -- Adept, Counter
-SHIPS["Plo Koon"] = Squadron:new(table.copy(ship))
-SHIPS["Plo Koon"].mesh = "http://paste.ee/r/kfzQY"
-SHIPS["Plo Koon"].diffuse = "http://i.imgur.com/HWWjWBB.jpg"
-SHIPS["Plo Koon"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
+SHIPS["Plo Koon"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/iqalHXV.jpeg",
+    mesh = "http://paste.ee/r/kfzQY",
+    diffuse = "http://i.imgur.com/HWWjWBB.jpg",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
 
 ship = {
     mesh = "http://paste.ee/r/EQXUg",
@@ -53,12 +73,16 @@ ship = {
     move = 3,
     defense_tokens = {}}
 -- Bomber, Heavy
-SHIPS["BTL-B Y-Wing Squadron"] = Squadron:new(ship)
+SHIPS["BTL-B Y-Wing Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/qvyTtNf.jpeg"
+})
 -- Adept, Bomber, Heavy
-SHIPS["Anakin Skywalker"] = Squadron:new(table.copy(ship))
-SHIPS["Anakin Skywalker"].diffuse = "http://i.imgur.com/B8UeUf1.jpg"
-SHIPS["Anakin Skywalker"].mesh = "http://paste.ee/r/QVTLs"
-SHIPS["Anakin Skywalker"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["Anakin Skywalker"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/zsDolt7.jpeg",
+    diffuse = "http://i.imgur.com/B8UeUf1.jpg",
+    mesh = "http://paste.ee/r/QVTLs",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 
 ship = {
     mesh = "http://paste.ee/r/bSJoI",
@@ -67,8 +91,12 @@ ship = {
     move = 2,
     defense_tokens = {}}
 -- Bomber, Counter
-SHIPS["ARC-170 Starfighter Squadron"] = Squadron:new(ship)
+SHIPS["ARC-170 Starfighter Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/ggkaXOF.jpeg"
+})
 -- Bomber, Counter
-SHIPS['\"Odd Ball\"'] = Squadron:new(table.copy(ship))
-SHIPS['\"Odd Ball\"'].diffuse = "http://i.imgur.com/eUN2Zsl.jpeg"
-SHIPS['\"Odd Ball\"'].defense_tokens = {DEF_BRACE,DEF_EVADE}
+SHIPS['\"Odd Ball\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+    front = "https://i.imgur.com/JVuBlg2.jpeg",
+    diffuse = "http://i.imgur.com/eUN2Zsl.jpeg",
+    defense_tokens = {DEF_BRACE,DEF_EVADE}
+})

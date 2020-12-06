@@ -1,0 +1,18 @@
+FleetSupport = {
+    type="FleetSupport"
+    back = ""
+}
+function FleetSupport:new (o)
+    o = o or {}
+    setmetatable(o, FleetSupport)
+    FleetSupport.__index = FleetSupport
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+FleetSupport:new{name="Bomber Command Center", front="https://i.imgur.com/slRsjXp.jpg"}
+FleetSupport:new{name="Comms Net", front="https://i.imgur.com/56EgYe9.jpg"}
+FleetSupport:new{name="Jamming Field", front="https://i.imgur.com/YjACVRj.jpg"}
+FleetSupport:new{name="Munitions Resupply", front="https://i.imgur.com/IEHG2uc.jpeg"}
+FleetSupport:new{name="Parts Resupply", front="https://i.imgur.com/trKTRFt.jpg"}
+FleetSupport:new{name="Repair Crews", front="https://i.imgur.com/sFnhtzi.jpg"}
+FleetSupport:new{name="Slicer Tools", front="https://i.imgur.com/f3pcTt5.jpg"}

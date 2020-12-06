@@ -1,170 +1,247 @@
+REBEL_SQUAD = {
+    back = "https://i.imgur.com/8s63Ngl.png"
+}
 ship = {
     mesh = "http://paste.ee/r/ZqCC6",
     diffuse = "http://i.imgur.com/QSLaqgW.png",
     health = 5,
     move = 2,
     defense_tokens = {}}
-SHIPS["B-wing Squadron"] = Squadron:new(ship)
-SHIPS["Keyan Farlander"] = Squadron:new(table.copy(ship))
-SHIPS["Keyan Farlander"].diffuse = "http://i.imgur.com/r7YB80F.png"
-SHIPS["Keyan Farlander"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Ten Numb"] = Squadron:new(table.copy(ship))
-SHIPS["Ten Numb"].diffuse = "http://i.imgur.com/r7YB80F.png"
-SHIPS["Ten Numb"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Dagger Squadron"] = Squadron:new(table.copy(ship))
-SHIPS["Dagger Squadron"].diffuse = "http://i.imgur.com/swXemsa.png"
-SHIPS["Dagger Squadron"].mesh = "http://paste.ee/p/NpCQt"
+SHIPS["B-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/bB11RGw.png"
+})
+SHIPS["Keyan Farlander"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/r4bx4xg.png",
+    diffuse = "http://i.imgur.com/r7YB80F.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Ten Numb"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/8zae2YW.png",
+    diffuse = "http://i.imgur.com/r7YB80F.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Dagger Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/41kkBy6.png",
+    diffuse = "http://i.imgur.com/swXemsa.png",
+    mesh = "http://paste.ee/p/NpCQt"
+})
 ship = {
     mesh = "http://paste.ee/r/AG2g4",
     diffuse = "http://i.imgur.com/ObUEAK5.png",
     health = 6,
     move = 3,
     defense_tokens = {}}
-SHIPS["Y-wing Squadron"] = Squadron:new(ship)
-SHIPS['"Dutch" Vander'] = Squadron:new(table.copy(ship))
-SHIPS['"Dutch" Vander'].diffuse = "http://i.imgur.com/pRu0c7d.png"
-SHIPS['"Dutch" Vander'].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS['Norra Wexley'] = Squadron:new(table.copy(ship))
-SHIPS['Norra Wexley'].diffuse = "http://i.imgur.com/pRu0c7d.png"
-SHIPS['Norra Wexley'].mesh = "http://paste.ee/p/5i0Ma"
-SHIPS['Norra Wexley'].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS['Gold Squadron'] = Squadron:new(table.copy(ship))
-SHIPS['Gold Squadron'].mesh = "http://paste.ee/p/5i0Ma"
-SHIPS['Gold Squadron'].diffuse = "http://i.imgur.com/pRu0c7d.png"
+SHIPS["Y-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/20kwNNs.png"
+})
+SHIPS['"Dutch" Vander'] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/97UoG34.png",
+    diffuse = "http://i.imgur.com/pRu0c7d.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS['Norra Wexley'] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/VlUNCkM.png",
+    diffuse = "http://i.imgur.com/pRu0c7d.png",
+    mesh = "http://paste.ee/p/5i0Ma",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS['Gold Squadron'] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/m6efvmr.png",
+    mesh = "http://paste.ee/p/5i0Ma",
+    diffuse = "http://i.imgur.com/pRu0c7d.png"
+})
 ship = {
     mesh = "http://paste.ee/r/3Wdv8",
     diffuse = "http://i.imgur.com/6vlNuEY.png",
     health = 4,
     move = 5,
     defense_tokens = {}}
-SHIPS["A-wing Squadron"] = Squadron:new(ship)
-SHIPS["Tycho Celchu"] = Squadron:new(table.copy(ship))
-SHIPS["Tycho Celchu"].diffuse = "http://i.imgur.com/QZPi4e7.png"
-SHIPS["Tycho Celchu"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
-SHIPS["Shara Bey"] = Squadron:new(table.copy(ship))
-SHIPS["Shara Bey"].diffuse = "http://i.imgur.com/QZPi4e7.png"
-SHIPS["Shara Bey"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
-SHIPS["Green Squadron"] = Squadron:new(table.copy(ship))
-SHIPS["Green Squadron"].mesh = "http://paste.ee/p/ybtPs"
-SHIPS["Green Squadron"].diffuse = "http://i.imgur.com/0awlEmY.png"
+SHIPS["A-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/JikzQGo.png"
+})
+SHIPS["Tycho Celchu"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/XsXiGTU.png",
+    diffuse = "http://i.imgur.com/QZPi4e7.png",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
+SHIPS["Shara Bey"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/QhDp5hB.png",
+    diffuse = "http://i.imgur.com/QZPi4e7.png",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
+SHIPS["Green Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/a00ZFfc.png",
+    mesh = "http://paste.ee/p/ybtPs",
+    diffuse = "http://i.imgur.com/0awlEmY.png"
+})
 ship = {
     mesh = "http://paste.ee/r/zjUF1",
     diffuse = "http://i.imgur.com/HHbQ8lf.png",
     health = 5,
     move = 3,
     defense_tokens = {}}
-SHIPS["X-wing Squadron"] = Squadron:new(ship)
-SHIPS["Luke Skywalker"] = Squadron:new(table.copy(ship))
-SHIPS["Luke Skywalker"].diffuse = "http://i.imgur.com/6xKSmMQ.png"
-SHIPS["Luke Skywalker"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Wedge Antilles"] = Squadron:new(table.copy(ship))
-SHIPS["Wedge Antilles"].diffuse = "http://i.imgur.com/6xKSmMQ.png"
-SHIPS["Wedge Antilles"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Biggs Darklighter"] = Squadron:new(table.copy(ship))
-SHIPS["Biggs Darklighter"].diffuse = "http://i.imgur.com/6xKSmMQ.png"
-SHIPS["Biggs Darklighter"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Rogue Squadron"] = Squadron:new(table.copy(ship))
-SHIPS["Rogue Squadron"].diffuse = "http://i.imgur.com/6xKSmMQ.png"
-SHIPS["Rogue Squadron"].mesh = "http://paste.ee/p/PsdOf"
+SHIPS["X-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/d5QuMBy.png"
+})
+SHIPS["Luke Skywalker"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/CcTsLiM.png",
+    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Wedge Antilles"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/uepzi7O.png",
+    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Biggs Darklighter"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/zLMC2Fc.png",
+    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Rogue Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/A1IByHc.png",
+    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    mesh = "http://paste.ee/p/PsdOf"
+})
 ship = {
     mesh = "http://paste.ee/r/919yT",
     diffuse = "http://i.imgur.com/P11kSne.png",
     health = 6,
     move = 4,
     defense_tokens = {}}
-SHIPS["YT-2400"] = Squadron:new(ship)
-SHIPS["Dash Rendar"] = Squadron:new(table.copy(ship))
-SHIPS["Dash Rendar"].mesh = "http://paste.ee/r/V5oHI"
-SHIPS["Dash Rendar"].diffuse = "http://i.imgur.com/3iJ0Wxe.png"
-SHIPS["Dash Rendar"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Mart Mattin"] = Squadron:new(table.copy(ship))
-SHIPS["Mart Mattin"].mesh = "http://paste.ee/p/4qSjx"
-SHIPS["Mart Mattin"].diffuse = "http://i.imgur.com/3iJ0Wxe.png"
-SHIPS["Mart Mattin"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["YT-2400"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/Ui3LTlu.png"
+})
+SHIPS["Dash Rendar"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/7TfYFsY.png",
+    mesh = "http://paste.ee/r/V5oHI",
+    diffuse = "http://i.imgur.com/3iJ0Wxe.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Mart Mattin"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/UyCPNqt.png",
+    mesh = "http://paste.ee/p/4qSjx",
+    diffuse = "http://i.imgur.com/3iJ0Wxe.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/r/hhbic",
     diffuse = "http://i.imgur.com/bndtRkF.png",
     health = 7,
     move = 2,
     defense_tokens = {}}
-SHIPS["YT-1300"] = Squadron:new(ship)
-SHIPS["Han Solo"] = Squadron:new(table.copy(ship))
-SHIPS["Han Solo"].mesh = "http://paste.ee/r/6yDva"
-SHIPS["Han Solo"].diffuse = "http://i.imgur.com/v16flTU.png"
-SHIPS["Han Solo"].move = 3
-SHIPS["Han Solo"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Lando Calrissian"] = Squadron:new(table.copy(ship))
-SHIPS["Lando Calrissian"].mesh = "http://paste.ee/r/6yDva"
-SHIPS["Lando Calrissian"].diffuse = "http://i.imgur.com/v16flTU.png"
-SHIPS["Lando Calrissian"].move = 3
-SHIPS["Lando Calrissian"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["YT-1300"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/pFKaprO.png"
+})
+SHIPS["Han Solo"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/8ni1bSl.png",
+    mesh = "http://paste.ee/r/6yDva",
+    diffuse = "http://i.imgur.com/v16flTU.png",
+    move = 3,
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Lando Calrissian"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/Xk43ysd.png",
+    mesh = "http://paste.ee/r/6yDva",
+    diffuse = "http://i.imgur.com/v16flTU.png",
+    move = 3,
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/r/DURQd",
     diffuse = "http://i.imgur.com/03TMKSR.png",
     health = 4,
     move = 3,
     defense_tokens = {}}
-SHIPS["HWK-290"] = Squadron:new(ship)
-SHIPS["Jan Ors"] = Squadron:new(table.copy(ship))
-SHIPS["Jan Ors"].diffuse = "http://i.imgur.com/bnknApA.png"
-SHIPS["Jan Ors"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Kanan Jarrus"] = Squadron:new(table.copy(ship))
-SHIPS["Kanan Jarrus"].mesh = "http://paste.ee/p/csGHI"
-SHIPS["Kanan Jarrus"].diffuse = "http://i.imgur.com/bnknApA.png"
-SHIPS["Kanan Jarrus"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["HWK-290"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/Zm7888b.png"
+})
+SHIPS["Jan Ors"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/NQqAVr8.png",
+    diffuse = "http://i.imgur.com/bnknApA.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Kanan Jarrus"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/Cpp6DXG.png",
+    mesh = "http://paste.ee/p/csGHI",
+    diffuse = "http://i.imgur.com/bnknApA.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/r/dvrOX",
     diffuse = "http://i.imgur.com/4Stv3go.png",
     health = 6,
     move = 3 }
-SHIPS["Scurrg H-6 Bomber"] = Squadron:new(ship)
-SHIPS["Nym"] = Squadron:new(table.copy(ship))
-SHIPS["Nym"].mesh = "http://paste.ee/r/96QNu"
-SHIPS["Nym"].diffuse = "http://i.imgur.com/QAaYYfU.png"
-SHIPS["Nym"].defense_tokens = {DEF_BRACE,DEF_BRACE}
-SHIPS["Malee Hurra"] = Squadron:new(table.copy(ship))
-SHIPS["Malee Hurra"].mesh = "http://paste.ee/r/96QNu"
-SHIPS["Malee Hurra"].diffuse = "http://i.imgur.com/QAaYYfU.png"
-SHIPS["Malee Hurra"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["Scurrg H-6 Bomber"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/QvhGpkj.png"
+})
+SHIPS["Nym"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/vfrMC1z.png",
+    mesh = "http://paste.ee/r/96QNu",
+    diffuse = "http://i.imgur.com/QAaYYfU.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
+SHIPS["Malee Hurra"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/JmifVSX.png",
+    mesh = "http://paste.ee/r/96QNu",
+    diffuse = "http://i.imgur.com/QAaYYfU.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/p/ZHpHT",
     diffuse = "http://i.imgur.com/zYmUqph.png",
     health = 3,
     move = 3,
     defense_tokens = {}}
-SHIPS["Z-95 Headhunter Squadron"] = Squadron:new(ship)
-SHIPS["Lieutenant Blount"] = Squadron:new(table.copy(ship))
-SHIPS["Lieutenant Blount"].diffuse = "http://i.imgur.com/aTuRbPL.png"
-SHIPS["Lieutenant Blount"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
+SHIPS["Z-95 Headhunter Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/o3ydY6G.png"
+})
+SHIPS["Lieutenant Blount"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/dlts7hE.png",
+    diffuse = "http://i.imgur.com/aTuRbPL.png",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})
 ship = {
     mesh = "http://paste.ee/p/ElhHc",
     diffuse = "http://i.imgur.com/X9E1n2M.png",
     health = 5,
     move = 4,
     defense_tokens = {}}
-SHIPS["E-wing Squadron"] = Squadron:new(ship)
-SHIPS["Corran Horn"] = Squadron:new(table.copy(ship))
-SHIPS["Corran Horn"].mesh = "http://paste.ee/p/r2fsB"
-SHIPS["Corran Horn"].diffuse = "http://i.imgur.com/3uSFKMb.png"
-SHIPS["Corran Horn"].defense_tokens = {DEF_BRACE,DEF_BRACE}
+SHIPS["E-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/iDlDpb3.png"
+})
+SHIPS["Corran Horn"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/r9KN0kh.png",
+    mesh = "http://paste.ee/p/r2fsB",
+    diffuse = "http://i.imgur.com/3uSFKMb.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/p/3QIXa",
     diffuse = "http://i.imgur.com/5UVGuIg.png",
     health = 8,
     move = 3,
     defense_tokens = {}}
-SHIPS["VCX-100 Freighter"] = Squadron:new(ship)
-SHIPS["Hera Syndulla"] = Squadron:new(table.copy(ship))
-SHIPS["Hera Syndulla"].mesh = "http://paste.ee/p/3NpiT"
-SHIPS["Hera Syndulla"].diffuse = "http://i.imgur.com/wPzX0MW.png"
-SHIPS["Hera Syndulla"].defense_tokens = {DEF_BRACE}
+SHIPS["VCX-100 Freighter"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/CmvkFAq.png"
+})
+SHIPS["Hera Syndulla"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/b5rhKSS.png",
+    mesh = "http://paste.ee/p/3NpiT",
+    diffuse = "http://i.imgur.com/wPzX0MW.png",
+    defense_tokens = {DEF_BRACE}
+})
 ship = {
     mesh = "http://paste.ee/p/L9ygS",
     diffuse = "http://i.imgur.com/CZ3eF4M.png",
     health = 4,
     move = 4,
     defense_tokens = {}}
-SHIPS["Lancer-class Pursuit Craft"] = Squadron:new(ship)
-SHIPS["Ketsu Onyo"] = Squadron:new(table.copy(ship))
-SHIPS["Ketsu Onyo"].diffuse = "http://i.imgur.com/eJxMrk2.png"
-SHIPS["Ketsu Onyo"].defense_tokens = {DEF_BRACE,DEF_SCATTER}
+SHIPS["Lancer-class Pursuit Craft"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/qDSMy7N.png"
+})
+SHIPS["Ketsu Onyo"] = Squadron:new(ship, REBEL_SQUAD, {
+    front = "https://i.imgur.com/97603QH.png",
+    diffuse = "http://i.imgur.com/eJxMrk2.png",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+})

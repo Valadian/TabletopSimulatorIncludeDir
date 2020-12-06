@@ -1,0 +1,19 @@
+IonCannons = {
+    type="IonCannons"
+    back = ""
+}
+function IonCannons:new (o)
+    o = o or {}
+    setmetatable(o, IonCannons)
+    IonCannons.__index = IonCannons
+    CARDS[o.Name.." ("..o.type..")"] = o
+    return o
+end
+IonCannons:new{name="Heavy Ion Emplacements", front="https://i.imgur.com/S82y39J.jpg"}
+IonCannons:new{name="High-Capacity Ion Turbines", front="https://i.imgur.com/sNFD2X4.jpg"}
+IonCannons:new{name="Ion Cannon Batteries", front="https://i.imgur.com/ygkNbuk.jpg"}
+IonCannons:new{name="Leading Shots", front="https://i.imgur.com/0wvdKHN.jpg"}
+IonCannons:new{name="MS-1 Ion Cannon", front="https://i.imgur.com/WJpPDTH.jpg"}
+IonCannons:new{name="NK-7 Ion Cannons", front="https://i.imgur.com/pw7KB1o.jpg"}
+IonCannons:new{name="Overload Pulse", front="https://i.imgur.com/93yRQdH.jpg"}
+IonCannons:new{name="SW-7 Ion Batteries", front="https://i.imgur.com/rL77eki.jpg"}
