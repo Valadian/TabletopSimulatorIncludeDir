@@ -7,28 +7,38 @@ ship = {
     health = 3,
     move = 4,
     defense_tokens = {}}
-SHIPS["TIE Fighter Squadron"] = Squadron:new(ship,empire, {
-    front = "https://i.imgur.com/IBPIZFC.png"
+Squadron:new(ship,empire, {
+	name = "TIE Fighter Squadron",
+    front = "https://i.imgur.com/IBPIZFC.png",
+    cost = 8
 })
-SHIPS['"Mauler" Mithel'] = Squadron:new(ship,empire, {
+Squadron:new(ship,empire, {
+	name = '"Mauler" Mithel',
     front = "https://i.imgur.com/XOrV29v.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 15
 })
-SHIPS['"Howlrunner"'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = '"Howlrunner"',
     front = "https://i.imgur.com/9JyPCY1.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 16
 })
-SHIPS['Valen Rudor'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Valen Rudor',
     front = "https://i.imgur.com/jJbbq5p.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 13
 })
-SHIPS['Black Squadron'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Black Squadron',
     front = "https://i.imgur.com/wHVRghK.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
-    mesh = "http://paste.ee/p/3kuIp"
+    mesh = "http://paste.ee/p/3kuIp",
+    cost = 9
 })
 ship = {
     mesh = "http://paste.ee/r/tSt9Z",
@@ -36,23 +46,31 @@ ship = {
     health = 3,
     move = 5,
     defense_tokens = {}}
-SHIPS["TIE Interceptor Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/sEjCnbR.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "TIE Interceptor Squadron",
+    front = "https://i.imgur.com/sEjCnbR.png",
+    cost = 11
 })
-SHIPS["Soontir Fel"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Soontir Fel",
     front = "https://i.imgur.com/OFz3wPf.png",
     diffuse = "http://i.imgur.com/19ksb4d.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 18
 })
-SHIPS["Ciena Ree"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Ciena Ree",
     front = "https://i.imgur.com/gGsK5NT.png",
     diffuse = "http://i.imgur.com/19ksb4d.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 17
 })
-SHIPS["Saber Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Saber Squadron",
     front = "https://i.imgur.com/xjsjQjV.png",
     diffuse = "http://i.imgur.com/19ksb4d.png",
-    mesh = "http://paste.ee/p/GqMPV"
+    mesh = "http://paste.ee/p/GqMPV",
+    cost = 12
 })
 ship = {
     mesh = "http://paste.ee/r/QPs1M",
@@ -60,24 +78,32 @@ ship = {
     health = 5,
     move = 4,
     defense_tokens = {}}
-SHIPS["TIE Bomber Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/JGg79So.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "TIE Bomber Squadron",
+    front = "https://i.imgur.com/JGg79So.png",
+    cost = 9
 })
-SHIPS["Major Rhymer"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Major Rhymer",
     front = "https://i.imgur.com/fPUE6qa.png",
     diffuse = "http://i.imgur.com/o9KJLV8.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 16
 })
-SHIPS["Captain Jonus"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Captain Jonus",
     front = "https://i.imgur.com/iNHpN8D.png",
     diffuse = "http://i.imgur.com/o9KJLV8.png",
     mesh = "http://paste.ee/p/ekNwl",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 16
 })
-SHIPS["Gamma Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Gamma Squadron",
     front = "https://i.imgur.com/MuOU5H0.png",
     diffuse = "http://i.imgur.com/o9KJLV8.png",
-    mesh = "http://paste.ee/p/cFgCe"
+    mesh = "http://paste.ee/p/cFgCe",
+    cost = 10
 })
 ship = {
     mesh = "http://paste.ee/r/5YfqM",
@@ -85,23 +111,31 @@ ship = {
     health = 5,
     move = 4,
     defense_tokens = {}}
-SHIPS["TIE Advanced Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/oqevOIs.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "TIE Advanced Squadron",
+    front = "https://i.imgur.com/oqevOIs.png",
+    cost = 12
 })
-SHIPS["Darth Vader"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Darth Vader",
     front = "https://i.imgur.com/qMTERFQ.png",
     diffuse = "http://i.imgur.com/YJm6aoS.png",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 21
 })
-SHIPS["Zertik Strom"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Zertik Strom",
     front = "https://i.imgur.com/92y5pLs.png",
     diffuse = "http://i.imgur.com/YJm6aoS.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 15
 })
-SHIPS["Tempest Squadron"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Tempest Squadron",
     front = "https://i.imgur.com/Pco10DS.png",
     diffuse = "http://i.imgur.com/YJm6aoS.png",
-    mesh = "http://paste.ee/p/6Zar9"
+    mesh = "http://paste.ee/p/6Zar9",
+    cost = 13
 })
 ship = {
     mesh = "http://paste.ee/r/SsZzy",
@@ -109,38 +143,50 @@ ship = {
     health = 6,
     move = 3,
     defense_tokens = {}}
-SHIPS["Firespray-31"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/dmC3jNm.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Firespray-31",
+    front = "https://i.imgur.com/dmC3jNm.png",
+    cost = 18
 })
-SHIPS["Boba Fett"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Boba Fett",
     front = "https://i.imgur.com/SwdbJdL.png",
     diffuse = "http://i.imgur.com/rH8e7j0.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 26
 })
-SHIPS["Hondo Ohnaka"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Hondo Ohnaka",
     front = "https://i.imgur.com/K8A1QGa.png",
     mesh = "http://paste.ee/p/2zmZV",
     diffuse = "http://i.imgur.com/rH8e7j0.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 24
 })
 ship = {
     mesh = "http://paste.ee/r/6kd8r",
     diffuse = "http://i.imgur.com/iEZieyE.png",
     health = 4,
     move = 4 }
-SHIPS["JumpMaster 5000"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/pBix7LS.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "JumpMaster 5000",
+    front = "https://i.imgur.com/pBix7LS.png",
+    cost = 12
 })
-SHIPS["Dengar"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Dengar",
     front = "https://i.imgur.com/SGHkuVm.png",
     diffuse = "http://i.imgur.com/Y9MYLmc.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 20
 })
-SHIPS["Tel Trevura"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Tel Trevura",
     front = "https://i.imgur.com/8UTq2I7.png",
     mesh = "http://paste.ee/p/kpFas",
     diffuse = "http://i.imgur.com/Y9MYLmc.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 17
 })
 ship = {
     mesh = "http://paste.ee/r/Kc5iy",
@@ -148,20 +194,26 @@ ship = {
     health = 5,
     move = 3,
     defense_tokens = {}}
-SHIPS["Aggressor Assault Fighter"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/awIbXGE.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Aggressor Assault Fighter",
+    front = "https://i.imgur.com/awIbXGE.png",
+    cost = 16
 })
-SHIPS["IG-88"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "IG-88",
     front = "https://i.imgur.com/s9mWI5Z.png",
     diffuse = "http://i.imgur.com/eLOTz1a.png",
     move = 5,
-    defense_tokens = {DEF_SCATTER}
+    defense_tokens = {DEF_SCATTER},
+    cost = 21
 })
-SHIPS["IG-88B"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "IG-88B",
     front = "https://i.imgur.com/yxjuseo.png",
     diffuse = "http://i.imgur.com/eLOTz1a.png",
     move = 5,
-    defense_tokens = {DEF_SCATTER}
+    defense_tokens = {DEF_SCATTER},
+    cost = 21
 })
 ship = {
     mesh = "http://paste.ee/r/zRpzx",
@@ -169,22 +221,28 @@ ship = {
     health = 7,
     move = 2,
     defense_tokens = {}}
-SHIPS["YV-666"] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/VwtnRPG.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "YV-666",
+    front = "https://i.imgur.com/VwtnRPG.png",
+    cost = 15
 })
-SHIPS["Bossk"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Bossk",
     front = "https://i.imgur.com/cO69PsD.png",
     mesh = "http://paste.ee/r/BX64Q",
     diffuse = "http://i.imgur.com/qGvYpdJ.png",
     move = 3,
-    defense_tokens = {DEF_BRACE}
+    defense_tokens = {DEF_BRACE},
+    cost = 23
 })
-SHIPS["Moralo Eval"] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = "Moralo Eval",
     front = "https://i.imgur.com/Ylo65oA.png",
     mesh = "http://paste.ee/r/BX64Q",
     diffuse = "http://i.imgur.com/qGvYpdJ.png",
     move = 3,
-    defense_tokens = {DEF_BRACE}
+    defense_tokens = {DEF_BRACE},
+    cost = 22
 })
 ship = {
     mesh = "http://paste.ee/p/VogTD",
@@ -192,13 +250,17 @@ ship = {
     health = 4,
     move = 4,
     defense_tokens = {}}
-SHIPS['TIE Phantom Squadron'] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/Tvy7ZfX.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'TIE Phantom Squadron',
+    front = "https://i.imgur.com/Tvy7ZfX.png",
+    cost = 14
 })
-SHIPS['"Whisper"'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = '"Whisper"',
     front = "https://i.imgur.com/vsrwlnW.png",
     diffuse = "http://i.imgur.com/wKQfGQs.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 20
 })
 ship = {
     mesh = "http://paste.ee/p/4Nnjz",
@@ -206,14 +268,18 @@ ship = {
     health = 6,
     move = 5,
     defense_tokens = {}}
-SHIPS['TIE Defender Squadron'] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/h5OJeUV.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'TIE Defender Squadron',
+    front = "https://i.imgur.com/h5OJeUV.png",
+    cost = 16
 })
-SHIPS['Maarek Stele'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Maarek Stele',
     front = "https://i.imgur.com/iVPlLtU.png",
     mesh = "http://paste.ee/p/hQtGH",
     diffuse = "http://i.imgur.com/2wkGtqX.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 21
 })
 ship = {
     mesh = "http://paste.ee/p/EriDZ",
@@ -221,14 +287,18 @@ ship = {
     health = 6,
     move = 3,
     defense_tokens = {}}
-SHIPS['Lambda-class Shuttle'] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/8q9RtT0.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Lambda-class Shuttle',
+    front = "https://i.imgur.com/8q9RtT0.png",
+    cost = 15
 })
-SHIPS['Colonel Jendon'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Colonel Jendon',
     front = "https://i.imgur.com/D5vKvP1.png",
     mesh = "http://paste.ee/p/LJqy6",
     diffuse = "http://i.imgur.com/ku8uSvD.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 20
 })
 ship = {
     mesh = "http://paste.ee/p/2k8Qn",
@@ -236,14 +306,18 @@ ship = {
     health = 8,
     move = 3,
     defense_tokens = {}}
-SHIPS['VT-49 Decimator'] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/Vpztyfk.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'VT-49 Decimator',
+    front = "https://i.imgur.com/Vpztyfk.png",
+    cost = 22
 })
-SHIPS['Morna Kee'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Morna Kee',
     front = "https://i.imgur.com/w8nzg3K.png",
     mesh = "http://paste.ee/p/5DPYJ",
     diffuse = "http://i.imgur.com/JHZ5Ig0.png",
-    defense_tokens = {DEF_BRACE}
+    defense_tokens = {DEF_BRACE},
+    cost = 27
 })
 ship = {
     mesh = "http://paste.ee/p/T3Fo3",
@@ -251,11 +325,15 @@ ship = {
     health = 7,
     move = 4,
     defense_tokens = {}}
-SHIPS['Mandalorian Gauntlet Fighter'] = Squadron:new(ship, EMPIRE_SQUAD, {
-    front = "https://i.imgur.com/EojO5GT.png"
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Mandalorian Gauntlet Fighter',
+    front = "https://i.imgur.com/EojO5GT.png",
+    cost = 20
 })
-SHIPS['Gar Saxon'] = Squadron:new(ship, EMPIRE_SQUAD, {
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Gar Saxon',
     front = "https://i.imgur.com/cj1OidE.png",
     diffuse = "http://i.imgur.com/WjuhLC8.png",
-    defense_tokens = {DEF_BRACE}
+    defense_tokens = {DEF_BRACE},
+    cost = 23
 })

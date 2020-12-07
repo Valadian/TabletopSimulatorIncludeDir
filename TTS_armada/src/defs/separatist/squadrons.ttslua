@@ -8,19 +8,25 @@ ship = {
     move = 4,
     defense_tokens = {}}
 -- AI: Anti-Squadron, Swarm
-SHIPS["Vulture-class Droid Fighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/851EiGY.jpeg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Vulture-class Droid Fighter Squadron",
+    front = "https://i.imgur.com/851EiGY.jpeg",
+    cost = 8
 })
 ship.diffuse = "http://i.imgur.com/Erytkzv.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 -- AI: Anti-Squadron, Swarm
-SHIPS["Haor Chall Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/sMYjVpK.jpeg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Haor Chall Prototypes",
+    front = "https://i.imgur.com/sMYjVpK.jpeg",
+    cost = 16
 })
 -- AI: Anti-Squadron, Swarm, Intel
-SHIPS["DFS-311"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "DFS-311",
     front = "https://i.imgur.com/ph9wqQ7.jpeg",
-    mesh = "http://paste.ee/r/OZWGz"
+    mesh = "http://paste.ee/r/OZWGz",
+    cost = 18
 })
 
 ship = {
@@ -30,18 +36,27 @@ ship = {
     move = 4,
     defense_tokens = {}}
 --  AI: Battery, Bomber, Heavy
-SHIPS["Hyena-class Droid Bomber Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/4zpFWdk.jpeg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Hyena-class Droid Bomber Squadron",
+    front = "https://i.imgur.com/4zpFWdk.jpeg",
+    cost = 11
 })
+--ALIAS
 ship.diffuse = "http://i.imgur.com/e9qw9lm.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  AI: Battery, Bomber, Heavy
-SHIPS["Baktoid Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/kQGXd4d.jpg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Baktoid Prototypes",
+    front = "https://i.imgur.com/kQGXd4d.jpg",
+    cost = 16
 })
+--ALIAS
+SHIPS[string.lower("Baktoid Prototype")] = SHIPS[string.lower("Baktoid Prototypes")]
 --  AI: Battery, Bomber, Heavy
-SHIPS["DBS-404"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/IJojXUS.jpg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "DBS-404",
+    front = "https://i.imgur.com/IJojXUS.jpg",
+    cost = 17
 })
 
 ship = {
@@ -51,19 +66,25 @@ ship = {
     move = 5,
     defense_tokens = {}}
 --  Counter, Swarm, AI:Anti-squadron
-SHIPS["Droid Tri-Fighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/gju4n8W.jpeg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Droid Tri-Fighter Squadron",
+    front = "https://i.imgur.com/gju4n8W.jpeg",
+    cost = 11
 })
 ship.diffuse = "http://i.imgur.com/LChnyEc.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  Counter, Swarm, AI:Anti-squadron
-SHIPS["Phlac-Arphocc Prototypes"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/AUJ1HKt.jpg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Phlac-Arphocc Prototypes",
+    front = "https://i.imgur.com/AUJ1HKt.jpg",
+    cost = 19
 })
 --  Counter, Swarm, AI:Anti-squadron, snipe 3
-SHIPS["DIS-T81"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "DIS-T81",
     front = "https://i.imgur.com/wUiIUcJ.jpeg",
-    mesh = "http://paste.ee/r/hTmLO"
+    mesh = "http://paste.ee/r/hTmLO",
+    cost = 17
 })
 
 ship = {
@@ -73,12 +94,16 @@ ship = {
     move = 4,
     defense_tokens = {}}
 --  Relay, Screen
-SHIPS["Belbullab-22 Starfighter Squadron"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
-    front = "https://i.imgur.com/AYE4WqR.jpeg"
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "Belbullab-22 Starfighter Squadron",
+    front = "https://i.imgur.com/AYE4WqR.jpeg",
+    cost = 15
 })
 --Relay, Screen
-SHIPS["General Grievous"] = Squadron:new(ship, SEPARATISTS_SQUAD, {
+Squadron:new(ship, SEPARATISTS_SQUAD, {
+	name = "General Grievous",
     front = "https://i.imgur.com/AYE4WqR.jpeg",
     diffuse = "http://i.imgur.com/N0vbpyq.jpg",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 22
 })

@@ -1,30 +1,23 @@
 OffensiveRetrofit = {
-    type="OffensiveRetrofit"
+    type="OffensiveRetrofit",
     back = ""
 }
-function OffensiveRetrofit:new (o)
-    o = o or {}
-    setmetatable(o, OffensiveRetrofit)
-    OffensiveRetrofit.__index = OffensiveRetrofit
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
 --republic
-OffensiveRetrofit:new{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg"}
+Card:new(OffensiveRetrofit,{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg", cost=3})
 
 --separatist
-OffensiveRetrofit:new{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg"}
+Card:new(OffensiveRetrofit,{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg", cost=3})
 
 --generic
-OffensiveRetrofit:new{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg"} --modification
-OffensiveRetrofit:new{name="Boosted Comms", front="https://i.imgur.com/pq9oDK2.jpg"}
-OffensiveRetrofit:new{name="Disposable Capacitors", front="https://i.imgur.com/sujhLdx.jpg"}
-OffensiveRetrofit:new{name="Expanded Hangar Bay", front="https://i.imgur.com/uHXkIP2.jpg"}
-OffensiveRetrofit:new{name="Flag Bridge", front="https://i.imgur.com/qJksgmR.jpg"} --modification
-OffensiveRetrofit:new{name="Hardened Bulkheads", front="https://i.imgur.com/Cz9oxBt.jpg"}
-OffensiveRetrofit:new{name="Phylon Q7 Tractor Beams", front="https://i.imgur.com/x7VhJXM.jpg"}
-OffensiveRetrofit:new{name="Point Defense Reroute", front="https://i.imgur.com/IAIYK4H.jpg"}
-OffensiveRetrofit:new{name="Proximity Mines", front="https://i.imgur.com/e93H1wf.jpg"}
-OffensiveRetrofit:new{name="Quad Laser Turrets", front="https://i.imgur.com/HKfQx0O.jpg"}
-OffensiveRetrofit:new{name="Rapid Launch Bays", front="https://i.imgur.com/PHiQ5fk.jpg"}
-OffensiveRetrofit:new{name="Reserve Hangar Deck", front="https://i.imgur.com/CuuMCQr.jpg"}
+Card:new(OffensiveRetrofit,{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg", cost=5}) --modification)
+Card:new(OffensiveRetrofit,{name="Boosted Comms", front="https://i.imgur.com/pq9oDK2.jpg", cost=4})
+Card:new(OffensiveRetrofit,{name="Disposable Capacitors", front="https://i.imgur.com/sujhLdx.jpg", cost=3})
+Card:new(OffensiveRetrofit,{name="Expanded Hangar Bay", front="https://i.imgur.com/uHXkIP2.jpg", cost=5})
+Card:new(OffensiveRetrofit,{name="Flag Bridge", front="https://i.imgur.com/qJksgmR.jpg", cost=0}) --modification)
+Card:new(OffensiveRetrofit,{name="Hardened Bulkheads", front="https://i.imgur.com/Cz9oxBt.jpg", cost=5})
+Card:new(OffensiveRetrofit,{name="Phylon Q7 Tractor Beams", front="https://i.imgur.com/x7VhJXM.jpg", cost=6})
+Card:new(OffensiveRetrofit,{name="Point Defense Reroute", front="https://i.imgur.com/IAIYK4H.jpg", cost=5})
+Card:new(OffensiveRetrofit,{name="Proximity Mines", front="https://i.imgur.com/e93H1wf.jpg", cost=4})
+Card:new(OffensiveRetrofit,{name="Quad Laser Turrets", front="https://i.imgur.com/HKfQx0O.jpg", cost=5})
+Card:new(OffensiveRetrofit,{name="Rapid Launch Bays", front="https://i.imgur.com/PHiQ5fk.jpg", cost=6})
+Card:new(OffensiveRetrofit,{name="Reserve Hangar Deck", front="https://i.imgur.com/CuuMCQr.jpg", cost=3})

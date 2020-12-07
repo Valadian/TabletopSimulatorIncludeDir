@@ -7,23 +7,31 @@ ship = {
     health = 5,
     move = 2,
     defense_tokens = {}}
-SHIPS["B-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/bB11RGw.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "B-wing Squadron",
+    front = "https://i.imgur.com/bB11RGw.png",
+    cost = 14
 })
-SHIPS["Keyan Farlander"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Keyan Farlander",
     front = "https://i.imgur.com/r4bx4xg.png",
     diffuse = "http://i.imgur.com/r7YB80F.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 20
 })
-SHIPS["Ten Numb"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Ten Numb",
     front = "https://i.imgur.com/8zae2YW.png",
     diffuse = "http://i.imgur.com/r7YB80F.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
-SHIPS["Dagger Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Dagger Squadron",
     front = "https://i.imgur.com/41kkBy6.png",
     diffuse = "http://i.imgur.com/swXemsa.png",
-    mesh = "http://paste.ee/p/NpCQt"
+    mesh = "http://paste.ee/p/NpCQt",
+    cost = 15
 })
 ship = {
     mesh = "http://paste.ee/r/AG2g4",
@@ -31,24 +39,32 @@ ship = {
     health = 6,
     move = 3,
     defense_tokens = {}}
-SHIPS["Y-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/20kwNNs.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Y-wing Squadron",
+    front = "https://i.imgur.com/20kwNNs.png",
+    cost = 10
 })
-SHIPS['"Dutch" Vander'] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = '"Dutch" Vander',
     front = "https://i.imgur.com/97UoG34.png",
     diffuse = "http://i.imgur.com/pRu0c7d.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 16
 })
-SHIPS['Norra Wexley'] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = 'Norra Wexley',
     front = "https://i.imgur.com/VlUNCkM.png",
     diffuse = "http://i.imgur.com/pRu0c7d.png",
     mesh = "http://paste.ee/p/5i0Ma",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 17
 })
-SHIPS['Gold Squadron'] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = 'Gold Squadron',
     front = "https://i.imgur.com/m6efvmr.png",
     mesh = "http://paste.ee/p/5i0Ma",
-    diffuse = "http://i.imgur.com/pRu0c7d.png"
+    diffuse = "http://i.imgur.com/pRu0c7d.png",
+    cost = 12
 })
 ship = {
     mesh = "http://paste.ee/r/3Wdv8",
@@ -56,23 +72,31 @@ ship = {
     health = 4,
     move = 5,
     defense_tokens = {}}
-SHIPS["A-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/JikzQGo.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "A-wing Squadron",
+    front = "https://i.imgur.com/JikzQGo.png",
+    cost = 11
 })
-SHIPS["Tycho Celchu"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Tycho Celchu",
     front = "https://i.imgur.com/XsXiGTU.png",
     diffuse = "http://i.imgur.com/QZPi4e7.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 16
 })
-SHIPS["Shara Bey"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Shara Bey",
     front = "https://i.imgur.com/QhDp5hB.png",
     diffuse = "http://i.imgur.com/QZPi4e7.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 17
 })
-SHIPS["Green Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Green Squadron",
     front = "https://i.imgur.com/a00ZFfc.png",
     mesh = "http://paste.ee/p/ybtPs",
-    diffuse = "http://i.imgur.com/0awlEmY.png"
+    diffuse = "http://i.imgur.com/0awlEmY.png",
+    cost = 12
 })
 ship = {
     mesh = "http://paste.ee/r/zjUF1",
@@ -80,28 +104,38 @@ ship = {
     health = 5,
     move = 3,
     defense_tokens = {}}
-SHIPS["X-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/d5QuMBy.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "X-wing Squadron",
+    front = "https://i.imgur.com/d5QuMBy.png",
+    cost = 13
 })
-SHIPS["Luke Skywalker"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Luke Skywalker",
     front = "https://i.imgur.com/CcTsLiM.png",
     diffuse = "http://i.imgur.com/6xKSmMQ.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 20
 })
-SHIPS["Wedge Antilles"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Wedge Antilles",
     front = "https://i.imgur.com/uepzi7O.png",
     diffuse = "http://i.imgur.com/6xKSmMQ.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
-SHIPS["Biggs Darklighter"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Biggs Darklighter",
     front = "https://i.imgur.com/zLMC2Fc.png",
     diffuse = "http://i.imgur.com/6xKSmMQ.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
-SHIPS["Rogue Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Rogue Squadron",
     front = "https://i.imgur.com/A1IByHc.png",
     diffuse = "http://i.imgur.com/6xKSmMQ.png",
-    mesh = "http://paste.ee/p/PsdOf"
+    mesh = "http://paste.ee/p/PsdOf",
+    cost = 14
 })
 ship = {
     mesh = "http://paste.ee/r/919yT",
@@ -109,20 +143,26 @@ ship = {
     health = 6,
     move = 4,
     defense_tokens = {}}
-SHIPS["YT-2400"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/Ui3LTlu.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "YT-2400",
+    front = "https://i.imgur.com/Ui3LTlu.png",
+    cost = 16
 })
-SHIPS["Dash Rendar"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Dash Rendar",
     front = "https://i.imgur.com/7TfYFsY.png",
     mesh = "http://paste.ee/r/V5oHI",
     diffuse = "http://i.imgur.com/3iJ0Wxe.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 24
 })
-SHIPS["Mart Mattin"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Mart Mattin",
     front = "https://i.imgur.com/UyCPNqt.png",
     mesh = "http://paste.ee/p/4qSjx",
     diffuse = "http://i.imgur.com/3iJ0Wxe.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 22
 })
 ship = {
     mesh = "http://paste.ee/r/hhbic",
@@ -130,22 +170,28 @@ ship = {
     health = 7,
     move = 2,
     defense_tokens = {}}
-SHIPS["YT-1300"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/pFKaprO.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "YT-1300",
+    front = "https://i.imgur.com/pFKaprO.png",
+    cost = 13
 })
-SHIPS["Han Solo"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Han Solo",
     front = "https://i.imgur.com/8ni1bSl.png",
     mesh = "http://paste.ee/r/6yDva",
     diffuse = "http://i.imgur.com/v16flTU.png",
     move = 3,
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 26
 })
-SHIPS["Lando Calrissian"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Lando Calrissian",
     front = "https://i.imgur.com/Xk43ysd.png",
     mesh = "http://paste.ee/r/6yDva",
     diffuse = "http://i.imgur.com/v16flTU.png",
     move = 3,
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 23
 })
 ship = {
     mesh = "http://paste.ee/r/DURQd",
@@ -153,39 +199,51 @@ ship = {
     health = 4,
     move = 3,
     defense_tokens = {}}
-SHIPS["HWK-290"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/Zm7888b.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "HWK-290",
+    front = "https://i.imgur.com/Zm7888b.png",
+    cost = 12
 })
-SHIPS["Jan Ors"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Jan Ors",
     front = "https://i.imgur.com/NQqAVr8.png",
     diffuse = "http://i.imgur.com/bnknApA.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
-SHIPS["Kanan Jarrus"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Kanan Jarrus",
     front = "https://i.imgur.com/Cpp6DXG.png",
     mesh = "http://paste.ee/p/csGHI",
     diffuse = "http://i.imgur.com/bnknApA.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
 ship = {
     mesh = "http://paste.ee/r/dvrOX",
     diffuse = "http://i.imgur.com/4Stv3go.png",
     health = 6,
     move = 3 }
-SHIPS["Scurrg H-6 Bomber"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/QvhGpkj.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Scurrg H-6 Bomber",
+    front = "https://i.imgur.com/QvhGpkj.png",
+    cost = 16
 })
-SHIPS["Nym"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Nym",
     front = "https://i.imgur.com/vfrMC1z.png",
     mesh = "http://paste.ee/r/96QNu",
     diffuse = "http://i.imgur.com/QAaYYfU.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 21
 })
-SHIPS["Malee Hurra"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Malee Hurra",
     front = "https://i.imgur.com/JmifVSX.png",
     mesh = "http://paste.ee/r/96QNu",
     diffuse = "http://i.imgur.com/QAaYYfU.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 26
 })
 ship = {
     mesh = "http://paste.ee/p/ZHpHT",
@@ -193,13 +251,17 @@ ship = {
     health = 3,
     move = 3,
     defense_tokens = {}}
-SHIPS["Z-95 Headhunter Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/o3ydY6G.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Z-95 Headhunter Squadron",
+    front = "https://i.imgur.com/o3ydY6G.png",
+    cost = 7
 })
-SHIPS["Lieutenant Blount"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Lieutenant Blount",
     front = "https://i.imgur.com/dlts7hE.png",
     diffuse = "http://i.imgur.com/aTuRbPL.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 14
 })
 ship = {
     mesh = "http://paste.ee/p/ElhHc",
@@ -207,14 +269,18 @@ ship = {
     health = 5,
     move = 4,
     defense_tokens = {}}
-SHIPS["E-wing Squadron"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/iDlDpb3.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "E-wing Squadron",
+    front = "https://i.imgur.com/iDlDpb3.png",
+    cost = 15
 })
-SHIPS["Corran Horn"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Corran Horn",
     front = "https://i.imgur.com/r9KN0kh.png",
     mesh = "http://paste.ee/p/r2fsB",
     diffuse = "http://i.imgur.com/3uSFKMb.png",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 22
 })
 ship = {
     mesh = "http://paste.ee/p/3QIXa",
@@ -222,14 +288,18 @@ ship = {
     health = 8,
     move = 3,
     defense_tokens = {}}
-SHIPS["VCX-100 Freighter"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/CmvkFAq.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "VCX-100 Freighter",
+    front = "https://i.imgur.com/CmvkFAq.png",
+    cost = 15
 })
-SHIPS["Hera Syndulla"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Hera Syndulla",
     front = "https://i.imgur.com/b5rhKSS.png",
     mesh = "http://paste.ee/p/3NpiT",
     diffuse = "http://i.imgur.com/wPzX0MW.png",
-    defense_tokens = {DEF_BRACE}
+    defense_tokens = {DEF_BRACE},
+    cost = 28
 })
 ship = {
     mesh = "http://paste.ee/p/L9ygS",
@@ -237,11 +307,15 @@ ship = {
     health = 4,
     move = 4,
     defense_tokens = {}}
-SHIPS["Lancer-class Pursuit Craft"] = Squadron:new(ship, REBEL_SQUAD, {
-    front = "https://i.imgur.com/qDSMy7N.png"
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Lancer-class Pursuit Craft",
+    front = "https://i.imgur.com/qDSMy7N.png",
+    cost = 15
 })
-SHIPS["Ketsu Onyo"] = Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ship, REBEL_SQUAD, {
+	name = "Ketsu Onyo",
     front = "https://i.imgur.com/97603QH.png",
     diffuse = "http://i.imgur.com/eJxMrk2.png",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 22
 })

@@ -1,28 +1,21 @@
 Turbolaser = {
-    type="Turbolaser"
+    type="Turbolaser",
     back = ""
 }
-function Turbolaser:new (o)
-    o = o or {}
-    setmetatable(o, Turbolaser)
-    Turbolaser.__index = Turbolaser
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
 --Republic/Separatist
-Turbolaser:new{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg"}--modification
+Card:new(Turbolaser,{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg", cost=8}) --modification)
 
 --generic
-Turbolaser:new{name="Dual Turbolaser Turrets", front="https://i.imgur.com/RfHrc24.jpg"} --modification
-Turbolaser:new{name="Enhanced Armament", front="https://i.imgur.com/fixRACB.jpg"} --modification
-Turbolaser:new{name="H9 Turbolasers", front="https://i.imgur.com/vPAmdyc.jpg"} --modification
-Turbolaser:new{name="Heavy Fire Zone", front="https://i.imgur.com/f0phD19.jpg"}
-Turbolaser:new{name="Heavy Turbolaser Turrets", front="https://i.imgur.com/1BzH8yv.jpg"}
-Turbolaser:new{name="Linked Turbolaser Towers", front="https://i.imgur.com/Zxt5U1V.jpg"}
-Turbolaser:new{name="Quad Battery Turrets", front="https://i.imgur.com/OpE4elu.jpg"} --modification
-Turbolaser:new{name="Quad Turbolaser Cannons", front="https://i.imgur.com/QdRydD8.jpg"} --modification
-Turbolaser:new{name="Slaved Turrets", front="https://i.imgur.com/J9NmUDb.jpg"} --modification
-Turbolaser:new{name="Spinal Armament", front="https://i.imgur.com/0eLX7ML.jpg"} --modification
-Turbolaser:new{name="Turbolaser Reroute Circuits", front="https://i.imgur.com/6faOpzf.jpg"}
-Turbolaser:new{name="XI7 Turbolasers", front="https://i.imgur.com/leeZbxw.jpg"}
-Turbolaser:new{name="XX-9 Turbolasers", front="https://i.imgur.com/ttbae06.jpg"}
+Card:new(Turbolaser,{name="Dual Turbolaser Turrets", front="https://i.imgur.com/RfHrc24.jpg", cost=5}) --modification)
+Card:new(Turbolaser,{name="Enhanced Armament", front="https://i.imgur.com/fixRACB.jpg", cost=10}) --modification)
+Card:new(Turbolaser,{name="H9 Turbolasers", front="https://i.imgur.com/vPAmdyc.jpg", cost=8}) --modification)
+Card:new(Turbolaser,{name="Heavy Fire Zone", front="https://i.imgur.com/f0phD19.jpg", cost=4})
+Card:new(Turbolaser,{name="Heavy Turbolaser Turrets", front="https://i.imgur.com/1BzH8yv.jpg", cost=6})
+Card:new(Turbolaser,{name="Linked Turbolaser Towers", front="https://i.imgur.com/Zxt5U1V.jpg", cost=7})
+Card:new(Turbolaser,{name="Quad Battery Turrets", front="https://i.imgur.com/OpE4elu.jpg", cost=5}) --modification)
+Card:new(Turbolaser,{name="Quad Turbolaser Cannons", front="https://i.imgur.com/QdRydD8.jpg", cost=10}) --modification)
+Card:new(Turbolaser,{name="Slaved Turrets", front="https://i.imgur.com/J9NmUDb.jpg", cost=6}) --modification)
+Card:new(Turbolaser,{name="Spinal Armament", front="https://i.imgur.com/0eLX7ML.jpg", cost=9}) --modification)
+Card:new(Turbolaser,{name="Turbolaser Reroute Circuits", front="https://i.imgur.com/6faOpzf.jpg", cost=7})
+Card:new(Turbolaser,{name="XI7 Turbolasers", front="https://i.imgur.com/leeZbxw.jpg", cost=6})
+Card:new(Turbolaser,{name="XX-9 Turbolasers", front="https://i.imgur.com/ttbae06.jpg", cost=5})

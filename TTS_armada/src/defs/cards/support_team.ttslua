@@ -1,22 +1,15 @@
 SupportTeam = {
-    type="SupportTeam"
+    type="SupportTeam",
     back = ""
 }
-function SupportTeam:new (o)
-    o = o or {}
-    setmetatable(o, SupportTeam)
-    SupportTeam.__index = SupportTeam
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
 --separatist
-SupportTeam:new{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg"}
+Card:new(SupportTeam,{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg", cost=4})
 
 --generic
-SupportTeam:new{name="Auxilliary Shields Team", front="https://i.imgur.com/SkNnm5P.jpg"}
-SupportTeam:new{name="Engine Techs", front="https://i.imgur.com/5oEvYoq.jpg"}
-SupportTeam:new{name="Engineering Team", front="https://i.imgur.com/ZmpFl4q.jpg"}
-SupportTeam:new{name="Fighter Coordination Team", front="https://i.imgur.com/wKI96Sb.jpg"}
-SupportTeam:new{name="Medical Team", front="https://i.imgur.com/jwf6kLG.jpg"}
-SupportTeam:new{name="Nav Team", front="https://i.imgur.com/GdjIeBj.jpg"}
-SupportTeam:new{name="Projection Experts", front="https://i.imgur.com/0hPAHTI.jpg"}
+Card:new(SupportTeam,{name="Auxiliary Shields Team", front="https://i.imgur.com/SkNnm5P.jpg", cost=3})
+Card:new(SupportTeam,{name="Engine Techs", front="https://i.imgur.com/5oEvYoq.jpg", cost=8})
+Card:new(SupportTeam,{name="Engineering Team", front="https://i.imgur.com/ZmpFl4q.jpg", cost=5})
+Card:new(SupportTeam,{name="Fighter Coordination Team", front="https://i.imgur.com/wKI96Sb.jpg", cost=3})
+Card:new(SupportTeam,{name="Medical Team", front="https://i.imgur.com/jwf6kLG.jpg", cost=1})
+Card:new(SupportTeam,{name="Nav Team", front="https://i.imgur.com/GdjIeBj.jpg", cost=4})
+Card:new(SupportTeam,{name="Projection Experts", front="https://i.imgur.com/0hPAHTI.jpg", cost=6})

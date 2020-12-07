@@ -1,31 +1,24 @@
 WeaponsTeam = {
-    type="WeaponsTeam"
+    type="WeaponsTeam",
     back = ""
 }
-function WeaponsTeam:new (o)
-    o = o or {}
-    setmetatable(o, WeaponsTeam)
-    WeaponsTeam.__index = WeaponsTeam
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
 
 --rebel
-WeaponsTeam:new{name="Caitken and Shollan", front="https://i.imgur.com/5msklkl.jpg"}
+Card:new(WeaponsTeam,{name="Caitken and Shollan", front="https://i.imgur.com/5msklkl.jpg", cost=6})
 
 --imperial
-WeaponsTeam:new{name="Gunnery Chief Varnillian", front="https://i.imgur.com/JG9I88l.jpg"}
+Card:new(WeaponsTeam,{name="Gunnery Chief Varnillian", front="https://i.imgur.com/JG9I88l.jpg", cost=6})
 
 --republic
-WeaponsTeam:new{name="Clone Gunners", front="https://i.imgur.com/8Rr4vE5.jpeg"}
+Card:new(WeaponsTeam,{name="Clone Gunners", front="https://i.imgur.com/8Rr4vE5.jpeg", cost=4})
 
 --generic
-WeaponsTeam:new{name="Fire Control Team", front="https://i.imgur.com/VFlRiDL.jpg"}
-WeaponsTeam:new{name="Flight Controllers", front="https://i.imgur.com/3WO48B6.jpg"}
-WeaponsTeam:new{name="Gunnery Team", front="https://i.imgur.com/Jw2Qhgz.jpg"}
-WeaponsTeam:new{name="Local Fire Control", front="https://i.imgur.com/OepfCdw.jpg"}
-WeaponsTeam:new{name="Ordnance Experts", front="https://i.imgur.com/3SpyXDz.jpg"}
-WeaponsTeam:new{name="Ruthless Strategists", front="https://i.imgur.com/2mDorqh.jpg"}
-WeaponsTeam:new{name="Sensor Team", front="https://i.imgur.com/pnn0pOz.jpg"}
-WeaponsTeam:new{name="Veteran Gunners", front="https://i.imgur.com/mYGP8R6.jpg"}
-WeaponsTeam:new{name="Weapons Battery Techs", front="https://i.imgur.com/wQ6S57i.jpg"}
+Card:new(WeaponsTeam,{name="Fire Control Team", front="https://i.imgur.com/VFlRiDL.jpg", cost=2})
+Card:new(WeaponsTeam,{name="Flight Controllers", front="https://i.imgur.com/3WO48B6.jpg", cost=6})
+Card:new(WeaponsTeam,{name="Gunnery Team", front="https://i.imgur.com/Jw2Qhgz.jpg", cost=7})
+Card:new(WeaponsTeam,{name="Local Fire Control", front="https://i.imgur.com/OepfCdw.jpg", cost=4})
+Card:new(WeaponsTeam,{name="Ordnance Experts", front="https://i.imgur.com/3SpyXDz.jpg", cost=4})
+Card:new(WeaponsTeam,{name="Ruthless Strategists", front="https://i.imgur.com/2mDorqh.jpg", cost=4})
+Card:new(WeaponsTeam,{name="Sensor Team", front="https://i.imgur.com/pnn0pOz.jpg", cost=5})
+Card:new(WeaponsTeam,{name="Veteran Gunners", front="https://i.imgur.com/mYGP8R6.jpg", cost=5})
+Card:new(WeaponsTeam,{name="Weapons Battery Techs", front="https://i.imgur.com/wQ6S57i.jpg", cost=5})

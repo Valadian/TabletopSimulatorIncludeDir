@@ -1,4 +1,5 @@
-SHIPS["Hardcell-class Transport"] = SmallShip:new{
+SmallShip:new{
+	name = "Hardcell-class Transport",
     front = "https://i.imgur.com/T7QWSb4.jpeg",
     back = "https://i.imgur.com/c9yNLyu.jpg",
     mesh = "http://paste.ee/r/XbByc",
@@ -6,9 +7,11 @@ SHIPS["Hardcell-class Transport"] = SmallShip:new{
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
-    shields = {3,1,1,2}
+    shields = {3,1,1,2},
+    cost = 47
 }
-SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
+SmallShip:new{
+	name = "Hardcell-class Battle Refit",
     front = "https://i.imgur.com/X96bJDW.jpeg",
     back = "https://i.imgur.com/Q46N3zb.jpeg",
     mesh = "http://paste.ee/r/XbByc",
@@ -16,10 +19,12 @@ SHIPS["Hardcell-class Battle Refit"] = SmallShip:new{
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
-    shields = {3,1,1,2}
+    shields = {3,1,1,2},
+    cost = 52
 }
 
-SHIPS["Munificent-class Comms Frigate"] = MediumShip:new{
+MediumShip:new{
+	name = "Munificent-class Comms Frigate",
     front = "https://i.imgur.com/T5LCaof.jpeg",
     back = "https://i.imgur.com/5BgxeQS.jpeg",
     mesh = "http://paste.ee/r/5vQzm",
@@ -27,9 +32,11 @@ SHIPS["Munificent-class Comms Frigate"] = MediumShip:new{
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
-    shields = {4,3,3,2}
+    shields = {4,3,3,2},
+    cost = 70
 }
-SHIPS["Munificent-class Star Frigate"] = MediumShip:new{
+MediumShip:new{
+	name = "Munificent-class Star Frigate",
     front = "https://i.imgur.com/kN6lJzW.jpeg",
     back = "https://i.imgur.com/8qP8mto.jpeg",
     mesh = "http://paste.ee/r/5vQzm",
@@ -37,5 +44,6 @@ SHIPS["Munificent-class Star Frigate"] = MediumShip:new{
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
-    shields = {4,3,3,2}
+    shields = {4,3,3,2},
+    cost = 73
 }

@@ -1,14 +1,7 @@
 SuperWeapon = {
-    type="SuperWeapon"
+    type="SuperWeapon",
     back = ""
 }
-function SuperWeapon:new (o)
-    o = o or {}
-    setmetatable(o, SuperWeapon)
-    SuperWeapon.__index = SuperWeapon
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
-SuperWeapon:new{name="Magnite Crystal Tractor Beam Array", front="https://i.imgur.com/2YpzXNT.jpg"}
-SuperWeapon:new{name="Orbital Bombardment Particle Cannons", front="https://i.imgur.com/t9VRV0n.jpg"} --modification
-SuperWeapon:new{name="Superheavy Composite Beam Turbolasers", front="https://i.imgur.com/a7AycPb.jpg"} --modification
+Card:new(SuperWeapon,{name="Magnite Crystal Tractor Beam Array", front="https://i.imgur.com/2YpzXNT.jpg", cost=10})
+Card:new(SuperWeapon,{name="Orbital Bombardment Particle Cannons", front="https://i.imgur.com/t9VRV0n.jpg", cost=5}) --modification)
+Card:new(SuperWeapon,{name="Superheavy Composite Beam Turbolasers", front="https://i.imgur.com/a7AycPb.jpg", cost=7}) --modification)

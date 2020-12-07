@@ -25,7 +25,6 @@ function update()
         end
     end
 end
-
 SmallShip = {
     collider = "http://paste.ee/r/eDbf1",
     convex = true,
@@ -33,7 +32,11 @@ SmallShip = {
     material = 3,
     maneuver = {},
     defense_tokens = {},
-    shields = {1,1,1,1}
+    shields = {1,1,1,1},
+    cost = 0,
+    name = "",
+    front = "",
+    back = ""
 }
 function SmallShip:new (o,...)
     o = o or {}
@@ -47,6 +50,14 @@ function SmallShip:new (o,...)
     end
     setmetatable(o, SmallShip)
     SmallShip.__index = SmallShip
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_noclass = string.gsub(key, "%-class","")
+    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
+    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
+    SHIPS[key] = o
+    SHIPS[key_noclass] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_noclass] = o
     return o
 end
 MediumShip = {
@@ -56,7 +67,11 @@ MediumShip = {
     material = 3,
     maneuver = {},
     defense_tokens = {},
-    shields = {1,1,1,1}
+    shields = {1,1,1,1},
+    cost = 0,
+    name = "",
+    front = "",
+    back = ""
 }
 function MediumShip:new (o,...)
     o = o or {}
@@ -70,6 +85,14 @@ function MediumShip:new (o,...)
     end
     setmetatable(o, MediumShip)
     MediumShip.__index = MediumShip
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_noclass = string.gsub(key, "%-class","")
+    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
+    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
+    SHIPS[key] = o
+    SHIPS[key_noclass] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_noclass] = o
     return o
 end
 LargeShip = {
@@ -79,7 +102,11 @@ LargeShip = {
     material = 3,
     maneuver = {},
     defense_tokens = {},
-    shields = {1,1,1,1}
+    shields = {1,1,1,1},
+    cost = 0,
+    name = "",
+    front = "",
+    back = ""
 }
 function LargeShip:new (o,...)
     o = o or {}
@@ -93,6 +120,14 @@ function LargeShip:new (o,...)
     end
     setmetatable(o, LargeShip)
     LargeShip.__index = LargeShip
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_noclass = string.gsub(key, "%-class","")
+    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
+    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
+    SHIPS[key] = o
+    SHIPS[key_noclass] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_noclass] = o
     return o
 end
 HugeShip = {
@@ -102,7 +137,11 @@ HugeShip = {
     material = 3,
     maneuver = {},
     defense_tokens = {},
-    shields = {1,1,1,1,1,1}
+    shields = {1,1,1,1,1,1},
+    cost = 0,
+    name = "",
+    front = "",
+    back = ""
 }
 function HugeShip:new (o,...)
     o = o or {}
@@ -116,6 +155,14 @@ function HugeShip:new (o,...)
     end
     setmetatable(o, HugeShip)
     HugeShip.__index = HugeShip
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_noclass = string.gsub(key, "%-class","")
+    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
+    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
+    SHIPS[key] = o
+    SHIPS[key_noclass] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_noclass] = o
     return o
 end
 Squadron = {
@@ -123,7 +170,11 @@ Squadron = {
     convex = false,
     type = 1,
     material = 1,
-    defense_tokens = {}
+    defense_tokens = {},
+    cost = 0,
+    name = "",
+    front = "",
+    back = ""
 }
 function Squadron:new (o, ...)
     o = o or {}
@@ -139,14 +190,57 @@ function Squadron:new (o, ...)
     end
     setmetatable(o, Squadron)
     Squadron.__index = Squadron
+    -- if o.name == nil then
+    --     for k, v in pairs(o) do
+    --         printToAll(k..":"..tostring(v),{1,0,0})
+    --     end
+    -- end
+    -- if o.cost == nil then
+    --     printToAll(o.name.." has no cost",{1,0,0})
+    -- end
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_noclass = string.gsub(key, "%-class","")
+    local key_nocost = string.lower(o.name)
+    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
+    SHIPS[key] = o
+    SHIPS[key_noclass] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_noclass] = o
+    -- if key~=key_noclass then
+    --     printToAll(key.." ~= "..key_noclass,{1,1,0})
+    -- end
     return o
 end
-
+Card = {
+    cost = 0,
+    name = "",
+    type = "",
+    front = "",
+    back = ""
+}
+function Card:new (o, ...)
+    o = o or {}
+    o = table.copy(o)
+    if ... ~= nil then
+        -- printToAll("Found args: "..tostring(#{...}),{0,1,1})
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                -- printToAll("Copying over: "..k)
+                o[k] = v
+            end
+        end
+    end
+    setmetatable(o, Card)
+    Card.__index = Card
+    CARDS[string.lower(o.name.." ("..o.cost..")")] = o
+    CARDS[string.lower(o.name)] = o -- this can of overlap issues with cards that share names!!!
+    return o
+end
 SHIPS = {}
 CARDS = {}
 function onObjectSpawn(object)
     --Create a Button on the card for leaving a container
-    if object.tag ~= "Figurine" and (SHIPS[object.getName()] != nil or string.starts(object.getDescription(),"Custom")) then
+    if object.tag ~= "Figurine" and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) then
         createSpawnButtons(object)
     end
 end
@@ -197,41 +291,23 @@ function createSpawnButtons(object)
             if #model_data>9 then
                 table.insert(maneuver,string:split(string.strip(model_data[10]),",",nil,false))
             end
+            ship_data = {
+                mesh = string.strip(model_data[4]),
+                diffuse = string.strip(model_data[5]),
+                ruler = string.strip(model_data[6]),
+                maneuver = maneuver,
+                --defense_tokens = defense_tokens,
+                --shields = shields,
+                convex = true,
+                type = 1,
+                material = 3,
+            }
             if string.strip(model_data[3])=="Small" then
-                ship_data = {
-                    mesh = string.strip(model_data[4]),
-                    diffuse = string.strip(model_data[5]),
-                    ruler = string.strip(model_data[6]),
-                    maneuver = maneuver,
-                    --defense_tokens = defense_tokens,
-                    --shields = shields,
-                    convex = true,
-                    type = 1,
-                    material = 3,
-                    collider = SmallShip.collider
-                }
+                ship_data.collider = SmallShip.collider
             elseif string.strip(model_data[3])=="Medium" then
-                ship_data = {
-                    mesh = string.strip(model_data[4]),
-                    diffuse = string.strip(model_data[5]),
-                    ruler = string.strip(model_data[6]),
-                    maneuver = maneuver,
-                    convex = true,
-                    type = 1,
-                    material = 3,
-                    collider = MediumShip.collider
-                }
+                ship_data.collider = MediumShip.collider
             elseif string.strip(model_data[3])=="Large" then
-                ship_data = {
-                    mesh = string.strip(model_data[4]),
-                    diffuse = string.strip(model_data[5]),
-                    ruler = string.strip(model_data[6]),
-                    maneuver = maneuver,
-                    convex = true,
-                    type = 1,
-                    material = 3,
-                    collider = LargeShip.collider
-                }
+                ship_data.collider = LargeShip.collider
             end
         elseif string.strip(model_data[2])=="Squadron" then
             -- Custom|Squadron|mesh|diffuse|health|move
@@ -274,6 +350,22 @@ function onload()
 
 #include defs/republic/squadrons
 #include defs/separatist/squadrons
+
+#include defs/cards/commanders
+#include defs/cards/defensive_retrofit
+#include defs/cards/experimental_retrofit
+#include defs/cards/fleet_command
+#include defs/cards/fleet_support
+#include defs/cards/ion_cannons
+#include defs/cards/offensive_retrofit
+#include defs/cards/officer
+#include defs/cards/ordnance
+#include defs/cards/superweapon
+#include defs/cards/support_team
+#include defs/cards/title
+#include defs/cards/turbolaser
+#include defs/cards/weapons_team_and_offensive_retrofit
+#include defs/cards/weapons_team
     setRulerMeshes()
     drawListSpawnerButtons()
 end
@@ -299,24 +391,95 @@ function drawListSpawnerButtons()
 end
 function Action_CloseListSpawner(listSpawner)
     listSpawner.clearButtons()
-    listSpawner.createButton({label = ">", click_function = 'Action_OpenListSpawner', rotation = {0, 0, 0}, scale={1,1,1},
-    position = {0, 0, -4}, width = 40, height = 40, font_size = 30, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+    listSpawner.clearInputs()
+    listSpawner.createButton({label = ">", click_function = 'Action_OpenListSpawner', rotation = {0, 0, 0},
+        position = {0.4, 0.4, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={0,1,0}, font_color={0,0,0}})
 
 end
 function Action_OpenListSpawner(listSpawner)
     listSpawner.clearButtons()
+    listSpawner.clearInputs()
     listSpawner.createButton({label = "<", click_function = 'Action_CloseListSpawner', rotation = {0, 0, 0},
-        position = {0, 0, -4}, width = 40, height = 40, font_size = 30, function_owner = self, color={1,0,0}, font_color={0,0,0}})
+        position = {-0.4, 0.2, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={1,0,0}, font_color={0,0,0}})
     listSpawner.createInput({label = "paste list here", input_function = 'Input_UpdateList', rotation = {0, 0, 0},
-        position = {0, 2, 0.5}, width = 400, height = 400, font_size = 30, function_owner = self, font_color={0,0,0}})
-    listSpawner.createButton({label = "Spawn!", click_function = 'Action_SpawnListSpawner', rotation = {0, 0, 0},
-        position = {0, 2, 4}, width = 400, height = 80, font_size = 60, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+        position = {3.2, 0.2, 0}, width = 3000, height = 6000, font_size = 85, function_owner = self, font_color={0,0,0}})
+    listSpawner.createButton({label = "V V V     Spawn!     V V V", click_function = 'Action_SpawnListSpawner', rotation = {0, -90, 0},
+        position = {7, 0.2, 0}, width = 6000, height = 500, font_size = 400, function_owner = self, color={0,1,0}, font_color={0,0,0}})
 end
 function Input_UpdateList(obj, color, input, stillEditing)
     obj.setVar("list",input)
 end
+function replace(input, pattern, replace)
+    local output = string.gsub(input, pattern, replace)
+    -- if output~=input then
+    --     printToAll("Applied: '"..pattern.."'. '"..input.."' -> '"..output.."'")
+    -- end
+    return output
+end
+function Action_SpawnListSpawner(listSpawner)
+    local list = listSpawner.getVar("list")
+    -- print(#list)
+    lines = string:split(list, "\n")
+    -- print(#lines)
+    for _,line in ipairs(lines) do
+        if not line:starts "=" then
+            print("Parsing line: '"..line.."'")
+            line = string.strip(line)
+            count = string.match(line, "^•%s+(%d+)%s+x%s+")
+            if count==nil then
+                count = string.match(line, "^(%d+)%s+")
+            end
+            if count~=nil then
+                print("Found count: "..tostring(count))
+            end
+            -- need to handle missing " Star Destroyer"
+            line = replace(line, "[%s ]+%(com%)","")
+            line = replace(line, "•%s+%d+%s+x%s+","")
+            line = replace(line,"^%d+[%s ]+","")
+            line = replace(line, "^[•%-][%s ]+","") -- THAT IS NOT A NORMAL SPACE!
+            line = replace(line,"^%-%s+","")
+            line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)")
+            line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","")
+            line = replace(line,"%(%s*(%d+)%s*%)$","(%1)")
+            line = string.strip(line)
+            line = replace(line," +"," ")
+            -- cost = string.match(line, ".*%((%d+)%)$")
+            -- cost = string.match(line, "%((%d+)%)$")
+            -- print(cost)
+            -- if line=="Darth Vader (1)" then
+            --     line = "Darth Vader (Officer) (1)"
+            -- end
+            -- if line=="Darth Vader (3)" then
+            --     line = "Darth Vader (WeaponsTeamAndOffensiveRetrofit) (3)"
+            -- end
+            line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","")
+            line_nocost_no_s = string.gsub(line_nocost,"s$","")
+            if line ~="" then
+                if CARDS[string.lower(line)]~=nil then
+                    printToAll("Spawning Card: "..line,{0,1,1})
+                elseif CARDS[string.lower(line_nocost)]~=nil then
+                    printToAll("Spawning Card: "..line,{0,1,1})
+                elseif SHIPS[string.lower(line_nocost)]~=nil then
+                    if count~=nil then
+                        printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
+                    else
+                        printToAll("Spawning Ship: "..line,{0,1,0})
+                    end
+                elseif SHIPS[string.lower(line_nocost_no_s)]~=nil then
+                    if count~=nil then
+                        printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
+                    else
+                        printToAll("Spawning Ship: "..line,{0,1,0})
+                    end
+                else
+                    printToAll("Unfound item: '"..line.."'|'"..line_nocost.."'",{1,0,0})
+                end
+            end
+        end
+    end
+end
 function spawnShip(name,pos,count,rotation)
-    local ship_def = SHIPS[name]
+    local ship_def = SHIPS[string.lower(name)]
     spawnDefinition(ship_def,name,pos,count,rotation)
 end
 token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
@@ -424,4 +587,14 @@ function table.copy(orig)
     copy = orig
     end
     return copy
+end
+
+function table.contains(self, val)
+    for index, value in ipairs (self) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
 end

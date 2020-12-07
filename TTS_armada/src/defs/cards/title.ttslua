@@ -1,108 +1,101 @@
 Title = {
-    type="Title"
+    type="Title",
     back = ""
 }
-function Title:new (o)
-    o = o or {}
-    setmetatable(o, Title)
-    Title.__index = Title
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
 --rebel
-Title:new{name="Bright Hope", front="https://i.imgur.com/ppRWBhH.jpg"}
-Title:new{name="Quantum Storm", front="https://i.imgur.com/Zvki0aa.jpg"}
+Card:new(Title,{name="Bright Hope", front="https://i.imgur.com/ppRWBhH.jpg", cost=2})
+Card:new(Title,{name="Quantum Storm", front="https://i.imgur.com/Zvki0aa.jpg", cost=1})
 
-Title:new{name="Dodonna's Pride", front="https://i.imgur.com/XoROjrp.jpg"}
-Title:new{name="Jaina's Light", front="https://i.imgur.com/v5gczKg.jpg"}
-Title:new{name="Liberator", front="https://i.imgur.com/zPLLjv2.jpg"}
-Title:new{name="Tantive IV", front="https://i.imgur.com/THWav9j.jpg"}
+Card:new(Title,{name="Dodonna's Pride", front="https://i.imgur.com/XoROjrp.jpg", cost=6})
+Card:new(Title,{name="Jaina's Light", front="https://i.imgur.com/v5gczKg.jpg", cost=2})
+Card:new(Title,{name="Liberator", front="https://i.imgur.com/zPLLjv2.jpg", cost=2})
+Card:new(Title,{name="Tantive IV", front="https://i.imgur.com/THWav9j.jpg", cost=3})
 
-Title:new{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg"}
-Title:new{name="Task Force Antilles", front="https://i.imgur.com/NWw9f29.jpg"}
-Title:new{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg"}
+Card:new(Title,{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg", cost=4})
+Card:new(Title,{name="Task Force Antilles", front="https://i.imgur.com/NWw9f29.jpg", cost=3})
+Card:new(Title,{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg", cost=2})
 
-Title:new{name="Redemption", front="https://i.imgur.com/Dp0ayI3.jpg"}
-Title:new{name="Salvation", front="https://i.imgur.com/xjIXfVD.jpg"}
-Title:new{name="Vanguard", front="https://i.imgur.com/4a6la8P.jpg"}
-Title:new{name="Yavaris", front="https://i.imgur.com/qtHU4B2.jpg"}
+Card:new(Title,{name="Redemption", front="https://i.imgur.com/Dp0ayI3.jpg", cost=8})
+Card:new(Title,{name="Salvation", front="https://i.imgur.com/xjIXfVD.jpg", cost=7})
+Card:new(Title,{name="Vanguard", front="https://i.imgur.com/4a6la8P.jpg", cost=4})
+Card:new(Title,{name="Yavaris", front="https://i.imgur.com/qtHU4B2.jpg", cost=5})
 
-Title:new{name="Phoenix Home", front="https://i.imgur.com/4pKVy0F.jpg"}
+Card:new(Title,{name="Phoenix Home", front="https://i.imgur.com/4pKVy0F.jpg", cost=3})
 
-Title:new{name="Admonition", front="https://i.imgur.com/rRIV5mH.jpg"}
-Title:new{name="Foresight", front="https://i.imgur.com/HpSit4j.jpg"}
+Card:new(Title,{name="Admonition", front="https://i.imgur.com/rRIV5mH.jpg", cost=6})
+Card:new(Title,{name="Foresight", front="https://i.imgur.com/HpSit4j.jpg", cost=8})
 
-Title:new{name="Gallant Haven", front="https://i.imgur.com/Foap6UL.jpg"}
-Title:new{name="Paragon", front="https://i.imgur.com/1lMOUvu.jpg"}
+Card:new(Title,{name="Gallant Haven", front="https://i.imgur.com/Foap6UL.jpg", cost=8})
+Card:new(Title,{name="Paragon", front="https://i.imgur.com/1lMOUvu.jpg", cost=5})
 
-Title:new{name="Defiance", front="https://i.imgur.com/cBm6bOA.jpg"}
-Title:new{name="Home One", front="https://i.imgur.com/ao1aUWd.jpg"}
-Title:new{name="Independence", front="https://i.imgur.com/eeJ4K4e.jpg"}
+Card:new(Title,{name="Defiance", front="https://i.imgur.com/cBm6bOA.jpg", cost=5})
+Card:new(Title,{name="Home One", front="https://i.imgur.com/ao1aUWd.jpg", cost=7})
+Card:new(Title,{name="Independence", front="https://i.imgur.com/eeJ4K4e.jpg", cost=8})
 
-Title:new{name="Endeavor", front="https://i.imgur.com/YQO9jve.jpg"}
-Title:new{name="Liberty", front="https://i.imgur.com/gnoxT5J.jpg"}
-Title:new{name="Mon Karren", front="https://i.imgur.com/JbMnQpC.jpg"}
+Card:new(Title,{name="Endeavor", front="https://i.imgur.com/YQO9jve.jpg", cost=4})
+Card:new(Title,{name="Liberty", front="https://i.imgur.com/gnoxT5J.jpg", cost=3})
+Card:new(Title,{name="Mon Karren", front="https://i.imgur.com/JbMnQpC.jpg", cost=6})
 
-Title:new{name="Aspiration", front="https://i.imgur.com/O0n3gY9.jpg"}
-Title:new{name="Profundity", front="https://i.imgur.com/P0LQ9NC.jpg"}
+Card:new(Title,{name="Aspiration", front="https://i.imgur.com/O0n3gY9.jpg", cost=3})
+Card:new(Title,{name="Profundity", front="https://i.imgur.com/P0LQ9NC.jpg", cost=7})
 
-Title:new{name="Mon Calamari Exodus Fleet", front="https://i.imgur.com/Gi02xgi.jpg"}
+Card:new(Title,{name="Mon Calamari Exodus Fleet", front="https://i.imgur.com/Gi02xgi.jpg", cost=5})
 
-Title:new{name="Amity", front="https://i.imgur.com/BcOXgXM.jpg"}
-Title:new{name="Concord", front="https://i.imgur.com/76LdzqR.jpg"}
-Title:new{name="Unity", front="https://i.imgur.com/RP1KPrl.jpg"}
+Card:new(Title,{name="Amity", front="https://i.imgur.com/BcOXgXM.jpg", cost=6})
+Card:new(Title,{name="Concord", front="https://i.imgur.com/76LdzqR.jpg", cost=12})
+Card:new(Title,{name="Unity", front="https://i.imgur.com/RP1KPrl.jpg", cost=10})
 --imperial
-Title:new{name="Suppressor", front="https://i.imgur.com/11G4bE0.jpg"}
-Title:new{name="Vector", front="https://i.imgur.com/h7NhmMa.jpg"}
+Card:new(Title,{name="Suppressor", front="https://i.imgur.com/11G4bE0.jpg", cost=4})
+Card:new(Title,{name="Vector", front="https://i.imgur.com/h7NhmMa.jpg", cost=2})
 
-Title:new{name="Impetuous", front="https://i.imgur.com/3fOmzlk.jpg"}
-Title:new{name="Instigator", front="https://i.imgur.com/dht3fJ6.jpg"}
-Title:new{name="Corvus", front="https://i.imgur.com/huKZyhu.jpg"}
+Card:new(Title,{name="Impetuous", front="https://i.imgur.com/3fOmzlk.jpg", cost=4})
+Card:new(Title,{name="Instigator", front="https://i.imgur.com/dht3fJ6.jpg", cost=4})
+Card:new(Title,{name="Corvus", front="https://i.imgur.com/huKZyhu.jpg", cost=2})
 
-Title:new{name="Centicore", front="https://i.imgur.com/y41PoZy.jpg"}
-Title:new{name="Hand of Justice", front="https://i.imgur.com/gfeIVpM.jpg"}
+Card:new(Title,{name="Centicore", front="https://i.imgur.com/y41PoZy.jpg", cost=3})
+Card:new(Title,{name="Hand of Justice", front="https://i.imgur.com/gfeIVpM.jpg", cost=4})
 
-Title:new{name="Demolisher", front="https://i.imgur.com/lIICVGX.jpg"}
-Title:new{name="Insidious", front="https://i.imgur.com/lJU1Qr0.jpg"}
+Card:new(Title,{name="Demolisher", front="https://i.imgur.com/lIICVGX.jpg", cost=10})
+Card:new(Title,{name="Insidious", front="https://i.imgur.com/lJU1Qr0.jpg", cost=3})
 
-Title:new{name="Pursuant", front="https://i.imgur.com/8971Me7.jpg"}
-Title:new{name="Squall", front="https://i.imgur.com/IPQVSGM.jpg"}
-Title:new{name="Stronghold", front="https://i.imgur.com/1UwT76i.jpg"}
+Card:new(Title,{name="Pursuant", front="https://i.imgur.com/8971Me7.jpg", cost=2})
+Card:new(Title,{name="Squall", front="https://i.imgur.com/IPQVSGM.jpg", cost=3})
+Card:new(Title,{name="Stronghold", front="https://i.imgur.com/1UwT76i.jpg", cost=3})
 
-Title:new{name="Corrupter", front="https://i.imgur.com/n8Plm1g.jpg"}
-Title:new{name="Dominator", front="https://i.imgur.com/d03SuuK.jpg"}
-Title:new{name="Harrow", front="https://i.imgur.com/2j7zspi.jpg"}
-Title:new{name="Warlord", front="https://i.imgur.com/E8oYSJj.jpg"}
+Card:new(Title,{name="Corrupter", front="https://i.imgur.com/n8Plm1g.jpg", cost=5})
+Card:new(Title,{name="Dominator", front="https://i.imgur.com/d03SuuK.jpg", cost=12})
+Card:new(Title,{name="Harrow", front="https://i.imgur.com/2j7zspi.jpg", cost=3})
+Card:new(Title,{name="Warlord", front="https://i.imgur.com/E8oYSJj.jpg", cost=8})
 
-Title:new{name="Interdictor", front="https://i.imgur.com/sIO1x2W.jpg"}
+Card:new(Title,{name="Interdictor", front="https://i.imgur.com/sIO1x2W.jpg", cost=3})
 
-Title:new{name="Cataclysm", front="https://i.imgur.com/BJwwHvW.jpg"}
-Title:new{name="Rakehell", front="https://i.imgur.com/R3NVdce.jpg"}
-Title:new{name="Sunder", front="https://i.imgur.com/tjMOmDP.jpg"}
+Card:new(Title,{name="Cataclysm", front="https://i.imgur.com/BJwwHvW.jpg", cost=5})
+Card:new(Title,{name="Rakehell", front="https://i.imgur.com/R3NVdce.jpg", cost=4})
+Card:new(Title,{name="Sunder", front="https://i.imgur.com/tjMOmDP.jpg", cost=10})
 
-Title:new{name="Avenger", front="https://i.imgur.com/UOIKPqu.jpg"}
-Title:new{name="Chimaera", front="https://i.imgur.com/o5AtxcG.jpg"}
-Title:new{name="Devastator", front="https://i.imgur.com/nKieVmI.jpg"}
-Title:new{name="Relentless", front="https://i.imgur.com/AT9rKe4.jpg"}
-Title:new{name="Sovereign", front="https://i.imgur.com/AnJZEFb.jpg"}
+Card:new(Title,{name="Avenger", front="https://i.imgur.com/UOIKPqu.jpg", cost=5})
+Card:new(Title,{name="Chimaera", front="https://i.imgur.com/o5AtxcG.jpg", cost=4})
+Card:new(Title,{name="Devastator", front="https://i.imgur.com/nKieVmI.jpg", cost=10})
+Card:new(Title,{name="Relentless", front="https://i.imgur.com/AT9rKe4.jpg", cost=3})
+Card:new(Title,{name="Sovereign", front="https://i.imgur.com/AnJZEFb.jpg", cost=4})
 
-Title:new{name="Seventh Fleet Star Destroyer", front="https://i.imgur.com/G90ZE7x.jpg"}
+Card:new(Title,{name="Seventh Fleet Star Destroyer", front="https://i.imgur.com/G90ZE7x.jpg", cost=5})
 
-Title:new{name="Annihilator", front="https://i.imgur.com/R9rr8vA.jpg"}
-Title:new{name="Eclipse", front="https://i.imgur.com/Vnmp8CR.jpg"}
-Title:new{name="Executor", front="https://i.imgur.com/OGaToRQ.jpg"}
-Title:new{name="Ravager", front="https://i.imgur.com/AcTzTTY.jpg"}
+Card:new(Title,{name="Annihilator", front="https://i.imgur.com/R9rr8vA.jpg", cost=8})
+Card:new(Title,{name="Eclipse", front="https://i.imgur.com/Vnmp8CR.jpg", cost=3})
+Card:new(Title,{name="Executor", front="https://i.imgur.com/OGaToRQ.jpg", cost=2})
+Card:new(Title,{name="Ravager", front="https://i.imgur.com/AcTzTTY.jpg", cost=4})
 
 --republic
-Title:new{name="Radiant VII", front="https://i.imgur.com/kTBiAsS.jpg"}
-Title:new{name="Swift Return", front="https://i.imgur.com/lVSb7xQ.jpeg"}
+Card:new(Title,{name="Radiant VII", front="https://i.imgur.com/kTBiAsS.jpg", cost=1})
+Card:new(Title,{name="Swift Return", front="https://i.imgur.com/lVSb7xQ.jpeg", cost=3})
 
-Title:new{name="Implacable", front="https://i.imgur.com/Y8uSW2V.jpeg"}
-Title:new{name="Nevoota Bee", front="https://i.imgur.com/bBFNBzc.jpeg"}
+Card:new(Title,{name="Implacable", front="https://i.imgur.com/Y8uSW2V.jpeg", cost=4})
+Card:new(Title,{name="Nevoota Bee", front="https://i.imgur.com/bBFNBzc.jpeg", cost=5})
 
 --separatist
-Title:new{name="Beast of Burden", front="https://i.imgur.com/0dOnlMq.jpeg"}
-Title:new{name="Foreman's Labor", front="https://i.imgur.com/cfJ004t.jpeg"}
+Card:new(Title,{name="Beast of Burden", front="https://i.imgur.com/0dOnlMq.jpeg", cost=6})
+Card:new(Title,{name="Foreman's Labor", front="https://i.imgur.com/cfJ004t.jpeg", cost=5})
 
-Title:new{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg"}
-Title:new{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg"}
+Card:new(Title,{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg", cost=5})
+Card:new(Title,{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg", cost=2})

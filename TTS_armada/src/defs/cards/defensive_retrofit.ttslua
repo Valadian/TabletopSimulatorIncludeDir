@@ -1,18 +1,11 @@
 DefensiveRetrofit = {
-    type="DefensiveRetrofit"
+    type="DefensiveRetrofit",
     back = ""
 }
-function DefensiveRetrofit:new (o)
-    o = o or {}
-    setmetatable(o, DefensiveRetrofit)
-    DefensiveRetrofit.__index = DefensiveRetrofit
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
-DefensiveRetrofit:new{name="Advanced Projectors", front="https://i.imgur.com/fREeP77.jpg"}
-DefensiveRetrofit:new{name="Cluster Bombs", front="https://i.imgur.com/Ngqc1s9.jpg"}
-DefensiveRetrofit:new{name="Early Warning System", front="https://i.imgur.com/PBh5gdb.jpg"}
-DefensiveRetrofit:new{name="Electronic Countermeasures", front="https://i.imgur.com/LF2AEZT.jpg"}
-DefensiveRetrofit:new{name="Reactive Gunnery", front="https://i.imgur.com/rKp36un.jpg"}
-DefensiveRetrofit:new{name="Redundant Shields", front="https://i.imgur.com/3CmOh4B.jpg"}
-DefensiveRetrofit:new{name="Reinforced Blast Doors", front="https://i.imgur.com/OVWDAVK.jpg"}
+Card:new(DefensiveRetrofit,{name="Advanced Projectors", front="https://i.imgur.com/fREeP77.jpg", cost=6})
+Card:new(DefensiveRetrofit,{name="Cluster Bombs", front="https://i.imgur.com/Ngqc1s9.jpg", cost=5})
+Card:new(DefensiveRetrofit,{name="Early Warning System", front="https://i.imgur.com/PBh5gdb.jpg", cost=7})
+Card:new(DefensiveRetrofit,{name="Electronic Countermeasures", front="https://i.imgur.com/LF2AEZT.jpg", cost=7})
+Card:new(DefensiveRetrofit,{name="Reactive Gunnery", front="https://i.imgur.com/rKp36un.jpg", cost=4})
+Card:new(DefensiveRetrofit,{name="Redundant Shields", front="https://i.imgur.com/3CmOh4B.jpg", cost=8})
+Card:new(DefensiveRetrofit,{name="Reinforced Blast Doors", front="https://i.imgur.com/OVWDAVK.jpg", cost=5})

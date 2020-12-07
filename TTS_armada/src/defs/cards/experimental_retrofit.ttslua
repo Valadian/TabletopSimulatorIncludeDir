@@ -1,15 +1,8 @@
 ExperimentalRetrofit = {
-    type="ExperimentalRetrofit"
+    type="ExperimentalRetrofit",
     back = ""
 }
-function ExperimentalRetrofit:new (o)
-    o = o or {}
-    setmetatable(o, ExperimentalRetrofit)
-    ExperimentalRetrofit.__index = ExperimentalRetrofit
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
-ExperimentalRetrofit:new{name="G-8 Experimental Projector", front="https://i.imgur.com/DUzGkon.jpg"}
-ExperimentalRetrofit:new{name="G7-X Grav Well Projector", front="https://i.imgur.com/BaMEJzl.jpg"}
-ExperimentalRetrofit:new{name="Grav Shift Reroute", front="https://i.imgur.com/QipiGSD.jpg"}
-ExperimentalRetrofit:new{name="Targeting Scrambler", front="https://i.imgur.com/KoUrM8N.jpg"}
+Card:new(ExperimentalRetrofit,{name="G-8 Experimental Projector", front="https://i.imgur.com/DUzGkon.jpg", cost=8})
+Card:new(ExperimentalRetrofit,{name="G7-X Grav Well Projector", front="https://i.imgur.com/BaMEJzl.jpg", cost=2})
+Card:new(ExperimentalRetrofit,{name="Grav Shift Reroute", front="https://i.imgur.com/QipiGSD.jpg", cost=2})
+Card:new(ExperimentalRetrofit,{name="Targeting Scrambler", front="https://i.imgur.com/KoUrM8N.jpg", cost=5})

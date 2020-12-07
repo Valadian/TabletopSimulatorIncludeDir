@@ -1,4 +1,5 @@
-SHIPS["Consular-class Armed Cruiser"] = SmallShip:new{
+SmallShip:new{
+	name = "Consular-class Armed Cruiser",
     front = "https://i.imgur.com/CV9k4Fz.jpeg",
     back = "https://i.imgur.com/nzWUP25.jpg",
     mesh = "http://paste.ee/r/EVWCx",
@@ -6,9 +7,11 @@ SHIPS["Consular-class Armed Cruiser"] = SmallShip:new{
     ruler = "http://paste.ee/r/i9SWj",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
-    shields = {2,2,2,1}
+    shields = {2,2,2,1},
+    cost = 37
 }
-SHIPS["Consular-class Charger c70"] = SmallShip:new{
+SmallShip:new{
+	name = "Consular-class Charger c70",
     front = "https://i.imgur.com/CXHwzPR.jpeg",
     back = "https://i.imgur.com/vpvKfAO.jpeg",
     mesh = "http://paste.ee/r/EVWCx",
@@ -16,10 +19,12 @@ SHIPS["Consular-class Charger c70"] = SmallShip:new{
     ruler = "http://paste.ee/r/i9SWj",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
-    shields = {2,2,2,1}
+    shields = {2,2,2,1},
+    cost = 45
 }
 
-SHIPS["Acclamator I-class Assault Ship"] = MediumShip:new{
+MediumShip:new{
+	name = "Acclamator I-class Assault Ship",
     front = "https://i.imgur.com/6JbZwXG.jpeg",
     back = "https://i.imgur.com/T9fOJEE.jpg",
     mesh = "http://paste.ee/r/TUCP2",
@@ -27,9 +32,11 @@ SHIPS["Acclamator I-class Assault Ship"] = MediumShip:new{
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
-    shields = {4,2,2,2}
+    shields = {4,2,2,2},
+    cost = 66
 }
-SHIPS["Acclamator II-class Assault Ship"] = MediumShip:new{
+MediumShip:new{
+	name = "Acclamator II-class Assault Ship",
     front = "https://i.imgur.com/NhED6cA.jpg",
     back = "https://i.imgur.com/IpDPpzX.jpeg",
     mesh = "http://paste.ee/r/TUCP2",
@@ -37,5 +44,6 @@ SHIPS["Acclamator II-class Assault Ship"] = MediumShip:new{
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
-    shields = {4,2,2,2}
+    shields = {4,2,2,2},
+    cost = 71
 }

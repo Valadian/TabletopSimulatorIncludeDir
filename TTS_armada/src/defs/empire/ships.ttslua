@@ -1,222 +1,270 @@
 EMPIRE_SHIP = {
     back = "https://i.imgur.com/Ag3p9fo.png"
-})
-SHIPS["Gozanti-class Cruisers"] = SmallShip:new(EMPIRE_SHIP,{
+}
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Gozanti-class Cruisers",
     front = "https://i.imgur.com/MBkIeoQ.png",
     mesh = "http://paste.ee/r/a4Qg8",
     diffuse = "http://i.imgur.com/98SoFSS.png",
     ruler = "http://paste.ee/r/jbTlM",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_SCATTER, DEF_EVADE},
-    shields = {1,1,1,1}
+    shields = {1,1,1,1},
+    cost = 23
 })
-SHIPS["Gozanti-class Assault Carriers"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Gozanti-class Assault Carriers",
     front = "https://i.imgur.com/LMf2YI6.png",
     mesh = "http://paste.ee/r/a4Qg8",
     diffuse = "http://i.imgur.com/US2K0XY.png",
     ruler = "http://paste.ee/r/jbTlM",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_SCATTER, DEF_EVADE},
-    shields = {1,1,1,1}
+    shields = {1,1,1,1},
+    cost = 28
 })
-SHIPS["Raider I-class Corvette"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Raider I-class Corvette",
     front = "https://i.imgur.com/C5LKczU.png",
     mesh = "http://paste.ee/r/qsGM3",
     diffuse = "http://i.imgur.com/uO4qw7R.png",
     ruler = "http://paste.ee/r/JwnWk",
     maneuver = {{"II"},{"II","II"},{"-","I","I"},{"-","I","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_EVADE,DEF_BRACE},
-    shields = {2,2,2,2}
+    shields = {2,2,2,2},
+    cost = 44
 })
-SHIPS["Raider II-class Corvette"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Raider II-class Corvette",
     front = "https://i.imgur.com/10Tytpi.png",
     mesh = "http://paste.ee/r/qsGM3",
     diffuse = "http://i.imgur.com/9uZDh0o.png",
     ruler = "http://paste.ee/r/JwnWk",
     maneuver = {{"II"},{"II","II"},{"-","I","I"},{"-","I","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_EVADE,DEF_BRACE},
-    shields = {2,2,2,2}
+    shields = {2,2,2,2},
+    cost = 48
 })
-SHIPS["Gladiator I-class Star Destroyer"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Gladiator I-class Star Destroyer",
     front = "https://i.imgur.com/SqGqZD2.png",
     mesh = "http://paste.ee/r/2IdyR",
     diffuse = "http://i.imgur.com/XWOtLVv.jpg",
     ruler = "http://paste.ee/r/PnVAt",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
-    shields = {3,2,2,1}
+    shields = {3,2,2,1},
+    cost = 56
 })
-SHIPS["Gladiator II-class Star Destroyer"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Gladiator II-class Star Destroyer",
     front = "https://i.imgur.com/UkX25YU.png",
     mesh = "http://paste.ee/r/2IdyR",
     diffuse = "http://i.imgur.com/XAMg2ke.jpg",
     ruler = "http://paste.ee/r/PnVAt",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
-    shields = {3,2,2,1}
+    shields = {3,2,2,1},
+    cost = 62
 })
-SHIPS["Arquitens-class Light Cruiser"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Arquitens-class Light Cruiser",
     front = "https://i.imgur.com/cRimUl0.png",
     mesh = "http://paste.ee/p/i5otm",
     diffuse = "http://i.imgur.com/QAy7MNw.png",
     ruler = "http://paste.ee/p/wZK5w",
     maneuver = {{"II"},{"-","II"},{"-","-","II"}},
     defense_tokens = {DEF_EVADE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {2,2,2,2}
+    shields = {2,2,2,2},
+    cost = 54
 })
-SHIPS["Arquitens-class Command Cruiser"] = SmallShip:new(EMPIRE_SHIP,{
+SmallShip:new(EMPIRE_SHIP,{
+	name = "Arquitens-class Command Cruiser",
     front = "https://i.imgur.com/gMUjnfM.png",
     mesh = "http://paste.ee/p/i5otm",
     diffuse = "http://i.imgur.com/yxQ3F2V.png",
     ruler = "http://paste.ee/p/wZK5w",
     maneuver = {{"II"},{"-","II"},{"-","-","II"}},
     defense_tokens = {DEF_EVADE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {2,2,2,2}
+    shields = {2,2,2,2},
+    cost = 59
     --maneuver = "II|-,II|-,-,II"
 })
-SHIPS["Victory I-class Star Destroyer"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Victory I-class Star Destroyer",
     front = "https://i.imgur.com/qcN5LEl.png",
     mesh = "http://paste.ee/r/pPCJ8",
     diffuse = "http://i.imgur.com/b7CDloK.png",
     ruler = "http://paste.ee/r/f1IHk",
     maneuver = {{"I"},{"-","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT},
-    shields = {3,3,3,1}
+    shields = {3,3,3,1},
+    cost = 73
 })
-SHIPS["Victory II-class Star Destroyer"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Victory II-class Star Destroyer",
     front = "https://i.imgur.com/W8kLKpj.png",
     mesh = "http://paste.ee/r/pPCJ8",
     diffuse = "http://i.imgur.com/BB2Rflo.png",
     ruler = "http://paste.ee/r/f1IHk",
     maneuver = {{"I"},{"-","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT},
-    shields = {3,3,3,1}
+    shields = {3,3,3,1},
+    cost = 85
 })
-SHIPS["Interdictor Suppression Refit"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Interdictor Suppression Refit",
     front = "https://i.imgur.com/kB3R9ds.png",
     mesh = "http://paste.ee/r/roSj5",
     diffuse = "http://i.imgur.com/OMoTh9y.png",
     ruler = "http://paste.ee/r/cqUDP",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {3,2,2,2}
+    shields = {3,2,2,2},
+    cost = 90
 })
-SHIPS["Interdictor Combat Refit"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Interdictor Combat Refit",
     front = "https://i.imgur.com/lMiL8Df.png",
     mesh = "http://paste.ee/r/roSj5",
     diffuse = "http://i.imgur.com/0xIlJlb.png",
     ruler = "http://paste.ee/r/cqUDP",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {3,2,2,2}
+    shields = {3,2,2,2},
+    cost = 93
 })
-SHIPS["Quasar Fire I-class Cruiser-Carrier"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Quasar Fire I-class Cruiser-Carrier",
     front = "https://i.imgur.com/7XMsdsM.png",
     mesh = "http://paste.ee/p/aoLPn",
     diffuse = "http://i.imgur.com/WyRNlCF.png",
     ruler = "http://paste.ee/p/wOQfL",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT},
-    shields = {2,2,2,1}
+    shields = {2,2,2,1},
+    cost = 54
 })
-SHIPS["Quasar Fire II-class Cruiser-Carrier"] = MediumShip:new(EMPIRE_SHIP,{
+MediumShip:new(EMPIRE_SHIP,{
+	name = "Quasar Fire II-class Cruiser-Carrier",
     front = "https://i.imgur.com/lO6OBYS.png",
     mesh = "http://paste.ee/p/aoLPn",
     diffuse = "http://i.imgur.com/xfMXMUr.png",
     ruler = "http://paste.ee/p/wOQfL",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT},
-    shields = {2,2,2,1}
-}
+    shields = {2,2,2,1},
+    cost = 61
+})
 
-SHIPS["Imperial I-class Star Destroyer"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Imperial I-class Star Destroyer",
     front = "https://i.imgur.com/Gg2bqJM.png",
     mesh = "http://paste.ee/r/jrPtR",
     diffuse = "http://i.imgur.com/FrFBut6.png",
     ruler = "http://paste.ee/r/6SQoL",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {4,3,3,2}
+    shields = {4,3,3,2},
+    cost = 110
 })
-SHIPS["Imperial Star Destroyer Kuat Refit"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Imperial Star Destroyer Kuat Refit",
     front = "https://i.imgur.com/443vU9i.png",
     mesh = "http://paste.ee/r/jrPtR",
     diffuse = "http://i.imgur.com/qoeLpbp.png",
     ruler = "http://paste.ee/r/6SQoL",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {4,3,3,2}
+    shields = {4,3,3,2},
+    cost = 112
 })
-SHIPS["Imperial II-class Star Destroyer"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Imperial II-class Star Destroyer",
     front = "https://i.imgur.com/wCgFDmm.png",
     mesh = "http://paste.ee/r/jrPtR",
     diffuse = "http://i.imgur.com/usykAgi.png",
     ruler = "http://paste.ee/r/6SQoL",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {4,3,3,2}
+    shields = {4,3,3,2},
+    cost = 120
 })
-SHIPS["Imperial Star Destroyer Cymoon 1 Refit"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Imperial Star Destroyer Cymoon 1 Refit",
     front = "https://i.imgur.com/6hVaf98.png",
     mesh = "http://paste.ee/r/jrPtR",
     diffuse = "http://i.imgur.com/vzypdB4.png",
     ruler = "http://paste.ee/r/6SQoL",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN},
-    shields = {4,3,3,2}
-}
+    shields = {4,3,3,2},
+    cost = 112
+})
 
-SHIPS["Star Dreadnought Command Prototype"] = HugeShip:new(EMPIRE_SHIP,{
+HugeShip:new(EMPIRE_SHIP,{
+	name = "Star Dreadnought Command Prototype",
     front = "https://i.imgur.com/5oilBpo.png",
     mesh = "http://paste.ee/r/aDtaX",
     diffuse = "http://i.imgur.com/cki4QP5.png",
     ruler = "http://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {6,3,3,2,3,3}
+    shields = {6,3,3,2,3,3},
+    cost = 220
 })
-SHIPS["Star Dreadnought Assault Prototype"] = HugeShip:new(EMPIRE_SHIP,{
+HugeShip:new(EMPIRE_SHIP,{
+	name = "Star Dreadnought Assault Prototype",
     front = "https://i.imgur.com/QhAu7ta.png",
     mesh = "http://paste.ee/r/aDtaX",
     diffuse = "http://i.imgur.com/vtVwZYj.jpg",
     ruler = "http://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {6,3,3,2,3,3}
+    shields = {6,3,3,2,3,3},
+    cost = 250
 })
-SHIPS["Executor I-class Star Dreadnought"] = HugeShip:new(EMPIRE_SHIP,{
+HugeShip:new(EMPIRE_SHIP,{
+	name = "Executor I-class Star Dreadnought",
     front = "https://i.imgur.com/HQwM67x.png",
     mesh = "http://paste.ee/r/aDtaX",
     diffuse = "http://i.imgur.com/DssvgWd.jpg",
     ruler = "http://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {6,5,5,3,5,5}
+    shields = {6,5,5,3,5,5},
+    cost = 381
 })
-SHIPS["Executor II-class Star Dreadnought"] = HugeShip:new(EMPIRE_SHIP,{
+HugeShip:new(EMPIRE_SHIP,{
+	name = "Executor II-class Star Dreadnought",
     front = "https://i.imgur.com/X0PsSTN.png",
     mesh = "http://paste.ee/r/aDtaX",
     diffuse = "http://i.imgur.com/CN2Oefq.jpg",
     ruler = "http://paste.ee/p/xLzvA",
     maneuver = {{"-"},{"-","-"}},
     defense_tokens = {DEF_BRACE,DEF_BRACE,DEF_REDIRECT,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
-    shields = {6,5,5,3,5,5}
+    shields = {6,5,5,3,5,5},
+    cost = 411
 })
-SHIPS["Onager-class Testbed"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Onager-class Testbed",
     front = "https://i.imgur.com/EAv7Koo.png",
     mesh = "http://paste.ee/p/Ul9r9",
     diffuse = "http://i.imgur.com/4KJskDx.jpg",
     ruler = "http://paste.ee/p/OS2w9",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
-    shields = {5,2,2,1}
+    shields = {5,2,2,1},
+    cost = 96
 })
-SHIPS["Onager-class Star Destroyer"] = LargeShip:new(EMPIRE_SHIP,{
+LargeShip:new(EMPIRE_SHIP,{
+	name = "Onager-class Star Destroyer",
     front = "https://i.imgur.com/eqHrxL7.png",
     mesh = "http://paste.ee/p/Ul9r9",
     diffuse = "http://i.imgur.com/xbMdMb0.jpg",
     ruler = "http://paste.ee/p/OS2w9",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
-    shields = {5,2,2,1}
-}
+    shields = {5,2,2,1},
+    cost = 110
+})

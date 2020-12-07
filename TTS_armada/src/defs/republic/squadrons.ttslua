@@ -8,22 +8,28 @@ ship = {
     move = 3,
     defense_tokens = {}}
 -- Escort, Swarm
-SHIPS["V-19 Torrent Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
-    front = "https://i.imgur.com/aiyBkpn.jpeg"
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "V-19 Torrent Squadron",
+    front = "https://i.imgur.com/aiyBkpn.jpeg",
+    cost = 12
 })
 
 ship.diffuse = "http://i.imgur.com/OTeOC0F.jpeg"
 
 -- Escort, Swarm
-SHIPS['\"Axe\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = '\"Axe\"',
     front = "https://i.imgur.com/h9d4P44.jpeg",
-    defense_tokens = {DEF_BRACE,DEF_EVADE}
+    defense_tokens = {DEF_BRACE,DEF_EVADE},
+    cost = 17
 })
 
 -- Escort, Swarm
-SHIPS['\"Kickback\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = '\"Kickback\"',
     front = "https://i.imgur.com/crnCDLq.jpeg",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 16
 })
 
 ship = {
@@ -33,37 +39,47 @@ ship = {
     move = 4,
     defense_tokens = {}}
 -- Adept, Counter, Dodge
-SHIPS["Delta-7 Aethersprite Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
-    front = "https://i.imgur.com/huDC10s.jpeg"
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Delta-7 Aethersprite Squadron",
+    front = "https://i.imgur.com/huDC10s.jpeg",
+    cost = 17
 })
 -- ship.diffuse = ""
 -- Adept, Counter, Grit
-SHIPS["Ahsoka Tano"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Ahsoka Tano",
     front = "https://i.imgur.com/W0HDKSn.jpg",
     mesh = "http://paste.ee/r/AFr6l",
     diffuse = "http://i.imgur.com/9TnSFSZ.jpg",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 23
 })
 -- Adept, Counter
-SHIPS["Luminara Unduli"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Luminara Unduli",
     front = "https://i.imgur.com/hjjJXia.jpeg",
     mesh = "http://paste.ee/r/kfzQY",
     diffuse = "http://i.imgur.com/E6gsfFM.jpg",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 23
 })
 -- Adept, Counter, Intel
-SHIPS["Kit Fisto"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Kit Fisto",
     front = "https://i.imgur.com/gpGELBf.jpeg",
     mesh = "http://paste.ee/r/eQa85",
     diffuse = "http://i.imgur.com/uS5J8ju.jpg",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 26
 })
 -- Adept, Counter
-SHIPS["Plo Koon"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Plo Koon",
     front = "https://i.imgur.com/iqalHXV.jpeg",
     mesh = "http://paste.ee/r/kfzQY",
     diffuse = "http://i.imgur.com/HWWjWBB.jpg",
-    defense_tokens = {DEF_BRACE,DEF_SCATTER}
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 24
 })
 
 ship = {
@@ -73,15 +89,19 @@ ship = {
     move = 3,
     defense_tokens = {}}
 -- Bomber, Heavy
-SHIPS["BTL-B Y-Wing Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
-    front = "https://i.imgur.com/qvyTtNf.jpeg"
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "BTL-B Y-Wing Squadron",
+    front = "https://i.imgur.com/qvyTtNf.jpeg",
+    cost = 10
 })
 -- Adept, Bomber, Heavy
-SHIPS["Anakin Skywalker"] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Anakin Skywalker",
     front = "https://i.imgur.com/zsDolt7.jpeg",
     diffuse = "http://i.imgur.com/B8UeUf1.jpg",
     mesh = "http://paste.ee/r/QVTLs",
-    defense_tokens = {DEF_BRACE,DEF_BRACE}
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 19
 })
 
 ship = {
@@ -91,12 +111,16 @@ ship = {
     move = 2,
     defense_tokens = {}}
 -- Bomber, Counter
-SHIPS["ARC-170 Starfighter Squadron"] = Squadron:new(ship, REPUBLIC_SQUAD, {
-    front = "https://i.imgur.com/ggkaXOF.jpeg"
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "ARC-170 Starfighter Squadron",
+    front = "https://i.imgur.com/ggkaXOF.jpeg",
+    cost = 15
 })
 -- Bomber, Counter
-SHIPS['\"Odd Ball\"'] = Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = '\"Odd Ball\"',
     front = "https://i.imgur.com/JVuBlg2.jpeg",
     diffuse = "http://i.imgur.com/eUN2Zsl.jpeg",
-    defense_tokens = {DEF_BRACE,DEF_EVADE}
+    defense_tokens = {DEF_BRACE,DEF_EVADE},
+    cost = 23
 })

@@ -1,19 +1,12 @@
 Ordnance = {
-    type="Ordnance"
+    type="Ordnance",
     back = ""
 }
-function Ordnance:new (o)
-    o = o or {}
-    setmetatable(o, Ordnance)
-    Ordnance.__index = Ordnance
-    CARDS[o.Name.." ("..o.type..")"] = o
-    return o
-end
-Ordnance:new{name="Assault Concussion Missiles", front="https://i.imgur.com/iuWMfEx.jpg"}
-Ordnance:new{name="Assault Proton Torpedoes", front="https://i.imgur.com/ZHMQWZr.jpg"}
-Ordnance:new{name="Expanded Launchers", front="https://i.imgur.com/PrpF5Sh.jpg"}
-Ordnance:new{name="External Racks", front="https://i.imgur.com/0nzMm68.jpg"}
-Ordnance:new{name="Flechette Torpedoes", front="https://i.imgur.com/ENBODz0.jpg"}
-Ordnance:new{name="Ordnance Pods", front="https://i.imgur.com/bxshsaj.jpg"}
-Ordnance:new{name="Rapid Reload", front="https://i.imgur.com/gX8DdhB.jpg"}
-Ordnance:new{name="Wide-Area Barrage", front="https://i.imgur.com/HA96Xmz.jpg"}
+Card:new(Ordnance,{name="Assault Concussion Missiles", front="https://i.imgur.com/iuWMfEx.jpg", cost=5})
+Card:new(Ordnance,{name="Assault Proton Torpedoes", front="https://i.imgur.com/ZHMQWZr.jpg", cost=4})
+Card:new(Ordnance,{name="Expanded Launchers", front="https://i.imgur.com/PrpF5Sh.jpg", cost=13})
+Card:new(Ordnance,{name="External Racks", front="https://i.imgur.com/0nzMm68.jpg", cost=4})
+Card:new(Ordnance,{name="Flechette Torpedoes", front="https://i.imgur.com/ENBODz0.jpg", cost=3})
+Card:new(Ordnance,{name="Ordnance Pods", front="https://i.imgur.com/bxshsaj.jpg", cost=3})
+Card:new(Ordnance,{name="Rapid Reload", front="https://i.imgur.com/gX8DdhB.jpg", cost=8})
+Card:new(Ordnance,{name="Wide-Area Barrage", front="https://i.imgur.com/HA96Xmz.jpg", cost=2})
