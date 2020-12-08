@@ -25,113 +25,8 @@ function update()
         end
     end
 end
-SmallShip = {
-    collider = "http://paste.ee/r/eDbf1",
-    convex = true,
-    type = 1,
-    material = 3,
-    maneuver = {},
-    defense_tokens = {},
-    shields = {1,1,1,1},
-    cost = 0,
-    name = "",
-    front = "",
-    back = ""
-}
-function SmallShip:new (o,...)
-    o = o or {}
-    o = table.copy(o)
-    if ... ~= nil then
-        for i,tab in ipairs({...}) do
-            for k, v in pairs(tab) do
-                o[k] = v
-            end
-        end
-    end
-    setmetatable(o, SmallShip)
-    SmallShip.__index = SmallShip
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_noclass = string.gsub(key, "%-class","")
-    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
-    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
-    SHIPS[key] = o
-    SHIPS[key_noclass] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_noclass] = o
-    return o
-end
-MediumShip = {
-    collider = "http://paste.ee/r/6LYTT",
-    convex = true,
-    type = 1,
-    material = 3,
-    maneuver = {},
-    defense_tokens = {},
-    shields = {1,1,1,1},
-    cost = 0,
-    name = "",
-    front = "",
-    back = ""
-}
-function MediumShip:new (o,...)
-    o = o or {}
-    o = table.copy(o)
-    if ... ~= nil then
-        for i,tab in ipairs({...}) do
-            for k, v in pairs(tab) do
-                o[k] = v
-            end
-        end
-    end
-    setmetatable(o, MediumShip)
-    MediumShip.__index = MediumShip
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_noclass = string.gsub(key, "%-class","")
-    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
-    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
-    SHIPS[key] = o
-    SHIPS[key_noclass] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_noclass] = o
-    return o
-end
-LargeShip = {
-    collider = "http://paste.ee/r/a7mfW",
-    convex = true,
-    type = 1,
-    material = 3,
-    maneuver = {},
-    defense_tokens = {},
-    shields = {1,1,1,1},
-    cost = 0,
-    name = "",
-    front = "",
-    back = ""
-}
-function LargeShip:new (o,...)
-    o = o or {}
-    o = table.copy(o)
-    if ... ~= nil then
-        for i,tab in ipairs({...}) do
-            for k, v in pairs(tab) do
-                o[k] = v
-            end
-        end
-    end
-    setmetatable(o, LargeShip)
-    LargeShip.__index = LargeShip
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_noclass = string.gsub(key, "%-class","")
-    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
-    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
-    SHIPS[key] = o
-    SHIPS[key_noclass] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_noclass] = o
-    return o
-end
-HugeShip = {
-    collider = "http://paste.ee/r/ClCL3",
+Ship = {
+    collider = "",
     convex = true,
     type = 1,
     material = 3,
@@ -143,7 +38,7 @@ HugeShip = {
     front = "",
     back = ""
 }
-function HugeShip:new (o,...)
+function Ship:new (o,...)
     o = o or {}
     o = table.copy(o)
     if ... ~= nil then
@@ -153,18 +48,23 @@ function HugeShip:new (o,...)
             end
         end
     end
-    setmetatable(o, HugeShip)
-    HugeShip.__index = HugeShip
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_noclass = string.gsub(key, "%-class","")
-    local key_nocost = string.gsub(key,"%s%(%d+%)$","")
-    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
-    SHIPS[key] = o
-    SHIPS[key_noclass] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_noclass] = o
+    setmetatable(o, Ship)
+    Ship.__index = Ship
+    CacheShip(o)
     return o
 end
+SmallShip = {
+    collider = "http://paste.ee/r/eDbf1"
+}
+MediumShip = {
+    collider = "http://paste.ee/r/6LYTT"
+}
+LargeShip = {
+    collider = "http://paste.ee/r/a7mfW"
+}
+HugeShip = {
+    collider = "http://paste.ee/r/ClCL3"
+}
 Squadron = {
     collider = "http://paste.ee/r/nAMCQ",
     convex = false,
@@ -198,18 +98,25 @@ function Squadron:new (o, ...)
     -- if o.cost == nil then
     --     printToAll(o.name.." has no cost",{1,0,0})
     -- end
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_noclass = string.gsub(key, "%-class","")
-    local key_nocost = string.lower(o.name)
-    local key_nocost_noclass = string.gsub(key_nocost, "%-class","")
-    SHIPS[key] = o
-    SHIPS[key_noclass] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_noclass] = o
+    CacheShip(o)
     -- if key~=key_noclass then
     --     printToAll(key.." ~= "..key_noclass,{1,1,0})
     -- end
     return o
+end
+function CacheShip(o)
+    local key = string.lower(o.name.." ("..o.cost..")")
+    local key_short = string.gsub(key, "%-class","")
+    local key_short = string.gsub(key_short, " corvette","")
+    local key_short = string.gsub(key_short, " star destroyer","")
+    local key_nocost = string.lower(o.name)
+    local key_nocost_short = string.gsub(key_nocost, "%-class","")
+    local key_nocost_short = string.gsub(key_nocost_short, " corvette","")
+    local key_nocost_short = string.gsub(key_nocost_short, " star destroyer","")
+    SHIPS[key] = o
+    SHIPS[key_short] = o
+    SHIPS[key_nocost] = o
+    SHIPS[key_nocost_short] = o
 end
 Card = {
     cost = 0,
@@ -232,7 +139,9 @@ function Card:new (o, ...)
     end
     setmetatable(o, Card)
     Card.__index = Card
-    CARDS[string.lower(o.name.." ("..o.cost..")")] = o
+    if o.cost~=nil then
+        CARDS[string.lower(o.name.." ("..o.cost..")")] = o
+    end
     CARDS[string.lower(o.name)] = o -- this can of overlap issues with cards that share names!!!
     return o
 end
@@ -366,6 +275,8 @@ function onload()
 #include defs/cards/turbolaser
 #include defs/cards/weapons_team_and_offensive_retrofit
 #include defs/cards/weapons_team
+
+#include defs/cards/objectives
     setRulerMeshes()
     drawListSpawnerButtons()
 end
@@ -417,13 +328,27 @@ function replace(input, pattern, replace)
     return output
 end
 function Action_SpawnListSpawner(listSpawner)
+    local count = 0
+    for k,v in pairs(SHIPS) do
+        count = count+1
+    end
+    print("#SHIPS: "..tostring(count))
+    print("tie fighter squadron: "..tostring(SHIPS["tie fighter squadron"]~=nil))
+    print("TIE Fighter Squadron: "..tostring(SHIPS["TIE Fighter Squadron"]~=nil))
+    print("tie advanced squadron: "..tostring(SHIPS["tie advanced squadron"]~=nil))
+    print("TIE Advanced Squadron: "..tostring(SHIPS["TIE Advanced Squadron"]~=nil))
     local list = listSpawner.getVar("list")
     -- print(#list)
     lines = string:split(list, "\n")
     -- print(#lines)
+    x = 6
+    i_y = 0
+    max_i_y = 3
+    y_offset = 3.5
+    x_offset = 2.5
     for _,line in ipairs(lines) do
         if not line:starts "=" then
-            print("Parsing line: '"..line.."'")
+            -- print("Parsing line: '"..line.."'")
             line = string.strip(line)
             count = string.match(line, "^•%s+(%d+)%s+x%s+")
             if count==nil then
@@ -433,10 +358,15 @@ function Action_SpawnListSpawner(listSpawner)
                 print("Found count: "..tostring(count))
             end
             -- need to handle missing " Star Destroyer"
+            line = replace(line, " Objective:",":")
+            line = replace(line, "Assault: ","")
+            line = replace(line, "Defense: ","")
+            line = replace(line, "Navigation: ","")
+            line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
             line = replace(line, "[%s ]+%(com%)","")
             line = replace(line, "•%s+%d+%s+x%s+","")
             line = replace(line,"^%d+[%s ]+","")
-            line = replace(line, "^[•%-][%s ]+","") -- THAT IS NOT A NORMAL SPACE!
+            line = replace(line, "^[•%-·][%s ]+","") -- THAT IS NOT A NORMAL SPACE!
             line = replace(line,"^%-%s+","")
             line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)")
             line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","")
@@ -456,20 +386,52 @@ function Action_SpawnListSpawner(listSpawner)
             line_nocost_no_s = string.gsub(line_nocost,"s$","")
             if line ~="" then
                 if CARDS[string.lower(line)]~=nil then
+                    if i_y==0 then
+                        x = x+x_offset
+                    end
+                    spawnCard(CARDS[string.lower(line)], vector.add(listSpawner.getPosition(),{x,0,i_y*y_offset}),listSpawner.getRotation())
+                    i_y = math.fmod(i_y+1,max_i_y)
+                    -- if y==0 then
+                    --     x=x-2
+                    -- end
                     printToAll("Spawning Card: "..line,{0,1,1})
                 elseif CARDS[string.lower(line_nocost)]~=nil then
+                    if i_y==0 then
+                        x = x+x_offset
+                    end
+                    spawnCard(CARDS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,i_y*y_offset}),listSpawner.getRotation())
+                    i_y = math.fmod(i_y+1,max_i_y)
+                    -- if y==0 then
+                    --     x=x-2
+                    -- end
                     printToAll("Spawning Card: "..line,{0,1,1})
                 elseif SHIPS[string.lower(line_nocost)]~=nil then
                     if count~=nil then
+                        x = x+4
+                        i_y = 0
+                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
                         printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
+                        x=x+2
                     else
                         printToAll("Spawning Ship: "..line,{0,1,0})
+                        x = x+4
+                        i_y = 0
+                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
+                        x=x+2
                     end
                 elseif SHIPS[string.lower(line_nocost_no_s)]~=nil then
                     if count~=nil then
+                        x = x+4
+                        i_y = 0
+                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
                         printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
+                        x=x+2
                     else
+                        x = x+4
+                        i_y = 0
+                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
                         printToAll("Spawning Ship: "..line,{0,1,0})
+                        x=x+2
                     end
                 else
                     printToAll("Unfound item: '"..line.."'|'"..line_nocost.."'",{1,0,0})
@@ -478,11 +440,54 @@ function Action_SpawnListSpawner(listSpawner)
         end
     end
 end
+function spawnCard(def, pos, rot) --TODO: count
+    -- scale = {1.37,1,1.37}
+    scale = {1,1,1}
+    if def.maneuver~=nil then
+        scale = {1.88,1,1.88}
+    end
+    local jsonRepresentation = {
+      Name = "CardCustom",
+      Transform = {
+        posX = pos[1],
+        posY = pos[2],
+        posZ = pos[3],
+        rotX = rot[1],
+        rotY = rot[2],
+        rotZ = rot[3],
+        scaleX = scale[1],
+        scaleY = scale[2],
+        scaleZ = scale[3]
+      },
+      Nickname = def.name.." ("..def.cost..")",
+      Hands = false,
+      CardID = 2111,
+      CustomDeck = {
+        ["21"] = {
+          FaceURL = def.front,
+          BackURL = def.back,
+          NumWidth = 1,
+          NumHeight = 1,
+          BackIsHidden = true,
+          UniqueBack = false,
+          Type = 0
+        }
+      }
+    }
+    spawnObjectJSON({
+        json = JSON.encode(jsonRepresentation),
+        callback_function = setCardDescriptionToSpawn
+    })
+end
+function setCardDescriptionToSpawn(card)
+    card.setDescription("spawn")
+end
 function spawnShip(name,pos,count,rotation)
     local ship_def = SHIPS[string.lower(name)]
     spawnDefinition(ship_def,name,pos,count,rotation)
 end
-token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
+-- token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
+token_offsets = {{-0.86,0,6.64},{0.86,0,6.64},{-0.86,0,7.94},{0.86,0,7.94},{0.86,0,9.24},{0.86,0,9.24}}
 function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --local ship_def = SHIPS[name]
     if ship_def~=nil then
@@ -496,7 +501,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = {pos[1],4+i,pos[3]}
+            obj_parameters.position = {pos[1],4+i,pos[3]+12} --TODO: FIX OFFSET of +12
             obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
             local ship = spawnObject(obj_parameters)
             local custom = {}

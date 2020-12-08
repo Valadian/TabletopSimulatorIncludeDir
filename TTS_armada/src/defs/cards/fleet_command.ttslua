@@ -1,6 +1,6 @@
 FleetCommand = {
     type="FleetCommand",
-    back = ""
+    back = "https://i.imgur.com/etN596C.png" --TODO: Fix this less awful image
 }
 Card:new(FleetCommand,{name="All Fighters, Follow Me!", front="https://i.imgur.com/pRqJy8Z.jpg", cost=5})
 Card:new(FleetCommand,{name="Entrapment Formation!", front="https://i.imgur.com/7ipOGiT.jpg", cost=5})

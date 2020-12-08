@@ -1,4 +1,4 @@
-SmallShip:new{
+Ship:new(SmallShip,{
 	name = "Consular-class Armed Cruiser",
     front = "https://i.imgur.com/CV9k4Fz.jpeg",
     back = "https://i.imgur.com/nzWUP25.jpg",
@@ -9,8 +9,8 @@ SmallShip:new{
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,2,2,1},
     cost = 37
-}
-SmallShip:new{
+})
+Ship:new(SmallShip,{
 	name = "Consular-class Charger c70",
     front = "https://i.imgur.com/CXHwzPR.jpeg",
     back = "https://i.imgur.com/vpvKfAO.jpeg",
@@ -21,9 +21,9 @@ SmallShip:new{
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,2,2,1},
     cost = 45
-}
+})
 
-MediumShip:new{
+Ship:new(MediumShip,{
 	name = "Acclamator I-class Assault Ship",
     front = "https://i.imgur.com/6JbZwXG.jpeg",
     back = "https://i.imgur.com/T9fOJEE.jpg",
@@ -34,8 +34,8 @@ MediumShip:new{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
     cost = 66
-}
-MediumShip:new{
+})
+Ship:new(MediumShip,{
 	name = "Acclamator II-class Assault Ship",
     front = "https://i.imgur.com/NhED6cA.jpg",
     back = "https://i.imgur.com/IpDPpzX.jpeg",
@@ -46,4 +46,4 @@ MediumShip:new{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
     cost = 71
-}
+})

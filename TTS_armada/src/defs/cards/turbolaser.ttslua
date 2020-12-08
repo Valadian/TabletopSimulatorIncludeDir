@@ -1,6 +1,6 @@
 Turbolaser = {
     type="Turbolaser",
-    back = ""
+    back = "https://i.imgur.com/YwrHjHG.png"
 }
 --Republic/Separatist
 Card:new(Turbolaser,{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg", cost=8}) --modification)

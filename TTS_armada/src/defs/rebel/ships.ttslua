@@ -1,7 +1,7 @@
 REBEL_SHIP = {
     back = "https://i.imgur.com/vUaQViH.png"
 }
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "GR-75 Medium Transports",
     front = "https://i.imgur.com/vMgbQB3.png",
     mesh = "http://paste.ee/p/XZLIh",
@@ -12,7 +12,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {1,1,1,1},
     cost = 18
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "GR-75 Combat Retrofits",
     front = "https://i.imgur.com/GmEEfVA.png",
     mesh = "http://paste.ee/p/XZLIh",
@@ -23,7 +23,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {1,1,1,1},
     cost = 24
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "CR90 Corvette A",
     front = "https://i.imgur.com/bobtrD0.png",
     mesh = "http://paste.ee/r/ciL22",
@@ -34,7 +34,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {2,2,2,1},
     cost = 44
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "CR90 Corvette B",
     front = "https://i.imgur.com/ff7qkS5.png",
     mesh = "http://paste.ee/r/ciL22",
@@ -45,7 +45,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {2,2,2,1},
     cost = 39
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Nebulon-B Support Refit",
     front = "https://i.imgur.com/Htpwn5Q.png",
     mesh = "http://paste.ee/r/5jlFC",
@@ -56,7 +56,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {3,1,1,2},
     cost = 51
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Nebulon-B Escort Frigate",
     front = "https://i.imgur.com/hnEKY1U.png",
     mesh = "http://paste.ee/r/5jlFC",
@@ -67,7 +67,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {3,1,1,2},
     cost = 57
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "MC30c Scout Frigate",
     front = "https://i.imgur.com/L3532U9.png",
     mesh = "http://paste.ee/r/DGrIr",
@@ -78,7 +78,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {3,3,3,2},
     cost = 69
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "MC30c Torpedo Frigate",
     front = "https://i.imgur.com/RG0ttdp.png",
     mesh = "http://paste.ee/r/DGrIr",
@@ -89,7 +89,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {3,3,3,2},
     cost = 63
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Modified Pelta-class Command Ship",
     front = "https://i.imgur.com/x6gMgaX.png",
     mesh = "http://paste.ee/r/GpRDE",
@@ -100,7 +100,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {3,2,2,1},
     cost = 60
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Modified Pelta-class Assault Ship",
     front = "https://i.imgur.com/fw4TbCR.png",
     mesh = "http://paste.ee/r/GpRDE",
@@ -112,7 +112,7 @@ SmallShip:new(REBEL_SHIP,{
     cost = 56
 })
 
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Hammerhead Scout Corvette",
     front = "https://i.imgur.com/QcTmlXq.png",
     mesh = "http://paste.ee/r/jI2Qo",
@@ -123,7 +123,7 @@ SmallShip:new(REBEL_SHIP,{
     shields = {2,1,1,1},
     cost = 41
 })
-SmallShip:new(REBEL_SHIP,{
+Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Hammerhead Torpedo Corvette",
     front = "https://i.imgur.com/h8DWzpu.png",
     mesh = "http://paste.ee/r/jI2Qo",
@@ -135,7 +135,7 @@ SmallShip:new(REBEL_SHIP,{
     cost = 36
 })
 
-MediumShip:new(REBEL_SHIP,{
+Ship:new(MediumShip,REBEL_SHIP,{
 	name = "Assault Frigate Mark II A",
     front = "https://i.imgur.com/XXIO5qw.png",
     mesh = "http://paste.ee/r/zNWBM",
@@ -146,7 +146,7 @@ MediumShip:new(REBEL_SHIP,{
     shields = {4,3,3,2},
     cost = 81
 })
-MediumShip:new(REBEL_SHIP,{
+Ship:new(MediumShip,REBEL_SHIP,{
 	name = "Assault Frigate Mark II B",
     front = "https://i.imgur.com/LsxALho.png",
     mesh = "http://paste.ee/r/zNWBM",
@@ -157,7 +157,7 @@ MediumShip:new(REBEL_SHIP,{
     shields = {4,3,3,2},
     cost = 72
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Command Cruiser",
     front = "https://i.imgur.com/zJfyMXV.png",
     mesh = "http://paste.ee/r/am8JC",
@@ -168,7 +168,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {4,4,4,3},
     cost = 106
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Assault Cruiser",
     front = "https://i.imgur.com/vC6SfGR.png",
     mesh = "http://paste.ee/r/am8JC",
@@ -179,7 +179,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {4,4,4,3},
     cost = 114
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Star Cruiser",
     front = "https://i.imgur.com/bEDTEFP.png",
     mesh = "http://paste.ee/r/eEzbI",
@@ -190,7 +190,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {5,2,2,2},
     cost = 96
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Battle Cruiser",
     front = "https://i.imgur.com/Xij4Ufr.png",
     mesh = "http://paste.ee/r/eEzbI",
@@ -201,7 +201,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {5,2,2,2},
     cost = 103
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC75 Ordnance Cruiser",
     front = "https://i.imgur.com/L9piyH4.png",
     mesh = "http://paste.ee/r/tdeQQ",
@@ -212,7 +212,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {4,3,3,3},
     cost = 100
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC75 Armored Cruiser",
     front = "https://i.imgur.com/sLecO5b.png",
     mesh = "http://paste.ee/r/tdeQQ",
@@ -223,7 +223,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {4,3,3,3},
     cost = 104
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "Starhawk-class Battleship Mark I",
     front = "https://i.imgur.com/xJIm5pQ.png",
     mesh = "http://paste.ee/p/70TGL",
@@ -234,7 +234,7 @@ LargeShip:new(REBEL_SHIP,{
     shields = {6,4,4,2},
     cost = 140
 })
-LargeShip:new(REBEL_SHIP,{
+Ship:new(LargeShip,REBEL_SHIP,{
 	name = "Starhawk-class Battleship Mark II",
     front = "https://i.imgur.com/VZFlC1M.png",
     mesh = "http://paste.ee/p/70TGL",

@@ -1,6 +1,6 @@
 SuperWeapon = {
     type="SuperWeapon",
-    back = ""
+    back = "https://i.imgur.com/wAfp2ow.jpeg"
 }
 Card:new(SuperWeapon,{name="Magnite Crystal Tractor Beam Array", front="https://i.imgur.com/2YpzXNT.jpg", cost=10})
 Card:new(SuperWeapon,{name="Orbital Bombardment Particle Cannons", front="https://i.imgur.com/t9VRV0n.jpg", cost=5}) --modification)

@@ -1,6 +1,6 @@
 IonCannons = {
     type="IonCannons",
-    back = ""
+    back = "https://i.imgur.com/CzYiC1u.png"
 }
 Card:new(IonCannons,{name="Heavy Ion Emplacements", front="https://i.imgur.com/S82y39J.jpg", cost=9})
 Card:new(IonCannons,{name="High-Capacity Ion Turbines", front="https://i.imgur.com/sNFD2X4.jpg", cost=8})

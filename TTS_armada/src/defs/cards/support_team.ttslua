@@ -1,6 +1,6 @@
 SupportTeam = {
     type="SupportTeam",
-    back = ""
+    back = "https://i.imgur.com/WjGbQ3t.png"
 }
 --separatist
 Card:new(SupportTeam,{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg", cost=4})

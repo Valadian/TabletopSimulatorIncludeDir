@@ -1,6 +1,6 @@
 ExperimentalRetrofit = {
     type="ExperimentalRetrofit",
-    back = ""
+    back = "https://i.imgur.com/2Y4G7It.png" --TODO: Fix this awful image
 }
 Card:new(ExperimentalRetrofit,{name="G-8 Experimental Projector", front="https://i.imgur.com/DUzGkon.jpg", cost=8})
 Card:new(ExperimentalRetrofit,{name="G7-X Grav Well Projector", front="https://i.imgur.com/BaMEJzl.jpg", cost=2})

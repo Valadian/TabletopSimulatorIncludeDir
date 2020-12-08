@@ -1,6 +1,6 @@
 OffensiveRetrofit = {
     type="OffensiveRetrofit",
-    back = ""
+    back = "https://i.imgur.com/FSY3Hkx.png"
 }
 --republic
 Card:new(OffensiveRetrofit,{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg", cost=3})
@@ -16,7 +16,7 @@ Card:new(OffensiveRetrofit,{name="Expanded Hangar Bay", front="https://i.imgur.c
 Card:new(OffensiveRetrofit,{name="Flag Bridge", front="https://i.imgur.com/qJksgmR.jpg", cost=0}) --modification)
 Card:new(OffensiveRetrofit,{name="Hardened Bulkheads", front="https://i.imgur.com/Cz9oxBt.jpg", cost=5})
 Card:new(OffensiveRetrofit,{name="Phylon Q7 Tractor Beams", front="https://i.imgur.com/x7VhJXM.jpg", cost=6})
-Card:new(OffensiveRetrofit,{name="Point Defense Reroute", front="https://i.imgur.com/IAIYK4H.jpg", cost=5})
+Card:new(OffensiveRetrofit,{name="Point-Defense Reroute", front="https://i.imgur.com/IAIYK4H.jpg", cost=5})
 Card:new(OffensiveRetrofit,{name="Proximity Mines", front="https://i.imgur.com/e93H1wf.jpg", cost=4})
 Card:new(OffensiveRetrofit,{name="Quad Laser Turrets", front="https://i.imgur.com/HKfQx0O.jpg", cost=5})
 Card:new(OffensiveRetrofit,{name="Rapid Launch Bays", front="https://i.imgur.com/PHiQ5fk.jpg", cost=6})

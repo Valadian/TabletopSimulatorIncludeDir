@@ -1,6 +1,6 @@
 WeaponsTeamAndOffensiveRetrofit = {
     type="WeaponsTeamAndOffensiveRetrofit",
-    back = ""
+    back = "https://i.imgur.com/mPu7lfL.png"
 }
 --rebel
 Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Cham Syndulla", front="https://i.imgur.com/1UBq5nW.jpg", cost=5})

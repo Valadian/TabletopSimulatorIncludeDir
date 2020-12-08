@@ -1,6 +1,6 @@
 Ordnance = {
     type="Ordnance",
-    back = ""
+    back = "https://i.imgur.com/6SrNHUo.png"
 }
 Card:new(Ordnance,{name="Assault Concussion Missiles", front="https://i.imgur.com/iuWMfEx.jpg", cost=5})
 Card:new(Ordnance,{name="Assault Proton Torpedoes", front="https://i.imgur.com/ZHMQWZr.jpg", cost=4})

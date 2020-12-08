@@ -1,6 +1,6 @@
 WeaponsTeam = {
     type="WeaponsTeam",
-    back = ""
+    back = "https://i.imgur.com/GhAHc4B.png"
 }
 
 --rebel
@@ -13,7 +13,7 @@ Card:new(WeaponsTeam,{name="Gunnery Chief Varnillian", front="https://i.imgur.co
 Card:new(WeaponsTeam,{name="Clone Gunners", front="https://i.imgur.com/8Rr4vE5.jpeg", cost=4})
 
 --generic
-Card:new(WeaponsTeam,{name="Fire Control Team", front="https://i.imgur.com/VFlRiDL.jpg", cost=2})
+Card:new(WeaponsTeam,{name="Fire-Control Team", front="https://i.imgur.com/VFlRiDL.jpg", cost=2})
 Card:new(WeaponsTeam,{name="Flight Controllers", front="https://i.imgur.com/3WO48B6.jpg", cost=6})
 Card:new(WeaponsTeam,{name="Gunnery Team", front="https://i.imgur.com/Jw2Qhgz.jpg", cost=7})
 Card:new(WeaponsTeam,{name="Local Fire Control", front="https://i.imgur.com/OepfCdw.jpg", cost=4})

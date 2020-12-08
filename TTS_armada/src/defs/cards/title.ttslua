@@ -1,6 +1,6 @@
 Title = {
     type="Title",
-    back = ""
+    back = "https://i.imgur.com/oBU2CKS.png"
 }
 --rebel
 Card:new(Title,{name="Bright Hope", front="https://i.imgur.com/ppRWBhH.jpg", cost=2})

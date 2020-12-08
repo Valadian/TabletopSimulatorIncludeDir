@@ -1,6 +1,6 @@
 FleetSupport = {
     type="FleetSupport",
-    back = ""
+    back = "https://i.imgur.com/bH1FR0J.png"
 }
 Card:new(FleetSupport,{name="Bomber Command Center", front="https://i.imgur.com/slRsjXp.jpg", cost=8})
 Card:new(FleetSupport,{name="Comms Net", front="https://i.imgur.com/56EgYe9.jpg", cost=2})

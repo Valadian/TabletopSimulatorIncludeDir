@@ -7,12 +7,12 @@ ship = {
     health = 3,
     move = 4,
     defense_tokens = {}}
-Squadron:new(ship,empire, {
+Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Fighter Squadron",
     front = "https://i.imgur.com/IBPIZFC.png",
     cost = 8
 })
-Squadron:new(ship,empire, {
+Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Mauler" Mithel',
     front = "https://i.imgur.com/XOrV29v.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",

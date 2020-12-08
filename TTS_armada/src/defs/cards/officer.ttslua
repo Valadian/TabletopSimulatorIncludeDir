@@ -1,6 +1,6 @@
 Officer = {
     type="Officer",
-    back = ""
+    back = "https://i.imgur.com/QvnjHpd.png"
 }
 -- Rebels
 Card:new(Officer,{name="Adar Tallon", front="http://i.imgur.com/htbjXKu.jpg", cost=10})
