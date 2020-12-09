@@ -8,7 +8,8 @@ Ship:new(SmallShip,{
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,2,2,1},
-    cost = 37
+    cost = 37,
+	aliases = {"Consular Armed Cruiser","Armed Cruiser"}
 })
 Ship:new(SmallShip,{
 	name = "Consular-class Charger c70",
@@ -20,7 +21,8 @@ Ship:new(SmallShip,{
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,2,2,1},
-    cost = 45
+    cost = 45,
+	aliases = {"Consular Charger c70","Charger c70"}
 })
 
 Ship:new(MediumShip,{
@@ -33,7 +35,8 @@ Ship:new(MediumShip,{
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
-    cost = 66
+    cost = 66,
+	aliases = {"Acclamator I Assault Ship"}
 })
 Ship:new(MediumShip,{
 	name = "Acclamator II-class Assault Ship",
@@ -45,5 +48,6 @@ Ship:new(MediumShip,{
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
-    cost = 71
+    cost = 71,
+	aliases = {"Acclamator II Assault Ship"}
 })

@@ -310,7 +310,8 @@ ship = {
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Lancer-class Pursuit Craft",
     front = "https://i.imgur.com/qDSMy7N.png",
-    cost = 15
+    cost = 15,
+    aliases = {"Lancer Pursuit Craft"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Ketsu Onyo",

@@ -290,7 +290,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Lambda-class Shuttle',
     front = "https://i.imgur.com/8q9RtT0.png",
-    cost = 15
+    cost = 15,
+    aliases = {'Lambda Shuttle'}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Colonel Jendon',

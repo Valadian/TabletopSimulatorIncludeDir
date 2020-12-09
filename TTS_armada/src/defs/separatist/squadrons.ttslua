@@ -48,10 +48,9 @@ ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Baktoid Prototypes",
     front = "https://i.imgur.com/kQGXd4d.jpg",
-    cost = 16
+    cost = 16,
+    aliases = {"Baktoid Prototype"}
 })
---ALIAS
-SHIPS[string.lower("Baktoid Prototype")] = SHIPS[string.lower("Baktoid Prototypes")]
 --  AI: Battery, Bomber, Heavy
 Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "DBS-404",

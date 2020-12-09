@@ -7,7 +7,7 @@ DEF_SALVO = '5028b2'
 
 function update()
     for _,card in ipairs(getAllObjects()) do
-        if card.tag == 'Card' then
+        if card.tag == 'Card' and card.getName()~=nil then
             local cmd = card.getDescription()
             local oldName = card.getVar('oldName')
             card.setVar('oldName',card.getName())
@@ -20,6 +20,7 @@ function update()
                 printToAll("Spawn ship '"..card.getName().."'",{0,1,1})
                 spawnShip(card.getName(),card.getPosition(),count,card.getRotation()[2])
                 card.setDescription("")
+                card.clearButtons()
                 --card.lock()
             end
         end
@@ -36,7 +37,8 @@ Ship = {
     cost = 0,
     name = "",
     front = "",
-    back = ""
+    back = "",
+    aliases = {}
 }
 function Ship:new (o,...)
     o = o or {}
@@ -74,7 +76,8 @@ Squadron = {
     cost = 0,
     name = "",
     front = "",
-    back = ""
+    back = "",
+    aliases = {}
 }
 function Squadron:new (o, ...)
     o = o or {}
@@ -105,18 +108,12 @@ function Squadron:new (o, ...)
     return o
 end
 function CacheShip(o)
-    local key = string.lower(o.name.." ("..o.cost..")")
-    local key_short = string.gsub(key, "%-class","")
-    local key_short = string.gsub(key_short, " corvette","")
-    local key_short = string.gsub(key_short, " star destroyer","")
-    local key_nocost = string.lower(o.name)
-    local key_nocost_short = string.gsub(key_nocost, "%-class","")
-    local key_nocost_short = string.gsub(key_nocost_short, " corvette","")
-    local key_nocost_short = string.gsub(key_nocost_short, " star destroyer","")
-    SHIPS[key] = o
-    SHIPS[key_short] = o
-    SHIPS[key_nocost] = o
-    SHIPS[key_nocost_short] = o
+    SHIPS[string.lower(o.name.." ("..o.cost..")")] = o
+    SHIPS[string.lower(o.name)] = o
+    for _,alias in ipairs(o.aliases) do
+        SHIPS[string.lower(alias.." ("..o.cost..")")] = o
+        SHIPS[string.lower(alias)] = o
+    end
 end
 Card = {
     cost = 0,
@@ -149,7 +146,7 @@ SHIPS = {}
 CARDS = {}
 function onObjectSpawn(object)
     --Create a Button on the card for leaving a container
-    if object.tag ~= "Figurine" and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) then
+    if object.tag ~= "Figurine" and object.getName()~=nil and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) then
         createSpawnButtons(object)
     end
 end
@@ -388,48 +385,48 @@ function Action_SpawnListSpawner(listSpawner)
                 if CARDS[string.lower(line)]~=nil then
                     if i_y==0 then
                         x = x+x_offset
+                        if x>76 then x=76 end
                     end
-                    spawnCard(CARDS[string.lower(line)], vector.add(listSpawner.getPosition(),{x,0,i_y*y_offset}),listSpawner.getRotation())
+                    spawnCard(CARDS[string.lower(line)], vector.add(listSpawner.getPosition(),{x,0,1+i_y*y_offset}),listSpawner.getRotation(),nil)
                     i_y = math.fmod(i_y+1,max_i_y)
-                    -- if y==0 then
-                    --     x=x-2
-                    -- end
                     printToAll("Spawning Card: "..line,{0,1,1})
                 elseif CARDS[string.lower(line_nocost)]~=nil then
                     if i_y==0 then
                         x = x+x_offset
+                        if x>76 then x=76 end
                     end
-                    spawnCard(CARDS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,i_y*y_offset}),listSpawner.getRotation())
+                    spawnCard(CARDS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,1+i_y*y_offset}),listSpawner.getRotation(),nil)
                     i_y = math.fmod(i_y+1,max_i_y)
-                    -- if y==0 then
-                    --     x=x-2
-                    -- end
                     printToAll("Spawning Card: "..line,{0,1,1})
                 elseif SHIPS[string.lower(line_nocost)]~=nil then
                     if count~=nil then
                         x = x+4
                         i_y = 0
-                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
+                        if x>76 then x=76 end
+                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),tonumber(count))
                         printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
                         x=x+2
                     else
                         printToAll("Spawning Ship: "..line,{0,1,0})
                         x = x+4
                         i_y = 0
-                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
+                        if x>76 then x=76 end
+                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),1)
                         x=x+2
                     end
                 elseif SHIPS[string.lower(line_nocost_no_s)]~=nil then
                     if count~=nil then
                         x = x+4
                         i_y = 0
-                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
+                        if x>76 then x=76 end
+                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),tonumber(count))
                         printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
                         x=x+2
                     else
                         x = x+4
                         i_y = 0
-                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,0}),listSpawner.getRotation())
+                        if x>76 then x=76 end
+                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),1)
                         printToAll("Spawning Ship: "..line,{0,1,0})
                         x=x+2
                     end
@@ -440,11 +437,14 @@ function Action_SpawnListSpawner(listSpawner)
         end
     end
 end
-function spawnCard(def, pos, rot) --TODO: count
+function spawnCard(def, pos, rot, count) --TODO: count
     -- scale = {1.37,1,1.37}
     scale = {1,1,1}
     if def.maneuver~=nil then
         scale = {1.88,1,1.88}
+    end
+    if def.move~=nil then
+        scale = {1.37,1,1.37}
     end
     local jsonRepresentation = {
       Name = "CardCustom",
@@ -474,20 +474,35 @@ function spawnCard(def, pos, rot) --TODO: count
         }
       }
     }
+    if count~=nil then
+        jsonRepresentation['Nickname'] = "["..count.."]"..jsonRepresentation['Nickname']
+    end
+    -- if count~=nil and count>1 then
+    --     jsonRepresentation['Description'] = "spawn "..count
+    -- elseif  count~=nil and count==1 then
+    --     jsonRepresentation['Description'] = "spawn"
+    -- end
     spawnObjectJSON({
         json = JSON.encode(jsonRepresentation),
         callback_function = setCardDescriptionToSpawn
     })
 end
 function setCardDescriptionToSpawn(card)
-    card.setDescription("spawn")
+    count = string.match(card.getName(), "^%[(%d+)%]")
+    if count~=nil then
+        count = tonumber(count)
+        name = string.gsub(card.getName(),"^%[%d+%]","")
+        spawnShip(name,card.getPosition(),count,card.getRotation()[2])
+        card.setName(name)
+        card.clearButtons()
+    end
 end
 function spawnShip(name,pos,count,rotation)
     local ship_def = SHIPS[string.lower(name)]
     spawnDefinition(ship_def,name,pos,count,rotation)
 end
 -- token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
-token_offsets = {{-0.86,0,6.64},{0.86,0,6.64},{-0.86,0,7.94},{0.86,0,7.94},{0.86,0,9.24},{0.86,0,9.24}}
+token_offsets = {{-0.86,0,3.54},{0.86,0,3.54},{-0.86,0,4.84},{0.86,0,4.84},{0.86,0,6.14},{0.86,0,6.14}}
 function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --local ship_def = SHIPS[name]
     if ship_def~=nil then
@@ -501,7 +516,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = {pos[1],4+i,pos[3]+12} --TODO: FIX OFFSET of +12
+            obj_parameters.position = {pos[1],4+i,pos[3]+8} --TODO: FIX OFFSET of +8
             obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
             local ship = spawnObject(obj_parameters)
             local custom = {}
