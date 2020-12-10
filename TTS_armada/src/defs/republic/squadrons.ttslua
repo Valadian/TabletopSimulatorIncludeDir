@@ -11,7 +11,8 @@ ship = {
 Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = "V-19 Torrent Squadron",
     front = "https://i.imgur.com/aiyBkpn.jpeg",
-    cost = 12
+    cost = 12,
+    aliases = {'V-19 Torrent Squadrons'}
 })
 
 ship.diffuse = "http://i.imgur.com/OTeOC0F.jpeg"
@@ -42,7 +43,8 @@ ship = {
 Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = "Delta-7 Aethersprite Squadron",
     front = "https://i.imgur.com/huDC10s.jpeg",
-    cost = 17
+    cost = 17,
+    aliases = {'Delta-7 Aethersprite Squadrons'}
 })
 -- ship.diffuse = ""
 -- Adept, Counter, Grit
@@ -92,7 +94,8 @@ ship = {
 Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = "BTL-B Y-Wing Squadron",
     front = "https://i.imgur.com/qvyTtNf.jpeg",
-    cost = 10
+    cost = 10,
+    aliases = {'BTL-B Y-Wing Squadrons'}
 })
 -- Adept, Bomber, Heavy
 Squadron:new(ship, REPUBLIC_SQUAD, {
@@ -114,7 +117,8 @@ ship = {
 Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = "ARC-170 Starfighter Squadron",
     front = "https://i.imgur.com/ggkaXOF.jpeg",
-    cost = 15
+    cost = 15,
+    aliases = {'ARC-170 Starfighter Squadrons'}
 })
 -- Bomber, Counter
 Squadron:new(ship, REPUBLIC_SQUAD, {

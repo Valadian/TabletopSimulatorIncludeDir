@@ -10,7 +10,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Fighter Squadron",
     front = "https://i.imgur.com/IBPIZFC.png",
-    cost = 8
+    cost = 8,
+    aliases = {"TIE Fighter Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Mauler" Mithel',
@@ -49,7 +50,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Interceptor Squadron",
     front = "https://i.imgur.com/sEjCnbR.png",
-    cost = 11
+    cost = 11,
+    aliases = {"TIE Interceptor Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Soontir Fel",
@@ -81,7 +83,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Bomber Squadron",
     front = "https://i.imgur.com/JGg79So.png",
-    cost = 9
+    cost = 9,
+    aliases = {"TIE Bomber Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Major Rhymer",
@@ -114,7 +117,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Advanced Squadron",
     front = "https://i.imgur.com/oqevOIs.png",
-    cost = 12
+    cost = 12,
+    aliases = {"TIE Advanced Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Darth Vader",
@@ -146,7 +150,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Firespray-31",
     front = "https://i.imgur.com/dmC3jNm.png",
-    cost = 18
+    cost = 18,
+    aliases = {"Firespray-31s"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Boba Fett",
@@ -171,7 +176,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "JumpMaster 5000",
     front = "https://i.imgur.com/pBix7LS.png",
-    cost = 12
+    cost = 12,
+    aliases = {"JumpMaster 5000s"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Dengar",
@@ -197,7 +203,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Aggressor Assault Fighter",
     front = "https://i.imgur.com/awIbXGE.png",
-    cost = 16
+    cost = 16,
+    aliases = {"Aggressor Assault Fighters"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "IG-88",
@@ -224,7 +231,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "YV-666",
     front = "https://i.imgur.com/VwtnRPG.png",
-    cost = 15
+    cost = 15,
+    aliases = {"YV-666s"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Bossk",
@@ -253,7 +261,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'TIE Phantom Squadron',
     front = "https://i.imgur.com/Tvy7ZfX.png",
-    cost = 14
+    cost = 14,
+    aliases = {"TIE Phantom Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Whisper"',
@@ -271,7 +280,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'TIE Defender Squadron',
     front = "https://i.imgur.com/h5OJeUV.png",
-    cost = 16
+    cost = 16,
+    aliases = {"TIE Defender Squadrons"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Maarek Stele',
@@ -291,7 +301,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Lambda-class Shuttle',
     front = "https://i.imgur.com/8q9RtT0.png",
     cost = 15,
-    aliases = {'Lambda Shuttle'}
+    aliases = {'Lambda Shuttle', 'Lambda Shuttles', 'Lambda-class Shuttles'}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Colonel Jendon',
@@ -310,7 +320,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'VT-49 Decimator',
     front = "https://i.imgur.com/Vpztyfk.png",
-    cost = 22
+    cost = 22,
+    aliases = {'VT-49 Decimators'}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Morna Kee',
@@ -329,7 +340,8 @@ ship = {
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Mandalorian Gauntlet Fighter',
     front = "https://i.imgur.com/EojO5GT.png",
-    cost = 20
+    cost = 20,
+    aliases = {'Mandalorian Gauntlet Fighters'}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Gar Saxon',

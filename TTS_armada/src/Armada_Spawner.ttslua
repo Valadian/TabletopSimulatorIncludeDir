@@ -313,6 +313,7 @@ function Action_OpenListSpawner(listSpawner)
         position = {3.2, 0.2, 0}, width = 3000, height = 6000, font_size = 85, function_owner = self, font_color={0,0,0}})
     listSpawner.createButton({label = "V V V     Spawn!     V V V", click_function = 'Action_SpawnListSpawner', rotation = {0, -90, 0},
         position = {7, 0.2, 0}, width = 6000, height = 500, font_size = 400, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+    listSpawner.createButton()
 end
 function Input_UpdateList(obj, color, input, stillEditing)
     obj.setVar("list",input)
@@ -324,25 +325,68 @@ function replace(input, pattern, replace)
     -- end
     return output
 end
+A_COLORS = {{1,0,0},
+            {1,0.65,0},
+            {1,1,0},
+            {0.78,0.08,0.52},
+            {0.55,0,0},
+            {0.94,0.9,0.55},
+            {0.87,0.63,0.87},
+            {1,0.63,0.87},
+            {1,0,1},
+            {0.5,0.5,0}}
+B_COLORS = {{0.1,0.1,0.44},
+            {0.5,1,0},
+            {0,0.75,1},
+            {0.86,0.86,0.86},
+            {0.18,0.55,0.34},
+            {0,0,1},
+            {0,0.98,0.6},
+            {0,1,1},
+            {0.48,0.41,0.93},
+            {0.18,0.31,0.31}}
+function clearSpawnArea(listSpawner)
+    pos = listSpawner.getPosition()
+    rot = listSpawner.getRotation()
+    min_pos = vector.add(pos, vector.rotate({7,0,-5},rot[2]-180))
+    max_pos = vector.add(pos, vector.rotate({88,0,14},rot[2]-180))
+    printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
+    for _,item in ipairs(getAllObjects()) do
+        item_pos = item.getPosition()
+        if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
+           ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
+            print("Destroying: "..item.getName())
+            item.destruct()
+        end
+    end
+end
 function Action_SpawnListSpawner(listSpawner)
+    clearSpawnArea(listSpawner)
     local count = 0
     for k,v in pairs(SHIPS) do
         count = count+1
     end
-    print("#SHIPS: "..tostring(count))
-    print("tie fighter squadron: "..tostring(SHIPS["tie fighter squadron"]~=nil))
-    print("TIE Fighter Squadron: "..tostring(SHIPS["TIE Fighter Squadron"]~=nil))
-    print("tie advanced squadron: "..tostring(SHIPS["tie advanced squadron"]~=nil))
-    print("TIE Advanced Squadron: "..tostring(SHIPS["TIE Advanced Squadron"]~=nil))
     local list = listSpawner.getVar("list")
     -- print(#list)
+    if list==nil or #list==0 then
+        printToAll("Paste in fleet to spawn",{1,1,0})
+        return
+    end
     lines = string:split(list, "\n")
     -- print(#lines)
-    x = 6
-    i_y = 0
-    max_i_y = 3
-    y_offset = 3.5
-    x_offset = 2.5
+    -- x = 6
+    -- i_y = 0
+    -- max_i_y = 3
+    -- y_offset = 3.5
+    -- x_offset = 2.5
+
+    fleet = {
+        objectives = {},
+        ships = {},
+        squads = {}
+    }
+
+    last_ship = nil
     for _,line in ipairs(lines) do
         if not line:starts "=" then
             -- print("Parsing line: '"..line.."'")
@@ -351,93 +395,114 @@ function Action_SpawnListSpawner(listSpawner)
             if count==nil then
                 count = string.match(line, "^(%d+)%s+")
             end
-            if count~=nil then
-                print("Found count: "..tostring(count))
-            end
-            -- need to handle missing " Star Destroyer"
-            line = replace(line, " Objective:",":")
-            line = replace(line, "Assault: ","")
-            line = replace(line, "Defense: ","")
-            line = replace(line, "Navigation: ","")
+            -- if count~=nil then
+            --     print("Found count: "..tostring(count))
+            -- end
+            line = replace(line, " Objective:",":") -- Shorten "Assault Objective: " to "Assault:"
+            line = replace(line, "Assault: ","") -- Remove objective types
+            line = replace(line, "Defense: ","") -- Remove objective types
+            line = replace(line, "Navigation: ","") -- Remove objective types
             line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
-            line = replace(line, "[%s ]+%(com%)","")
-            line = replace(line, "•%s+%d+%s+x%s+","")
-            line = replace(line,"^%d+[%s ]+","")
-            line = replace(line, "^[•%-·][%s ]+","") -- THAT IS NOT A NORMAL SPACE!
-            line = replace(line,"^%-%s+","")
-            line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)")
-            line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","")
-            line = replace(line,"%(%s*(%d+)%s*%)$","(%1)")
-            line = string.strip(line)
-            line = replace(line," +"," ")
-            -- cost = string.match(line, ".*%((%d+)%)$")
-            -- cost = string.match(line, "%((%d+)%)$")
-            -- print(cost)
-            -- if line=="Darth Vader (1)" then
-            --     line = "Darth Vader (Officer) (1)"
-            -- end
-            -- if line=="Darth Vader (3)" then
-            --     line = "Darth Vader (WeaponsTeamAndOffensiveRetrofit) (3)"
-            -- end
-            line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","")
-            line_nocost_no_s = string.gsub(line_nocost,"s$","")
+            line = replace(line, "[%s ]+%(com%)","") -- remove " (com)" indicator
+            line = replace(line, "•%s+%d+%s+x%s+","") -- remove "• 2 x " for squadrons
+            line = replace(line,"^%d+[%s ]+","") -- remove "2 " for squadrons
+            line = replace(line, "^[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
+            -- line = replace(line,"^%-%s+","") -- replace by above
+            line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)") -- Shorten " ( 5 points)" -> " (5)"
+            line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","") -- remove "[ flagship ]" indicato"
+            line = replace(line,"%(%s*(%d+)%s*%)$","(%1)") -- shorten "( 5 )" to "(5)"
+            line = string.strip(line) -- remove leading/training spaces
+            line = replace(line," +"," ") -- remove all multiple spaces
+            line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","") -- create version without trailing cost" (5)"
+
             if line ~="" then
-                if CARDS[string.lower(line)]~=nil then
-                    if i_y==0 then
-                        x = x+x_offset
-                        if x>76 then x=76 end
-                    end
-                    spawnCard(CARDS[string.lower(line)], vector.add(listSpawner.getPosition(),{x,0,1+i_y*y_offset}),listSpawner.getRotation(),nil)
-                    i_y = math.fmod(i_y+1,max_i_y)
-                    printToAll("Spawning Card: "..line,{0,1,1})
-                elseif CARDS[string.lower(line_nocost)]~=nil then
-                    if i_y==0 then
-                        x = x+x_offset
-                        if x>76 then x=76 end
-                    end
-                    spawnCard(CARDS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,1+i_y*y_offset}),listSpawner.getRotation(),nil)
-                    i_y = math.fmod(i_y+1,max_i_y)
-                    printToAll("Spawning Card: "..line,{0,1,1})
-                elseif SHIPS[string.lower(line_nocost)]~=nil then
-                    if count~=nil then
-                        x = x+4
-                        i_y = 0
-                        if x>76 then x=76 end
-                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),tonumber(count))
-                        printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
-                        x=x+2
-                    else
-                        printToAll("Spawning Ship: "..line,{0,1,0})
-                        x = x+4
-                        i_y = 0
-                        if x>76 then x=76 end
-                        spawnCard(SHIPS[string.lower(line_nocost)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),1)
-                        x=x+2
-                    end
-                elseif SHIPS[string.lower(line_nocost_no_s)]~=nil then
-                    if count~=nil then
-                        x = x+4
-                        i_y = 0
-                        if x>76 then x=76 end
-                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),tonumber(count))
-                        printToAll("Spawning Squadron "..tostring(count).."x: "..line,{0,1,0})
-                        x=x+2
-                    else
-                        x = x+4
-                        i_y = 0
-                        if x>76 then x=76 end
-                        spawnCard(SHIPS[string.lower(line_nocost_no_s)], vector.add(listSpawner.getPosition(),{x,0,3.3}),listSpawner.getRotation(),1)
-                        printToAll("Spawning Ship: "..line,{0,1,0})
-                        x=x+2
+                def = CARDS[string.lower(line)] or SHIPS[string.lower(line)] or CARDS[string.lower(line_nocost)] or SHIPS[string.lower(line_nocost)]
+                if def~=nil then
+                    if def.type == "Objective" then --IS OBJECTIVE
+                        table.insert(fleet.objectives, def)
+                    elseif def.maneuver~=nil then --IS SHIP
+                        last_ship = {def=def, upgrades = {}}
+                        table.insert(fleet.ships, last_ship)
+                    elseif def.move~=nil then
+                        table.insert(fleet.squads, {def=def, count=tonumber(count)})
+                    else --MUST BE UPGRADE????
+                        if last_ship==nil then
+                            printToAll("Cannot spawn upgrade: "..def.name.." since no ship found?",{1,0,0})
+                        else
+                            table.insert(last_ship.upgrades, def)
+                        end
                     end
                 else
-                    printToAll("Unfound item: '"..line.."'|'"..line_nocost.."'",{1,0,0})
+                    printToAll("No definition found for: '"..line.."'",{1,0,0})
                 end
             end
         end
     end
+
+    layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
 end
-function spawnCard(def, pos, rot, count) --TODO: count
+--{
+--    objectives={def,def,def}
+--    ships={{def, upgrades:{def, def, def, def, def},{def, upgrades:{def, def, def, def, def}}
+--    squads={{def:def, count:1}}
+--}
+function layout(fleet, pos, rot)
+    local x = 9
+    local i_y = 0
+    local MAX_I_Y = 3
+    local Y_OFFSET = 3.5
+    local X_OFFSET = 2.5
+    local OBJ_X_GAP = 4
+    local SHIP_PRE_X_GAP = 1
+    local SHIP_POST_X_GAP = 4.5
+    local SQUAD_X_GAP = 5.5
+    if (#fleet.ships * 2 + #fleet.squads) >12 then
+        local x = 8
+        OBJ_X_GAP = 3
+        X_OFFSET = 2.1
+        SHIP_PRE_X_GAP = 0.8
+        SHIP_POST_X_GAP = 3.5
+        SQUAD_X_GAP = 3.5
+    end
+    local MAX_X = 86
+    for i,def in ipairs(fleet.objectives) do
+        printToAll("Objective: "..def.name,{1,1,1})
+        spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, rot, nil)
+    end
+    x = x+OBJ_X_GAP
+    for i,ship in ipairs(fleet.ships) do
+        if #ship.def.shields==6 then -- SSD GAP
+            x = math.min(x+2, MAX_X)
+        end
+        i_y = 0
+        printToAll("Ship: "..ship.def.name,{0,1,1})
+        spawnCard(ship.def, pos, {x,0,3.3}, rot, 1)
+        x = math.min(x+SHIP_PRE_X_GAP, MAX_X)
+        if #ship.def.shields==6 then -- SSD GAP
+            x = math.min(x+2, MAX_X)
+        end
+        for _,def in ipairs(ship.upgrades) do
+            if i_y==0 then x = math.min(x+X_OFFSET, MAX_X) end
+            printToAll("Upgrade: "..def.name,{1,1,0})
+            -- print("("..x..","..i_y..")")
+            spawnCard(def, pos, {x,0,4-i_y*Y_OFFSET}, rot, nil)
+            -- print("math.mod("..i_y.."+1, "..MAX_I_Y..") = "..math.mod(i_y+1,MAX_I_Y))
+            i_y = math.mod(i_y+1,MAX_I_Y)
+        end
+        x = math.min(x+SHIP_POST_X_GAP, MAX_X)
+    end
+    for i,squad in ipairs(fleet.squads) do
+        if squad.count!=nil and squad.count>1 then
+            printToAll("Squadron: "..squad.count.."x "..squad.def.name,{0,1,0})
+        else
+            printToAll("Squadron: "..squad.def.name,{0,1,0})
+        end
+        spawnCard(squad.def, pos, {x,0,3.3}, rot, squad.count)
+        x = math.min(x+SQUAD_X_GAP, MAX_X)
+    end
+end
+function spawnCard(def, pos, offset, rot, count) --TODO: count
+    pos =  vector.add(pos,vector.rotate(offset, rot[2]-180))
     -- scale = {1.37,1,1.37}
     scale = {1,1,1}
     if def.maneuver~=nil then
@@ -474,7 +539,7 @@ function spawnCard(def, pos, rot, count) --TODO: count
         }
       }
     }
-    if count~=nil then
+    if count~=nil and count>1 then
         jsonRepresentation['Nickname'] = "["..count.."]"..jsonRepresentation['Nickname']
     end
     -- if count~=nil and count>1 then
@@ -492,12 +557,17 @@ function setCardDescriptionToSpawn(card)
     if count~=nil then
         count = tonumber(count)
         name = string.gsub(card.getName(),"^%[%d+%]","")
-        spawnShip(name,card.getPosition(),count,card.getRotation()[2])
         card.setName(name)
-        card.clearButtons()
+        -- card.clearButtons()
+    else
+        name = card.getName()
+        count = 1
     end
+    Wait.frames(function() card.clearButtons() end, 2)
+    spawnShip(name,card.getPosition(),count,card.getRotation()[2])
 end
 function spawnShip(name,pos,count,rotation)
+    -- printToAll("Spawning: "..name,{1,0,0})
     local ship_def = SHIPS[string.lower(name)]
     spawnDefinition(ship_def,name,pos,count,rotation)
 end
@@ -516,7 +586,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = {pos[1],4+i,pos[3]+8} --TODO: FIX OFFSET of +8
+            obj_parameters.position = vector.add({pos[1],4+i,pos[3]},vector.rotate({0,0,8},y_rotation-180))
             obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
             local ship = spawnObject(obj_parameters)
             local custom = {}
@@ -546,6 +616,9 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --    end
     --end
     end
+end
+function math.mod(a, b)
+    return a-b*math.floor(a/b)
 end
 function math.round(x)
     return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
