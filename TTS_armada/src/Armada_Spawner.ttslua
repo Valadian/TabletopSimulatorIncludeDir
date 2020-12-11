@@ -5,6 +5,7 @@ DEF_REDIRECT = '36f595'
 DEF_SCATTER = '895e91'
 DEF_SALVO = '5028b2'
 
+SPEED_SOURCE = 'b75a56'
 function update()
     for _,card in ipairs(getAllObjects()) do
         if card.tag == 'Card' and card.getName()~=nil then
@@ -612,6 +613,14 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
                 obj_parameters.rotation = {0,y_rotation+90,0}
                 source.takeObject(obj_parameters)
             end
+        end
+        if ship_def.maneuver~=nil then
+            source = getObjectFromGUID(SPEED_SOURCE)
+            offset = {3.44,0,4.19}
+            local obj_parameters = {}
+            obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
+            obj_parameters.rotation = {0,y_rotation,0}
+            source.takeObject(obj_parameters)
         end
     --    end
     --end

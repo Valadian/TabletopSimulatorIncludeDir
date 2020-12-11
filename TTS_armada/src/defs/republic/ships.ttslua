@@ -36,7 +36,7 @@ Ship:new(MediumShip,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
     cost = 66,
-	aliases = {"Acclamator I Assault Ship"}
+	aliases = {"Acclamator I Assault Ship", "Acclamator I"}
 })
 Ship:new(MediumShip,{
 	name = "Acclamator II-class Assault Ship",
@@ -49,5 +49,5 @@ Ship:new(MediumShip,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,2,2,2},
     cost = 71,
-	aliases = {"Acclamator II Assault Ship"}
+	aliases = {"Acclamator II Assault Ship", "Acclamator II"}
 })

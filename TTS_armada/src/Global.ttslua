@@ -129,54 +129,54 @@ function update()
             elseif isShip(ship) then
                 CheckShip(ship)
             end
---             if cmd~="" then
---                 if oldName ~= ship.getName() then
---                     ship.setName(oldName)
---                 end
---                 ship.setDescription("")
---                 if cmd=="checkscale" then
---                     printToAll(ship.getScale()[1],{0,1,1})
---                 end
---                 if cmd:starts "setscale " then
---                     local s = string.gsub(cmd,"setscale ","")
---                     ship.setScale({s,s,s})
---                 end
---                 if cmd=="checkpos" then
---                     printToAll(vector.tostring(ship.getPosition()),{0,1,1})
---                 end
---                 if cmd=="checkrot" then
---                     printToAll(tostring(ship.getRotation()[2]),{0,1,1})
---                 end
---                 if cmd:starts "var " then
---                     printToAll(ship.getVar(cmd:match "var%s(.*)"),{0,1,0})
---                 end
---                 if isSquad(ship) then
---                     if cmd=="r" then
---                         spawnSquadRuler(ship,SQUAD_MOVE_RULER)
---                     end
---                     if cmd=="checkscale" then
---                         printToAll(ship.getScale()[1],{0,1,1})
---                     end
---                     if cmd:starts "health" then
---                         squad.UpdateName(ship,cmd:match "health%s(.*)",nil,nil)
---                     end
---                     if cmd:starts "maxhealth" then
---                         squad.UpdateName(ship,nil,cmd:match "maxhealth%s(.*)",nil)
---                     end
---                     if cmd:starts "speed" then
---                         squad.UpdateName(ship,nil,nil,cmd:match "speed%s(.*)")
---                     end
---                     --stopDropLock(ship)
---                 elseif isShip(ship) then
--- --                    CheckShip(ship)
---                     if cmd =="shields" then
---                         spawnShields(ship)
---                     end
---                     if cmd =="cmds" then
---                         printCmds(ship)
---                     end
---                 end
---             end
+            if cmd~="" then
+                if oldName ~= ship.getName() then
+                    ship.setName(oldName)
+                end
+                ship.setDescription("")
+                if cmd=="checkscale" then
+                    printToAll(ship.getScale()[1],{0,1,1})
+                end
+                if cmd:starts "setscale " then
+                    local s = string.gsub(cmd,"setscale ","")
+                    ship.setScale({s,s,s})
+                end
+                if cmd=="checkpos" then
+                    printToAll(vector.tostring(ship.getPosition()),{0,1,1})
+                end
+                if cmd=="checkrot" then
+                    printToAll(tostring(ship.getRotation()[2]),{0,1,1})
+                end
+                if cmd:starts "var " then
+                    printToAll(ship.getVar(cmd:match "var%s(.*)"),{0,1,0})
+                end
+                if isSquad(ship) then
+                    if cmd=="r" then
+                        spawnSquadRuler(ship,SQUAD_MOVE_RULER)
+                    end
+                    if cmd=="checkscale" then
+                        printToAll(ship.getScale()[1],{0,1,1})
+                    end
+                    if cmd:starts "health" then
+                        squad.UpdateName(ship,cmd:match "health%s(.*)",nil,nil)
+                    end
+                    if cmd:starts "maxhealth" then
+                        squad.UpdateName(ship,nil,cmd:match "maxhealth%s(.*)",nil)
+                    end
+                    if cmd:starts "speed" then
+                        squad.UpdateName(ship,nil,nil,cmd:match "speed%s(.*)")
+                    end
+                    --stopDropLock(ship)
+                elseif isShip(ship) then
+--                    CheckShip(ship)
+                    if cmd =="shields" then
+                        spawnShields(ship)
+                    end
+                    if cmd =="cmds" then
+                        printCmds(ship)
+                    end
+                end
+            end
         end
     end
     restrictMoveDistance(moving_with_ruler)

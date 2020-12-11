@@ -388,8 +388,9 @@ function Action_ClearRuler()
     -- last_moved = nil
     -- last_pos = nil
     -- last_rot = nil
-    self.setPositionSmooth({49,1,0},false,true)
-    self.setRotationSmooth({0,0,0},false,true)
+    self.destruct()
+    -- self.setPositionSmooth({49,1,0},false,true)
+    -- self.setRotationSmooth({0,0,0},false,true)
 end
 function buildButton(label, def)
     local DEFAULT_POSITION = {0,0.17,0}
