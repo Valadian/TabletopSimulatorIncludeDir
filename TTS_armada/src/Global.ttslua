@@ -28,7 +28,16 @@ local CMD_MESHES = {
     "http://i.imgur.com/kCZ8ogN.jpg", --navigate
     "http://i.imgur.com/BRFhnnN.jpg", --concentrate
     "http://i.imgur.com/mlC12j8.jpg"} --squadron
-
+local CMD_NAMES = {}
+CMD_NAMES["http://i.imgur.com/q0kgzJZ.jpg"] = "Repair" --repair
+CMD_NAMES["http://i.imgur.com/kCZ8ogN.jpg"] = "Navigate" --navigate
+CMD_NAMES["http://i.imgur.com/BRFhnnN.jpg"] = "Concentrate Fire" --concentrate
+CMD_NAMES["http://i.imgur.com/mlC12j8.jpg"] = "Squadron" --squadron
+local CMD_COLORS = {}
+CMD_COLORS["http://i.imgur.com/q0kgzJZ.jpg"] = {0,0.8,0} --repair
+CMD_COLORS["http://i.imgur.com/kCZ8ogN.jpg"] = {0, 0.2, 0.8} --navigate
+CMD_COLORS["http://i.imgur.com/BRFhnnN.jpg"] = {0.8,0,0} --concentrate
+CMD_COLORS["http://i.imgur.com/mlC12j8.jpg"] = {0.5,0,0.5} --squadron
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
@@ -48,6 +57,21 @@ local BOTTOM_REF_WHITE_GUID = 'e60d1a'
 local BOTTOM_REF_BLUE_GUID = 'd46b67'
 local restrict_squadrons = true
 local squadrons_extended_attack = false
+hover = {}
+function onObjectHover(player_color, hovered_object)
+    if hovered_object ~= nil then
+        custom = hovered_object.getCustomObject()
+        if custom ~= nil and table.contains(CMD_MESHES,custom.diffuse) then
+            hover[hovered_object.getGUID()] = player_color
+        end
+    end
+end
+function onObjectSpawn(obj)
+    custom = obj.getCustomObject()
+    if custom ~= nil and table.contains(CMD_MESHES,custom.diffuse) and hover[obj.getGUID()]~=nil then
+        printToColor("   [COMMAND DIAL] Set to: "..CMD_NAMES[custom.diffuse], hover[obj.getGUID()], CMD_COLORS[custom.diffuse])
+    end
+end
 function onload(save_string)
 --    for i,ship in ipairs(getAllObjects()) do
 --        if isShip(ship) then

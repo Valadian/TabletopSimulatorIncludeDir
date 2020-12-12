@@ -1,0 +1,563 @@
+<Panel id="fleetSpawnerPanel" class="buttonPanel" active="true" preferredHeight="740" color="black">
+    <VerticalLayout id="fleetSpawnerInputLayout">
+        <InputField onEndEdit="030220/onEndEdit_updateList" id="fleetListPaste" lineType="MultiLineNewLine" placeholder="Paste List Here" preferredHeight="700" fontSize="12"></InputField>
+        <Button text="Parse" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
+    </VerticalLayout>
+    <VerticalLayout id="fleetSpawnerInputParsed" active="false">
+        <!-- verticalScrollbarVisibility="AutoHide" -->
+        <VerticalLayout preferredHeight="710" id="fleetMasterLayout" color="black">
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line1search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line1count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line1_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line1Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line1CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line1Cost"  preferredWidth="30">20</Text>
+                    <Text id="line1CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line1omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line1add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line2search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line2count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line2_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line2Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line2CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line2Cost"  preferredWidth="30">20</Text>
+                    <Text id="line2CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line2omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line2add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line3search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line3count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line3_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line3Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line3CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line3Cost"  preferredWidth="30">20</Text>
+                    <Text id="line3CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line3omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line3add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line4search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line4count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line4_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line4Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line4CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line4Cost"  preferredWidth="30">20</Text>
+                    <Text id="line4CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line4omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line4add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line5search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line5count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line5_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line5Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line5CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line5Cost"  preferredWidth="30">20</Text>
+                    <Text id="line5CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line5omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line5add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line6search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line6count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line6_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line6Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line6CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line6Cost"  preferredWidth="30">20</Text>
+                    <Text id="line6CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line6omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line6add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line7search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line7count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line7_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line7Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line7CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line7Cost"  preferredWidth="30">20</Text>
+                    <Text id="line7CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line7omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line7add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line8search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line8count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line8_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line8Name" alignment="MiddleLeft" preferredWidth="310">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line8CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line8Cost"  preferredWidth="30">20</Text>
+                    <Text id="line8CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line8omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line8add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line9search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line9count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line9_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line9Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line9CostOpen"  preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line9Cost"  preferredWidth="30">20</Text>
+                    <Text id="line9CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line9omit"  class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line9add"  class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line10search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line10count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line10_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line10Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line10CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line10Cost"  preferredWidth="30">20</Text>
+                    <Text id="line10CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line10omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line10add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line11search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line11count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line11_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line11Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line11CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line11Cost"  preferredWidth="30">20</Text>
+                    <Text id="line11CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line11omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line11add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line12search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line12count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line12_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line12Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line12CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line12Cost"  preferredWidth="30">20</Text>
+                    <Text id="line12CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line12omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line12add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line13search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line13count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line13_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line13Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line13CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line13Cost"  preferredWidth="30">20</Text>
+                    <Text id="line13CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line13omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line13add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line14search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line14count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line14_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line14Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line14CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line14Cost"  preferredWidth="30">20</Text>
+                    <Text id="line14CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line14omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line14add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line15search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line15count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line15_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line15Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line15CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line15Cost"  preferredWidth="30">20</Text>
+                    <Text id="line15CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line15omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line15add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line16search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line16count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line16_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line16Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line16CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line16Cost"  preferredWidth="30">20</Text>
+                    <Text id="line16CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line16omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line16add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line17search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line17count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line17_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line17Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line17CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line17Cost"  preferredWidth="30">20</Text>
+                    <Text id="line17CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line17omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line17add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line18search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line18count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line18_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line18Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line18CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line18Cost"  preferredWidth="30">20</Text>
+                    <Text id="line18CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line18omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line18add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line19search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line19count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line19_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line19Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line19CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line19Cost"  preferredWidth="30">20</Text>
+                    <Text id="line19CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line19omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line19add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line20search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line20count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line20_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line20Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line20CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line20Cost"  preferredWidth="30">20</Text>
+                    <Text id="line20CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line20omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line20add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line21search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line21count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line21_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line21Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line21CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line21Cost"  preferredWidth="30">20</Text>
+                    <Text id="line21CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line21omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line21add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line22search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line22count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line22_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line22Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line22CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line22Cost"  preferredWidth="30">20</Text>
+                    <Text id="line22CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line22omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line22add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line23search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line23count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line23_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line23Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line23CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line23Cost"  preferredWidth="30">20</Text>
+                    <Text id="line23CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line23omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line23add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line24search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line24count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line24_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line24Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line24CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line24Cost"  preferredWidth="30">20</Text>
+                    <Text id="line24CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line24omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line24add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line25search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line25count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line25_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line25Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line25CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line25Cost"  preferredWidth="30">20</Text>
+                    <Text id="line25CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line25omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line25add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line26search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line26count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line26_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line26Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line26CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line26Cost"  preferredWidth="30">20</Text>
+                    <Text id="line26CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line26omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line26add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line27search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line27count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line27_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line27Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line27CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line27Cost"  preferredWidth="30">20</Text>
+                    <Text id="line27CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line27omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line27add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line28search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line28count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line28_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line28Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line28CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line28Cost"  preferredWidth="30">20</Text>
+                    <Text id="line28CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line28omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line28add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line29search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line29count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line29_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line29Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line29CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line29Cost"  preferredWidth="30">20</Text>
+                    <Text id="line29CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line29omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line29add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line30search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line30count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line30_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line30Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line30CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line30Cost"  preferredWidth="30">20</Text>
+                    <Text id="line30CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line30omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line30add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line31search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line31count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line31_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line31Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line31CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line31Cost"  preferredWidth="30">20</Text>
+                    <Text id="line31CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line31omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line31add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line32search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line32count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line32_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line32Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line32CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line32Cost"  preferredWidth="30">20</Text>
+                    <Text id="line32CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line32omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line32add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line33search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line33count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line33_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line33Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line33CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line33Cost"  preferredWidth="30">20</Text>
+                    <Text id="line33CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line33omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line33add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line34search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line34count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line34_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line34Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line34CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line34Cost"  preferredWidth="30">20</Text>
+                    <Text id="line34CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line34omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line34add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line35search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line35count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line35_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line35Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line35CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line35Cost"  preferredWidth="30">20</Text>
+                    <Text id="line35CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line35omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line35add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout class="fleetRow">
+                <HorizontalLayout preferredWidth="300">
+                    <Button id="btn_line36search" class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine(10)" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
+                    <Text id="line36count" color="#606060"  preferredWidth="20">2</Text>
+                    <Text id="line36_indicator"  preferredWidth="10" color="#606060">x</Text>
+                    <Text id="line36Name" alignment="MiddleLeft" preferredWidth="330">Anakin Skywalker</Text>
+                </HorizontalLayout>
+                <HorizontalLayout preferredWidth="100">
+                    <Text id="line36CostOpen" preferredWidth="10" color="#606060">(</Text>
+                    <Text id="line36Cost"  preferredWidth="30">20</Text>
+                    <Text id="line36CostClose"  preferredWidth="10" color="#606060">)</Text>
+                    <Button id="btn_line36omit" class="fleet" preferredWidth="40" text="✘ " onClick="030220/onClick_fleet_OmitLine(10)" tooltip="Omit Line" colors="transparent|#FF0000|#800000|transparent" />
+                    <Button id="btn_line36add" class="fleet" preferredWidth="40" active="false" text="✔ " onClick="030220/onClick_fleet_AddLine(10)" tooltip="Add Line" colors="transparent|#00FF00|#008000|transparent" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+        </VerticalLayout>
+        <HorizontalLayout preferredHeight="30">
+            <Button text="Back" onClick="030220/onClick_fleet_backToInput"  color="#800000" />
+            <Text preferredWidth="30"> </Text>
+            <HorizontalLayout preferredWidth="60">
+                <Button id="parseScrollDown" icon="ARROWDOWN" onClick="030220/onClick_fleet_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
+                <Button id="parseScrollUp" icon="ARROWUP" onClick="030220/onClick_fleet_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
+            </HorizontalLayout>
+            <Text preferredWidth="30"> </Text>
+            <Button text="Spawn" onClick="030220/onClick_fleet_spawn" color="#008000" />
+        </HorizontalLayout>
+    </VerticalLayout>
+</Panel>

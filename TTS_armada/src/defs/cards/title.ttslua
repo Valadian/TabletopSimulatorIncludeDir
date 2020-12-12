@@ -6,12 +6,12 @@ Title = {
 Card:new(Title,{name="Bright Hope", front="https://i.imgur.com/ppRWBhH.jpg", cost=2})
 Card:new(Title,{name="Quantum Storm", front="https://i.imgur.com/Zvki0aa.jpg", cost=1})
 
-Card:new(Title,{name="Dodonna's Pride", front="https://i.imgur.com/XoROjrp.jpg", cost=6})
-Card:new(Title,{name="Jaina's Light", front="https://i.imgur.com/v5gczKg.jpg", cost=2})
+Card:new(Title,{name="Dodonna's Pride", front="https://i.imgur.com/XoROjrp.jpg", cost=6, aliases={"Dodonnas Pride"}})
+Card:new(Title,{name="Jaina's Light", front="https://i.imgur.com/v5gczKg.jpg", cost=2, aliases={"Jainas Light"}})
 Card:new(Title,{name="Liberator", front="https://i.imgur.com/zPLLjv2.jpg", cost=2})
 Card:new(Title,{name="Tantive IV", front="https://i.imgur.com/THWav9j.jpg", cost=3})
 
-Card:new(Title,{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg", cost=4})
+Card:new(Title,{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg", cost=4, aliases={"Garels Honor"}})
 Card:new(Title,{name="Task Force Antilles", front="https://i.imgur.com/NWw9f29.jpg", cost=3})
 Card:new(Title,{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg", cost=2})
 
@@ -95,7 +95,7 @@ Card:new(Title,{name="Nevoota Bee", front="https://i.imgur.com/bBFNBzc.jpeg", co
 
 --separatist
 Card:new(Title,{name="Beast of Burden", front="https://i.imgur.com/0dOnlMq.jpeg", cost=6})
-Card:new(Title,{name="Foreman's Labor", front="https://i.imgur.com/cfJ004t.jpeg", cost=5})
+Card:new(Title,{name="Foreman's Labor", front="https://i.imgur.com/cfJ004t.jpeg", cost=5, aliases = {"Foremans Labor"}})
 
 Card:new(Title,{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg", cost=5})
 Card:new(Title,{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg", cost=2})

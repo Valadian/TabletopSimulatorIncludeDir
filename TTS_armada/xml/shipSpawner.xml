@@ -1,0 +1,5 @@
+<Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="740" color="black">
+    <VerticalLayout>
+        <Text preferredWidth="210">Not Implemented</Text>
+    </VerticalLayout>
+</Panel>

@@ -51,7 +51,8 @@ Squadron:new(ship, REBEL_SQUAD, {
     front = "https://i.imgur.com/97UoG34.png",
     diffuse = "http://i.imgur.com/pRu0c7d.png",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
-    cost = 16
+    cost = 16,
+    aliases = {"Dutch Vander"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = 'Norra Wexley',

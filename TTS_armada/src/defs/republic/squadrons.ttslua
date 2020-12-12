@@ -22,7 +22,8 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = '\"Axe\"',
     front = "https://i.imgur.com/h9d4P44.jpeg",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
-    cost = 17
+    cost = 17,
+    aliases = {"Axe"}
 })
 
 -- Escort, Swarm
@@ -30,7 +31,8 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = '\"Kickback\"',
     front = "https://i.imgur.com/crnCDLq.jpeg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
-    cost = 16
+    cost = 16,
+    aliases = {"Kickback"}
 })
 
 ship = {
@@ -126,5 +128,6 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
     front = "https://i.imgur.com/JVuBlg2.jpeg",
     diffuse = "http://i.imgur.com/eUN2Zsl.jpeg",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
-    cost = 23
+    cost = 23,
+    aliases = {"Odd Ball", "Oddball"}
 })

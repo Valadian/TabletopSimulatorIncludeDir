@@ -1,3 +1,5 @@
+#include ui/ui
+
 DEF_BRACE = '79d121'
 DEF_CONTAIN = '68abfc'
 DEF_EVADE = 'c09d88'
@@ -6,6 +8,7 @@ DEF_SCATTER = '895e91'
 DEF_SALVO = '5028b2'
 
 SPEED_SOURCE = 'b75a56'
+COMMAND_SOURCE = '2516df'
 function update()
     for _,card in ipairs(getAllObjects()) do
         if card.tag == 'Card' and card.getName()~=nil then
@@ -53,7 +56,7 @@ function Ship:new (o,...)
     end
     setmetatable(o, Ship)
     Ship.__index = Ship
-    CacheShip(o)
+    Cache(SHIPS,o)
     return o
 end
 SmallShip = {
@@ -102,18 +105,43 @@ function Squadron:new (o, ...)
     -- if o.cost == nil then
     --     printToAll(o.name.." has no cost",{1,0,0})
     -- end
-    CacheShip(o)
+    Cache(SHIPS,o)
     -- if key~=key_noclass then
     --     printToAll(key.." ~= "..key_noclass,{1,1,0})
     -- end
     return o
 end
-function CacheShip(o)
-    SHIPS[string.lower(o.name.." ("..o.cost..")")] = o
-    SHIPS[string.lower(o.name)] = o
+function Cache(DEFS,o)
+    -- FUZZY[string.lower(o.name)] = o
+    DEFS[string.lower(o.name.." ("..o.cost..")")] = o
+    CacheNgrams(o.name.." ("..o.cost..")")
+    DEFS[string.lower(o.name)] = o
+    -- CacheNgrams(o.name)
     for _,alias in ipairs(o.aliases) do
-        SHIPS[string.lower(alias.." ("..o.cost..")")] = o
-        SHIPS[string.lower(alias)] = o
+        DEFS[string.lower(alias.." ("..o.cost..")")] = o
+        CacheNgrams(alias.." ("..o.cost..")")
+        DEFS[string.lower(alias)] = o
+        -- CacheNgrams(alias)
+    end
+end
+NGRAMS = {}
+function CacheNgrams(name)
+    name = string.lower(name)
+    n = #name
+    s = " "..name.." "
+    -- if name=="acclamator ii" then
+    --     print("Caching Ngrams for "..name)
+    -- end
+    for i = 1,n do
+        sub = string.sub(s,i,i+2)
+        -- if name=="acclamator ii" then
+        --     print("Adding: '"..name.."' for: '"..sub.."'")
+        -- end
+        if NGRAMS[sub]==nil then
+            NGRAMS[sub]={name}
+        else
+            table.insert(NGRAMS[sub],name)
+        end
     end
 end
 Card = {
@@ -121,7 +149,9 @@ Card = {
     name = "",
     type = "",
     front = "",
-    back = ""
+    back = "",
+    aliases = {},
+    iscard = true -- to replace checking for "type"
 }
 function Card:new (o, ...)
     o = o or {}
@@ -137,10 +167,7 @@ function Card:new (o, ...)
     end
     setmetatable(o, Card)
     Card.__index = Card
-    if o.cost~=nil then
-        CARDS[string.lower(o.name.." ("..o.cost..")")] = o
-    end
-    CARDS[string.lower(o.name)] = o -- this can of overlap issues with cards that share names!!!
+    Cache(CARDS,o)
     return o
 end
 SHIPS = {}
@@ -351,22 +378,22 @@ function clearSpawnArea(listSpawner)
     rot = listSpawner.getRotation()
     min_pos = vector.add(pos, vector.rotate({7,0,-5},rot[2]-180))
     max_pos = vector.add(pos, vector.rotate({88,0,14},rot[2]-180))
-    printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
+    -- printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
     for _,item in ipairs(getAllObjects()) do
         item_pos = item.getPosition()
         if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
            ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
-            print("Destroying: "..item.getName())
+            -- print("Destroying: "..item.getName())
             item.destruct()
         end
     end
 end
 function Action_SpawnListSpawner(listSpawner)
     clearSpawnArea(listSpawner)
-    local count = 0
-    for k,v in pairs(SHIPS) do
-        count = count+1
-    end
+    -- local count = 0
+    -- for k,v in pairs(SHIPS) do
+    --     count = count+1
+    -- end
     local list = listSpawner.getVar("list")
     -- print(#list)
     if list==nil or #list==0 then
@@ -388,9 +415,14 @@ function Action_SpawnListSpawner(listSpawner)
     }
 
     last_ship = nil
+    first_line = true
+    line_objs = {}
     for _,line in ipairs(lines) do
-        if not line:starts "=" then
+        if first_line then
+            first_line = false
+        elseif not line:starts "=" then
             -- print("Parsing line: '"..line.."'")
+            orig = line
             line = string.strip(line)
             count = string.match(line, "^•%s+(%d+)%s+x%s+")
             if count==nil then
@@ -399,12 +431,18 @@ function Action_SpawnListSpawner(listSpawner)
             -- if count~=nil then
             --     print("Found count: "..tostring(count))
             -- end
+            line = replace(line, "^Author:.*","")
+            line = replace(line, "^Faction:.*","")
+            line = replace(line, "^Commander:.*","")
+            line = replace(line, "^Points:.*","")
+            line = replace(line, "^Squadrons:.*","")
             line = replace(line, " Objective:",":") -- Shorten "Assault Objective: " to "Assault:"
             line = replace(line, "Assault: ","") -- Remove objective types
             line = replace(line, "Defense: ","") -- Remove objective types
             line = replace(line, "Navigation: ","") -- Remove objective types
             line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
             line = replace(line, "[%s ]+%(com%)","") -- remove " (com)" indicator
+            line = replace(line, "[%s ]+%(off%)","") -- remove " (off)" indicator
             line = replace(line, "•%s+%d+%s+x%s+","") -- remove "• 2 x " for squadrons
             line = replace(line,"^%d+[%s ]+","") -- remove "2 " for squadrons
             line = replace(line, "^[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
@@ -415,9 +453,13 @@ function Action_SpawnListSpawner(listSpawner)
             line = string.strip(line) -- remove leading/training spaces
             line = replace(line," +"," ") -- remove all multiple spaces
             line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","") -- create version without trailing cost" (5)"
+            cost = string.match(line,"[%s ]+%([%s ]*(%d+)[%s ]*%)$")
 
             if line ~="" then
                 def = CARDS[string.lower(line)] or SHIPS[string.lower(line)] or CARDS[string.lower(line_nocost)] or SHIPS[string.lower(line_nocost)]
+                if def==nil then
+                    def = findDefinitionByName(SHIPS, line, true)
+                end
                 if def~=nil then
                     if def.type == "Objective" then --IS OBJECTIVE
                         table.insert(fleet.objectives, def)
@@ -440,15 +482,102 @@ function Action_SpawnListSpawner(listSpawner)
         end
     end
 
-    layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
+    layout(nil, fleet, listSpawner.getPosition(), listSpawner.getRotation())
+end
+
+function createSpawningStructure(lineobjs)
+
+    fleet = {
+        objectives = {},
+        ships = {},
+        squads = {}
+    }
+    last_ship = nil
+    for _,obj in ipairs(lineobjs) do
+        -- if line ~="" then
+            -- def = CARDS[string.lower(line)] or SHIPS[string.lower(line)] or CARDS[string.lower(line_nocost)] or SHIPS[string.lower(line_nocost)]
+            -- if def==nil then
+                -- def = findDefinitionByName(SHIPS, line, true)
+            -- end
+        if obj.def~=nil then
+            if obj.def.type == "Objective" then --IS OBJECTIVE
+                table.insert(fleet.objectives, obj.def)
+            elseif obj.def.maneuver~=nil then --IS SHIP
+                last_ship = {def=obj.def, upgrades = {}}
+                table.insert(fleet.ships, last_ship)
+            elseif obj.def.move~=nil then
+                table.insert(fleet.squads, {def=obj.def, count=tonumber(obj.count)})
+            else --MUST BE UPGRADE????
+                if last_ship==nil then
+                    printToAll("Cannot spawn upgrade: "..obj.def.name.." since no ship found?",{1,0,0})
+                else
+                    table.insert(last_ship.upgrades, obj.def)
+                end
+            end
+        else
+            printToAll("No definition found for: '"..obj.original.."'",{1,0,0})
+        end
+        -- end
+    end
+    return fleet
+end
+-- lines {original="",parse="",cost="", def="",count=nil}
+function findDefinitionByName(DEFS, name, fuzzy)
+    def = DEFS[string.lower(name)]
+    if fuzzy == true then
+        printToAll("I can't find: '"..name.."'. Performing deep search...",{1,0,0})
+        bestKey = fuzzyStringSearch(name)
+        printToAll("The best I can find is: '"..tostring(bestKey).."'")
+        def = SHIPS[bestKey]
+        if def == nil then
+            def = CARDS[bestKey]
+        end
+    end
+    return def
+end
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+function fuzzyStringSearch(s)
+    s = string.lower(s)
+    -- print("#NGRAMS"..tablelength(NGRAMS))
+    matches = {}
+    n = #s
+    s = " "..s.." "
+    -- print("Searching: '"..s.."'")
+    for i = 1,n do
+        sub = string.sub(s,i,i+2)
+        -- print("Looking for: '"..sub.."'")
+        if NGRAMS[sub]~=nil then
+            -- print("Potential "..#(NGRAMS[sub]).." matches for: "..sub)
+            for _,match in ipairs(NGRAMS[sub]) do
+                if matches[match]==nil then
+                    matches[match] = 1
+                else
+                    matches[match] = matches[match]+1
+                end
+            end
+        end
+    end
+    bestCount = 0
+    best = nil
+    for k,v in pairs(matches) do
+        if v>bestCount then
+            bestCount=v
+            best = k
+        end
+    end
+    return best
 end
 --{
 --    objectives={def,def,def}
 --    ships={{def, upgrades:{def, def, def, def, def},{def, upgrades:{def, def, def, def, def}}
 --    squads={{def:def, count:1}}
 --}
-function layout(fleet, pos, rot)
-    local x = 9
+function layout(player, fleet, pos, rot)
+    local x = 2 --9
     local i_y = 0
     local MAX_I_Y = 3
     local Y_OFFSET = 3.5
@@ -458,8 +587,8 @@ function layout(fleet, pos, rot)
     local SHIP_POST_X_GAP = 4.5
     local SQUAD_X_GAP = 5.5
     if (#fleet.ships * 2 + #fleet.squads) >12 then
-        local x = 8
-        OBJ_X_GAP = 3
+        local x = 0 --8
+        OBJ_X_GAP = 1.5
         X_OFFSET = 2.1
         SHIP_PRE_X_GAP = 0.8
         SHIP_POST_X_GAP = 3.5
@@ -468,7 +597,7 @@ function layout(fleet, pos, rot)
     local MAX_X = 86
     for i,def in ipairs(fleet.objectives) do
         printToAll("Objective: "..def.name,{1,1,1})
-        spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, rot, nil)
+        spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, vector.add(rot,{0,0,180}))
     end
     x = x+OBJ_X_GAP
     for i,ship in ipairs(fleet.ships) do
@@ -489,6 +618,9 @@ function layout(fleet, pos, rot)
             spawnCard(def, pos, {x,0,4-i_y*Y_OFFSET}, rot, nil)
             -- print("math.mod("..i_y.."+1, "..MAX_I_Y..") = "..math.mod(i_y+1,MAX_I_Y))
             i_y = math.mod(i_y+1,MAX_I_Y)
+        end
+        if #ship.upgrades==0 then
+            x = math.min(x+2, MAX_X)
         end
         x = math.min(x+SHIP_POST_X_GAP, MAX_X)
     end
@@ -621,6 +753,16 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
             obj_parameters.rotation = {0,y_rotation,0}
             source.takeObject(obj_parameters)
+        end
+        if ship_def.command~=nil then
+            for i=1,ship_def.command do
+                source = getObjectFromGUID(COMMAND_SOURCE)
+                offset = {3.44,-i*0.5,8}
+                local obj_parameters = {}
+                obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
+                obj_parameters.rotation = {0,y_rotation,0}
+                source.takeObject(obj_parameters)
+            end
         end
     --    end
     --end

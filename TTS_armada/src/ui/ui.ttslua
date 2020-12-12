@@ -1,0 +1,273 @@
+function onClick_ToggleUI(player, _, idValue)
+    if UI.getAttribute("armadaDisplay", "height")=="40" then
+        UI.show("title")
+        UI.show("fleetSpawnerPanel")
+        --UI.hide("shipSpawnerPanel")
+        UI.show("tabContainer")
+        UI.setAttribute("armadaDisplay", "height", "800")
+        UI.setAttribute("armadaDisplay", "width", "400")
+        UI.setAttribute("minimizeBtn", "colors", "transparent|#FF0000|#800000|transparent")
+        UI.setAttribute("minimizeBtn", "tooltip", "Minimize")
+    else
+        UI.hide("title")
+        UI.hide("fleetSpawnerPanel")
+        UI.hide("shipSpawnerPanel")
+        UI.hide("upgradeSpawnerPanel")
+        UI.hide("tabContainer")
+        UI.setAttribute("armadaDisplay", "height", "40")
+        UI.setAttribute("armadaDisplay", "width", "40")
+        UI.setAttribute("minimizeBtn", "colors", "transparent|#00FF00|#008000|transparent")
+        UI.setAttribute("minimizeBtn", "tooltip", "Display UI")
+    end
+end
+function onClick_selectArmadaTab(player, _, idValue)
+    local xml = UI.getXmlTable()
+    for i=1,#xml do
+        if(xml[i].attributes.id == "armadaDisplay") then
+            local armadaPanel = xml[i]
+            --xml[i].attributes.height = "70"
+            --table.removeKey(xml[i].attributes, "offsetXY")
+            for j=1,#(armadaPanel.children) do
+                if(armadaPanel.children[j].attributes.class == "buttonPanel") then
+                    UI.hide(armadaPanel.children[j].attributes.id)
+                end
+            end
+        end
+    end
+    UI.show(idValue.."Panel")
+    --UI.hide("ship7")
+    -- updateStatusUI()
+end
+fleet_pastes = {}
+function onEndEdit_updateList(player, value, id)
+    fleet_pastes[player.color] = value
+end
+fleets = {}
+function onClick_fleet_parseFleet(player, _, idValue)
+    fleetOffsets[player.color]=0
+    UI.hide("fleetSpawnerInputLayout")
+    UI.show("fleetSpawnerInputParsed")
+    list = fleet_pastes[player.color]
+    -- clearSpawnArea(listSpawner)
+    if list==nil or #list==0 then
+        printToAll("Paste in fleet to spawn",{1,1,0})
+        return
+    end
+    lines = string:split(list, "\n")
+
+    -- first_line = true
+    line_objs = {}
+    for _,line in ipairs(lines) do
+        line = string.gsub(line,"\r","")
+        if not line:starts "=" then
+            -- print("Parsing line: '"..line.."'")
+            orig = line
+            line = string.strip(line)
+            count = string.match(line, "^•%s+(%d+)%s+x%s+")
+            if count==nil then
+                count = string.match(line, "^(%d+)%s+")
+            end
+            -- if count~=nil then
+            --     print("Found count: "..tostring(count))
+            -- end
+            line = replace(line, "^Author:.*","")
+            line = replace(line, "^Faction:.*","")
+            line = replace(line, "^Commander:.*","")
+            line = replace(line, "^Points:.*","")
+            line = replace(line, "^Squadrons:.*","")
+            line = replace(line, " Objective:",":") -- Shorten "Assault Objective: " to "Assault:"
+            line = replace(line, "Assault: ","") -- Remove objective types
+            line = replace(line, "Defense: ","") -- Remove objective types
+            line = replace(line, "Navigation: ","") -- Remove objective types
+            line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
+            line = replace(line, "[%s ]+%(com%)","") -- remove " (com)" indicator
+            line = replace(line, "[%s ]+%(off%)","") -- remove " (off)" indicator
+            line = replace(line, "•%s+%d+%s+x%s+","") -- remove "• 2 x " for squadrons
+            line = replace(line,"^%d+[%s ]+","") -- remove "2 " for squadrons
+            line = replace(line, "^[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
+            -- line = replace(line,"^%-%s+","") -- replace by above
+            line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)") -- Shorten " ( 5 points)" -> " (5)"
+            line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","") -- remove "[ flagship ]" indicato"
+            line = replace(line,"%([%s ]*(%d+)[%s ]*%)$","(%1)") -- shorten "( 5 )" to "(5)"
+            line = string.strip(line) -- remove leading/training spaces
+            line = replace(line," +"," ") -- remove all multiple spaces
+            line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","") -- create version without trailing cost" (5)"
+            cost = string.match(line,"%((%d+)%)$")
+            def = nil
+            if line~=nil then
+                def = CARDS[string.lower(line)] or SHIPS[string.lower(line)] or CARDS[string.lower(line_nocost)] or SHIPS[string.lower(line_nocost)]
+            end
+            table.insert(line_objs, {
+                original = orig,
+                parsed = line_nocost,
+                cost = cost,
+                count = count,
+                def = def
+            })
+        end
+    end
+    fleets[player.color]=line_objs
+    updateParsed(player)
+    -- layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
+end
+function updateParsed(player)
+    line_objs = fleets[player.color]
+    offset = fleetOffsets[player.color] or 0
+    -- UI.setAttribute("fleetMasterLayout", "minHeight", (#line_objs)*30)
+    -- for i,obj in ipairs(line_objs) do
+    -- print(offset)
+    for idx=1+offset,36+offset do
+        i = idx-offset
+        -- print(i)
+        obj  = line_objs[idx]
+        if obj~=nil then
+            -- print("Setting: 'line"..i.."count' to: '"..tostring(obj.count).."'")
+            -- print(obj.original.." Cost: "..tostring(obj.cost))
+            if obj.def==nil then
+                UI.hide("line"..i.."count")
+                UI.hide("line"..i.."_indicator")
+                UI.setValue("line"..i.."Name", obj.original)
+                UI.setAttribute("line"..i.."Name", "color", "red")
+                UI.hide("line"..i.."CostOpen")
+                UI.hide("line"..i.."Cost")
+                UI.hide("line"..i.."CostClose")
+                UI.hide("btn_line"..i.."omit")
+                if #obj.original>0 then
+                    if obj.origdef~=nil then
+                        UI.show("btn_line"..i.."add")
+                    end
+                    UI.show("btn_line"..i.."search")
+                else
+                    UI.hide("btn_line"..i.."add")
+                    UI.hide("btn_line"..i.."search")
+                end
+            else
+                -- print(obj.parsed)
+                -- print(tostring(obj.def.type=="Objective").." "..tostring(obj.def.move~=nil).." "..tostring( obj.def.maneuver~=nil))
+                if obj.def.type=="Objective" then
+                    UI.show("line"..i.."count")
+                    UI.setValue("line"..i.."count","O:")
+                    UI.hide("line"..i.."_indicator")
+                elseif obj.def.move~=nil then
+                    UI.show("line"..i.."_indicator")
+                    UI.setValue("line"..i.."_indicator","x")
+                    UI.show("line"..i.."count")
+                    UI.setValue("line"..i.."count", obj.count or 1)
+                elseif obj.def.maneuver~=nil then
+                    UI.hide("line"..i.."count")
+                    UI.hide("line"..i.."_indicator")
+                else --must be a card
+                    UI.hide("line"..i.."count")
+                    UI.show("line"..i.."_indicator")
+                    UI.setValue("line"..i.."_indicator","•")
+                end
+                UI.setValue("line"..i.."Name", obj.parsed)
+                UI.setAttribute("line"..i.."Name", "color", "white")
+                if obj.cost==nil then
+                    UI.hide("line"..i.."CostOpen")
+                    UI.hide("line"..i.."Cost")
+                    UI.hide("line"..i.."CostClose")
+                else
+                    UI.show("line"..i.."CostOpen")
+                    UI.show("line"..i.."Cost")
+                    UI.setValue("line"..i.."Cost", obj.cost)
+                    UI.show("line"..i.."CostClose")
+                end
+                UI.show("btn_line"..i.."omit")
+                UI.hide("btn_line"..i.."add")
+                UI.hide("btn_line"..i.."search")
+            end
+        else
+
+            UI.hide("btn_line"..i.."search")
+            UI.hide("line"..i.."count")
+            UI.hide("line"..i.."_indicator")
+            UI.setValue("line"..i.."Name", " ")
+            UI.hide("line"..i.."CostOpen")
+            UI.hide("line"..i.."Cost")
+            UI.hide("line"..i.."CostClose")
+            UI.hide("btn_line"..i.."omit")
+            UI.hide("btn_line"..i.."add")
+        end
+    end
+    updateScrollButtons(player)
+end
+function onClick_fleet_backToInput(player, _, idValue)
+
+    UI.show("fleetSpawnerInputLayout")
+    UI.hide("fleetSpawnerInputParsed")
+end
+function onClick_fleet_spawn(player, _, idValue)
+    fleet = createSpawningStructure(fleets[player.color])
+    listSpawner = findObjectByName("List Spawner ("..player.color..")")
+    layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation())
+end
+function findObjectByName(name)
+    for i,obj in ipairs(getAllObjects()) do
+        if obj.getName()==name then return obj end
+    end
+end
+function onClick_fleet_OmitLine(player, _, idValue)
+    i = tonumber(idValue:match("line(%d+)omit"))
+    idx = i + fleetOffsets[player.color] or 0
+    line_objs = fleets[player.color]
+    if line_objs[idx].origdef == nil then
+        line_objs[idx].origdef = line_objs[idx].def
+    end
+    line_objs[idx].def = nil
+    updateParsed(player)
+end
+function onClick_fleet_AddLine(player, _, idValue)
+    i = tonumber(idValue:match("line(%d+)add"))
+    idx = i + fleetOffsets[player.color] or 0
+    line_objs[idx].def = line_objs[idx].origdef
+    updateParsed(player)
+end
+function onClick_fleet_SearchLine(player, _, idValue)
+    i = tonumber(idValue:match("line(%d+)search"))
+    idx = i + fleetOffsets[player.color] or 0
+    if line_objs[idx].origdef == nil then
+        line_objs[idx].origdef = line_objs[idx].def
+    end
+
+    bestKey = fuzzyStringSearch(line_objs[idx].original)
+    printToAll("The best I can find is: '"..tostring(bestKey).."'")
+    def = SHIPS[bestKey]
+    if def == nil then
+        def = CARDS[bestKey]
+    end
+    line_objs[idx].def = def
+    line_objs[idx].parsed = def.name
+    updateParsed(player)
+end
+fleetOffsets = {}
+function onClick_fleet_scrollDown(player, _, idValue)
+    fleetOffsets[player.color] = math.min(34,(fleetOffsets[player.color] or 0)+5)
+    maxOffset = math.max(#fleets[player.color]-36,0)
+    fleetOffsets[player.color] = math.min(maxOffset, fleetOffsets[player.color])
+    updateParsed(player)
+    updateScrollButtons(player)
+end
+function onClick_fleet_scrollUp(player, _, idValue)
+    fleetOffsets[player.color] = math.max(0,(fleetOffsets[player.color] or 0)-5)
+    updateParsed(player)
+    updateScrollButtons(player)
+end
+function updateScrollButtons(player)
+    if fleetOffsets[player.color]==nil or fleetOffsets[player.color]==0 then
+        UI.setAttribute("parseScrollUp", "iconColor", "#404040")
+        -- UI.setAttribute("parseScrollDown", "colors", "transparent|transparent|transparents|transparent")
+        -- UI.setAttribute("parseScrollUp", "interactable", "false")
+    else
+        UI.setAttribute("parseScrollUp", "iconColor", "#FFFFFF")
+        -- UI.setAttribute("parseScrollDown", "colors", "transparent|#808080|#404040|transparent")
+        -- UI.setAttribute("parseScrollUp", "interactable", "true")
+    end
+
+    maxOffset = math.max(#fleets[player.color]-36,0)
+    if fleetOffsets[player.color]==maxOffset then
+        UI.setAttribute("parseScrollDown", "iconColor", "#404040")
+    else
+        UI.setAttribute("parseScrollDown", "iconColor", "#FFFFFF")
+    end
+end

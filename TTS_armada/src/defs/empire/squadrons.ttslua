@@ -18,14 +18,16 @@ Squadron:new(ship, EMPIRE_SQUAD, {
     front = "https://i.imgur.com/XOrV29v.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
-    cost = 15
+    cost = 15,
+    aliases = {"Mauler Mithel"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Howlrunner"',
     front = "https://i.imgur.com/9JyPCY1.png",
     diffuse = "http://i.imgur.com/aKtLAbl.png",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
-    cost = 16
+    cost = 16,
+    aliases = {"Howlrunner"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Valen Rudor',
@@ -269,7 +271,8 @@ Squadron:new(ship, EMPIRE_SQUAD, {
     front = "https://i.imgur.com/vsrwlnW.png",
     diffuse = "http://i.imgur.com/wKQfGQs.png",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
-    cost = 20
+    cost = 20,
+    aliases = {"Whisper"}
 })
 ship = {
     mesh = "http://paste.ee/p/4Nnjz",

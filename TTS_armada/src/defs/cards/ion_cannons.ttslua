@@ -6,7 +6,7 @@ Card:new(IonCannons,{name="Heavy Ion Emplacements", front="https://i.imgur.com/S
 Card:new(IonCannons,{name="High-Capacity Ion Turbines", front="https://i.imgur.com/sNFD2X4.jpg", cost=8})
 Card:new(IonCannons,{name="Ion Cannon Batteries", front="https://i.imgur.com/ygkNbuk.jpg", cost=5})
 Card:new(IonCannons,{name="Leading Shots", front="https://i.imgur.com/0wvdKHN.jpg", cost=6})
-Card:new(IonCannons,{name="MS-1 Ion Cannon", front="https://i.imgur.com/WJpPDTH.jpg", cost=2})
+Card:new(IonCannons,{name="MS-1 Ion Cannons", front="https://i.imgur.com/WJpPDTH.jpg", cost=2, aliases={"MS-1 Ion Cannon"}})
 Card:new(IonCannons,{name="NK-7 Ion Cannons", front="https://i.imgur.com/pw7KB1o.jpg", cost=10})
 Card:new(IonCannons,{name="Overload Pulse", front="https://i.imgur.com/93yRQdH.jpg", cost=8})
 Card:new(IonCannons,{name="SW-7 Ion Batteries", front="https://i.imgur.com/rL77eki.jpg", cost=5})

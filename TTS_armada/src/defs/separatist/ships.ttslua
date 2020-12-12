@@ -9,7 +9,8 @@ Ship:new(SmallShip,{
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
     shields = {3,1,1,2},
     cost = 47,
-	aliases = {"Hardcell Transport"}
+	aliases = {"Hardcell Transport"},
+    command = 1
 })
 Ship:new(SmallShip,{
 	name = "Hardcell-class Battle Refit",
@@ -22,7 +23,8 @@ Ship:new(SmallShip,{
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
     shields = {3,1,1,2},
     cost = 52,
-	aliases = {"Hardcell Battle Refit"}
+	aliases = {"Hardcell Battle Refit"},
+    command = 1
 })
 
 Ship:new(MediumShip,{
@@ -36,7 +38,8 @@ Ship:new(MediumShip,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,3,3,2},
     cost = 70,
-	aliases = {"Munificent Comms Frigate"}
+	aliases = {"Munificent Comms Frigate"},
+    command = 2
 })
 Ship:new(MediumShip,{
 	name = "Munificent-class Star Frigate",
@@ -49,5 +52,6 @@ Ship:new(MediumShip,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {4,3,3,2},
     cost = 73,
-	aliases = {"Munificent Star Frigate"}
+	aliases = {"Munificent Star Frigate"},
+    command = 2
 })
