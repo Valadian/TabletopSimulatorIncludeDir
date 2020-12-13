@@ -1,11 +1,15 @@
-<Panel id="fleetSpawnerPanel" class="buttonPanel" active="true" preferredHeight="740" color="black">
-    <VerticalLayout id="fleetSpawnerInputLayout">
+<Panel id="fleetSpawnerPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
+    <VerticalLayout id="fleetSpawnerInputLayout" preferredHeight="750">
         <InputField onEndEdit="030220/onEndEdit_updateList" id="fleetListPaste" lineType="MultiLineNewLine" placeholder="Paste List Here" preferredHeight="700" fontSize="12"></InputField>
-        <Button text="Parse" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
+        <Text id="fleetListPasteStandin" visibility="Noone" preferredHeight="730" >Text Box is hidden. Click Private to gain ownership and/or clear.</Text>
+        <!-- <HorizontalLayout> -->
+            <Button text="Parse" preferredHeight="20" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
+            <!-- <Button id="Private" text="Private" preferredWidth="100" onClick="030220/onClick_fleet_private" color="#000000" /> -->
+        <!-- </HorizontalLayout> -->
     </VerticalLayout>
-    <VerticalLayout id="fleetSpawnerInputParsed" active="false">
+    <VerticalLayout id="fleetSpawnerInputParsed" active="false" preferredHeight="750">
         <!-- verticalScrollbarVisibility="AutoHide" -->
-        <VerticalLayout preferredHeight="710" id="fleetMasterLayout" color="black">
+        <VerticalLayout preferredHeight="730" id="fleetMasterLayout" color="black">
             <HorizontalLayout class="fleetRow">
                 <HorizontalLayout preferredWidth="300">
                     <Button id="btn_line1search"  class="fleet" preferredWidth="40" text="? " onClick="030220/onClick_fleet_SearchLine" tooltip="Deep Search" colors="transparent|#0000FF|#000080|transparent" />
@@ -556,7 +560,7 @@
                 <Button id="parseScrollDown" icon="ARROWDOWN" onClick="030220/onClick_fleet_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
                 <Button id="parseScrollUp" icon="ARROWUP" onClick="030220/onClick_fleet_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
             </HorizontalLayout>
-            <Text preferredWidth="30"> </Text>
+            <Text preferredWidth="20"> </Text>
             <Button text="Spawn" onClick="030220/onClick_fleet_spawn" color="#008000" />
         </HorizontalLayout>
     </VerticalLayout>

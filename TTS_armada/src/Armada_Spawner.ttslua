@@ -9,6 +9,17 @@ DEF_SALVO = '5028b2'
 
 SPEED_SOURCE = 'b75a56'
 COMMAND_SOURCE = '2516df'
+COM_ENG = ''
+COM_CON = ''
+COM_NAV = ''
+COM_SQA = ''
+COMMAND_TOKEN_SOURCES = {
+    'cc1a75',
+    'ed755e',
+    'd62f13',
+    'dea579'
+}
+
 function update()
     for _,card in ipairs(getAllObjects()) do
         if card.tag == 'Card' and card.getName()~=nil then
@@ -476,7 +487,7 @@ function Action_SpawnListSpawner(listSpawner)
                         end
                     end
                 else
-                    printToAll("No definition found for: '"..line.."'",{1,0,0})
+                    -- printToAll("No definition found for: '"..line.."'",{1,0,0})
                 end
             end
         end
@@ -515,7 +526,7 @@ function createSpawningStructure(lineobjs)
                 end
             end
         else
-            printToAll("No definition found for: '"..obj.original.."'",{1,0,0})
+            -- printToAll("No definition found for: '"..obj.original.."'",{1,0,0})
         end
         -- end
     end
@@ -576,46 +587,60 @@ end
 --    ships={{def, upgrades:{def, def, def, def, def},{def, upgrades:{def, def, def, def, def}}
 --    squads={{def:def, count:1}}
 --}
-function layout(player, fleet, pos, rot)
-    local x = 2 --9
+function layout(player, fleet, pos, rot, base_x, spawn)
+    if base_x==nil then
+        base_x=0
+    end
+    if spawn==nil then
+        spawn=true
+    end
+    local x = base_x --9
     local i_y = 0
     local MAX_I_Y = 3
     local Y_OFFSET = 3.5
     local X_OFFSET = 2.5
-    local OBJ_X_GAP = 4
-    local SHIP_PRE_X_GAP = 1
+    local OBJ_X_GAP = 4.5
+    local SHIP_PRE_X_GAP = 1.5
     local SHIP_POST_X_GAP = 4.5
     local SQUAD_X_GAP = 5.5
-    if (#fleet.ships * 2 + #fleet.squads) >12 then
-        local x = 0 --8
-        OBJ_X_GAP = 1.5
+    if (#fleet.ships * 2 + #fleet.squads) >12 then --TODO: Make configurable
+        local x = base_x --8
+        OBJ_X_GAP = 3.5
         X_OFFSET = 2.1
-        SHIP_PRE_X_GAP = 0.8
-        SHIP_POST_X_GAP = 3.5
+        SHIP_PRE_X_GAP = 1
+        SHIP_POST_X_GAP = 4
         SQUAD_X_GAP = 3.5
     end
-    local MAX_X = 86
+    local MAX_X = 104
+    -- print(x)
     for i,def in ipairs(fleet.objectives) do
-        printToAll("Objective: "..def.name,{1,1,1})
-        spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, vector.add(rot,{0,0,180}))
+        -- printToAll("Objective: "..def.name,{1,1,1})
+        if spawn then
+            spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, vector.add(rot,{0,0,180}))
+        end
     end
     x = x+OBJ_X_GAP
+    -- print(x)
     for i,ship in ipairs(fleet.ships) do
         if #ship.def.shields==6 then -- SSD GAP
             x = math.min(x+2, MAX_X)
         end
         i_y = 0
-        printToAll("Ship: "..ship.def.name,{0,1,1})
-        spawnCard(ship.def, pos, {x,0,3.3}, rot, 1)
+        -- printToAll("Ship: "..ship.def.name,{0,1,1})
+        if spawn then
+            spawnCard(ship.def, pos, {x,0,3.3}, rot, 1)
+        end
         x = math.min(x+SHIP_PRE_X_GAP, MAX_X)
         if #ship.def.shields==6 then -- SSD GAP
             x = math.min(x+2, MAX_X)
         end
         for _,def in ipairs(ship.upgrades) do
             if i_y==0 then x = math.min(x+X_OFFSET, MAX_X) end
-            printToAll("Upgrade: "..def.name,{1,1,0})
+            -- printToAll("Upgrade: "..def.name,{1,1,0})
             -- print("("..x..","..i_y..")")
-            spawnCard(def, pos, {x,0,4-i_y*Y_OFFSET}, rot, nil)
+            if spawn then
+                spawnCard(def, pos, {x,0,4-i_y*Y_OFFSET}, rot, nil)
+            end
             -- print("math.mod("..i_y.."+1, "..MAX_I_Y..") = "..math.mod(i_y+1,MAX_I_Y))
             i_y = math.mod(i_y+1,MAX_I_Y)
         end
@@ -624,15 +649,20 @@ function layout(player, fleet, pos, rot)
         end
         x = math.min(x+SHIP_POST_X_GAP, MAX_X)
     end
+    -- print(x)
     for i,squad in ipairs(fleet.squads) do
-        if squad.count!=nil and squad.count>1 then
-            printToAll("Squadron: "..squad.count.."x "..squad.def.name,{0,1,0})
-        else
-            printToAll("Squadron: "..squad.def.name,{0,1,0})
+        -- if squad.count!=nil and squad.count>1 then
+        --     printToAll("Squadron: "..squad.count.."x "..squad.def.name,{0,1,0})
+        -- else
+        --     printToAll("Squadron: "..squad.def.name,{0,1,0})
+        -- end
+        if spawn then
+            spawnCard(squad.def, pos, {x,0,3.3}, rot, squad.count)
         end
-        spawnCard(squad.def, pos, {x,0,3.3}, rot, squad.count)
         x = math.min(x+SQUAD_X_GAP, MAX_X)
     end
+    -- print(x)
+    return x
 end
 function spawnCard(def, pos, offset, rot, count) --TODO: count
     pos =  vector.add(pos,vector.rotate(offset, rot[2]-180))
@@ -747,20 +777,48 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             end
         end
         if ship_def.maneuver~=nil then
+            for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
+                source = getObjectFromGUID(source_guid)
+                offset = {token_offsets[i][1],0,-token_offsets[i][3]*1.1}
+                local obj_parameters = {}
+                obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
+                obj_parameters.rotation = {0,y_rotation+90,0}
+                source.takeObject(obj_parameters)
+            end
+
             source = getObjectFromGUID(SPEED_SOURCE)
             offset = {3.44,0,4.19}
             local obj_parameters = {}
             obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
             obj_parameters.rotation = {0,y_rotation,0}
             source.takeObject(obj_parameters)
+
+
+            --Spawn Command Base
+            local obj_parameters = {}
+            obj_parameters.type = 'Custom_Model'
+            obj_parameters.position = vector.sub(pos,vector.rotate({3.44,0,7.5},y_rotation))
+            obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
+            obj_parameters.scale = {0.43,0.25,0.43}
+            local custom = {}
+            local base = spawnObject(obj_parameters)
+            base.setColorTint({0,0,0})
+            custom.mesh = "http://paste.ee/r/k758j"
+            custom.collider = "http://paste.ee/r/wGvIm"
+            custom.convex = true
+            custom.type = 1
+            custom.material = 2 --metal?
+            base.setCustomObject(custom)
+            base.setName("Command Base")
         end
+
         if ship_def.command~=nil then
             for i=1,ship_def.command do
                 source = getObjectFromGUID(COMMAND_SOURCE)
-                offset = {3.44,-i*0.5,8}
+                offset = {3.44,-i*0.5,9.5}
                 local obj_parameters = {}
                 obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
-                obj_parameters.rotation = {0,y_rotation,0}
+                obj_parameters.rotation = {0,y_rotation,180}
                 source.takeObject(obj_parameters)
             end
         end

@@ -115,7 +115,7 @@ Ship:new(SmallShip,REBEL_SHIP,{
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {3,2,2,1},
     cost = 60,
-    aliases = {"Modified Pelta Command Ship"},
+    aliases = {"Modified Pelta Command Ship", "Pelta Command Ship"},
     command = 2
 })
 Ship:new(SmallShip,REBEL_SHIP,{
@@ -128,7 +128,7 @@ Ship:new(SmallShip,REBEL_SHIP,{
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {3,2,2,1},
     cost = 56,
-    aliases = {"Modified Pelta Assault Ship"},
+    aliases = {"Modified Pelta Assault Ship", "Pelta Assault Ship"},
     command = 2
 })
 

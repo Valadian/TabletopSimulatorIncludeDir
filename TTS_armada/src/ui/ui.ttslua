@@ -1,5 +1,5 @@
 function onClick_ToggleUI(player, _, idValue)
-    if UI.getAttribute("armadaDisplay", "height")=="40" then
+    if UI.getAttribute("armadaDisplay", "height")=="30" then
         UI.show("title")
         UI.show("fleetSpawnerPanel")
         --UI.hide("shipSpawnerPanel")
@@ -8,16 +8,24 @@ function onClick_ToggleUI(player, _, idValue)
         UI.setAttribute("armadaDisplay", "width", "400")
         UI.setAttribute("minimizeBtn", "colors", "transparent|#FF0000|#800000|transparent")
         UI.setAttribute("minimizeBtn", "tooltip", "Minimize")
+        UI.setAttribute("shortTitle","alignment","MiddleLeft")
+        -- UI.setAttribute("armadaDisplay","outlineSize","0 0")
+        -- UI.setAttribute("armadaDisplay","outline","white")
     else
         UI.hide("title")
         UI.hide("fleetSpawnerPanel")
+        -- UI.hide("fleetSpawnerInputParsed")
+        -- UI.show("fleetListPasteStandin")
         UI.hide("shipSpawnerPanel")
         UI.hide("upgradeSpawnerPanel")
         UI.hide("tabContainer")
-        UI.setAttribute("armadaDisplay", "height", "40")
-        UI.setAttribute("armadaDisplay", "width", "40")
+        UI.setAttribute("armadaDisplay", "height", "30")
+        UI.setAttribute("armadaDisplay", "width", "128")
         UI.setAttribute("minimizeBtn", "colors", "transparent|#00FF00|#008000|transparent")
-        UI.setAttribute("minimizeBtn", "tooltip", "Display UI")
+        UI.setAttribute("minimizeBtn", "tooltip", "Show Armada Fleet Spawner")
+        UI.setAttribute("shortTitle","alignment","MiddleCenter")
+        -- UI.setAttribute("armadaDisplay","outlineSize","1 1")
+        -- UI.setAttribute("armadaDisplay","outline","#303030")
     end
 end
 function onClick_selectArmadaTab(player, _, idValue)
@@ -43,6 +51,25 @@ function onEndEdit_updateList(player, value, id)
     fleet_pastes[player.color] = value
 end
 fleets = {}
+ALL_TEAMS = "White|Brown|Red|Orange|Yellow|Green|Teal|Blue|Purple|Pink|Grey|Black"
+-- function onClick_fleet_private(player, _, idValue)
+--     local color = player.color
+--     local currentPrivate = UI.getAttribute("Private", "color")
+--     if currentPrivate == color then
+--         UI.setAttribute("Private", "color","black")
+--         UI.setAttribute("Private", "textColor","white")
+--         UI.setAttribute("fleetListPaste", "visibility", "")
+--         UI.setAttribute("fleetListPasteStandin", "visibility", "Noone")
+--     else
+--         other_colors = ALL_TEAMS:gsub(color,"")
+--         other_colors = other_colors:gsub("||","|")
+--         other_colors = other_colors:gsub("^|","")
+--         other_colors = other_colors:gsub("|$","")
+--         UI.setAttribute("Private", "color", color)
+--         UI.setAttribute("fleetListPaste", "visibility", color)
+--         UI.setAttribute("fleetListPasteStandin", "visibility", other_colors)
+--     end
+-- end
 function onClick_fleet_parseFleet(player, _, idValue)
     fleetOffsets[player.color]=0
     UI.hide("fleetSpawnerInputLayout")
@@ -51,6 +78,8 @@ function onClick_fleet_parseFleet(player, _, idValue)
     -- clearSpawnArea(listSpawner)
     if list==nil or #list==0 then
         printToAll("Paste in fleet to spawn",{1,1,0})
+        UI.show("fleetSpawnerInputLayout")
+        UI.hide("fleetSpawnerInputParsed")
         return
     end
     lines = string:split(list, "\n")
@@ -123,6 +152,7 @@ function updateParsed(player)
         if obj~=nil then
             -- print("Setting: 'line"..i.."count' to: '"..tostring(obj.count).."'")
             -- print(obj.original.." Cost: "..tostring(obj.cost))
+            UI.setAttribute("line"..i.."Name","visibility","")
             if obj.def==nil then
                 UI.hide("line"..i.."count")
                 UI.hide("line"..i.."_indicator")
@@ -148,6 +178,7 @@ function updateParsed(player)
                     UI.show("line"..i.."count")
                     UI.setValue("line"..i.."count","O:")
                     UI.hide("line"..i.."_indicator")
+                    UI.setAttribute("line"..i.."Name","visibility",player.color)
                 elseif obj.def.move~=nil then
                     UI.show("line"..i.."_indicator")
                     UI.setValue("line"..i.."_indicator","x")
@@ -200,7 +231,12 @@ end
 function onClick_fleet_spawn(player, _, idValue)
     fleet = createSpawningStructure(fleets[player.color])
     listSpawner = findObjectByName("List Spawner ("..player.color..")")
-    layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation())
+
+    width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
+    -- print(width)
+    base_x = 55-width/2
+    -- print(base_x)
+    layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
 end
 function findObjectByName(name)
     for i,obj in ipairs(getAllObjects()) do
@@ -231,13 +267,14 @@ function onClick_fleet_SearchLine(player, _, idValue)
     end
 
     bestKey = fuzzyStringSearch(line_objs[idx].original)
-    printToAll("The best I can find is: '"..tostring(bestKey).."'")
+    printToColor("The best I can find is: '"..tostring(bestKey).."'",player.color,"Teal")
     def = SHIPS[bestKey]
     if def == nil then
         def = CARDS[bestKey]
     end
     line_objs[idx].def = def
     line_objs[idx].parsed = def.name
+    line_objs[idx].cost = def.cost
     updateParsed(player)
 end
 fleetOffsets = {}
@@ -270,4 +307,7 @@ function updateScrollButtons(player)
     else
         UI.setAttribute("parseScrollDown", "iconColor", "#FFFFFF")
     end
+end
+function onClick_dismiss_commandPopup(player, _, idValue)
+    UI.hide("commandPopup")
 end

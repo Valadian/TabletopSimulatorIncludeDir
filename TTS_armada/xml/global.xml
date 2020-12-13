@@ -12,20 +12,25 @@
     <Button class="fleet" color="#FFFFFF" preferredWidth="40" minWIdth="15" tooltipPosition="Above" textAlignment="MiddleRight"/>
     <HorizontalLayout class="fleetRow" preferredHeight="20" minHeight="20"/>
 </Defaults>
+<!-- height="800"
+width="400" -->
 <VerticalLayout color="black"
     id="armadaDisplay"
-    height="800"
-    width="400"
+    height="30"
+    width="128"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
-    offsetXY="0 -100"
+    offsetXY="0 -160"
+    outlineSize="1 1"
+    outline="#303030"
     >
-    <HorizontalLayout color="transparent" preferredHeight="20">
-        <Text id="title" preferredWidth="360">Armada Fleet Spawner</Text>
-        <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Minimize" colors="transparent|#FF0000|#800000|transparent" />
+    <HorizontalLayout color="transparent" preferredHeight="30" spacing="8">
+        <Text id="title" preferredWidth="264" alignment="MiddleRight" active="false">Armada Fleet</Text>
+        <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter">Spawner</Text>
+        <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Show Armada Fleet Spawner" colors="transparent|#00FF00|#008000|transparents" />
     </HorizontalLayout>
-    <HorizontalLayout id="tabContainer">
+    <HorizontalLayout id="tabContainer" active="false" preferredHeight="20">
         <Button text="Fleet"  id="fleetSpawner"  class="tab" />
         <Button text="Ships"  id="shipSpawner"  class="tab" />
         <Button text="Upgrades"  id="upgradeSpawner"  class="tab" />
@@ -34,3 +39,4 @@
 <Include src="shipSpawner.xml"/>
 <Include src="upgradeSpawner.xml"/>
 </VerticalLayout>
+<Include src="commandDialPopup.xml"/>

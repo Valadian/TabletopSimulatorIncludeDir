@@ -1,0 +1,39 @@
+
+<VerticalLayout color="black"
+    id="commandPopup"
+    height="500"
+    width="500"
+    rectAlignment="MiddleCenter"
+    offsetXY="0 0"
+    outlineSize="1 1"
+    outline="#303030">
+
+    <HorizontalLayout padding="20 20 3 3">
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">List Spawner</Text>
+    </HorizontalLayout>
+    <VerticalLayout padding="40 20 0 0">
+        <Text alignment="MiddleLeft" >Click Arrow on Left to Expand List Spawner</Text>
+        <Text alignment="MiddleLeft" >Lists can be pasted from most List Builders, but Ryan Kingston, Armada Warlords, and the Android Armada Fleet Designer are best supported</Text>
+    </VerticalLayout>
+
+    <HorizontalLayout padding="20 20 3 3">
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Command Dial Update</Text>
+    </HorizontalLayout>
+    <VerticalLayout padding="40 20 0 0">
+        <Text alignment="MiddleLeft" >Command Dials are now unified. They will be spawned with ship spawner, and can be found next to the Defense Token sources next to Rules.</Text>
+        <Text alignment="MiddleLeft" >They now use "States". To Change Dial, press 1-4:</Text>
+        <VerticalLayout padding="40 0 0 0">
+            <Text alignment="MiddleLeft" color="#00D000">1. Repair</Text>
+            <Text alignment="MiddleLeft" color="#0030D0">2. Navigate</Text>
+            <Text alignment="MiddleLeft" color="#D00000">3. Concentrate Fire</Text>
+            <Text alignment="MiddleLeft" color="#800080">4. Squadron</Text>
+        </VerticalLayout>
+        <Text alignment="MiddleLeft" >You can "peek" at the value of the Command Dial by hovering it and holding alt+shift together</Text>
+        <Text alignment="MiddleLeft" >Flip a dial by typing "f" while holding it.</Text>
+        <Text alignment="MiddleLeft" >They can be stacked on ships or the metallic Command Bases, and are meant to be reused each round</Text>
+    </VerticalLayout>
+    <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_commandPopup"  color="#FF0000" />
+</VerticalLayout>
