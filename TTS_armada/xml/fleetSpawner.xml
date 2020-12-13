@@ -554,14 +554,12 @@
             </HorizontalLayout>
         </VerticalLayout>
         <HorizontalLayout preferredHeight="30">
-            <Button text="Back" onClick="030220/onClick_fleet_backToInput"  color="#800000" />
-            <Text preferredWidth="30"> </Text>
-            <HorizontalLayout preferredWidth="60">
-                <Button id="parseScrollDown" icon="ARROWDOWN" onClick="030220/onClick_fleet_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
-                <Button id="parseScrollUp" icon="ARROWUP" onClick="030220/onClick_fleet_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
-            </HorizontalLayout>
-            <Text preferredWidth="20"> </Text>
-            <Button text="Spawn" onClick="030220/onClick_fleet_spawn" color="#008000" />
+            <Button text="Back" preferredWidth="60" onClick="030220/onClick_fleet_backToInput"  color="#800000" />
+            <Button id="parseScrollDown" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_fleet_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
+            <Button id="parseScrollUp" preferredWidth="40" icon="ARROWUP" onClick="030220/onClick_fleet_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
+            <Button id="spacingButton" text="Compact" preferredWidth="140" onClick="030220/onClick_fleet_togglespacing" color="#404040" />
+            <Button text="Clear" preferredWidth="60" onClick="030220/onClick_fleet_clear" color="#800000" />
+            <Button text="Spawn" preferredWidth="60" onClick="030220/onClick_fleet_spawn" color="#008000" />
         </HorizontalLayout>
     </VerticalLayout>
 </Panel>

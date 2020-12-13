@@ -387,8 +387,8 @@ B_COLORS = {{0.1,0.1,0.44},
 function clearSpawnArea(listSpawner)
     pos = listSpawner.getPosition()
     rot = listSpawner.getRotation()
-    min_pos = vector.add(pos, vector.rotate({7,0,-5},rot[2]-180))
-    max_pos = vector.add(pos, vector.rotate({88,0,14},rot[2]-180))
+    min_pos = vector.add(pos, vector.rotate({1.2,0,-5},rot[2]-180))
+    max_pos = vector.add(pos, vector.rotate({109,0,14},rot[2]-180))
     -- printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
     for _,item in ipairs(getAllObjects()) do
         item_pos = item.getPosition()
@@ -598,18 +598,18 @@ function layout(player, fleet, pos, rot, base_x, spawn)
     local i_y = 0
     local MAX_I_Y = 3
     local Y_OFFSET = 3.5
-    local X_OFFSET = 2.5
+    local X_OFFSET = 3
     local OBJ_X_GAP = 4.5
-    local SHIP_PRE_X_GAP = 1.5
-    local SHIP_POST_X_GAP = 4.5
+    local SHIP_PRE_X_GAP = 2.5
+    local SHIP_POST_X_GAP = 7
     local SQUAD_X_GAP = 5.5
-    if (#fleet.ships * 2 + #fleet.squads) >12 then --TODO: Make configurable
+    if spacing=="Compact" then --(#fleet.ships * 2 + #fleet.squads) >12 then
         local x = base_x --8
         OBJ_X_GAP = 3.5
         X_OFFSET = 2.1
         SHIP_PRE_X_GAP = 1
         SHIP_POST_X_GAP = 4
-        SQUAD_X_GAP = 3.5
+        SQUAD_X_GAP = 4
     end
     local MAX_X = 104
     -- print(x)

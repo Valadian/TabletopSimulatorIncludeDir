@@ -228,6 +228,14 @@ function onClick_fleet_backToInput(player, _, idValue)
     UI.show("fleetSpawnerInputLayout")
     UI.hide("fleetSpawnerInputParsed")
 end
+function onClick_fleet_clear(player, _, idValue)
+    listSpawner = findObjectByName("List Spawner ("..player.color..")")
+    if listSpawner~=nil then
+        clearSpawnArea(listSpawner)
+    else
+        printToColor("Player Color is invalid: "..player.color, player.color, "Red")
+    end
+end
 function onClick_fleet_spawn(player, _, idValue)
     fleet = createSpawningStructure(fleets[player.color])
     listSpawner = findObjectByName("List Spawner ("..player.color..")")
@@ -310,4 +318,14 @@ function updateScrollButtons(player)
 end
 function onClick_dismiss_commandPopup(player, _, idValue)
     UI.hide("commandPopup")
+end
+spacing = "Compact"
+function onClick_fleet_togglespacing(player, _, idValue)
+    if spacing=="Compact" then
+        spacing="Sparse"
+    else
+        spacing="Compact"
+    end
+    UI.setAttribute("spacingButton","text",spacing)
+    UI.setAttribute("spacingButton","textColor","White")
 end
