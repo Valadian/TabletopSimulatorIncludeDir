@@ -620,6 +620,21 @@ function layout(player, fleet, pos, rot, base_x, spawn)
         end
     end
     x = x+OBJ_X_GAP
+
+    if spawn then
+        source = getObjectFromGUID(COMMAND_SOURCE)
+        local obj_parameters = {}
+        obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5},rot[2]-180))
+        source.clone(obj_parameters)
+
+        for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
+            source = getObjectFromGUID(source_guid)
+            local obj_parameters = {}
+            obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5-i*3},rot[2]-180))
+            source.clone(obj_parameters)
+        end
+    end
+    x = x+OBJ_X_GAP
     -- print(x)
     for i,ship in ipairs(fleet.ships) do
         if #ship.def.shields==6 then -- SSD GAP
@@ -735,7 +750,7 @@ function spawnShip(name,pos,count,rotation)
     spawnDefinition(ship_def,name,pos,count,rotation)
 end
 -- token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
-token_offsets = {{-0.86,0,3.54},{0.86,0,3.54},{-0.86,0,4.84},{0.86,0,4.84},{0.86,0,6.14},{0.86,0,6.14}}
+token_offsets = {{-0.86,0,3.54},{0.86,0,3.54},{-0.86,0,4.84},{0.86,0,4.84},{-0.86,0,6.14},{0.86,0,6.14}}
 function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --local ship_def = SHIPS[name]
     if ship_def~=nil then
@@ -746,6 +761,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             name = "("..ship_def.health.."/"..ship_def.health..") ["..ship_def.move.."] "..name
             rotation_offset = 0
         end
+        local last_ship = nil
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
@@ -765,6 +781,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             ship.setVar("rulerMesh",ship_def.ruler)
             ship.setTable("maneuver",ship_def.maneuver)
             ship.setTable("shields",ship_def.shields)
+            last_ship = ship
         end
         if ship_def.defense_tokens~=nil then
             for i,source_guid in ipairs(ship_def.defense_tokens) do
@@ -777,14 +794,14 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             end
         end
         if ship_def.maneuver~=nil then
-            for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
-                source = getObjectFromGUID(source_guid)
-                offset = {token_offsets[i][1],0,-token_offsets[i][3]*1.1}
-                local obj_parameters = {}
-                obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
-                obj_parameters.rotation = {0,y_rotation+90,0}
-                source.takeObject(obj_parameters)
-            end
+            -- for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
+            --     source = getObjectFromGUID(source_guid)
+            --     offset = {token_offsets[i][1],0,-token_offsets[i][3]*1.1}
+            --     local obj_parameters = {}
+            --     obj_parameters.position = vector.sub(pos,vector.rotate(offset,y_rotation))
+            --     obj_parameters.rotation = {0,y_rotation+90,0}
+            --     source.takeObject(obj_parameters)
+            -- end
 
             source = getObjectFromGUID(SPEED_SOURCE)
             offset = {3.44,0,4.19}
@@ -809,7 +826,9 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             custom.type = 1
             custom.material = 2 --metal?
             base.setCustomObject(custom)
-            base.setName("Command Base")
+            base.setName(ship_def.name.."\nCommand Base")
+            Wait.frames(|| SetCmdBaseGUIDonShip(base, last_ship), 1)
+
         end
 
         if ship_def.command~=nil then
@@ -825,6 +844,11 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --    end
     --end
     end
+end
+function SetCmdBaseGUIDonShip(base, ship)
+    print("Ship: "..ship.getGUID())
+    print("Base: "..base.getGUID())
+    ship.setVar("cmdBaseGUID",base.getGUID())
 end
 function math.mod(a, b)
     return a-b*math.floor(a/b)

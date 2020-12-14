@@ -13,8 +13,15 @@
         <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">List Spawner</Text>
     </HorizontalLayout>
     <VerticalLayout padding="40 20 0 0">
-        <Text alignment="MiddleLeft" >Click Arrow on Left to Expand List Spawner</Text>
+        <Text alignment="MiddleLeft" >"Spawner" found on far right side of screen.</Text>
+        <HorizontalLayout>
+            <Text alignment="MiddleLeft" preferredWidth="20">Click: </Text>
+            <Image image="ARROWDOWN" preferredWidth="20"></Image>
+            <Text alignment="MiddleLeft"  preferredWidth="350">to Expand</Text>
+        </HorizontalLayout>
         <Text alignment="MiddleLeft" >Lists can be pasted from most List Builders, but Ryan Kingston, Armada Warlords, and the Android Armada Fleet Designer are best supported</Text>
+        <Text alignment="MiddleLeft" color="red">Lines in red will not spawn.</Text>
+        <Text alignment="MiddleLeft">If that is a mistake, Click "?" to attempt to resolve it.</Text>
     </VerticalLayout>
 
     <HorizontalLayout padding="20 20 3 3">

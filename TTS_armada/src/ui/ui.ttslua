@@ -322,7 +322,7 @@ end
 spacing = "Compact"
 function onClick_fleet_togglespacing(player, _, idValue)
     if spacing=="Compact" then
-        spacing="Sparse"
+        spacing="S p a r s e"
     else
         spacing="Compact"
     end

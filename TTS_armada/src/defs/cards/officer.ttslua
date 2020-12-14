@@ -13,7 +13,7 @@ Card:new(Officer,{name="Kyrsta Agate", front="https://i.imgur.com/Fwdfoev.jpeg",
 Card:new(Officer,{name="Lando Calrissian", front="https://i.imgur.com/fw8Qm7S.jpeg", cost=4})
 Card:new(Officer,{name="Leia Organa", front="https://i.imgur.com/bJcJynH.jpg", cost=3})
 Card:new(Officer,{name="Major Derlin", front="https://i.imgur.com/Q8rOdcb.jpeg", cost=7})
-Card:new(Officer,{name="Raymus Antilles", front="https://i.imgur.com/1Ae4QfL.jpg", cost=7})
+Card:new(Officer,{name="Raymus Antilles", front="https://i.imgur.com/1Ae4QfL.jpg", cost=7, aliases={"Ray Antilles"}})
 Card:new(Officer,{name="Sabine Wren", front="https://i.imgur.com/s6dTW50.jpg", cost=4})
 Card:new(Officer,{name="Toryn Farr", front="https://i.imgur.com/kjyMTLq.jpeg", cost=7})
 Card:new(Officer,{name="Walex Blissex", front="https://i.imgur.com/X0OgdJp.jpeg", cost=5})

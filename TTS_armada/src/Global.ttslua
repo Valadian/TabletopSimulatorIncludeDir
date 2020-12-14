@@ -24,20 +24,20 @@ local SHIPS = {
     -- "https://paste.ee/r/a7mfW",
     -- "https://paste.ee/r/ClCL3"}
 local CMD_MESHES = {
-    "http://i.imgur.com/q0kgzJZ.jpg", --repair
-    "http://i.imgur.com/kCZ8ogN.jpg", --navigate
-    "http://i.imgur.com/BRFhnnN.jpg", --concentrate
-    "http://i.imgur.com/mlC12j8.jpg"} --squadron
+    "http://i.imgur.com/IHXy7k7.jpg", --repair
+    "http://i.imgur.com/ip3tJaN.jpg", --concentrate
+    "http://i.imgur.com/hGXCVQo.jpg", --navigate
+    "http://i.imgur.com/XbJbScU.jpg"} --squadron
 local CMD_NAMES = {}
-CMD_NAMES["http://i.imgur.com/q0kgzJZ.jpg"] = "Repair" --repair
-CMD_NAMES["http://i.imgur.com/kCZ8ogN.jpg"] = "Navigate" --navigate
-CMD_NAMES["http://i.imgur.com/BRFhnnN.jpg"] = "Concentrate Fire" --concentrate
-CMD_NAMES["http://i.imgur.com/mlC12j8.jpg"] = "Squadron" --squadron
+CMD_NAMES["http://i.imgur.com/IHXy7k7.jpg"] = "Repair" --repair
+CMD_NAMES["http://i.imgur.com/ip3tJaN.jpg"] = "Concentrate Fire" --concentrate
+CMD_NAMES["http://i.imgur.com/hGXCVQo.jpg"] = "Navigate" --navigate
+CMD_NAMES["http://i.imgur.com/XbJbScU.jpg"] = "Squadron" --squadron
 local CMD_COLORS = {}
-CMD_COLORS["http://i.imgur.com/q0kgzJZ.jpg"] = {0,0.8,0} --repair
-CMD_COLORS["http://i.imgur.com/kCZ8ogN.jpg"] = {0, 0.2, 0.8} --navigate
-CMD_COLORS["http://i.imgur.com/BRFhnnN.jpg"] = {0.8,0,0} --concentrate
-CMD_COLORS["http://i.imgur.com/mlC12j8.jpg"] = {0.5,0,0.5} --squadron
+CMD_COLORS["http://i.imgur.com/IHXy7k7.jpg"] = {0,0.8,0} --repair
+CMD_COLORS["http://i.imgur.com/ip3tJaN.jpg"] = {0.8,0,0} --concentrate
+CMD_COLORS["http://i.imgur.com/hGXCVQo.jpg"] = {0, 0.2, 0.8} --navigate
+CMD_COLORS["http://i.imgur.com/XbJbScU.jpg"] = {0.5,0,0.5} --squadron
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
@@ -74,7 +74,14 @@ function onObjectSpawn(obj)
         pos = obj.getPosition()
         hover_color = hover[math.floor(pos[1])*100+math.floor(pos[3])]
         if hover_color~=nil then
-            printToColor("   [COMMAND DIAL] Set to: "..CMD_NAMES[custom.diffuse], hover_color, CMD_COLORS[custom.diffuse])
+            color = stringColorToRGB(hover_color)
+            if hover_color=="White" then
+                color = {r=0.4,g=0.4,b=0.4}
+            end
+            if Player[hover_color].seated then
+                obj.setColorTint({1-(1-color.r)/2,1-(1-color.g)/2,1-(1-color.b)/2})
+                broadcastToColor("   [COMMAND DIAL] Set to: "..CMD_NAMES[custom.diffuse], hover_color, CMD_COLORS[custom.diffuse])
+            end
         else
             -- print("No hover color for: "..math.floor(pos[1])..","..math.floor(pos[3]))
         end
@@ -100,6 +107,7 @@ function onload(save_string)
             obj.setVar('rulerMesh',shipdata["rulerMesh"])
             obj.setTable('maneuver',shipdata["maneuver"])
             obj.setVar('hasShields',shipdata["hasShields"])
+            obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
         end
     end
     drawSquadronButtons()
@@ -141,6 +149,7 @@ function onSave()
             data["owner"] = ship.getVar('owner')
             data["team"] = ship.getVar('team')
             data["hasShields"] = ship.getVar('hasShields')
+            data["cmdBaseGUID"] = ship.getVar('cmdBaseGUID')
             save[ship.getGUID()] = data
         end
     end
@@ -222,34 +231,57 @@ function printCmds(ship)
     elseif not table.contains(getSeatedPlayers(),owner) then
         printToAll('No player seated at: '..owner,{1,0,0})
     else
+        cmdBaseGUID = ship.getVar("cmdBaseGUID")
+        -- print(cmdBaseGUID)
+        cmdBase = getObjectFromGUID(cmdBaseGUID)
+        -- print(cmdBase)
         local cmds = {}
+        local foundShipCommands = false
+        local foundBaseCommands = false
         for i,token in ipairs(getAllObjects()) do
             local custom = token.getCustomObject()
+            local tokenDiffuse = custom.diffuse
             local isDial = custom~=nil and table.contains(CMD_MESHES,custom.diffuse)
             local offset = vector.rotate(vector.sub(token.getPosition(),ship.getPosition()),-ship.getRotation()[2])
             local size = ship_size[ship.getVar('size')]
             local isOnBase = math.abs(offset[1])<math.abs(size[1]) and math.abs(offset[3])<math.abs(size[3])
+            local isOnCommandBase = false
+            if cmdBase~=nil then
+                local cmdBaseOffset = vector.sub(token.getPosition(),cmdBase.getPosition())
+                isOnCommandBase = math.abs(cmdBaseOffset[1])<1.5 and math.abs(cmdBaseOffset[3])<1.5
+            end
             if isOnBase and isDial then
                 table.insert(cmds,token)
+                foundShipCommands = true
+            end
+            if isOnCommandBase and isDial then
+                table.insert(cmds,token)
+                foundBaseCommands = true
             end
         end
-        table.sort(cmds, function(a,b) return a.getPosition()[2] > b.getPosition()[2] end)
-        printToColor("Cmds for: "..ship.getName(), owner, {0,1,0} )
-        for i,token in ipairs(cmds) do
-            printToColor("#"..i.." "..dial.name(token), owner, {0,1,1} )
+        if foundShipCommands and foundBaseCommands then
+            broadcastToColor("Warning: Commands on Ship and Cmd Base!", owner, {1,0.5,0})
         end
+        printToColor("===================================",owner, {1,1,1})
+        printToColor("The below list is in reverse order:",owner, {1,1,1})
+        table.sort(cmds, function(a,b) return a.getPosition()[2] < b.getPosition()[2] end)
+        for i,token in ipairs(cmds) do
+            broadcastToColor("#"..(1+#cmds-i).." "..CMD_NAMES[token.getCustomObject().diffuse], owner, CMD_COLORS[token.getCustomObject().diffuse] )
+        end
+        broadcastToColor("Cmds for: "..ship.getName(), owner, {0,1,0} )
+        printToColor("===================================",owner, {1,1,1})
     end
 end
 dial = {}
 function dial.name(dial)
     local mesh = dial.getCustomObject().diffuse
-    if mesh == "http://i.imgur.com/q0kgzJZ.jpg" then
+    if mesh == "http://i.imgur.com/IHXy7k7.jpg" then
         return "Repair"
-    elseif mesh == "http://i.imgur.com/kCZ8ogN.jpg" then
+    elseif mesh == "http://i.imgur.com/hGXCVQo.jpg" then
         return "Navigate"
-    elseif mesh == "http://i.imgur.com/BRFhnnN.jpg" then
+    elseif mesh == "http://i.imgur.com/ip3tJaN.jpg" then
             return "Concentrate Fire"
-    elseif mesh == "http://i.imgur.com/mlC12j8.jpg" then
+    elseif mesh == "http://i.imgur.com/XbJbScU.jpg" then
             return "Squadron"
     end
     return ""
@@ -770,7 +802,7 @@ function onObjectDropped( player_color, dropped_object )
                 if otherIsDial and isOnBase and token~=dropped_object then
                     --printToAll("moving: "..token.getGUID(),{1,0,0})
                     local pos = token.getPosition()
-                    token.setPosition({pos[1],pos[2]-1.43+1.0+droppos[2]+0.2,pos[3]})
+                    token.setPositionSmooth({pos[1],pos[2]*2+math.min(droppos[2],2),pos[3]},false, true)
                 end
             end
             --printToAll("DialDroppedNearOwnedShip",{0,1,0})
@@ -780,11 +812,11 @@ function onObjectDropped( player_color, dropped_object )
             local shippos = ship.getPosition()
             if isCommandBase then
                 dropped_object.setPositionSmooth({shippos[1],droppos[2],shippos[3]}) --shippos[2]+0.807
-                dropped_object.setRotationSmooth(vector.add(ship.getRotation(),{0,180,0}))
+                dropped_object.setRotationSmooth(vector.add(ship.getRotation(),{0,180,0}),false, true)
             else
                 local offset = {0,0,-ship_size[ship.getVar('size')][3]+0.9 }
                 local rotoff = vector.rotate(offset,ship.getRotation()[2])
-                dropped_object.setPositionSmooth({shippos[1]+rotoff[1],droppos[2],shippos[3]+rotoff[3]}) --shippos[2]+0.807
+                dropped_object.setPositionSmooth({shippos[1]+rotoff[1],math.min(droppos[2],2),shippos[3]+rotoff[3]},false, true) --shippos[2]+0.807
                 dropped_object.setRotationSmooth({0,ship.getRotation()[2]+180,0})
             end
 --            dropped_object.lock()
