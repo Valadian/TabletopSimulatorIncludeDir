@@ -1,4 +1,7 @@
-Ship:new(SmallShip,{
+SEPARATIST_SHIP = {
+    faction = "Separatist"
+}
+Ship:new(SmallShip,SEPARATIST_SHIP,{
 	name = "Hardcell-class Transport",
     front = "https://i.imgur.com/T7QWSb4.jpeg",
     back = "https://i.imgur.com/c9yNLyu.jpg",
@@ -12,7 +15,7 @@ Ship:new(SmallShip,{
 	aliases = {"Hardcell Transport"},
     command = 1
 })
-Ship:new(SmallShip,{
+Ship:new(SmallShip,SEPARATIST_SHIP,{
 	name = "Hardcell-class Battle Refit",
     front = "https://i.imgur.com/X96bJDW.jpeg",
     back = "https://i.imgur.com/Q46N3zb.jpeg",
@@ -27,7 +30,7 @@ Ship:new(SmallShip,{
     command = 1
 })
 
-Ship:new(MediumShip,{
+Ship:new(MediumShip,SEPARATIST_SHIP,{
 	name = "Munificent-class Comms Frigate",
     front = "https://i.imgur.com/T5LCaof.jpeg",
     back = "https://i.imgur.com/5BgxeQS.jpeg",
@@ -41,7 +44,7 @@ Ship:new(MediumShip,{
 	aliases = {"Munificent Comms Frigate"},
     command = 2
 })
-Ship:new(MediumShip,{
+Ship:new(MediumShip,SEPARATIST_SHIP,{
 	name = "Munificent-class Star Frigate",
     front = "https://i.imgur.com/kN6lJzW.jpeg",
     back = "https://i.imgur.com/8qP8mto.jpeg",

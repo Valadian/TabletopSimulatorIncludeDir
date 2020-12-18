@@ -3,7 +3,7 @@
         <InputField onEndEdit="030220/onEndEdit_updateList" id="fleetListPaste" lineType="MultiLineNewLine" placeholder="Paste List Here" preferredHeight="700" fontSize="12"></InputField>
         <Text id="fleetListPasteStandin" visibility="Noone" preferredHeight="730" >Text Box is hidden. Click Private to gain ownership and/or clear.</Text>
         <!-- <HorizontalLayout> -->
-            <Button text="Parse" preferredHeight="20" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
+        <Button text="Parse" preferredHeight="20" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
             <!-- <Button id="Private" text="Private" preferredWidth="100" onClick="030220/onClick_fleet_private" color="#000000" /> -->
         <!-- </HorizontalLayout> -->
     </VerticalLayout>

@@ -124,13 +124,21 @@ function Squadron:new (o, ...)
 end
 function Cache(DEFS,o)
     -- FUZZY[string.lower(o.name)] = o
-    DEFS[string.lower(o.name.." ("..o.cost..")")] = o
-    CacheNgrams(o.name.." ("..o.cost..")")
+    if o.cost~=nil then
+        DEFS[string.lower(o.name.." ("..o.cost..")")] = o
+        CacheNgrams(o.name.." ("..o.cost..")")
+    else
+        CacheNgrams(o.name)
+    end
     DEFS[string.lower(o.name)] = o
     -- CacheNgrams(o.name)
     for _,alias in ipairs(o.aliases) do
-        DEFS[string.lower(alias.." ("..o.cost..")")] = o
-        CacheNgrams(alias.." ("..o.cost..")")
+        if o.cost~=nil then
+            DEFS[string.lower(alias.." ("..o.cost..")")] = o
+            CacheNgrams(alias.." ("..o.cost..")")
+        else
+            CacheNgrams(alias)
+        end
         DEFS[string.lower(alias)] = o
         -- CacheNgrams(alias)
     end
@@ -188,6 +196,32 @@ function onObjectSpawn(object)
     if object.tag ~= "Figurine" and object.getName()~=nil and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) then
         createSpawnButtons(object)
     end
+
+    if CARDS[string.lower(object.getName())]~=nil and CARDS[string.lower(object.getName())].type == "Objective" then
+        print("Found objective: "..object.getName())
+        category = CARDS[string.lower(object.getName())].category
+        color = {0.82,0.22,0.235} --Assault
+        if category == "Defense" then
+            color = {0.992,0.922,0.031}
+        elseif category == "Navigation" then
+            color = {0.765,0.878,0.949}
+        end
+        object.createButton({
+            ['click_function'] = "Action_select_objective",
+            ['function_owner'] = self,
+            ['label'] = "Choose",
+            ['position'] = {0,0.2,-1.38},
+            ['rotation'] =  {0,0,0},
+            ['width'] = 800,
+            ['height'] = 150,
+            ['font_size'] = 120,
+            ['color'] = color,
+            ['font_color']={0,0,0}})
+    end
+end
+function Action_select_objective(card)
+    card.setPositionSmooth({-40.66,0.97,-0.09}, false, false)
+    card.clearButtons()
 end
 -- function onObjectLeaveContainer(Container, object)
 --     --Create a Button on the card for leaving a container
@@ -198,9 +232,9 @@ end
 function createSpawnButtons(object)
     object.clearButtons()
     object.createButton({label = "Spawn: "..object.getName(), click_function = 'Action_Spawn', rotation = {0, 0, 0},
-    position = {0, 0.3, -2}, width = (40 * string.len("Spawn: "..object.getName())), height = 100, font_size = 75, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+    position = {0, 0.3, 2}, width = (40 * string.len("Spawn: "..object.getName())), height = 100, font_size = 75, function_owner = self, color={0,1,0}, font_color={0,0,0}})
     object.createButton({label = "Done", click_function = 'Action_DoneSpawn', rotation = {0, 0, 0},
-    position = {0, 0.3, -2.8}, width = 320, height = 100, font_size = 75, function_owner = self, color={1,0,0}, font_color={1,1,1}})
+    position = {0, 0.3, 2.8}, width = 320, height = 100, font_size = 75, function_owner = self, color={1,0,0}, font_color={1,1,1}})
     -- local data = SHIPS[object.getName()]
     -- data[12] = object.getGUID()
     -- data[13] = {}
@@ -497,7 +531,7 @@ function Action_SpawnListSpawner(listSpawner)
 end
 
 function createSpawningStructure(lineobjs)
-
+    if lineobjs==nil then return nil end
     fleet = {
         objectives = {},
         ships = {},
@@ -514,7 +548,7 @@ function createSpawningStructure(lineobjs)
             if obj.def.type == "Objective" then --IS OBJECTIVE
                 table.insert(fleet.objectives, obj.def)
             elseif obj.def.maneuver~=nil then --IS SHIP
-                last_ship = {def=obj.def, upgrades = {}}
+                last_ship = {def=obj.def, upgrades = {}, upgradeCost=0}
                 table.insert(fleet.ships, last_ship)
             elseif obj.def.move~=nil then
                 table.insert(fleet.squads, {def=obj.def, count=tonumber(obj.count)})
@@ -522,6 +556,7 @@ function createSpawningStructure(lineobjs)
                 if last_ship==nil then
                     printToAll("Cannot spawn upgrade: "..obj.def.name.." since no ship found?",{1,0,0})
                 else
+                    last_ship.upgradeCost = last_ship.upgradeCost+obj.def.cost
                     table.insert(last_ship.upgrades, obj.def)
                 end
             end
@@ -689,6 +724,10 @@ function spawnCard(def, pos, offset, rot, count) --TODO: count
     if def.move~=nil then
         scale = {1.37,1,1.37}
     end
+    nick = def.name.." ("..def.cost..")"
+    if def.type == "Objective" then
+        nick = def.name
+    end
     local jsonRepresentation = {
       Name = "CardCustom",
       Transform = {
@@ -702,7 +741,7 @@ function spawnCard(def, pos, offset, rot, count) --TODO: count
         scaleY = scale[2],
         scaleZ = scale[3]
       },
-      Nickname = def.name.." ("..def.cost..")",
+      Nickname = nick,
       Hands = false,
       CardID = 2111,
       CustomDeck = {
@@ -741,8 +780,10 @@ function setCardDescriptionToSpawn(card)
         name = card.getName()
         count = 1
     end
-    Wait.frames(function() card.clearButtons() end, 2)
-    spawnShip(name,card.getPosition(),count,card.getRotation()[2])
+    if SHIPS[string.lower(name)]~=nil then
+        Wait.frames(function() card.clearButtons() end, 2)
+        spawnShip(name,card.getPosition(),count,card.getRotation()[2])
+    end
 end
 function spawnShip(name,pos,count,rotation)
     -- printToAll("Spawning: "..name,{1,0,0})
@@ -846,8 +887,8 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
     end
 end
 function SetCmdBaseGUIDonShip(base, ship)
-    print("Ship: "..ship.getGUID())
-    print("Base: "..base.getGUID())
+    -- print("Ship: "..ship.getGUID())
+    -- print("Base: "..base.getGUID())
     ship.setVar("cmdBaseGUID",base.getGUID())
 end
 function math.mod(a, b)
@@ -862,6 +903,9 @@ function vector.add(pos, offset)
 end
 function vector.sub(pos, offset)
     return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
+end
+function vector.length(v)
+    return math.sqrt(v[1]*v[1]+v[2]*v[2]+v[3]*v[3])
 end
 function vector.rotate(direction, yRotation)
 

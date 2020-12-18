@@ -11,6 +11,8 @@
     <Panel class="row" preferredHeight="20" childForceExpandWidth="false" childForceExpandHeight="false" spacing="5"/>
     <Button class="fleet" color="#FFFFFF" preferredWidth="40" minWIdth="15" tooltipPosition="Above" textAlignment="MiddleRight"/>
     <HorizontalLayout class="fleetRow" preferredHeight="20" minHeight="20"/>
+    <InputField textColor="white" color="black" outlineSize="1 1" outline="white"></InputField>
+    <Dropdown textColor="white" itemTextColor="white" dropdownBackgroundColor="black" arrowColor="white" itemBackgroundColors="black|#303030|#303030|black" color="black" outlineSize="1 1" outline="white"></Dropdown>
 </Defaults>
 <!-- height="800"
 width="400" -->
@@ -34,9 +36,11 @@ width="400" -->
         <Button text="Fleet"  id="fleetSpawner"  class="tab" />
         <Button text="Ships"  id="shipSpawner"  class="tab" />
         <Button text="Upgrades"  id="upgradeSpawner"  class="tab" />
+        <Button text="Cloud"  id="gameReporter"  class="tab" onClick="030220/onClick_selectGameReporterTab" />
     </HorizontalLayout>
 <Include src="fleetSpawner.xml"/>
 <Include src="shipSpawner.xml"/>
 <Include src="upgradeSpawner.xml"/>
+<Include src="gameReporter.xml"/>
 </VerticalLayout>
 <Include src="commandDialPopup.xml"/>

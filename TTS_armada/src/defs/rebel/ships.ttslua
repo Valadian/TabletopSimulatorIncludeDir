@@ -1,5 +1,6 @@
 REBEL_SHIP = {
-    back = "https://i.imgur.com/vUaQViH.png"
+    back = "https://i.imgur.com/vUaQViH.png",
+    faction = "Rebellion"
 }
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "GR-75 Medium Transports",
@@ -272,7 +273,7 @@ Ship:new(LargeShip,REBEL_SHIP,{
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
     shields = {6,4,4,2},
     cost = 140,
-    aliases = {"Starhawk Battleship Mark I", "Starhawk-class Battleship Mk.I", "Starhawk-class Battleship MkI", "Starhawk-class Battleship Mk1"},
+    aliases = {"Starhawk Battleship Mark I", "Starhawk-class Battleship Mk.I", "Starhawk-class Battleship MkI", "Starhawk-class Mk.I", "Starhawk-class MkI"},
     command = 4
 })
 Ship:new(LargeShip,REBEL_SHIP,{
@@ -285,6 +286,6 @@ Ship:new(LargeShip,REBEL_SHIP,{
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
     shields = {6,4,4,2},
     cost = 150,
-    aliases = {"Starhawk Battleship Mark II", "Starhawk-class Battleship Mk.II", "Starhawk-class Battleship MkII", "Starhawk-class Battleship Mk1"},
+    aliases = {"Starhawk Battleship Mark II", "Starhawk-class Battleship Mk.II", "Starhawk-class Battleship MkII", "Starhawk-class Mk.II", "Starhawk-class MkII"},
     command = 4
 })

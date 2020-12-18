@@ -1,5 +1,6 @@
 EMPIRE_SHIP = {
-    back = "https://i.imgur.com/Ag3p9fo.png"
+    back = "https://i.imgur.com/Ag3p9fo.png",
+    faction = "Empire"
 }
 Ship:new(SmallShip,EMPIRE_SHIP,{
 	name = "Gozanti-class Cruisers",

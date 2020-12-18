@@ -18,6 +18,7 @@ function onClick_ToggleUI(player, _, idValue)
         -- UI.show("fleetListPasteStandin")
         UI.hide("shipSpawnerPanel")
         UI.hide("upgradeSpawnerPanel")
+        UI.hide("gameReporterPanel")
         UI.hide("tabContainer")
         UI.setAttribute("armadaDisplay", "height", "30")
         UI.setAttribute("armadaDisplay", "width", "128")
@@ -70,20 +71,7 @@ ALL_TEAMS = "White|Brown|Red|Orange|Yellow|Green|Teal|Blue|Purple|Pink|Grey|Blac
 --         UI.setAttribute("fleetListPasteStandin", "visibility", other_colors)
 --     end
 -- end
-function onClick_fleet_parseFleet(player, _, idValue)
-    fleetOffsets[player.color]=0
-    UI.hide("fleetSpawnerInputLayout")
-    UI.show("fleetSpawnerInputParsed")
-    list = fleet_pastes[player.color]
-    -- clearSpawnArea(listSpawner)
-    if list==nil or #list==0 then
-        printToAll("Paste in fleet to spawn",{1,1,0})
-        UI.show("fleetSpawnerInputLayout")
-        UI.hide("fleetSpawnerInputParsed")
-        return
-    end
-    lines = string:split(list, "\n")
-
+function linesToLineobjs(lines)
     -- first_line = true
     line_objs = {}
     for _,line in ipairs(lines) do
@@ -135,12 +123,30 @@ function onClick_fleet_parseFleet(player, _, idValue)
             })
         end
     end
+    return line_objs
+end
+function onClick_fleet_parseFleet(player, _, idValue)
+    fleetOffsets[player.color]=0
+    UI.hide("fleetSpawnerInputLayout")
+    UI.show("fleetSpawnerInputParsed")
+    list = fleet_pastes[player.color]
+    -- clearSpawnArea(listSpawner)
+    if list==nil or #list==0 then
+        printToAll("Paste in fleet to spawn",{1,1,0})
+        UI.show("fleetSpawnerInputLayout")
+        UI.hide("fleetSpawnerInputParsed")
+        return
+    end
+    lines = string:split(list, "\n")
+    lineobjs = linesToLineobjs(lines)
     fleets[player.color]=line_objs
     updateParsed(player)
     -- layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
 end
+lastParsed_lineObjs = nil
 function updateParsed(player)
     line_objs = fleets[player.color]
+    lastParsed_lineObjs = line_objs
     offset = fleetOffsets[player.color] or 0
     -- UI.setAttribute("fleetMasterLayout", "minHeight", (#line_objs)*30)
     -- for i,obj in ipairs(line_objs) do
@@ -237,14 +243,101 @@ function onClick_fleet_clear(player, _, idValue)
     end
 end
 function onClick_fleet_spawn(player, _, idValue)
-    fleet = createSpawningStructure(fleets[player.color])
+
+    -- fleet = createSpawningStructure(fleets[player.color])
+    fleets[player.color] = lastParsed_lineObjs
+    fleet = createSpawningStructure(lastParsed_lineObjs) --Use visible, NOT last parsed for player
     listSpawner = findObjectByName("List Spawner ("..player.color..")")
 
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
     -- print(width)
     base_x = 55-width/2
+    spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), listSpawner.getRotation(),fleets[player.color][1].original)
     -- print(base_x)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
+end
+function Action_fleet_spawn(datacard, color, alt_click)
+    list = datacard.getDescription()
+    lines = string:split(list, "\n")
+    lineobjs = linesToLineobjs(lines)
+    fleets[color] = lineobjs
+    fleet = createSpawningStructure(lineobjs)
+    listSpawner = findObjectByName("List Spawner ("..color..")")
+    width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
+    base_x = 55-width/2
+    layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
+    datacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), false, false)
+    datacard.setRotationSmooth(listSpawner.getRotation(), false, false)
+end
+function fleetToString(fleet)
+    if fleet==nil then return "" end
+    faction = nil
+    commander = nil
+    totalPoints = 0
+    local str = "\n"
+    for _,def in ipairs(fleet.objectives) do
+        str = str..def.category..": "..def.name.."\n"
+    end
+    str = str.."\n"
+    for _,ship in ipairs(fleet.ships) do
+        str = str..ship.def.name.." ("..ship.def.cost
+        -- if ship.upgradeCost>0 then
+        --     str = str.." + "..ship.upgradeCost..": "..(ship.def.cost+ship.upgradeCost)
+        -- end
+        str = str..")\n"
+        for _,def in ipairs(ship.upgrades) do
+            str = str.." - "..def.name.." ("..def.cost..")\n"
+            if def.type=="Commander" then
+                commander = def.name
+            end
+        end
+        str = str.."= "..(ship.def.cost+ship.upgradeCost).." Points\n"
+        str = str.."\n"
+        faction = ship.def.faction
+        totalPoints = totalPoints+ship.def.cost+ship.upgradeCost
+    end
+    if commander~=nil then
+        str = "Commander: "..commander.."\n"..str
+    end
+    if faction~=nil then
+        str = "Faction: "..faction.."\n"..str
+    end
+    if #fleet.squads>0 then
+        squadronCost = 0
+        squadronStr = ""
+        for _,squad in ipairs(fleet.squads) do
+            if squad.count~=nil and squad.count>1 then
+                squadronStr = squadronStr.." - "..squad.count.." x "..squad.def.name.." ("..(squad.def.cost*squad.count)..")\n"
+            else
+                squadronStr = squadronStr.." - "..squad.def.name.." ("..squad.def.cost..")\n"
+            end
+            squadronCost = squadronCost+squad.def.cost*(squad.count or 1)
+        end
+        -- str = str.."Squadrons ("..squadronCost.."): \n"
+        str = str.."Squadrons: \n"
+        str = str..squadronStr
+        str = str.."= "..squadronCost.." Points\n"
+        totalPoints = totalPoints+squadronCost
+    end
+    str = str.."\nTotal Points: "..totalPoints
+    return str
+end
+function spawnDataCard(fleet, pos, rot, name)
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Token'
+    obj_parameters.position = pos
+    obj_parameters.rotation = rot
+    obj_parameters.scale = {0.7, 1, 0.7}
+
+
+    local datacard = spawnObject(obj_parameters)
+    local custom = {}
+    custom.image = "http://i.imgur.com/EUi3Wog.png"
+    custom.stackable = true
+    datacard.setCustomObject(custom)
+
+    datacard.setName(name)
+    datacard.setDescription(fleetToString(fleet))
 end
 function findObjectByName(name)
     for i,obj in ipairs(getAllObjects()) do
@@ -329,3 +422,4 @@ function onClick_fleet_togglespacing(player, _, idValue)
     UI.setAttribute("spacingButton","text",spacing)
     UI.setAttribute("spacingButton","textColor","White")
 end
+#include gameReporter

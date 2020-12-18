@@ -1,0 +1,79 @@
+<Panel id="gameReporterPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
+    <VerticalLayout preferredHeight="750">
+        <VerticalLayout preferredHeight="730" padding="10 10 20 20">
+            <Text>You can report the results of your games!</Text>
+            <Text>This data will be utilized for list building assistance, ELO calculation, and competitive card discussions!</Text>
+            <Text></Text>
+
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170">First Player</Text>
+                <Text preferredWidth="60"></Text>
+                <Text preferredWidth="170">Second Player</Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="17">
+                <HorizontalLayout preferredWidth="170">
+                    <Button id="White1" color="White" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Red1" color="Red" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Yellow1" color="Yellow" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Blue1" color="Blue" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Purple1" color="Purple" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Pink1" color="Pink" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Orange1" color="Orange" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Brown1" color="Brown" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Green1" color="Green" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Teal1" color="Teal" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                </HorizontalLayout>
+                <Text preferredWidth="60">Color</Text>
+                <HorizontalLayout preferredWidth="170">
+                    <Button id="White2" color="White" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Red2" color="Red" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Yellow2" color="Yellow" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Blue2" color="Blue" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Purple2" color="Purple" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Pink2" color="Pink" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Orange2" color="Orange" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Brown2" color="Brown" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Green2" color="Green" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Teal2" color="Teal" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <HorizontalLayout preferredWidth="170">
+                    <Text id="Player1name">?</Text>
+                    <Text id="Player1listFound" active="false" color="Green" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player1listNotFound" color="Red" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                </HorizontalLayout>
+                <Text preferredWidth="60"></Text>
+                <HorizontalLayout preferredWidth="170">
+                    <Text id="Player2name">?</Text>
+                    <Text id="Player2listFound" active="false" color="Green" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player2listNotFound" color="Red" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170"></Text>
+                <Text preferredWidth="60">Obj:</Text>
+                <Text preferredWidth="170" id="objective"></Text>
+            </HorizontalLayout>
+            <Text></Text>
+
+            <HorizontalLayout preferredHeight="30">
+                <InputField preferredWidth="170" placeholder="Player 1 Score" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player1score"></InputField>
+                <Text preferredWidth="60">Score</Text>
+                <InputField preferredWidth="170" placeholder="Player 2 Score" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player2score"></InputField>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text id="Player1points" preferredWidth="170">-</Text>
+                <Text preferredWidth="60"></Text>
+                <Text id="Player2points" preferredWidth="170">-</Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170" id="Player1iswinner"></Text>
+                <Text preferredWidth="60"></Text>
+                <Text preferredWidth="170" id="Player2iswinner">Winner!</Text>
+            </HorizontalLayout>
+            <Text preferredHeight="400"></Text>
+        </VerticalLayout>
+        <Button text="Submit Score" preferredHeight="20" onClick="030220/onClick_score_submit"  color="#008000" />
+    </VerticalLayout>
+</Panel>

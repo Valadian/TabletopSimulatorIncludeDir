@@ -1,4 +1,8 @@
-Ship:new(SmallShip,{
+REPUBLIC_SHIP = {
+    faction = "Republic"
+}
+
+Ship:new(SmallShip,REPUBLIC_SHIP,{
 	name = "Consular-class Armed Cruiser",
     front = "https://i.imgur.com/CV9k4Fz.jpeg",
     back = "https://i.imgur.com/nzWUP25.jpg",
@@ -12,7 +16,7 @@ Ship:new(SmallShip,{
 	aliases = {"Consular Armed Cruiser","Armed Cruiser"},
     command = 1
 })
-Ship:new(SmallShip,{
+Ship:new(SmallShip,REPUBLIC_SHIP,{
 	name = "Consular-class Charger c70",
     front = "https://i.imgur.com/CXHwzPR.jpeg",
     back = "https://i.imgur.com/vpvKfAO.jpeg",
@@ -27,7 +31,7 @@ Ship:new(SmallShip,{
     command = 1
 })
 
-Ship:new(MediumShip,{
+Ship:new(MediumShip,REPUBLIC_SHIP,{
 	name = "Acclamator I-class Assault Ship",
     front = "https://i.imgur.com/6JbZwXG.jpeg",
     back = "https://i.imgur.com/T9fOJEE.jpg",
@@ -41,7 +45,7 @@ Ship:new(MediumShip,{
 	aliases = {"Acclamator I Assault Ship", "Acclamator I"},
     command = 3
 })
-Ship:new(MediumShip,{
+Ship:new(MediumShip,REPUBLIC_SHIP,{
 	name = "Acclamator II-class Assault Ship",
     front = "https://i.imgur.com/NhED6cA.jpg",
     back = "https://i.imgur.com/IpDPpzX.jpeg",
