@@ -1,7 +1,7 @@
 
 
 <Defaults>
-    <Button color="black" textColor="white" />
+    <Button color="black" textColor="white" tooltipBackgroundColor="rgba(0,0,0,1)" />
     <Button class="tab" onClick="030220/onClick_selectArmadaTab" height="40" width="80" color="#303030"/>
     <Panel class="buttonPanel" color="gray" alignment="UpperLeft" showAnimation="None" hideAnimation="None" />
     <Text color="white" />
@@ -13,6 +13,14 @@
     <HorizontalLayout class="fleetRow" preferredHeight="20" minHeight="20"/>
     <InputField textColor="white" color="black" outlineSize="1 1" outline="white"></InputField>
     <Dropdown textColor="white" itemTextColor="white" dropdownBackgroundColor="black" arrowColor="white" itemBackgroundColors="black|#303030|#303030|black" color="black" outlineSize="1 1" outline="white"></Dropdown>
+    <Button class="faction" onClick="030220/onClick_selectFaction" fontSize="18" iconWidth="10" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060"/>
+    <Button class="shipSquadron" onClick="030220/onClick_selectShipSquadron" fontSize="14" iconWidth="10" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060"/>
+    <Button class="upgradeCategory" onClick="030220/onClick_loadCategory" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" tooltipPosition="Below"/>
+    <Text class="openParen" preferredWidth="5" color="#606060" alignment="MiddleRight"/>
+    <Text class="closeParen" preferredWidth="5" color="#606060" alignment="MiddleLeft"/>
+    <Text class="cost" preferredWidth="20" />
+    <Button class="upgradeCard" onClick="030220/onClick_spawnCard" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" textColor="white" textAlignment="MiddleLeft"/>
+    <Button class="shipCard" onClick="030220/onClick_spawnCard" active="false" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" textColor="white" textAlignment="MiddleLeft"/>
 </Defaults>
 <!-- height="800"
 width="400" -->
@@ -28,7 +36,7 @@ width="400" -->
     outline="#303030"
     >
     <HorizontalLayout color="transparent" preferredHeight="30" spacing="8">
-        <Text id="title" preferredWidth="264" alignment="MiddleRight" active="false">Armada Fleet</Text>
+        <Text id="spawnerTitle" preferredWidth="264" alignment="MiddleRight" active="false">Armada Fleet</Text>
         <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter">Spawner</Text>
         <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Show Armada Fleet Spawner" colors="transparent|#00FF00|#008000|transparents" />
     </HorizontalLayout>

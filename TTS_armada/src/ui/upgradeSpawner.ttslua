@@ -1,0 +1,138 @@
+
+selected_faction = "Rebellion"
+selected_category = nil
+function onClick_selectFaction(player, _, idValue)
+    idValue = idValue:gsub("_upgrade","")
+    idValue = idValue:gsub("_ship","")
+    -- print("Faction: "..idValue)
+    for i,v in ipairs({"Rebellion","Empire","Republic","Separatist"}) do
+        UI.setAttribute(v.."_ship","textColor","#FFFFFF")
+        UI.setAttribute(v.."_upgrade","textColor","#FFFFFF")
+    end
+    UI.setAttribute(idValue.."_ship","textColor","#FFD700")
+    UI.setAttribute(idValue.."_upgrade","textColor","#FFD700")
+    selected_faction = idValue
+    update_upgrade_card_list()
+    update_ship_card_list()
+end
+selected_special_objectives = false
+function onClick_loadCategory(player, _, idValue)
+    if selected_category=="Objective" and idValue=="Objective" and selected_special_objectives==false then
+        selected_special_objectives = true
+    else
+        selected_special_objectives = false
+    end
+    selected_category = idValue
+    -- UI.setAttribute(idValue,"colors","#040404|#A0A0A0|white|#040404")
+    -- UI.setAttribute(idValue,"color","#A0A0A0")
+    for i,v in ipairs({"Objective","Commander","DefensiveRetrofit","ExperimentalRetrofit","FleetCommand","FleetSupport","IonCannons","Objectives","Ordnance","OffensiveRetrofit","Officer","SuperWeapon","SupportTeam","Title","Turbolaser","WeaponsTeam","WeaponsTeamAndOffensiveRetrofit"}) do
+        UI.setAttribute(v,"iconColor","#FFFFFF")
+    end
+    if idValue=="Objective" and selected_special_objectives then
+        UI.setAttribute(idValue,"iconColor","rgba(0.267,0.678,0.459)")
+    else
+        UI.setAttribute(idValue,"iconColor","#FFD700")
+    end
+    update_upgrade_card_list()
+end
+function update_upgrade_card_list()
+    if selected_category==nil then return end
+    cards_of_category = CARDS_BY_CATEGORY[selected_category]
+    if selected_category == "Objective" then
+        local filtered_cards = {}
+
+        for _, v in ipairs(cards_of_category) do
+            if (v.category=="Special") == selected_special_objectives then table.insert(filtered_cards, v) end
+        end
+
+        cards_of_category = filtered_cards
+    end
+    if selected_category~="Title" and selected_category~="Objective" then
+        table.sort(cards_of_category, function(a, b)
+            return a.name < b.name
+        end)
+    end
+    if selected_faction ~= nil then
+        -- print(selected_faction)
+        local filtered_cards = {}
+
+        for _, v in ipairs(cards_of_category) do
+            if v.factions==nil or table.contains(v.factions,selected_faction) then table.insert(filtered_cards, v) end
+        end
+
+        cards_of_category = filtered_cards
+    end
+    last = 0
+    for i,def in ipairs(cards_of_category) do
+        if def.cost~=nil then
+            UI.setAttribute("upgrade"..i, "text",def.name.." ("..def.cost..")")
+            UI.setAttribute("upgrade"..i, "textColor","white")
+        else
+            UI.setAttribute("upgrade"..i, "text",def.name)
+            UI.setAttribute("upgrade"..i, "textColor","white")
+        end
+        if def.category=="Assault" then
+            UI.setAttribute("upgrade"..i, "textColor","rgba(0.82,0.22,0.235)")
+        elseif def.category=="Defense" then
+            UI.setAttribute("upgrade"..i, "textColor","rgba(0.992,0.922,0.031)")
+        elseif def.category=="Navigation" then
+            UI.setAttribute("upgrade"..i, "textColor","rgba(0.765,0.878,0.949)")
+        elseif def.category=="Special" then
+            UI.setAttribute("upgrade"..i, "textColor","rgba(0.267,0.678,0.459)")
+        end
+        last = i
+        UI.show("upgrade"..i)
+    end
+    for i = last+1,40 do
+        UI.hide("upgrade"..i)
+        UI.setAttribute("upgrade"..i, "text","")
+        -- if last<=20 and i>20 then
+        -- end
+    end
+    if last<=20 then
+        UI.setAttribute("upgradeGrid", "cellSize", "400 28")
+    else
+        UI.setAttribute("upgradeGrid", "cellSize", "200 28")
+    end
+end
+function onClick_spawn_all_upgrades(player, _, idValue)
+    for i=1,40 do
+        cardName = UI.getAttribute("upgrade"..i,"text")
+        -- print(cardName)
+        if cardName~="" and cardName~=nil then
+            onClick_spawnCard(player, _, "upgrade"..i)
+        end
+    end
+end
+function onClick_spawnCard(player, _, idValue)
+    cardname = UI.getAttribute(idValue,"text")
+    def = CARDS[string.lower(cardname)] or SHIPS[string.lower(cardname)]
+    size = {2.5,2,3}
+    if def.maneuver~=nil or def.move~=nil then
+        size = {4.6,2,8.5}
+    end
+    if def.defense_tokens~=nil and #def.defense_tokens==6 then
+        size = {9,2,8.5}
+    end
+    if def~=nil then
+        x_step = size[1]*1.1
+        y_step = size[3]*1.1
+        for j=0,math.floor(20/y_step) do
+            for i=0,math.floor(48/x_step) do
+                pos = vector.add({-24,1.98,11}, {i*x_step,0,j*-y_step})
+                local hitList = Physics.cast({
+                    origin       = pos,
+                    direction    = {0,1,0},
+                    type         = 3,
+                    size         = size,
+                    max_distance = 0,
+                    debug        = false,
+                })
+                if #hitList == 0 then
+                    spawnCard(def, {-24, 2, 11}, {i*x_step, 0, j*-y_step}, {0, 180, 0}, nil, false)
+                    return
+                end
+            end
+        end
+    end
+end

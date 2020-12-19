@@ -2,8 +2,11 @@ Turbolaser = {
     type="Turbolaser",
     back = "https://i.imgur.com/YwrHjHG.png"
 }
+CloneWars = {
+    factions={"Republic","Separatist"}
+}
 --Republic/Separatist
-Card:new(Turbolaser,{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg", cost=8}) --modification)
+Card:new(Turbolaser,CloneWars,{name="Swivel-Mount Batteries", front="https://i.imgur.com/QyfrQ24.jpeg", cost=8}) --modification)
 
 --generic
 Card:new(Turbolaser,{name="Dual Turbolaser Turrets", front="https://i.imgur.com/RfHrc24.jpg", cost=5}) --modification)

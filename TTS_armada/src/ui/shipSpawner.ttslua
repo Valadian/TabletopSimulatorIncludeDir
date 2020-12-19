@@ -1,0 +1,51 @@
+--onClick_selectFaction SEE: upgradeSpawner.ttslua
+ship_or_squadrons = nil
+function update_ship_card_list()
+    if ship_or_squadrons~=nil then
+        ships_of_faction = {}
+        for k,def in pairs(SHIPS_BY_FACTION[selected_faction]) do
+            -- print(def.name.." "..tostring(def.move~=nil).." "..tostring(def.maneuver~=nil).." "..def.faction)
+            if (def.maneuver~=nil and ship_or_squadrons=="ships") or
+               (def.move~=nil and ship_or_squadrons=="squadrons") then
+                -- print(def.name)
+                table.insert(ships_of_faction,def)
+            end
+        end
+        last = 0
+        for i,def in ipairs(ships_of_faction) do
+            UI.setAttribute("ship"..i, "text",def.name.." ("..def.cost..")")
+            UI.setAttribute("ship"..i, "textColor","white")
+            last = i
+            UI.show("ship"..i)
+        end
+        for i = last+1,40 do
+            UI.hide("ship"..i)
+            UI.setAttribute("ship"..i, "text","")
+            -- if last<=20 and i>20 then
+            -- end
+        end
+        if last<=24 then
+            UI.setAttribute("shipGrid", "cellSize", "400 26")
+        else
+            UI.setAttribute("shipGrid", "cellSize", "200 26")
+        end
+    end
+end
+function onClick_spawn_all_ships(player, _, idValue)
+    for i=1,40 do
+        cardName = UI.getAttribute("ship"..i,"text")
+        -- print(cardName)
+        if cardName~="" and cardName~=nil then
+            onClick_spawnCard(player, _, "ship"..i)
+        end
+    end
+end
+function onClick_selectShipSquadron(player, _, idValue)
+    ship_or_squadrons = idValue:gsub("_ship","")
+    -- print("Faction: "..idValue)
+    for i,v in ipairs({"squadrons_ship","ships_ship"}) do
+        UI.setAttribute(v,"textColor","#FFFFFF")
+    end
+    UI.setAttribute(idValue,"textColor","#FFD700")
+    update_ship_card_list()
+end

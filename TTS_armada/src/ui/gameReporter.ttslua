@@ -53,7 +53,7 @@ function onClick_score_submit(player, _, idValue)
     --player2score
     player1points = UI.getValue("Player1points")
     player2points = UI.getValue("Player2points")
-    objective = UI.getValue("objective")
+    objective = UI.getValue("activeObjective")
     player1fleet = flatten(createSpawningStructure(fleets[UI.getAttribute("Player1name","color")]))
     if #player1fleet == 0 then
         print("No fleet found for Player 1!")

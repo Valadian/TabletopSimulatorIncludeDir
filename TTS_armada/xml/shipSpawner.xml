@@ -1,5 +1,57 @@
-<Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="740" color="black">
+<Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout>
-        <Text preferredWidth="210">Not Implemented</Text>
+        <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
+            <Button id="Rebellion_ship" class="faction" textColor="#FFD700">Rebellion</Button><!-- icon="Rebellion" -->
+            <Button id="Empire_ship" class="faction" >Empire</Button><!-- icon="Empire" -->
+            <Button id="Republic_ship" class="faction" >Republic</Button><!-- icon="Republic" -->
+            <Button id="Separatist_ship" class="faction" >Separatist</Button><!-- icon="Separatist" -->
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="30" padding="5 5 5 0" spacing="5">
+            <Button id="squadrons_ship" class="shipSquadron">Squadrons</Button><!-- icon="Rebellion" -->
+            <Button id="ships_ship" class="shipSquadron" >Ship</Button><!-- icon="Empire" -->
+        </HorizontalLayout>
+        <GridLayout id="shipGrid" cellSize="400 26" preferredHeight="640" startAxis="Vertical">
+            <Button id="ship1" class="shipCard"></Button>
+            <Button id="ship2" class="shipCard"></Button>
+            <Button id="ship3" class="shipCard"></Button>
+            <Button id="ship4" class="shipCard"></Button>
+            <Button id="ship5" class="shipCard"></Button>
+            <Button id="ship6" class="shipCard"></Button>
+            <Button id="ship7" class="shipCard"></Button>
+            <Button id="ship8" class="shipCard"></Button>
+            <Button id="ship9" class="shipCard"></Button>
+            <Button id="ship10" class="shipCard"></Button>
+            <Button id="ship11" class="shipCard"></Button>
+            <Button id="ship12" class="shipCard"></Button>
+            <Button id="ship13" class="shipCard"></Button>
+            <Button id="ship14" class="shipCard"></Button>
+            <Button id="ship15" class="shipCard"></Button>
+            <Button id="ship16" class="shipCard"></Button>
+            <Button id="ship17" class="shipCard"></Button>
+            <Button id="ship18" class="shipCard"></Button>
+            <Button id="ship19" class="shipCard"></Button>
+            <Button id="ship20" class="shipCard"></Button>
+            <Button id="ship21" class="shipCard"></Button>
+            <Button id="ship22" class="shipCard"></Button>
+            <Button id="ship23" class="shipCard"></Button>
+            <Button id="ship24" class="shipCard"></Button>
+            <Button id="ship25" class="shipCard"></Button>
+            <Button id="ship26" class="shipCard"></Button>
+            <Button id="ship27" class="shipCard"></Button>
+            <Button id="ship28" class="shipCard"></Button>
+            <Button id="ship29" class="shipCard"></Button>
+            <Button id="ship30" class="shipCard"></Button>
+            <Button id="ship31" class="shipCard"></Button>
+            <Button id="ship32" class="shipCard"></Button>
+            <Button id="ship33" class="shipCard"></Button>
+            <Button id="ship34" class="shipCard"></Button>
+            <Button id="ship35" class="shipCard"></Button>
+            <Button id="ship36" class="shipCard"></Button>
+            <Button id="ship37" class="shipCard"></Button>
+            <Button id="ship38" class="shipCard"></Button>
+            <Button id="ship39" class="shipCard"></Button>
+            <Button id="ship40" class="shipCard"></Button>
+        </GridLayout>
+        <Button text="Spawn All" preferredHeight="40" onClick="030220/onClick_spawn_all_ships"  color="#008000" />
     </VerticalLayout>
 </Panel>

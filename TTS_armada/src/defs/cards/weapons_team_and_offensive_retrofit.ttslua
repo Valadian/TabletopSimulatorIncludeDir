@@ -3,12 +3,12 @@ WeaponsTeamAndOffensiveRetrofit = {
     back = "https://i.imgur.com/mPu7lfL.png"
 }
 --rebel
-Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Cham Syndulla", front="https://i.imgur.com/1UBq5nW.jpg", cost=5})
-Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Jyn Erso", front="https://i.imgur.com/PJTbNuK.jpg", cost=4})
-Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Shriv Suurgav", front="https://i.imgur.com/0y9SkmF.jpg", cost=6})
+Card:new(WeaponsTeamAndOffensiveRetrofit,Rebel,{name="Cham Syndulla", front="https://i.imgur.com/1UBq5nW.jpg", cost=5})
+Card:new(WeaponsTeamAndOffensiveRetrofit,Rebel,{name="Jyn Erso", front="https://i.imgur.com/PJTbNuK.jpg", cost=4})
+Card:new(WeaponsTeamAndOffensiveRetrofit,Rebel,{name="Shriv Suurgav", front="https://i.imgur.com/0y9SkmF.jpg", cost=6})
 
 --imperial
-Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Darth Vader", front="https://i.imgur.com/8Xu7fJp.jpg", cost=3})
+Card:new(WeaponsTeamAndOffensiveRetrofit,Empire,{name="Darth Vader", front="https://i.imgur.com/8Xu7fJp.jpg", cost=3})
 
 --generic
 Card:new(WeaponsTeamAndOffensiveRetrofit,{name="Boarding Engineers", front="https://i.imgur.com/iIj1jTC.jpg", cost=2})

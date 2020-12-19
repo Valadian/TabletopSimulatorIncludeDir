@@ -1,6 +1,6 @@
 function onClick_ToggleUI(player, _, idValue)
     if UI.getAttribute("armadaDisplay", "height")=="30" then
-        UI.show("title")
+        UI.show("spawnerTitle")
         UI.show("fleetSpawnerPanel")
         --UI.hide("shipSpawnerPanel")
         UI.show("tabContainer")
@@ -12,7 +12,7 @@ function onClick_ToggleUI(player, _, idValue)
         -- UI.setAttribute("armadaDisplay","outlineSize","0 0")
         -- UI.setAttribute("armadaDisplay","outline","white")
     else
-        UI.hide("title")
+        UI.hide("spawnerTitle")
         UI.hide("fleetSpawnerPanel")
         -- UI.hide("fleetSpawnerInputParsed")
         -- UI.show("fleetListPasteStandin")
@@ -159,6 +159,7 @@ function updateParsed(player)
             -- print("Setting: 'line"..i.."count' to: '"..tostring(obj.count).."'")
             -- print(obj.original.." Cost: "..tostring(obj.cost))
             UI.setAttribute("line"..i.."Name","visibility","")
+            UI.hide("line"..i.."icon")
             if obj.def==nil then
                 UI.hide("line"..i.."count")
                 UI.hide("line"..i.."_indicator")
@@ -194,9 +195,11 @@ function updateParsed(player)
                     UI.hide("line"..i.."count")
                     UI.hide("line"..i.."_indicator")
                 else --must be a card
+                    UI.show("line"..i.."icon")
+                    UI.setAttribute("line"..i.."icon","image",obj.def.type)
                     UI.hide("line"..i.."count")
                     UI.show("line"..i.."_indicator")
-                    UI.setValue("line"..i.."_indicator","•")
+                    UI.setValue("line"..i.."_indicator"," ")
                 end
                 UI.setValue("line"..i.."Name", obj.parsed)
                 UI.setAttribute("line"..i.."Name", "color", "white")
@@ -423,3 +426,5 @@ function onClick_fleet_togglespacing(player, _, idValue)
     UI.setAttribute("spacingButton","textColor","White")
 end
 #include gameReporter
+#include upgradeSpawner
+#include shipSpawner

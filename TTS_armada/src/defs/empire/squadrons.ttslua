@@ -1,5 +1,6 @@
 EMPIRE_SQUAD = {
-    back = "https://i.imgur.com/8KAyFCq.png"
+    back = "https://i.imgur.com/8KAyFCq.png",
+    faction = "Empire"
 }
 ship = {
     mesh = "http://paste.ee/p/Foax6",

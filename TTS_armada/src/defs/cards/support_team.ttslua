@@ -3,7 +3,7 @@ SupportTeam = {
     back = "https://i.imgur.com/WjGbQ3t.png"
 }
 --separatist
-Card:new(SupportTeam,{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg", cost=4})
+Card:new(SupportTeam,Separatist,{name="Battle Droid Reserves", front="https://i.imgur.com/ffhsdrO.jpeg", cost=4})
 
 --generic
 Card:new(SupportTeam,{name="Auxiliary Shields Team", front="https://i.imgur.com/SkNnm5P.jpg", cost=3})

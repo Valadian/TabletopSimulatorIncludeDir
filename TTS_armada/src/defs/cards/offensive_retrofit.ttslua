@@ -3,10 +3,10 @@ OffensiveRetrofit = {
     back = "https://i.imgur.com/FSY3Hkx.png"
 }
 --republic
-Card:new(OffensiveRetrofit,{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg", cost=3})
+Card:new(OffensiveRetrofit,Republic,{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg", cost=3})
 
 --separatist
-Card:new(OffensiveRetrofit,{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg", cost=3})
+Card:new(OffensiveRetrofit,Separatist,{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg", cost=3})
 
 --generic
 Card:new(OffensiveRetrofit,{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg", cost=5}) --modification)

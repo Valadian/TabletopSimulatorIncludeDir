@@ -1,5 +1,71 @@
-<Panel id="upgradeSpawnerPanel" class="buttonPanel" active="false" preferredHeight="740" color="black">
+<Panel id="upgradeSpawnerPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout>
-        <Text preferredWidth="210">Not Implemented</Text>
+        <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
+            <Button id="Rebellion_upgrade" class="faction" textColor="#FFD700" >Rebellion</Button><!-- icon="Rebellion" -->
+            <Button id="Empire_upgrade" class="faction" >Empire</Button><!-- icon="Empire" -->
+            <Button id="Republic_upgrade" class="faction" >Republic</Button><!-- icon="Republic" -->
+            <Button id="Separatist_upgrade" class="faction" >Separatist</Button><!-- icon="Separatist" -->
+        </HorizontalLayout>
+        <GridLayout cellSize="50 50" preferredHeight="100">
+            <Button id="Commander" class="upgradeCategory" icon="Commander" tooltip="Commander"/>
+            <Button id="DefensiveRetrofit" class="upgradeCategory" icon="DefensiveRetrofit" tooltip="Defensive Retrofit"/>
+            <Button id="ExperimentalRetrofit" class="upgradeCategory" icon="ExperimentalRetrofit" tooltip="Experimental Retrofit"/>
+            <Button id="FleetCommand" class="upgradeCategory" icon="FleetCommand" tooltip="Fleet Command"/>
+            <Button id="FleetSupport" class="upgradeCategory" icon="FleetSupport" tooltip="Fleet Support"/>
+            <Button id="IonCannons" class="upgradeCategory" icon="IonCannons" tooltip="Ion Cannons"/>
+            <Button id="OffensiveRetrofit" class="upgradeCategory" icon="OffensiveRetrofit" tooltip="Offensive Retrofit"/>
+            <Button id="Officer" class="upgradeCategory" icon="Officer" tooltip="Officer"/>
+            <Button id="Ordnance" class="upgradeCategory" icon="Ordnance" tooltip="Ordnance"/>
+            <Button id="SuperWeapon" class="upgradeCategory" icon="SuperWeapon" tooltip="Super Weapon"/>
+            <Button id="SupportTeam" class="upgradeCategory" icon="SupportTeam" tooltip="Support Team"/>
+            <Button id="Title" class="upgradeCategory" icon="Title" tooltip="Title"/>
+            <Button id="Turbolaser" class="upgradeCategory" icon="Turbolaser" tooltip="Turbolaser"/>
+            <Button id="WeaponsTeam" class="upgradeCategory" icon="WeaponsTeam" tooltip="Weapons Team"/>
+            <Button id="WeaponsTeamAndOffensiveRetrofit" class="upgradeCategory" icon="WeaponsTeamAndOffensiveRetrofit" tooltip="Boarding Team"/>
+            <Button id="Objective" class="upgradeCategory" icon="Objective" tooltip="Objectives (Click again for Special)"/>
+        </GridLayout>
+        <GridLayout id="upgradeGrid" cellSize="200 28" preferredHeight="570" startAxis="Vertical">
+            <Button id="upgrade1" class="upgradeCard"></Button>
+            <Button id="upgrade2" class="upgradeCard"></Button>
+            <Button id="upgrade3" class="upgradeCard"></Button>
+            <Button id="upgrade4" class="upgradeCard"></Button>
+            <Button id="upgrade5" class="upgradeCard"></Button>
+            <Button id="upgrade6" class="upgradeCard"></Button>
+            <Button id="upgrade7" class="upgradeCard"></Button>
+            <Button id="upgrade8" class="upgradeCard"></Button>
+            <Button id="upgrade9" class="upgradeCard"></Button>
+            <Button id="upgrade10" class="upgradeCard"></Button>
+            <Button id="upgrade11" class="upgradeCard"></Button>
+            <Button id="upgrade12" class="upgradeCard"></Button>
+            <Button id="upgrade13" class="upgradeCard"></Button>
+            <Button id="upgrade14" class="upgradeCard"></Button>
+            <Button id="upgrade15" class="upgradeCard"></Button>
+            <Button id="upgrade16" class="upgradeCard"></Button>
+            <Button id="upgrade17" class="upgradeCard"></Button>
+            <Button id="upgrade18" class="upgradeCard"></Button>
+            <Button id="upgrade19" class="upgradeCard"></Button>
+            <Button id="upgrade20" class="upgradeCard"></Button>
+            <Button id="upgrade21" class="upgradeCard"></Button>
+            <Button id="upgrade22" class="upgradeCard"></Button>
+            <Button id="upgrade23" class="upgradeCard"></Button>
+            <Button id="upgrade24" class="upgradeCard"></Button>
+            <Button id="upgrade25" class="upgradeCard"></Button>
+            <Button id="upgrade26" class="upgradeCard"></Button>
+            <Button id="upgrade27" class="upgradeCard"></Button>
+            <Button id="upgrade28" class="upgradeCard"></Button>
+            <Button id="upgrade29" class="upgradeCard"></Button>
+            <Button id="upgrade30" class="upgradeCard"></Button>
+            <Button id="upgrade31" class="upgradeCard"></Button>
+            <Button id="upgrade32" class="upgradeCard"></Button>
+            <Button id="upgrade33" class="upgradeCard"></Button>
+            <Button id="upgrade34" class="upgradeCard"></Button>
+            <Button id="upgrade35" class="upgradeCard"></Button>
+            <Button id="upgrade36" class="upgradeCard"></Button>
+            <Button id="upgrade37" class="upgradeCard"></Button>
+            <Button id="upgrade38" class="upgradeCard"></Button>
+            <Button id="upgrade39" class="upgradeCard"></Button>
+            <Button id="upgrade40" class="upgradeCard"></Button>
+        </GridLayout>
+        <Button text="Spawn All" preferredHeight="40" onClick="030220/onClick_spawn_all_upgrades"  color="#008000" />
     </VerticalLayout>
 </Panel>

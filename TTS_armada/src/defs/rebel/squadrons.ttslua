@@ -1,5 +1,6 @@
 REBEL_SQUAD = {
-    back = "https://i.imgur.com/8s63Ngl.png"
+    back = "https://i.imgur.com/8s63Ngl.png",
+    faction = "Rebellion"
 }
 ship = {
     mesh = "http://paste.ee/r/ZqCC6",

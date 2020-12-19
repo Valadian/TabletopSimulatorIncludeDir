@@ -3,37 +3,49 @@ Commander = {
     back = "https://i.imgur.com/fMJMaYo.png"
 }
 --rebel
-Card:new(Commander,{name="Admiral Ackbar",  front="http://i.imgur.com/HFVv48K.jpg", cost=38})
-Card:new(Commander,{name="Admiral Raddus",  front="http://i.imgur.com/2IPtau4.jpg", cost=28})
-Card:new(Commander,{name="Commander Sato",  front="http://i.imgur.com/ir6QixK.jpg", cost=27})
-Card:new(Commander,{name="Garm Bel Iblis",  front="http://i.imgur.com/fmlXop3.jpg", cost=25})
-Card:new(Commander,{name="General Cracken",  front="http://i.imgur.com/0NHwrEL.jpg", cost=26})
-Card:new(Commander,{name="General Dodonna",  front="http://i.imgur.com/MsS9AN8.jpg", cost=20})
-Card:new(Commander,{name="General Madine",  front="http://i.imgur.com/ePeK8Ok.jpg", cost=30})
-Card:new(Commander,{name="General Rieekan",  front="http://i.imgur.com/Q6pSiLj.jpg", cost=34})
-Card:new(Commander,{name="Kyrsta Agate",  front="http://i.imgur.com/CdWKsAz.jpg", cost=20})
-Card:new(Commander,{name="Leia Organa",  front="http://i.imgur.com/Xsqh5f0.jpg", cost=28})
-Card:new(Commander,{name="Mon Mothma",  front="http://i.imgur.com/ZK3rQeb.jpg", cost=27})
+Rebel = {
+    factions={"Rebellion"}
+}
+Card:new(Commander,Rebel,{name="Admiral Ackbar",  front="http://i.imgur.com/HFVv48K.jpg", cost=38})
+Card:new(Commander,Rebel,{name="Admiral Raddus",  front="http://i.imgur.com/2IPtau4.jpg", cost=28})
+Card:new(Commander,Rebel,{name="Commander Sato",  front="http://i.imgur.com/ir6QixK.jpg", cost=27})
+Card:new(Commander,Rebel,{name="Garm Bel Iblis",  front="http://i.imgur.com/fmlXop3.jpg", cost=25})
+Card:new(Commander,Rebel,{name="General Cracken",  front="http://i.imgur.com/0NHwrEL.jpg", cost=26})
+Card:new(Commander,Rebel,{name="General Dodonna",  front="http://i.imgur.com/MsS9AN8.jpg", cost=20})
+Card:new(Commander,Rebel,{name="General Madine",  front="http://i.imgur.com/ePeK8Ok.jpg", cost=30})
+Card:new(Commander,Rebel,{name="General Rieekan",  front="http://i.imgur.com/Q6pSiLj.jpg", cost=34})
+Card:new(Commander,Rebel,{name="Kyrsta Agate",  front="http://i.imgur.com/CdWKsAz.jpg", cost=20})
+Card:new(Commander,Rebel,{name="Leia Organa",  front="http://i.imgur.com/Xsqh5f0.jpg", cost=28})
+Card:new(Commander,Rebel,{name="Mon Mothma",  front="http://i.imgur.com/ZK3rQeb.jpg", cost=27})
 
+Empire = {
+    factions={"Empire"}
+}
 --imperial
-Card:new(Commander,{name="Admiral Konstantine",  front="http://i.imgur.com/ONoTDBL.jpg", cost=23})
-Card:new(Commander,{name="Admiral Motti",  front="http://i.imgur.com/rkMe17G.jpg", cost=24})
-Card:new(Commander,{name="Admiral Ozzel",  front="http://i.imgur.com/v0nThwx.jpg", cost=20})
-Card:new(Commander,{name="Admiral Piett",  front="http://i.imgur.com/2D3DgQS.jpg", cost=22})
-Card:new(Commander,{name="Admiral Screed",  front="http://i.imgur.com/DUToctV.jpg", cost=26})
-Card:new(Commander,{name="Admiral Sloane",  front="http://i.imgur.com/rzZtf8B.jpg", cost=24})
-Card:new(Commander,{name="Darth Vader",  front="http://i.imgur.com/ysyfpEF.jpg", cost=36})
-Card:new(Commander,{name="Emperor Palpatine",  front="http://i.imgur.com/KBY36Qs.jpg", cost=35})
-Card:new(Commander,{name="General Romodi",  front="http://i.imgur.com/U9wK3K8.jpg", cost=20})
-Card:new(Commander,{name="General Tagge",  front="http://i.imgur.com/LduHiR8.jpg", cost=25})
-Card:new(Commander,{name="Grand Admiral Thrawn",  front="http://i.imgur.com/FSpE1gl.jpg", cost=32})
-Card:new(Commander,{name="Grand Moff Tarkin",  front="http://i.imgur.com/OxvHWmA.jpg", cost=29})
-Card:new(Commander,{name="Moff Jerjerrod",  front="http://i.imgur.com/qZAVH6a.jpg", cost=23})
+Card:new(Commander,Empire,{name="Admiral Konstantine",  front="http://i.imgur.com/ONoTDBL.jpg", cost=23})
+Card:new(Commander,Empire,{name="Admiral Motti",  front="http://i.imgur.com/rkMe17G.jpg", cost=24})
+Card:new(Commander,Empire,{name="Admiral Ozzel",  front="http://i.imgur.com/v0nThwx.jpg", cost=20})
+Card:new(Commander,Empire,{name="Admiral Piett",  front="http://i.imgur.com/2D3DgQS.jpg", cost=22})
+Card:new(Commander,Empire,{name="Admiral Screed",  front="http://i.imgur.com/DUToctV.jpg", cost=26})
+Card:new(Commander,Empire,{name="Admiral Sloane",  front="http://i.imgur.com/rzZtf8B.jpg", cost=24})
+Card:new(Commander,Empire,{name="Darth Vader",  front="http://i.imgur.com/ysyfpEF.jpg", cost=36})
+Card:new(Commander,Empire,{name="Emperor Palpatine",  front="http://i.imgur.com/KBY36Qs.jpg", cost=35})
+Card:new(Commander,Empire,{name="General Romodi",  front="http://i.imgur.com/U9wK3K8.jpg", cost=20})
+Card:new(Commander,Empire,{name="General Tagge",  front="http://i.imgur.com/LduHiR8.jpg", cost=25})
+Card:new(Commander,Empire,{name="Grand Admiral Thrawn",  front="http://i.imgur.com/FSpE1gl.jpg", cost=32})
+Card:new(Commander,Empire,{name="Grand Moff Tarkin",  front="http://i.imgur.com/OxvHWmA.jpg", cost=29})
+Card:new(Commander,Empire,{name="Moff Jerjerrod",  front="http://i.imgur.com/qZAVH6a.jpg", cost=23})
 
+Republic = {
+    factions={"Republic"}
+}
 --republic
-Card:new(Commander,{name="Bail Organa",  front="https://i.imgur.com/SBYa2yD.jpeg", cost=28})
-Card:new(Commander,{name="Obi-Wan Kenobi",  front="https://i.imgur.com/xkfBnRw.jpeg", cost=28})
+Card:new(Commander,Republic,{name="Bail Organa",  front="https://i.imgur.com/SBYa2yD.jpeg", cost=28})
+Card:new(Commander,Republic,{name="Obi-Wan Kenobi",  front="https://i.imgur.com/xkfBnRw.jpeg", cost=28})
 
+Separatist = {
+    factions={"Separatist"}
+}
 --separatist
-Card:new(Commander,{name="Count Dooku",  front="https://i.imgur.com/YOm4LIi.jpeg", cost=30})
-Card:new(Commander,{name="Kraken",  front="https://i.imgur.com/zLNsrOo.jpeg", cost=30})
+Card:new(Commander,Separatist,{name="Count Dooku",  front="https://i.imgur.com/YOm4LIi.jpeg", cost=30})
+Card:new(Commander,Separatist,{name="Kraken",  front="https://i.imgur.com/zLNsrOo.jpeg", cost=30})

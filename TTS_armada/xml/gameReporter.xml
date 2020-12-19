@@ -1,6 +1,6 @@
 <Panel id="gameReporterPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout preferredHeight="750">
-        <VerticalLayout preferredHeight="730" padding="10 10 20 20">
+        <VerticalLayout preferredHeight="710" padding="10 10 20 20">
             <Text>You can report the results of your games!</Text>
             <Text>This data will be utilized for list building assistance, ELO calculation, and competitive card discussions!</Text>
             <Text></Text>
@@ -53,7 +53,7 @@
             <HorizontalLayout preferredHeight="30">
                 <Text preferredWidth="170"></Text>
                 <Text preferredWidth="60">Obj:</Text>
-                <Text preferredWidth="170" id="objective"></Text>
+                <Text preferredWidth="170" id="activeObjective"></Text>
             </HorizontalLayout>
             <Text></Text>
 
@@ -74,6 +74,6 @@
             </HorizontalLayout>
             <Text preferredHeight="400"></Text>
         </VerticalLayout>
-        <Button text="Submit Score" preferredHeight="20" onClick="030220/onClick_score_submit"  color="#008000" />
+        <Button text="Submit Score" preferredHeight="40" onClick="030220/onClick_score_submit"  color="#008000" />
     </VerticalLayout>
 </Panel>

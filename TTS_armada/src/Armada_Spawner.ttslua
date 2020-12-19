@@ -53,7 +53,8 @@ Ship = {
     name = "",
     front = "",
     back = "",
-    aliases = {}
+    aliases = {},
+    faction = ""
 }
 function Ship:new (o,...)
     o = o or {}
@@ -87,12 +88,15 @@ Squadron = {
     convex = false,
     type = 1,
     material = 1,
+    health = 0,
+    move = 0,
     defense_tokens = {},
     cost = 0,
     name = "",
     front = "",
     back = "",
-    aliases = {}
+    aliases = {},
+    faction = ""
 }
 function Squadron:new (o, ...)
     o = o or {}
@@ -122,7 +126,21 @@ function Squadron:new (o, ...)
     -- end
     return o
 end
+SHIPS_BY_FACTION = {}
+CARDS_BY_CATEGORY = {}
 function Cache(DEFS,o)
+    if o.type~=nil then --Is a card?
+        if CARDS_BY_CATEGORY[o.type]==nil then
+            CARDS_BY_CATEGORY[o.type] = {}
+        end
+        table.insert(CARDS_BY_CATEGORY[o.type],o)
+    end
+    if o.faction~=nil and (o.move~=nil or o.maneuver~=nil) then --Is a ship or squadron?
+        if SHIPS_BY_FACTION[o.faction]==nil then
+            SHIPS_BY_FACTION[o.faction] = {}
+        end
+        table.insert(SHIPS_BY_FACTION[o.faction],o)
+    end
     -- FUZZY[string.lower(o.name)] = o
     if o.cost~=nil then
         DEFS[string.lower(o.name.." ("..o.cost..")")] = o
@@ -170,7 +188,8 @@ Card = {
     front = "",
     back = "",
     aliases = {},
-    iscard = true -- to replace checking for "type"
+    iscard = true, -- to replace checking for "type"
+    faction = nil
 }
 function Card:new (o, ...)
     o = o or {}
@@ -198,23 +217,25 @@ function onObjectSpawn(object)
     end
 
     if CARDS[string.lower(object.getName())]~=nil and CARDS[string.lower(object.getName())].type == "Objective" then
-        print("Found objective: "..object.getName())
+        -- print("Found objective: "..object.getName())
         category = CARDS[string.lower(object.getName())].category
         color = {0.82,0.22,0.235} --Assault
         if category == "Defense" then
             color = {0.992,0.922,0.031}
         elseif category == "Navigation" then
             color = {0.765,0.878,0.949}
+        elseif category == "Special" then
+            color = {0.267,0.678,0.459}
         end
         object.createButton({
             ['click_function'] = "Action_select_objective",
             ['function_owner'] = self,
             ['label'] = "Choose",
-            ['position'] = {0,0.2,-1.38},
+            ['position'] = {0,0.25,-1.5},
             ['rotation'] =  {0,0,0},
             ['width'] = 800,
-            ['height'] = 150,
-            ['font_size'] = 120,
+            ['height'] = 240,
+            ['font_size'] = 180,
             ['color'] = color,
             ['font_color']={0,0,0}})
     end
@@ -231,10 +252,14 @@ end
 -- end
 function createSpawnButtons(object)
     object.clearButtons()
+    scale = {1,1,1}
+    if string.match(object.getName(),"Star Dread") then
+        scale = {0.5,0,1}
+    end
     object.createButton({label = "Spawn: "..object.getName(), click_function = 'Action_Spawn', rotation = {0, 0, 0},
-    position = {0, 0.3, 2}, width = (40 * string.len("Spawn: "..object.getName())), height = 100, font_size = 75, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+    position = {0, 0.3, 2}, scale = scale, width = (40 * string.len("Spawn: "..object.getName())), height = 100, font_size = 75, function_owner = self, color={0,1,0}, font_color={0,0,0}})
     object.createButton({label = "Done", click_function = 'Action_DoneSpawn', rotation = {0, 0, 0},
-    position = {0, 0.3, 2.8}, width = 320, height = 100, font_size = 75, function_owner = self, color={1,0,0}, font_color={1,1,1}})
+    position = {0, 0.3, 2.8}, scale = scale, width = 320, height = 100, font_size = 75, function_owner = self, color={1,0,0}, font_color={1,1,1}})
     -- local data = SHIPS[object.getName()]
     -- data[12] = object.getGUID()
     -- data[13] = {}
@@ -714,7 +739,8 @@ function layout(player, fleet, pos, rot, base_x, spawn)
     -- print(x)
     return x
 end
-function spawnCard(def, pos, offset, rot, count) --TODO: count
+function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
+    if spawnModel==nil then spawnModel=true end
     pos =  vector.add(pos,vector.rotate(offset, rot[2]-180))
     -- scale = {1.37,1,1.37}
     scale = {1,1,1}
@@ -764,10 +790,17 @@ function spawnCard(def, pos, offset, rot, count) --TODO: count
     -- elseif  count~=nil and count==1 then
     --     jsonRepresentation['Description'] = "spawn"
     -- end
-    spawnObjectJSON({
-        json = JSON.encode(jsonRepresentation),
-        callback_function = setCardDescriptionToSpawn
-    })
+    if spawnModel then
+        spawnObjectJSON({
+            json = JSON.encode(jsonRepresentation),
+            callback_function = setCardDescriptionToSpawn
+        })
+    else
+        spawnObjectJSON({
+            json = JSON.encode(jsonRepresentation),
+            -- callback_function = setCardDescriptionToSpawn
+        })
+    end
 end
 function setCardDescriptionToSpawn(card)
     count = string.match(card.getName(), "^%[(%d+)%]")

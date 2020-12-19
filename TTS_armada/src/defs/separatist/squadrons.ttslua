@@ -1,5 +1,6 @@
 SEPARATISTS_SQUAD = {
-    back = "https://i.imgur.com/qUkhvV9.jpg"
+    back = "https://i.imgur.com/qUkhvV9.jpg",
+    faction = "Separatist"
 }
 ship = {
     mesh = "http://paste.ee/r/3Eh1O",
