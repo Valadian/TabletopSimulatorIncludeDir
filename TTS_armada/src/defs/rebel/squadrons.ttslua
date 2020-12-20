@@ -12,7 +12,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "B-wing Squadron",
     front = "https://i.imgur.com/bB11RGw.png",
     cost = 14,
-    aliases = {'B-wing Squadrons'}
+    aliases = {'B-wing Squadrons', "B-wing"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Keyan Farlander",
@@ -45,7 +45,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "Y-wing Squadron",
     front = "https://i.imgur.com/20kwNNs.png",
     cost = 10,
-    aliases = {'Y-wing Squadrons'}
+    aliases = {'Y-wing Squadrons', "Y-wing"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = '"Dutch" Vander',
@@ -80,7 +80,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "A-wing Squadron",
     front = "https://i.imgur.com/JikzQGo.png",
     cost = 11,
-    aliases = {'A-wing Squadrons'}
+    aliases = {'A-wing Squadrons', "A-wing"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Tycho Celchu",
@@ -113,7 +113,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "X-wing Squadron",
     front = "https://i.imgur.com/d5QuMBy.png",
     cost = 13,
-    aliases = {'X-wing Squadrons'}
+    aliases = {'X-wing Squadrons', "X-wing"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Luke Skywalker",
@@ -237,7 +237,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "Scurrg H-6 Bomber",
     front = "https://i.imgur.com/QvhGpkj.png",
     cost = 16,
-    aliases = {'Scurrg H-6 Bombers'}
+    aliases = {'Scurrg H-6 Bombers', "Scurrg H-6", "Scurrg"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Nym",
@@ -265,7 +265,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "Z-95 Headhunter Squadron",
     front = "https://i.imgur.com/o3ydY6G.png",
     cost = 7,
-    aliases = {'Z-95 Headhunter Squadrons'}
+    aliases = {'Z-95 Headhunter Squadrons', "Z-95 Headhunter", "Z-95"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Lieutenant Blount",
@@ -284,7 +284,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "E-wing Squadron",
     front = "https://i.imgur.com/iDlDpb3.png",
     cost = 15,
-    aliases = {'E-wing Squadrons'}
+    aliases = {'E-wing Squadrons', "E-wing"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Corran Horn",
@@ -304,7 +304,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "VCX-100 Freighter",
     front = "https://i.imgur.com/CmvkFAq.png",
     cost = 15,
-    aliases = {'VCX-100 Freighters'}
+    aliases = {'VCX-100 Freighters', "VCX-100"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Hera Syndulla",
@@ -324,7 +324,7 @@ Squadron:new(ship, REBEL_SQUAD, {
 	name = "Lancer-class Pursuit Craft",
     front = "https://i.imgur.com/qDSMy7N.png",
     cost = 15,
-    aliases = {"Lancer Pursuit Craft","Lancer Pursuit Crafts","Lancer-class Pursuit Crafts"}
+    aliases = {"Lancer Pursuit Craft","Lancer Pursuit Crafts","Lancer-class Pursuit Crafts","Lancer"}
 })
 Squadron:new(ship, REBEL_SQUAD, {
 	name = "Ketsu Onyo",

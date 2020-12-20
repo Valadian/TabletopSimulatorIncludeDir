@@ -12,7 +12,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Fighter Squadron",
     front = "https://i.imgur.com/IBPIZFC.png",
     cost = 8,
-    aliases = {"TIE Fighter Squadrons"}
+    aliases = {"TIE Fighter Squadrons", "TIE Fighter"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Mauler" Mithel',
@@ -54,7 +54,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Interceptor Squadron",
     front = "https://i.imgur.com/sEjCnbR.png",
     cost = 11,
-    aliases = {"TIE Interceptor Squadrons"}
+    aliases = {"TIE Interceptor Squadrons", "TIE Interceptor"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Soontir Fel",
@@ -87,7 +87,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Bomber Squadron",
     front = "https://i.imgur.com/JGg79So.png",
     cost = 9,
-    aliases = {"TIE Bomber Squadrons"}
+    aliases = {"TIE Bomber Squadrons", "TIE Bomber"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Major Rhymer",
@@ -121,7 +121,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "TIE Advanced Squadron",
     front = "https://i.imgur.com/oqevOIs.png",
     cost = 12,
-    aliases = {"TIE Advanced Squadrons"}
+    aliases = {"TIE Advanced Squadrons", "TIE Advanced"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = "Darth Vader",
@@ -265,7 +265,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'TIE Phantom Squadron',
     front = "https://i.imgur.com/Tvy7ZfX.png",
     cost = 14,
-    aliases = {"TIE Phantom Squadrons"}
+    aliases = {"TIE Phantom Squadrons", "TIE Phantom"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = '"Whisper"',
@@ -285,7 +285,7 @@ Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'TIE Defender Squadron',
     front = "https://i.imgur.com/h5OJeUV.png",
     cost = 16,
-    aliases = {"TIE Defender Squadrons"}
+    aliases = {"TIE Defender Squadrons", "TIE Defender"}
 })
 Squadron:new(ship, EMPIRE_SQUAD, {
 	name = 'Maarek Stele',

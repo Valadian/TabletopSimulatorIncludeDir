@@ -80,7 +80,7 @@ function linesToLineobjs(lines)
             -- print("Parsing line: '"..line.."'")
             orig = line
             line = string.strip(line)
-            count = string.match(line, "^•%s+(%d+)%s+x%s+")
+            count = string.match(line, "^[%s ]*[•%-·][%s ]+(%d+)%s+x%s+")
             if count==nil then
                 count = string.match(line, "^(%d+)%s+")
             end
@@ -99,9 +99,9 @@ function linesToLineobjs(lines)
             line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
             line = replace(line, "[%s ]+%(com%)","") -- remove " (com)" indicator
             line = replace(line, "[%s ]+%(off%)","") -- remove " (off)" indicator
-            line = replace(line, "•%s+%d+%s+x%s+","") -- remove "• 2 x " for squadrons
+            line = replace(line, "^[%s ]*[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
+            line = replace(line, "%d+%s+x%s+","") -- remove "• 2 x " for squadrons
             line = replace(line,"^%d+[%s ]+","") -- remove "2 " for squadrons
-            line = replace(line, "^[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
             -- line = replace(line,"^%-%s+","") -- replace by above
             line = replace(line,"[%s ]+%([%s ]*(%d+)[%s ]+points%)$"," (%1)") -- Shorten " ( 5 points)" -> " (5)"
             line = replace(line,"%[[%s ]+flagship[%s ]+%][%s ]+","") -- remove "[ flagship ]" indicato"
@@ -111,8 +111,14 @@ function linesToLineobjs(lines)
             line_nocost = string.gsub(line,"[%s ]+%([%s ]*%d+[%s ]*%)$","") -- create version without trailing cost" (5)"
             cost = string.match(line,"%((%d+)%)$")
             def = nil
+            -- print(line)
+            -- print(line_nocost)
             if line~=nil then
                 def = CARDS[string.lower(line)] or SHIPS[string.lower(line)] or CARDS[string.lower(line_nocost)] or SHIPS[string.lower(line_nocost)]
+            end
+            if def~=nil then
+                cost = def.cost
+                parsed = def.name
             end
             table.insert(line_objs, {
                 original = orig,
@@ -219,6 +225,7 @@ function updateParsed(player)
             end
         else
 
+            UI.hide("line"..i.."icon")
             UI.hide("btn_line"..i.."search")
             UI.hide("line"..i.."count")
             UI.hide("line"..i.."_indicator")
@@ -326,19 +333,34 @@ function fleetToString(fleet)
     return str
 end
 function spawnDataCard(fleet, pos, rot, name)
+    faction = nil
+    if #fleet.ships > 0 then
+        faction = fleet.ships[1].def.faction
+    end
     local obj_parameters = {}
-    obj_parameters.type = 'Custom_Token'
+    obj_parameters.type = 'Custom_Model'
     obj_parameters.position = pos
     obj_parameters.rotation = rot
-    obj_parameters.scale = {0.7, 1, 0.7}
+    obj_parameters.scale = {1, 1, 1}
 
 
     local datacard = spawnObject(obj_parameters)
     local custom = {}
-    custom.image = "http://i.imgur.com/EUi3Wog.png"
-    custom.stackable = true
+    -- custom.image = "http://i.imgur.com/EUi3Wog.png"
+    -- custom.stackable = true
+    custom.mesh = "http://paste.ee/r/uY3YX"
+    custom.diffuse = "http://i.imgur.com/EUi3Wog.png"
+    custom.type = 0 --generic
+    custom.material = 3 --cardboard
     datacard.setCustomObject(custom)
 
+    if faction=="Empire" then
+        datacard.setColorTint({52/255,52/255,52/255})
+    elseif faction=="Republic" then
+        datacard.setColorTint({78/255,0,0})
+    elseif faction=="Separatist" then
+        datacard.setColorTint({23/255,51/255,142/255})
+    end
     datacard.setName(name)
     datacard.setDescription(fleetToString(fleet))
 end

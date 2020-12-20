@@ -86,15 +86,16 @@ function onObjectSpawn(obj)
             -- print("No hover color for: "..math.floor(pos[1])..","..math.floor(pos[3]))
         end
     end
-    if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
+    -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
+    if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
         obj.createButton({
             ['click_function'] = "Action_fleet_spawn",
             ['function_owner'] = spawner,
             ['label'] = "Spawn\nFleet",
-            ['position'] = {0,0.15,-0.42},
+            ['position'] = {0,0.35,-0.42},
             ['rotation'] =  {0,0,0},
-            ['width'] = 800,
-            ['height'] = 800,
+            ['width'] = 600,
+            ['height'] = 600,
             ['font_size'] = 200,
             ['color'] = {217/256,180/256,109/256},
             ['font_color']={0,0,0}})
@@ -102,14 +103,29 @@ function onObjectSpawn(obj)
 end
 spawner = nil
 function onload(save_string)
---    for i,ship in ipairs(getAllObjects()) do
+   for i,obj in ipairs(getAllObjects()) do
+       custom = obj.getCustomObject()
+       if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
+       -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
+           obj.createButton({
+               ['click_function'] = "Action_fleet_spawn",
+               ['function_owner'] = spawner,
+               ['label'] = "Spawn\nFleet",
+               ['position'] = {0,0.35,-0.42},
+               ['rotation'] =  {0,0,0},
+               ['width'] = 600,
+               ['height'] = 600,
+               ['font_size'] = 200,
+               ['color'] = {217/256,180/256,109/256},
+               ['font_color']={0,0,0}})
+       end
 --        if isShip(ship) then
 --            Ship_Initialize(ship)
 --        end
 --        if isSquad(ship) then
 --            Squad_Initialize(ship)
 --        end
---    end
+   end
     ruler = findObjectByName('Magic Ruler')
     shield_dials = findObjectByName('Shield Dials')
     spawner = findObjectByName('Armada Spawner')

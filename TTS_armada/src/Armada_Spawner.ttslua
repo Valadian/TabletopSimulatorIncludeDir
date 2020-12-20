@@ -624,6 +624,9 @@ function fuzzyStringSearch(s)
         if NGRAMS[sub]~=nil then
             -- print("Potential "..#(NGRAMS[sub]).." matches for: "..sub)
             for _,match in ipairs(NGRAMS[sub]) do
+                -- if match=="tie fighter squadron (8)" or match=="hyena-class droid bomber squadron (11)" then
+                --     print(sub.." "..match)
+                -- end
                 if matches[match]==nil then
                     matches[match] = 1
                 else
@@ -636,6 +639,7 @@ function fuzzyStringSearch(s)
     best = nil
     for k,v in pairs(matches) do
         if v>bestCount then
+            -- print(k.." "..v.." NGRAM matches")
             bestCount=v
             best = k
         end

@@ -13,7 +13,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Vulture-class Droid Fighter Squadron",
     front = "https://i.imgur.com/851EiGY.jpeg",
     cost = 8,
-    aliases = {'Vulture-class Droid Fighter Squadrons', 'Vulture Droid Fighter Squadron', 'Vulture Droid Fighter Squadrons'}
+    aliases = {'Vulture-class Droid Fighter Squadrons', 'Vulture Droid Fighter Squadron', 'Vulture Droid Fighter Squadrons', "Vulter Droid Fighter", "Vulture"}
 })
 ship.diffuse = "http://i.imgur.com/Erytkzv.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
@@ -42,7 +42,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Hyena-class Droid Bomber Squadron",
     front = "https://i.imgur.com/4zpFWdk.jpeg",
     cost = 11,
-    aliases = {'Hyena-class Droid Bomber Squadron','Hyena Droid Bomber Squadron','Hyena Droid Bomber Squadrons'}
+    aliases = {'Hyena-class Droid Bomber Squadrons','Hyena Droid Bomber Squadron','Hyena Droid Bomber Squadrons', 'Hyena Droid Bomber', 'Hyena'}
 })
 --ALIAS
 ship.diffuse = "http://i.imgur.com/e9qw9lm.jpg"
@@ -72,7 +72,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Droid Tri-Fighter Squadron",
     front = "https://i.imgur.com/gju4n8W.jpeg",
     cost = 11,
-    aliases = {'Droid Tri-Fighter Squadrons'}
+    aliases = {'Droid Tri-Fighter Squadrons', "Droid Tri-Fighter", "Tri-Fighter"}
 })
 ship.diffuse = "http://i.imgur.com/LChnyEc.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
@@ -101,7 +101,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Belbullab-22 Starfighter Squadron",
     front = "https://i.imgur.com/AYE4WqR.jpeg",
     cost = 15,
-    aliases = {'Belbullab-22 Starfighter Squadrons'}
+    aliases = {'Belbullab-22 Starfighter Squadrons', "Belbullab-22 Starfighter", "Belbullab-22"}
 })
 --Relay, Screen
 Squadron:new(ship, SEPARATISTS_SQUAD, {
