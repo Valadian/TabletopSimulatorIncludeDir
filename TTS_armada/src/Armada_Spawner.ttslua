@@ -128,6 +128,12 @@ function Squadron:new (o, ...)
 end
 SHIPS_BY_FACTION = {}
 CARDS_BY_CATEGORY = {}
+function API_CacheShip(o)
+    Cache(SHIPS,o)
+end
+function API_CacheCard(o)
+    Cache(CARDS,o)
+end
 function Cache(DEFS,o)
     if o.type~=nil then --Is a card?
         if CARDS_BY_CATEGORY[o.type]==nil then
