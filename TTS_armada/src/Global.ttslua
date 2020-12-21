@@ -52,6 +52,7 @@ local B_SECONDARY_COLOR = {0.375,0.3,0}
 ruler = nil
 rulers = {}
 shield_dials = nil
+#include dieRoller/config
 
 local BOTTOM_REF_WHITE_GUID = 'e60d1a'
 local BOTTOM_REF_BLUE_GUID = 'd46b67'
@@ -103,6 +104,9 @@ function onObjectSpawn(obj)
 end
 spawner = nil
 function onload(save_string)
+     ruler = findObjectByName('Magic Ruler')
+     shield_dials = findObjectByName('Shield Dials')
+     spawner = findObjectByName('Armada Spawner')
    for i,obj in ipairs(getAllObjects()) do
        custom = obj.getCustomObject()
        if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
@@ -126,9 +130,6 @@ function onload(save_string)
 --            Squad_Initialize(ship)
 --        end
    end
-    ruler = findObjectByName('Magic Ruler')
-    shield_dials = findObjectByName('Shield Dials')
-    spawner = findObjectByName('Armada Spawner')
     if save_string~="" then
         local data = JSON.decode(save_string)
         for i, shipdata in pairs(data) do
