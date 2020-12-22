@@ -88,19 +88,7 @@ function onObjectSpawn(obj)
         end
     end
     -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
-    if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
-        obj.createButton({
-            ['click_function'] = "Action_fleet_spawn",
-            ['function_owner'] = spawner,
-            ['label'] = "Spawn\nFleet",
-            ['position'] = {0,0.35,-0.42},
-            ['rotation'] =  {0,0,0},
-            ['width'] = 600,
-            ['height'] = 600,
-            ['font_size'] = 200,
-            ['color'] = {217/256,180/256,109/256},
-            ['font_color']={0,0,0}})
-    end
+    drawDatacardButtons(obj)
 end
 spawner = nil
 function onload(save_string)
@@ -108,21 +96,7 @@ function onload(save_string)
      shield_dials = findObjectByName('Shield Dials')
      spawner = findObjectByName('Armada Spawner')
    for i,obj in ipairs(getAllObjects()) do
-       custom = obj.getCustomObject()
-       if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
-       -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
-           obj.createButton({
-               ['click_function'] = "Action_fleet_spawn",
-               ['function_owner'] = spawner,
-               ['label'] = "Spawn\nFleet",
-               ['position'] = {0,0.35,-0.42},
-               ['rotation'] =  {0,0,0},
-               ['width'] = 600,
-               ['height'] = 600,
-               ['font_size'] = 200,
-               ['color'] = {217/256,180/256,109/256},
-               ['font_color']={0,0,0}})
-       end
+       drawDatacardButtons(obj)
 --        if isShip(ship) then
 --            Ship_Initialize(ship)
 --        end
@@ -143,6 +117,52 @@ function onload(save_string)
         end
     end
     drawSquadronButtons()
+end
+function drawDatacardButtons(obj)
+    custom = obj.getCustomObject()
+    if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
+    -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
+        obj.createButton({
+            ['click_function'] = "Action_fleet_spawn",
+            ['function_owner'] = spawner,
+            ['label'] = "Spawn\nFleet",
+            ['position'] = {0,0.35,-0.42},
+            ['rotation'] =  {0,0,0},
+            ['width'] = 600,
+            ['height'] = 600,
+            ['font_size'] = 200,
+            ['color'] = {217/256,180/256,109/256,0.9},
+            ['font_color']={0,0,0,1.11}})
+        name = obj.getName()
+        if string.len(name)>24 then
+            splits = math.floor(string.len(name)/24)
+            split_name = string:split(name," ")
+            word_count = #split_name
+            words_per_line = math.floor(word_count/(splits+1))
+            name = ""
+            for i,word in ipairs(split_name) do
+                name = name .. word
+                if i~=word_count then
+                    if i==words_per_line  then
+                        name = name .. "\n"
+                    else
+                        name = name .. " "
+                    end
+                end
+            end
+        end
+        obj.createButton({
+            ['click_function'] = "Action_fleet_spawn",
+            ['function_owner'] = spawner,
+            ['label'] = name,
+            ['position'] = {0,0.25,1},
+            ['rotation'] =  {0,0,0},
+            ['width'] = 1000,
+            ['height'] = 450,
+            ['font_size'] = 80,
+            ['color'] = {0,0,0,0.9},
+            ['font_color']={1,1,1,1.11}})
+    end
 end
 function drawSquadronButtons()
     local white = getObjectFromGUID(BOTTOM_REF_WHITE_GUID)
@@ -573,13 +593,14 @@ function drawShipButtons(ship)
         local right_pos = vector.scale(left_pos, {-1,1,1})
         local back_left_pos = {left_pos[1],0.6,-left_pos[3]}
         local back_right_pos = {-left_pos[1],0.6,-left_pos[3]}
-        ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_left",position=left_pos},ship_button_def))
-        ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_right",position=right_pos},ship_button_def))
-        ship.createButton(buildRelativeButton(ship, "R",{click_function="Action_attack_ruler",position=back_left_pos},ship_button_def))
-        ship.createButton(buildRelativeButton(ship, "r",{click_function="Action_15range_ruler",position=vector.add(back_left_pos,{0,0,0.4})},ship_button_def))
-        ship.createButton(buildRelativeButton(ship, "C",{click_function="Action_cmds",position=back_right_pos},ship_button_def))
+        ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_left",position=left_pos,tooltip="Notch Maneuvering\nRuler on Left"},ship_button_def))
+        ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_right",position=right_pos,tooltip="Notch Maneuvering\nRuler on Right"},ship_button_def))
+        ship.createButton(buildRelativeButton(ship, "R",{click_function="Action_toggle_ruler",position=back_left_pos,tooltip="Cycle Measuring Rulers"},ship_button_def))
+        -- ship.createButton(buildRelativeButton(ship, "r",{click_function="Action_15range_ruler",position=vector.add(back_left_pos,{0,0,0.4})},ship_button_def))
+        ship.createButton(buildRelativeButton(ship, "C",{click_function="Action_cmds",position=back_right_pos,tooltip="Whisper Commands on\nShip or Command Base"},ship_button_def))
         if not ship.getVar('hasShields') then
-            ship.createButton(buildRelativeButton(ship, "shields",{click_function="Action_shields",position={0,0.6,0},width=800},ship_button_def))
+            ship.createButton(buildRelativeButton(ship, "After Ship Setup:",{click_function="Action_shields",position={0,0.6,0.4},width=800, height=100, color={0,0,0,0.9}, font_size=80, font_color={135/256, 206/256, 235/256,1.11}},ship_button_def))
+            ship.createButton(buildRelativeButton(ship, "Spawn\nShields",{click_function="Action_shields",position={0,0.6,-0.3},width=800, height=500, color={135/256, 206/256, 235/256,0.9}, font_color={1,1,1,1.11}, tooltip="After Setup, Spawn Shields and Lock Ship"},ship_button_def))
         end
     end
 end
@@ -603,6 +624,22 @@ RANGE_RULER_MESH = {
 }
 function Action_cmds(ship)
     printCmds(ship)
+end
+function Action_toggle_ruler(ship)
+    local ruler = ship.getVar('ruler')
+    if ruler == nil then
+        Action_attack_ruler(ship)
+    else
+        custom = ruler.getCustomObject()
+        if table.contains(RANGE_RULER_MESH, custom.mesh) then
+            ruler.destruct()
+            ship.setVar('ruler',nil)
+        else
+            ruler.destruct()
+            ship.setVar('ruler',nil)
+            Action_15range_ruler(ship)
+        end
+    end
 end
 function Action_15range_ruler(ship)
     local ruler = ship.getVar('ruler')
@@ -674,15 +711,19 @@ function updateSquadButtons(ship)
     local state = ship.getVar('state')
 --    if state ~= "A" then
     local y = 0.3
-    health_color = {0.4*(1-squad.health(ship)/squad.maxhealth(ship)),0.8*(squad.health(ship)/squad.maxhealth(ship)),0}
+    local r = 0.4*(1-squad.health(ship)/squad.maxhealth(ship))
+    local g = 0.8*(squad.health(ship)/squad.maxhealth(ship))
+    local s = 1/math.max(r,g)
+    health_color = {r*s,g*s,0,100}
+    health_color_bg = {r*s,g*s,0,0.1}
 
-    ship.createButton(buildButton("-",{click_function="Action_MinusHealth",position = {-0.2,y,0},color=health_color,font_color={1,1,1}},squad_button_def))
-    ship.createButton(buildButton(tostring(squad.health(ship)),{position = {0,y,0},color=health_color,font_color={1,1,1}},squad_button_def))
-    ship.createButton(buildButton("+",{click_function="Action_PlusHealth",position = {0.2,y,0},color=health_color,font_color={1,1,1}},squad_button_def))
-    ship.createButton(buildButton("Attack",{click_function="Action_Attack",position = {0,y,0.7}, width=250,font_size=70},squad_button_def))
-    ship.createButton(buildButton("Move",{click_function="Action_Move",position = {0,y,-0.7}, width=250,font_size=70},squad_button_def))
-    ship.createButton(buildButton("Activate",{position = {0.6,0.15,0}, rotation = {0,90,0},width=250,font_size=70},squad_button_def))
-    ship.createButton(buildButton("Activate",{position = {-0.6,0.15,0}, rotation = {0,90,0}, width=250,font_size=70},squad_button_def))
+    ship.createButton(buildButton("-",{click_function="Action_MinusHealth",position = {-0.3,y,0},color=health_color_bg,font_color={1,1,1,10},height = 150,width = 150,font_size = 80, tooltip="Decrease Health"},squad_button_def))
+    ship.createButton(buildButton(tostring(squad.health(ship)),{position = {0,y,0},color={1,1,1,0.01},font_color=health_color,height = 0,width = 0,font_size = 225},squad_button_def))
+    ship.createButton(buildButton("+",{click_function="Action_PlusHealth",position = {0.3,y,0},color=health_color_bg,font_color={1,1,1,10},height = 150,width = 150,font_size = 80, tooltip="Increase Health"},squad_button_def))
+    ship.createButton(buildButton("Attack",{click_function="Action_Attack",position = {0,y,0.5}, width=350,height=200,font_size=100, color={0,0,0,0.8}, font_color={1,1,1,1.25}, tooltip="Toggle Attack Ruler"},squad_button_def))
+    ship.createButton(buildButton("Move",{click_function="Action_Move",position = {0,y,-0.5}, width=350,height=200,font_size=100, color={0,0,0,0.8}, font_color={1,1,1,1.25},tooltip="Move Squadron"},squad_button_def))
+    ship.createButton(buildButton("Activate",{position = {0.6,0.15,0}, rotation = {0,90,0},width=250,font_size=70, color={0,0,0,0},tooltip="Toggle Activation Slider"},squad_button_def))
+    ship.createButton(buildButton("Activate",{position = {-0.6,0.15,0}, rotation = {0,90,0}, width=250,font_size=70, color={0,0,0,0},tooltip="Toggle Activation Slider"},squad_button_def))
 --    elseif state ~= "B" then
 --        squad.createButton(buildButton("B",{position = {1.5,0,0}},squad_button_def))
 --    end
@@ -741,7 +782,7 @@ function spawnSquadRuler(squadron,type)
     clearButtons(squadron)
     if type==SQUAD_MOVE_RULER then
         squadron.unlock()
-        squadron.createButton(buildButton("Undo",{position={0,0.3,0.2},width=400,font_size=100},squad_button_def))
+        squadron.createButton(buildButton("Undo",{position={0,0.3,0.4},width=400,font_size=100, color={1,0,0,0.3}, font_color={1,1,1,3.33}},squad_button_def))
     end
     local world = squadron.getPosition()
     local scale = squadron.getScale()
@@ -768,7 +809,7 @@ function spawnSquadRuler(squadron,type)
     newruler.setCustomObject(custom)
     newruler.lock()
     newruler.scale(scale)
-    squadron.createButton(buildButton("Done",{position={0,0.3,-0.2},width=400,font_size=100},squad_button_def))
+    squadron.createButton(buildButton("Done",{position={0,0.3,-0.4},width=400,font_size=100, color={0,1,0,0.3}, font_color={1,1,1,3.33}},squad_button_def))
     squadron.setVar('ruler',newruler)
     newruler.setVar('parent',squadron)
     squad_move_rulers[squadron.getGUID()] = newruler
@@ -1007,8 +1048,8 @@ function moveRuler(ship, direction, player_clicker_color)
     myruler.setVar('ship',ship)
     myruler.setTable('maneuver',ship.getTable('maneuver'))
 end
-ship_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 200,width = 200,font_size = 200}
-squad_button_def = {position = {0,0.17,0},rotation = {0,0,0},height = 150,width = 125,font_size = 150}
+ship_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 300,width = 300,font_size = 200, font_color={1,1,1,1.11}, color={0,0,0,0.90}}
+squad_button_def = {position = {0,0.17,0},rotation = {0,0,0},height = 150,width = 125,font_size = 150, font_color={1,1,1,1.25}, color={0,0,0,0.80}}
 function buildRelativeButton(object, label, def, defaults)
     local scale = object.getScale()[1]
     if def.position==nil then def.position = defaults.position end
@@ -1023,7 +1064,8 @@ function buildRelativeButton(object, label, def, defaults)
     if defaults.font_color==nil then defaults.font_color = {0,0,0} end
     if def.color==nil then def.color = defaults.color end
     if def.font_color==nil then def.font_color = defaults.font_color end
-    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size, ['color'] = def.color, ['font_color'] = def.font_color}
+    if def.tooltip==nil then def.tooltip = defaults.tooltip end
+    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size, ['color'] = def.color, ['font_color'] = def.font_color, ['tooltip'] = def.tooltip}
 end
 function buildButton(label, def, defaults)
     if def.position==nil then def.position = defaults.position end
@@ -1036,7 +1078,8 @@ function buildButton(label, def, defaults)
     if def.function_owner==nil then def.function_owner = self end
     if def.color==nil then def.color={1,1,1} end
     if def.font_color==nil then def.font_color={0,0,0} end
-    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size, ['color'] = def.color, ['font_color']=def.font_color}
+    if def.tooltip==nil then def.tooltip = defaults.tooltip end
+    return {['click_function'] = def.click_function, ['function_owner'] = def.function_owner, ['label'] = label, ['position'] = def.position, ['rotation'] =  def.rotation, ['width'] = def.width, ['height'] = def.height, ['font_size'] = def.font_size, ['color'] = def.color, ['font_color']=def.font_color, ['tooltip'] = def.tooltip}
 end
 function clearButtons(object)
     --this is a workaround for obj.clearButtons() being broken as of v7.10
@@ -1108,6 +1151,30 @@ function math.round(num, idp)
 end
 function string.starts(String,Start)
     return string.sub(String,1,string.len(Start))==Start
+end
+function string:split(this,sSeparator, nMax, bRegexp)
+    assert(sSeparator ~= '')
+    assert(nMax == nil or nMax >= 1)
+
+    local aRecord = {}
+
+    if this:len() > 0 then
+        local bPlain = not bRegexp
+        nMax = nMax or -1
+
+        local nField, nStart = 1, 1
+        local nFirst,nLast = this:find(sSeparator, nStart, bPlain)
+        while nFirst and nMax ~= 0 do
+            aRecord[nField] = this:sub(nStart, nFirst-1)
+            nField = nField+1
+            nStart = nLast+1
+            nFirst,nLast = this:find(sSeparator, nStart, bPlain)
+            nMax = nMax-1
+        end
+        aRecord[nField] = this:sub(nStart)
+    end
+
+    return aRecord
 end
 function table.contains(self, val)
     for index, value in ipairs (self) do

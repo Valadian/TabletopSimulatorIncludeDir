@@ -2,10 +2,10 @@
     <VerticalLayout id="fleetSpawnerInputLayout" preferredHeight="750">
         <InputField onEndEdit="030220/onEndEdit_updateList" id="fleetListPaste" lineType="MultiLineNewLine" placeholder="Paste List Here" preferredHeight="710" fontSize="12"></InputField>
         <!-- <Text id="fleetListPasteStandin" visibility="Noone" preferredHeight="730" >Text Box is hidden. Click Private to gain ownership and/or clear.</Text> -->
-        <!-- <HorizontalLayout> -->
-        <Button text="Parse" preferredHeight="40" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
-            <!-- <Button id="Private" text="Private" preferredWidth="100" onClick="030220/onClick_fleet_private" color="#000000" /> -->
-        <!-- </HorizontalLayout> -->
+        <HorizontalLayout preferredHeight="40" >
+            <Button text="Parse" preferredWidth="300" onClick="030220/onClick_fleet_parseFleet"  color="#008000" />
+            <Button text="Clear" preferredWidth="100" onClick="030220/onClick_fleet_clear" color="#800000" tooltip="Deletes EVERYTHING on YOUR side of table"/>
+        </HorizontalLayout>
     </VerticalLayout>
     <VerticalLayout id="fleetSpawnerInputParsed" active="false" preferredHeight="750">
         <!-- verticalScrollbarVisibility="AutoHide" -->
@@ -594,7 +594,7 @@
             <Button id="parseScrollDown" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_fleet_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
             <Button id="parseScrollUp" preferredWidth="40" icon="ARROWUP" onClick="030220/onClick_fleet_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
             <Button id="spacingButton" text="Compact" preferredWidth="140" onClick="030220/onClick_fleet_togglespacing" color="#404040" />
-            <Button text="Clear" preferredWidth="60" onClick="030220/onClick_fleet_clear" color="#800000" />
+            <Button text="Clear" preferredWidth="60" onClick="030220/onClick_fleet_clear" color="#800000" tooltip="Deletes EVERYTHING on YOUR side of table"/>
             <Button text="Spawn" preferredWidth="60" onClick="030220/onClick_fleet_spawn" color="#008000" />
         </HorizontalLayout>
     </VerticalLayout>

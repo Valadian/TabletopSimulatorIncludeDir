@@ -276,8 +276,11 @@ function Action_fleet_spawn(datacard, color, alt_click)
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
     base_x = 55-width/2
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
-    datacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), false, false)
-    datacard.setRotationSmooth(listSpawner.getRotation(), false, false)
+    clonedatacard = datacard.clone({
+        position = datacard.getPosition()
+    })
+    clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), false, false)
+    clonedatacard.setRotationSmooth(listSpawner.getRotation(), false, false)
 end
 function fleetToString(fleet)
     if fleet==nil then return "" end
