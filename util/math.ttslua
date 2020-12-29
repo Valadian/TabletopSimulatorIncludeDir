@@ -10,6 +10,14 @@ end
 function math.imod(i,mod)
     return i - math.floor((i-1)/mod)*mod --math.fmod(a,b)+1
 end
+function math.mod(a,b)
+    return a - math.floor(a/b)*b
+end
 function math.approxeq(a, b)
     return math.abs(a-b)<0.01
+end
+function math.sign(x)
+    if x<0 then return -1
+    elseif x>0 then return 1
+    else return 0 end
 end

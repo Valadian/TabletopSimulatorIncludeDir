@@ -135,12 +135,14 @@ function onClick_fleet_parseFleet(player, _, idValue)
     fleetOffsets[player.color]=0
     UI.hide("fleetSpawnerInputLayout")
     UI.show("fleetSpawnerInputParsed")
+    -- UI.show("fleetSpawnerHelpInner")
     list = fleet_pastes[player.color]
     -- clearSpawnArea(listSpawner)
     if list==nil or #list==0 then
         printToAll("Paste in fleet to spawn",{1,1,0})
         UI.show("fleetSpawnerInputLayout")
         UI.hide("fleetSpawnerInputParsed")
+        -- UI.hide("fleetSpawnerHelpInner")
         return
     end
     lines = string:split(list, "\n")
@@ -243,6 +245,7 @@ function onClick_fleet_backToInput(player, _, idValue)
 
     UI.show("fleetSpawnerInputLayout")
     UI.hide("fleetSpawnerInputParsed")
+    -- UI.hide("fleetSpawnerHelpInner")
 end
 function onClick_fleet_clear(player, _, idValue)
     listSpawner = findObjectByName("List Spawner ("..player.color..")")
@@ -276,9 +279,12 @@ function Action_fleet_spawn(datacard, color, alt_click)
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
     base_x = 55-width/2
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
-    clonedatacard = datacard.clone({
-        position = datacard.getPosition()
-    })
+    clonedatacard = datacard
+    if datacard.getLock() then
+        clonedatacard = datacard.clone({
+            position = datacard.getPosition()
+        })
+    end
     clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), false, false)
     clonedatacard.setRotationSmooth(listSpawner.getRotation(), false, false)
 end
@@ -439,6 +445,9 @@ function updateScrollButtons(player)
 end
 function onClick_dismiss_commandPopup(player, _, idValue)
     UI.hide("commandPopup")
+end
+function onClick_dismiss_fleetHelp(plauer, _, idValue)
+    UI.hide("fleetSpawnerHelpOuter")
 end
 spacing = "Compact"
 function onClick_fleet_togglespacing(player, _, idValue)

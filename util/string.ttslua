@@ -4,8 +4,14 @@ function string.starts(String,Start)
     end
     return string.sub(String,1,string.len(Start))==Start
 end
+function string:split(this,sSeparator, nMax, bRegexp)
+    return string.split(this,sSeparator, nMax, bRegexp)
+end
 function string.split(str, sSeparator, nMax, bRegexp)
    assert(sSeparator ~= '')
+   if type(nMax)=="string" then
+       print("string.split('"..tostring(str).."','"..tostring(sSeparator).."',"..tostring(nMax)..","..tostring(bRegexp))
+   end
    assert(nMax == nil or nMax >= 1)
 
    local aRecord = {}

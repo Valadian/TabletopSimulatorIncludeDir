@@ -4,6 +4,8 @@
     height="500"
     width="500"
     rectAlignment="MiddleCenter"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
     offsetXY="0 0"
     outlineSize="1 1"
     outline="#303030">
@@ -32,10 +34,10 @@
         <Text alignment="MiddleLeft" >Command Dials are now unified. They will be spawned with ship spawner, and can be found next to the Defense Token sources next to Rules.</Text>
         <Text alignment="MiddleLeft" >They now use "States". To Change Dial, press 1-4:</Text>
         <VerticalLayout padding="40 0 0 0">
-            <Text alignment="MiddleLeft" color="#00D000">1. Repair</Text>
-            <Text alignment="MiddleLeft" color="#0030D0">2. Navigate</Text>
-            <Text alignment="MiddleLeft" color="#D00000">3. Concentrate Fire</Text>
-            <Text alignment="MiddleLeft" color="#800080">4. Squadron</Text>
+            <Text alignment="MiddleLeft" color="#66CC66">1. Repair</Text>
+            <Text alignment="MiddleLeft" color="#CC6666">2. Navigate</Text>
+            <Text alignment="MiddleLeft" color="#3366CC">3. Concentrate Fire</Text>
+            <Text alignment="MiddleLeft" color="#6666CC">4. Squadron</Text>
         </VerticalLayout>
         <Text alignment="MiddleLeft" >You can "peek" at the value of the Command Dial by hovering it and holding alt+shift together</Text>
         <Text alignment="MiddleLeft" >Flip a dial by typing "f" while holding it.</Text>

@@ -1,0 +1,440 @@
+--1-5 Ruler
+--2.93
+--1.86 (4.79) -0.11
+--2.37 (7.16) -0.1
+--2.41 (9.57) -0.05
+--2.42 (11.99) -0.08
+
+--gravity = 0.74
+--proximity = 0.745
+--targeting = 0.740
+-- objective (0.67) .45
+
+-- squadron cardboard = 1.219
+
+
+Obstacle = {
+    name = "",
+    collider = "",
+    -- mesh = ""
+    -- diffuse = ""
+    rulers = {
+        --1
+        --2
+        --3
+        --4
+        --5
+    },
+    default = 1,
+    scale = 1
+}
+OBSTACLES = {}
+function Obstacle:new (o,...)
+    o = o or {}
+    o = table.ShallowCopy(o)
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                o[k] = v
+            end
+        end
+    end
+    setmetatable(o, Obstacle)
+    Obstacle.__index = Obstacle
+    if o.collider~="" then
+        OBSTACLES[o.collider] = o
+    end
+    return o
+end
+function Obstacle.lookup (collider)
+    return OBSTACLES[collider]
+end
+
+function loadAsteroidDefs()
+Obstacle:new({
+    name = "Asteroid 1", --Eclair
+    collider = "http://paste.ee/r/Ul5Zt",
+    rulers = {
+        "http://paste.ee/r/0I8WT",
+        "http://paste.ee/r/vchJj",
+        "http://paste.ee/r/DEvyk",
+        "http://paste.ee/r/daV0g",
+        "http://paste.ee/r/bEE1A"
+    }
+    --      measured (ingame) = ratio (ingame scale) = blender scale
+    --length = 2.695 (2.77) = 0.9729 * 0.83 = 0.8075
+    --width = 1.12 (1.14) = 0.9825 * 0.83 = 0.815
+    -- 0.811 DONE
+})
+Obstacle:new({
+    name = "Debris 2", --Chicken leg
+    collider = "http://paste.ee/r/Fk1So",
+    rulers = {
+        "http://paste.ee/r/WAySf",
+        "http://paste.ee/r/qTWTp",
+        "http://paste.ee/r/NEJ2Y",
+        "http://paste.ee/r/6YkTz",
+        "http://paste.ee/r/lQyez"
+    }
+    --length = 3.3165 (3.46) = 0.9585 * 0.73 = 0.7 (thigh to tip of drumstick)
+    --width = 2.183 (across thigh) (2.3) = 0.9491 * 0.73 = 0.6928
+    -- 0.6964
+})
+Obstacle:new({
+    name = "Debris 3", --muffin
+    collider = "http://paste.ee/r/FJVoR",
+    rulers = {
+        "http://paste.ee/r/vM2oD",
+        "http://paste.ee/r/tFdE0",
+        "http://paste.ee/r/0DG3h",
+        "http://paste.ee/r/syykM",
+        "http://paste.ee/r/tlxRq"
+    }
+    --length = 2.71 (2.6) = 1.0425 * 0.75 = 0.7817
+    --width = 2.647 (across top) (2.55) = 1.038 * 0.75 = 0.7785
+    -- 0.78
+})
+Obstacle:new({
+    name = "Asteroid 4", --sharktooth
+    collider = "http://paste.ee/r/sgn4L",
+    rulers = {
+        "http://paste.ee/r/S0kIT",
+        "http://paste.ee/r/aRBJY",
+        "http://paste.ee/r/5yt3v",
+        "http://paste.ee/r/ooAMz",
+        "http://paste.ee/r/tymlw"
+    }
+    -- 2.492
+    --length =  2.15 (2.15) = 80
+    --width = 1.56 (1.51) = 1.033 * 0.8 = 0.826
+    -- 0.814
+})
+Obstacle:new({
+    name = "Asteroid 5", --tornado
+    collider = "http://paste.ee/r/t10DL",
+    rulers = {
+        "http://paste.ee/r/2UGUR",
+        "http://paste.ee/r/rAQce",
+        "http://paste.ee/r/zi2UB",
+        "http://paste.ee/r/z2ZI9",
+        "http://paste.ee/r/eAApc"
+
+    }
+    --length = 2.383 (2.3) = 1.036 *0.75 = 0.777
+    --width =2.3 (2.2) = 1.045 *0.75 = 0.784
+    -- 0.7805
+})
+
+Obstacle:new({
+    name = "Station",
+    collider = "http://paste.ee/r/Hm8Hf",
+    rulers = {
+        "http://paste.ee/r/h79JB",
+        "http://paste.ee/r/h770l",
+        "http://paste.ee/r/ncC9e",
+        "http://paste.ee/r/2lgWl",
+        "http://paste.ee/r/H8e4u"
+    }
+    --length = 3.3 (3.39) = 0.97 * 0.8 = .7787
+    --width =3.488 (3.46) = 1.008 *0.8 = 0.8065
+    -- 0.7925
+})
+
+Obstacle:new({
+    name = "Gas Cloud 1", --double bump?
+    collider = "http://paste.ee/r/CGICy",
+    rulers = {
+        "http://paste.ee/r/vmniW",
+        "http://paste.ee/r/aaObV",
+        "http://paste.ee/r/5SyMS",
+        "http://paste.ee/r/yyhIh",
+        "http://paste.ee/r/sowxu",
+    }
+    --length = 5.227 (5.01) = 1.0433
+    --width = 1.526 (1.48) = 1.031
+    -- 1.037
+})
+Obstacle:new({
+    name = "Gas Cloud 2",
+    collider = "http://paste.ee/r/N9UN7",
+    rulers = {
+        "http://paste.ee/r/ysaqI",
+        "http://paste.ee/r/ERhup",
+        "http://paste.ee/r/7sTsO",
+        "http://paste.ee/r/audzv",
+        "http://paste.ee/r/qjtRe"
+
+    }
+    --length = 5.175 (4.99) = 1.037
+    --width = 1.538 (1.48) = 1.039
+    -- 1.038
+})
+Obstacle:new({
+    name = "Gravity Rift",
+    collider = "http://paste.ee/r/DpEzj",
+    rulers = {
+        "http://paste.ee/r/2Fsao",
+        "http://paste.ee/r/gPUKr",
+        "http://paste.ee/r/sywSF",
+        "http://paste.ee/r/2ZTU9",
+        "http://paste.ee/r/ymePC"
+    },
+    default = 2
+    --length = 3.9175 (3.75) = 1.04467
+    --width = 3.912 (3.77) = 1.037
+    --1.04 * 0.77 = 0.8
+})
+Obstacle:new({
+    name = "Exogorth 1",
+    collider = "http://paste.ee/r/GJm0K",
+    rulers = {
+        "http://paste.ee/r/e5du8",
+        "http://paste.ee/r/2l8Y5",
+        "http://paste.ee/r/va4n4",
+        "http://paste.ee/r/GKp7a",
+        "http://paste.ee/r/c2jfY"
+    }
+    --length = 2.277 (2.18) = 1.044
+    --width = 1.6055 (1.54) = 1.0425
+    -- 1.043 * .77 = 0.803
+})
+Obstacle:new({
+    name = "Exogorth 2", --hook?
+    collider = "http://paste.ee/r/I3IZm",
+    rulers = {
+        "http://paste.ee/r/87QKX",
+        "http://paste.ee/r/gcy3y",
+        "http://paste.ee/r/xlnOQ",
+        "http://paste.ee/r/8kb35",
+        "http://paste.ee/r/PrYWk"
+    }
+    --length 2.222 (2.13) = 1.043
+    --width 1.52 (1.43) = 1.063
+    -- 1.053 *0.77 = 0.81081
+})
+Obstacle:new({
+    name = "Purrgil 1", --open mouth (hump tail)
+    collider = "http://paste.ee/r/HRGiE",
+    rulers = {
+        "http://paste.ee/r/DJ0EM",
+        "http://paste.ee/r/DnkHS",
+        "http://paste.ee/r/1P3jR",
+        "http://paste.ee/r/C3bnB",
+        "http://paste.ee/r/2X7fr"
+    }
+    --length = 4.164 (3.98) = 1.046   1.297
+    --width = 1.65 (1.57) = 1.051
+    -- 0.77 * 1.0485 = 0.807
+})
+Obstacle:new({ --TODO: Move within 2
+    name = "Purrgil 2",
+    collider = "http://paste.ee/r/4QT4q",
+    rulers = {
+        "http://paste.ee/r/vddgi",
+        "http://paste.ee/r/yq43j",
+        "http://paste.ee/r/v13Cm",
+        "http://paste.ee/r/0NY6g",
+        "http://paste.ee/r/hEEDS"
+    }
+    --length = 4.157 (3.99) = 1.042
+    --width = 1.484 (1.43) = 1.0378
+    -- 0.77 * 1.0399 = 0.8
+})
+Obstacle:new({
+    name = "Objective Token",
+    collider = "http://paste.ee/r/9DQmH",
+    rulers = {
+        "http://paste.ee/r/OpxJX",
+        "http://paste.ee/r/IltC6",
+        "http://paste.ee/r/SCNHl",
+        "http://paste.ee/r/oo1VP",
+        "http://paste.ee/r/aJ8y6"
+    },
+    scale = 0.5
+})
+Obstacle:new({
+    name = "Gravity Well",
+    collider = "http://paste.ee/r/1KFnT",
+    rulers = {
+        "http://paste.ee/r/OpxJX",
+        "http://paste.ee/r/IltC6",
+        "http://paste.ee/r/SCNHl",
+        "http://paste.ee/r/oo1VP",
+        "http://paste.ee/r/aJ8y6"
+    },
+    scale = 0.5,
+    default = 3
+})
+Obstacle:new({
+    name = "Targeting Token",
+    collider = "http://paste.ee/r/1pouf",
+    rulers = {
+        "http://paste.ee/r/He0Vy"
+    },
+    scale = 0.5
+})
+-- Objective 1-2
+-- move 2
+-- move 2 or 4
+-- move 2
+-- move obstacle 2
+-- purrgil move 2
+end
+function onObjectHover_asteroid(obj, player)
+    custom = obj.getCustomObject()
+    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+        if not obj.getLock() then --Only update while unlocked to recover from flipping
+            update_asteroid_buttons(obj,player)
+        end
+    end
+end
+function onObjectDropped_asteroid(obj, player)
+    custom = obj.getCustomObject()
+    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+        update_asteroid_buttons(obj,player)
+    end
+end
+function onObjectSpawn_asteroid(obj)
+    custom = obj.getCustomObject()
+    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+        update_asteroid_buttons(obj)
+    end
+end
+function update_asteroid_buttons(obj,player)
+    obj.clearButtons()
+    custom = obj.getCustomObject()
+    h = 0.15
+    z_rot = 0
+    if math.abs(obj.getRotation()[3])>10 then
+        h = 0.1-h
+        z_rot = 180
+    end
+    def = Obstacle.lookup(custom.collider)
+    if not obj.getLock() then
+        obj.createButton(billboard({label="Lock",click_function="Action_LockAsteroid", position={0,h,0}, rotation={0,0,z_rot}, width=800*def.scale, height=300*def.scale, font_size=200*def.scale, color={0,1,0,0.5}, font_color={1,1,1,2}},obj,player))
+    else
+        if obj.getVar('ruler')==nil then
+            obj.createButton(billboard({label="",click_function="Action_LoadLastAsteroidRuler",position={0,h,0}, rotation={0,0,z_rot},width=800*def.scale,height=800*def.scale,color={0,0,0,0.5},tooltip="Spawn Range Ruler"},obj,player))
+        else
+            obj.createButton(billboard({label="Clear", position={0,h,0.5}, rotation={0,0,z_rot},click_function="Action_ClearAsteroidRuler",width=800, height=300, font_size=200, color={1,0,0,0.5}, font_color={1,1,1,2}},obj,player))
+            obj.createButton(billboard({label="Move", position={0,h,-1.5}, rotation={0,0,z_rot},click_function="Action_MoveAsteroid",width=800, height=300, font_size=200, color={0,0.5,1,0.5}, font_color={1,1,1,2}},obj,player))
+            if #def.rulers>1 then
+                color = {0,0,0.5,0.5}
+                if obj.getVar('last_ruler_size')==1 then color={0,1,0,0.5} end
+                obj.createButton(billboard({label="1", click_function="Action_LoadAsteroidRuler1",position = {-1.4,h,-0.5}, rotation={0,0,z_rot}, width=300, height=300, font_size=200, color=color, font_color={1,1,1,2}},obj,player))
+                color = {0,0,0.5,0.5}
+                if obj.getVar('last_ruler_size')==2 then color={0,1,0,0.5} end
+                obj.createButton(billboard({label="2", click_function="Action_LoadAsteroidRuler2",position = {-0.7,h,-0.5}, rotation={0,0,z_rot}, width=300, height=300, font_size=200, color=color, font_color={1,1,1,2}},obj,player))
+                color = {0,0,0.5,0.5}
+                if obj.getVar('last_ruler_size')==3 then color={0,1,0,0.5} end
+                obj.createButton(billboard({label="3", click_function="Action_LoadAsteroidRuler3",position = {0,h,-0.5}, rotation={0,0,z_rot}, width=300, height=300, font_size=200, color=color, font_color={1,1,1,2}},obj,player))
+                color = {0,0,0.5,0.5}
+                if obj.getVar('last_ruler_size')==4 then color={0,1,0,0.5} end
+                obj.createButton(billboard({label="4", click_function="Action_LoadAsteroidRuler4",position = {0.7,h,-0.5}, rotation={0,0,z_rot}, width=300, height=300, font_size=200, color=color, font_color={1,1,1,2}},obj,player))
+                color = {0,0,0.5,0.5}
+                if obj.getVar('last_ruler_size')==5 then color={0,1,0,0.5} end
+                obj.createButton(billboard({label="5", click_function="Action_LoadAsteroidRuler5",position = {1.4,h,-0.5}, rotation={0,0,z_rot}, width=300, height=300, font_size=200, color=color, font_color={1,1,1,2}},obj,player))
+            end
+        end
+    end
+end
+function billboard(button, obj, player)
+    local rotation = 180
+    if player~=nil then
+        rotation = Player[player].getPointerRotation()
+    end
+    --TODO: Take into account Z rot?
+    y_rot = -obj.getRotation()[2] + rotation
+    z_rot = 0
+    if button.rotation~=nil then
+        z_rot = button.rotation[3]
+    end
+    button_rot = {0, y_rot, z_rot }
+    if math.abs(z_rot)>10 then
+        button_pos = vector.rotate(button.position, y_rot)
+    else
+        button_pos = vector.rotate(button.position, -y_rot)
+    end
+    button.rotation = button_rot
+    button.position = button_pos
+    return button
+end
+function onload_asteroid()
+    loadAsteroidDefs()
+    for i,obj in ipairs(getAllObjects()) do
+        onObjectSpawn_asteroid(obj)
+    end
+end
+function Action_LoadAsteroidRuler1(obj, player, _)  LoadAsteroidRuler(obj, 1, player) end
+function Action_LoadAsteroidRuler2(obj, player, _)  LoadAsteroidRuler(obj, 2, player) end
+function Action_LoadAsteroidRuler3(obj, player, _)  LoadAsteroidRuler(obj, 3, player) end
+function Action_LoadAsteroidRuler4(obj, player, _)  LoadAsteroidRuler(obj, 4, player) end
+function Action_LoadAsteroidRuler5(obj, player, _)  LoadAsteroidRuler(obj, 5, player) end
+function Action_LoadLastAsteroidRuler(obj, player, _)
+    size = obj.getVar('last_ruler_size')
+    if size==nil then
+        def = Obstacle.lookup(obj.getCustomObject().collider)
+        size = def.default
+    end
+    LoadAsteroidRuler(obj,size, player)
+end
+function LoadAsteroidRuler(obj, size, player) --size 1-5
+    obj.lock()
+    ruler = obj.getVar('ruler')
+    obstacle_collider = obj.getCustomObject().collider
+    def = Obstacle.lookup(obstacle_collider)
+    if ruler~=nil then
+        ruler.destruct()
+    end
+
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Model'
+    obj_parameters.position = obj.getPosition()
+    obj_parameters.rotation = obj.getRotation()
+    local ruler = spawnObject(obj_parameters)
+    local custom = {}
+    custom.mesh = def.rulers[size]
+    custom.collider = obstacle_collider
+    ruler.setCustomObject(custom)
+    obj.setVar("ruler",ruler)
+    obj.setVar('last_ruler_size', size)
+    ruler.lock()
+    update_asteroid_buttons(obj, player)
+end
+function Action_MoveAsteroid(obj, player, _)
+    -- Spawn Shadow
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Model'
+    obj_parameters.position = obj.getPosition()
+    obj_parameters.rotation = obj.getRotation()
+    local shadow = spawnObject(obj_parameters)
+    local custom = {}
+    custom.mesh = obstacle_collider
+    custom.collider = obstacle_collider
+    custom.material = 3
+    shadow.setCustomObject(custom)
+    shadow.setColorTint({0.3,0.3,0.3})
+    shadow.lock()
+    obj.setVar("shadow",shadow)
+
+    obj.unlock()
+    obj.setPosition(vector.add(obj.getPosition(),{0,1,0}))
+    Wait.frames(||update_asteroid_buttons(obj, player),1)
+end
+function Action_LockAsteroid(obj, player, _)
+    obj.lock()
+    shadow = obj.getVar('shadow')
+    if shadow~=nil then
+        shadow.destruct()
+    end
+    obj.setVar('shadow',nil)
+    Action_ClearAsteroidRuler(obj, player, _)
+end
+function Action_ClearAsteroidRuler(obj, player, _)
+    ruler = obj.getVar('ruler')
+    if ruler~=nil then
+        ruler.destruct()
+    end
+    obj.setVar('ruler',nil)
+    Wait.frames(||update_asteroid_buttons(obj, player),1)
+end

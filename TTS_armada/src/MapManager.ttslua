@@ -1,0 +1,79 @@
+MAPS = {
+    ["Normal - Setup"] = "http://paste.ee/r/YMKr3",
+    ["Normal - Border Only"] = "http://paste.ee/r/gnocJ",
+
+    -- 4 player edges
+    ["Objective:    Fire Lanes"] = "http://paste.ee/r/vX8PS",
+
+    -- 5 player edges
+    ["Objective: Ion Storm"] = "http://paste.ee/r/6hVcD", -- for all obstacles
+    ["Objective: Marked for Destruction"] = "http://paste.ee/r/6hVcD", --for puurgils
+    ["Objective: Surprise Attack"] = "http://paste.ee/r/6hVcD", --for station
+    ["Objective: Contested Outpost"] = "http://paste.ee/r/6hVcD", --for station
+    ["Objective: Fighter Ambush"] = "http://paste.ee/r/6hVcD", --for squadrons
+    ["Objective: Planetary Ion Cannons"] = "http://paste.ee/r/6hVcD", --for objective tokens
+    ["Objective: Rift Ambush"] = "http://paste.ee/r/6hVcD", --for gravity Rift
+    ["Objective: Dangerous Territory"] = "http://paste.ee/r/6hVcD", --for obstacles
+    ["Objective: Intel Sweep"] = "http://paste.ee/r/6hVcD", --for objective tokens
+    ["Objective: Navigational Hazards"] = "http://paste.ee/r/6hVcD", --for station
+    ["Objective: Sensor Net"] = "http://paste.ee/r/6hVcD", --for objective tokens
+
+    -- 5 all sides
+    ["Objective: Fleet Ambush"] = "http://paste.ee/r/UHPd4", -- for player 1 setup
+    ["Objective: Capture the VIP"] = "http://paste.ee/r/UHPd4", -- for player 1 setup
+
+    -- Center
+    ["Objective: Abandoned Mining Facility"] = "http://paste.ee/r/Q6tdz", --for station
+    ["Objective: Salvage Run"] = "http://paste.ee/r/Q6tdz", --for station
+
+    -- Center + 5 player edges
+    ["Objective: Doomed Station"] = "http://paste.ee/r/3RQSc", --for station
+
+    -- 3' 2 range rulers
+    ["Objective: Blockade Run"] = "http://paste.ee/r/LYMbT",
+
+    -- 3' distance 1
+    ["Objective: Hyperspace Migration"] = "http://paste.ee/r/3iUtP",
+    -- Other Setups
+    ["Task Force"] = "http://paste.ee/r/hN1Tz",
+    ["Take the Station"] = "http://paste.ee/r/MbZy9",
+}
+
+BACKGROUNDS = {
+    ["Blank"] = "http://i.imgur.com/uPZAbxQ.jpg",
+    ["Border Only"] = "http://i.imgur.com/8GNYoys.jpg"
+}
+
+function resetCanvas()
+    mat = findObjectByName("Custom Table Mat")
+    mat.setPosition({0,-10.85,0})
+    mat = findObjectByName("Mat Guides")
+    if mat~=nil then
+        mat.destruct()
+    end
+end
+function spawnBlankCanvas()
+    mat = findObjectByName("Custom Table Mat")
+    mat.setPosition({0,0.85,0})
+    mat.lock()
+    mat.interactable = false
+    -- custom = mat.getCustomObject()
+    -- custom.image = BACKGROUNDS["Blank"]
+    -- ruler.setCustomObject(custom)
+end
+function spawnGuides(name)
+    mat = findObjectByName("Mat Guides")
+    if mat~=nil then
+        mat.destruct()
+    end
+    local obj_parameters = {}
+    obj_parameters.type = 'Custom_Model'
+    obj_parameters.position = {0,0.95,0}
+    local mat = spawnObject(obj_parameters)
+    local custom = {}
+    custom.mesh = MAPS[name]
+    mat.setCustomObject(custom)
+    mat.setLock(true)
+    mat.setName("Mat Guides")
+    mat.interactable = false
+end

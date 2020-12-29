@@ -143,7 +143,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
     shields = {3,2,2,2},
     cost = 90,
-    aliases = {},
+    aliases = {"Interdictor-class Suppression Refit"},
     command = 2
 })
 Ship:new(MediumShip,EMPIRE_SHIP,{
@@ -156,7 +156,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_CONTAIN},
     shields = {3,2,2,2},
     cost = 93,
-    aliases = {},
+    aliases = {"Interdictor-class Combat Refit"},
     command = 2
 })
 Ship:new(MediumShip,EMPIRE_SHIP,{

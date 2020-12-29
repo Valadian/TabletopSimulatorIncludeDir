@@ -13,7 +13,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Vulture-class Droid Fighter Squadron",
     front = "https://i.imgur.com/851EiGY.jpeg",
     cost = 8,
-    aliases = {'Vulture-class Droid Fighter Squadrons', 'Vulture Droid Fighter Squadron', 'Vulture Droid Fighter Squadrons', "Vulter Droid Fighter", "Vulture"}
+    aliases = {'Vulture-class Droid Fighter Squadrons', 'Vulture Droid Fighter Squadron', 'Vulture Droid Fighter Squadrons', "Vultere Droid Fighter", "Vulture", 'Vulture Droid Squadron'}
 })
 ship.diffuse = "http://i.imgur.com/Erytkzv.jpg"
 ship.defense_tokens = {DEF_BRACE,DEF_SCATTER}
@@ -42,7 +42,7 @@ Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Hyena-class Droid Bomber Squadron",
     front = "https://i.imgur.com/4zpFWdk.jpeg",
     cost = 11,
-    aliases = {'Hyena-class Droid Bomber Squadrons','Hyena Droid Bomber Squadron','Hyena Droid Bomber Squadrons', 'Hyena Droid Bomber', 'Hyena'}
+    aliases = {'Hyena-class Droid Bomber Squadrons','Hyena Droid Bomber Squadron','Hyena Droid Bomber Squadrons', 'Hyena Droid Bomber', 'Hyena','Hyena Bomber Squadron'}
 })
 --ALIAS
 ship.diffuse = "http://i.imgur.com/e9qw9lm.jpg"

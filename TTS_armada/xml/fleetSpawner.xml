@@ -8,8 +8,9 @@
         </HorizontalLayout>
     </VerticalLayout>
     <VerticalLayout id="fleetSpawnerInputParsed" active="false" preferredHeight="750">
+        <Include src="listSpawnerHelp.xml"/>
         <!-- verticalScrollbarVisibility="AutoHide" -->
-        <VerticalLayout preferredHeight="730" id="fleetMasterLayout" color="black">
+        <VerticalLayout preferredHeight="600" id="fleetMasterLayout" color="black">
             <HorizontalLayout class="fleetRow">
                 <HorizontalLayout preferredWidth="300">
                     <Image id="line1icon" preferredWidth="25" image="" active="false"/>

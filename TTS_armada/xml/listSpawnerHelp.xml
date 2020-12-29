@@ -1,0 +1,23 @@
+
+
+<Panel id="fleetSpawnerHelpOuter" ignoreLayout="true" >
+    <VerticalLayout color="black"
+        id="fleetSpawnerHelpinner"
+        height="200"
+        width="200"
+        rectAlignment="UpperRight"
+        offsetXY="-410 0"
+        outlineSize="1 1"
+        outline="#303030">
+
+            <VerticalLayout padding="20 20 0 10">
+                <Text fontSize="16" alignment="MiddleCenter"> <textcolor color="#0080FF"><b>Pro Tip</b></textcolor>  </Text>
+                <Text fontSize="16" alignment="MiddleLeft" horizontalOverflow="wrap"> Unfound rows marked  in <textcolor color="red"><b>RED</b></textcolor> </Text>
+                <Text fontSize="16" alignment="MiddleLeft"> Click ? on that line to deep search </Text>
+                <Text fontSize="16" alignment="MiddleLeft"> Also, copy paste that line and post in discord or steam workshop to notify Valadian! </Text>
+            </VerticalLayout>
+            <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
+            <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_fleetHelp"  color="#FF0000" />
+            <Button text="!" rectAlignment="UpperLeft" width="30" height="30" tooltip="Pro Tip" ignoreLayout="true" onClick="030220/onClick_dismiss_fleetHelp"  color="#0000FF" />
+    </VerticalLayout>
+</Panel>

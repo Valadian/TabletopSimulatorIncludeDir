@@ -1,0 +1,46 @@
+<Defaults>
+  <Button fontSize="40" fontStyle="Bold" textColor="#000000" color="#FFFFFF"/>
+  <Text height="40" fontSize="40" fontStyle="Bold" textColor="#000000"/>
+  <Button class="arrow" height="40" fontSize="40" fontStyle="Bold" textColor="#000000" color="#FFFFFF"/>
+  <Button class="action" height="50" fontSize="40" fontStyle="Bold" textColor="#000000" color="#FFFFFF"/>
+  <HorizontalLayout class="btnRow" height="40" width="200" spacing="0 10"/>
+</Defaults>
+<Panel id="test"  position="0 90 -130" height="800" width="200" scale="0.4 0.4">
+    <VerticalLayout spacing="10">
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="◄"></Button>
+            <Text>4</Text>
+            <Button class="arrow" text="►"></Button>
+        </HorizontalLayout>
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="◄"></Button>
+            <Text>3</Text>
+            <Button class="arrow" text="►"></Button>
+        </HorizontalLayout>
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="◄"></Button>
+            <Text>2</Text>
+            <Button class="arrow" text="►"></Button>
+        </HorizontalLayout>
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="◄"></Button>
+            <Text>1</Text>
+            <Button class="arrow" text="►"></Button>
+        </HorizontalLayout>
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="◄"></Button>
+            <Text>0</Text>
+            <Button class="arrow" text="►"></Button>
+        </HorizontalLayout>
+        <HorizontalLayout class="btnRow" >
+            <Button class="arrow" text="-"></Button>
+            <Text textColor="#00000000" color="#00000000">0</Text>
+            <Button class="arrow" text="+"></Button>
+        </HorizontalLayout>
+        <Button class="action" text="Done"></Button>
+        <Button class="action" text="Move"></Button>
+        <Button class="action" text="UNDO" textColor="#FFFFFF" color="#CC0000"></Button>
+        <Button class="action" text="Oops!" textColor="#FFFFFF" color="#CC0000"></Button>
+        <Button class="action" text="Confirm" textColor="#FFFFFF" color="#00CC00"></Button>
+    </VerticalLayout>
+</Panel>

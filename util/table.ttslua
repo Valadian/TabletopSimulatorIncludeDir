@@ -68,6 +68,15 @@ table.CountIf =function(t, predicate)
     end
     return result
 end
+function table.contains(self,val)
+    for index, value in ipairs (self) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
 table.Contains = function(tab, el)
     for k,v in pairs(tab) do
         if v == el then

@@ -11,7 +11,14 @@ function vector.sub(pos, offset)
     return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
 end
 function vector.scale(v,s)
-    return {v[1] * s[1],v[2] * s[2],v[3] * s[3]}
+    if type(s)=="table" then
+        return {v[1] * s[1],v[2] * s[2],v[3] * s[3]}
+    elseif type(s)=="number" then
+        return {v[1] * s,v[2] * s,v[3] * s}
+    else
+        printToAll("Error: Cannot scale vector by type: "..type(s))
+        return nil
+    end
 end
 function vector.prod(v,s)
     return {v[1] * s,v[2] * s,v[3] * s}
@@ -47,7 +54,7 @@ function vector.angle2D(vec1, vec2)
     return angle
 end
 function vector.eq(a,b)
-    return double.eq(a[1],b[1]) and double.eq(a[2],b[2]) and double.eq(a[3],b[3])
+    return math.approxeq(a[1],b[1]) and math.approxeq(a[2],b[2]) and math.approxeq(a[3],b[3])
 end
 function vector.tostring(v)
     return "{"..math.round(v[1],3)..","..math.round(v[2],3)..","..math.round(v[3],3).."}"

@@ -246,9 +246,16 @@ function onObjectSpawn(object)
             ['font_color']={0,0,0}})
     end
 end
+#include MapManager
 function Action_select_objective(card)
     card.setPositionSmooth({-40.66,0.97,-0.09}, false, false)
     card.clearButtons()
+    if MAPS["Objective: "..card.getName()]~=nil then
+        spawnBlankCanvas()
+        spawnGuides("Objective: "..card.getName())
+    else
+        resetCanvas()
+    end
 end
 -- function onObjectLeaveContainer(Container, object)
 --     --Create a Button on the card for leaving a container
@@ -291,15 +298,15 @@ function createSpawnButtons(object)
             -- 8 will be defense
             local maneuver = {}
             -- lolnope loadstring("maneuver = "..model_data[7])
-            table.insert(maneuver,string:split(string.strip(model_data[7]),",",nil,false))
+            table.insert(maneuver,model_data[7]:strip():split(",",nil,false))
             if #model_data>7 then
-                table.insert(maneuver,string:split(string.strip(model_data[8]),",",nil,false))
+                table.insert(maneuver,model_data[8]:strip():split(",",nil,false))
             end
             if #model_data>8 then
-                table.insert(maneuver,string:split(string.strip(model_data[9]),",",nil,false))
+                table.insert(maneuver,model_data[9]:strip():split(",",nil,false))
             end
             if #model_data>9 then
-                table.insert(maneuver,string:split(string.strip(model_data[10]),",",nil,false))
+                table.insert(maneuver,model_data[10]:strip():split(",",nil,false))
             end
             ship_data = {
                 mesh = string.strip(model_data[4]),
@@ -476,7 +483,7 @@ function Action_SpawnListSpawner(listSpawner)
         printToAll("Paste in fleet to spawn",{1,1,0})
         return
     end
-    lines = string:split(list, "\n")
+    lines = list:split("\n")
     -- print(#lines)
     -- x = 6
     -- i_y = 0
@@ -657,6 +664,7 @@ end
 --    ships={{def, upgrades:{def, def, def, def, def},{def, upgrades:{def, def, def, def, def}}
 --    squads={{def:def, count:1}}
 --}
+function donothing() end
 function layout(player, fleet, pos, rot, base_x, spawn)
     if base_x==nil then
         base_x=0
@@ -693,14 +701,47 @@ function layout(player, fleet, pos, rot, base_x, spawn)
 
     if spawn then
         source = getObjectFromGUID(COMMAND_SOURCE)
-        local obj_parameters = {}
-        obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5},rot[2]-180))
-        source.clone(obj_parameters)
+        command_source_poses = {
+            {-1,0,1},
+            {1,0,1},
+            {1,0,-1},
+            {-1,0,-1}
+        }
+        command_source_rots = { 0, 90, 180, 270 }
+        command_source_guids = {
+            'e0b0d2',
+            'b83199',
+            '630f97',
+            '0795c1'
+        }
+        CMD_COLORS = {
+            {0.4,0.8,0.4,1.11}, --repair
+            {0.8,0.4,0.4,1.11}, --concentrate
+            {0.2, 0.4, 0.8,1.11}, --navigate
+            {0.8,0.4,0.8,1.11} --squadron
+        }
+        --CMD_MESHES
+        for i=1,4 do
+            local obj_parameters = {}
+            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(command_source_poses[i],{x-4,4,9.5}),rot[2]-180)) --{x-2,5,9.5}
+            -- print(obj_parameters.position[1],",",obj_parameters.position[2],",",obj_parameters.position[3])
+            source = getObjectFromGUID(command_source_guids[i])
+            command_source = source.clone(obj_parameters)
+
+            command_source.setRotation(vector.add(rot,{0,i*90 - 135,180}))
+            command_source.setScale({0.65,0.65,0.65})
+            command_source.setColorTint({0.5,0.5,0.5})
+            command_source.createButton({label = i, click_function="donothing", font_size=2000, position=vector.add({0,-0.5,0},{0,0,0.6}), rotation={180,-(i*90+45),0}, color={0,0,0,0.9}, font_color=CMD_COLORS[i], width=0, height=0})
+            if i==1 then
+                command_source.createButton({label = "Press 1-4\nto switch\nCommands", click_function="donothing", font_size=200, position={0,-0.5,2.1}, rotation={180,225,0}, color={0,0,0}, font_color={1,1,1}, width=0, height=0})
+            end
+        end
 
         for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
             source = getObjectFromGUID(source_guid)
             local obj_parameters = {}
-            obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5-i*3},rot[2]-180))
+            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(vector.scale(command_source_poses[i],2.2),{x-4,-1,9.5}),rot[2]-180))
+            -- obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5-i*3},rot[2]-180))
             source.clone(obj_parameters)
         end
     end
@@ -934,29 +975,33 @@ function SetCmdBaseGUIDonShip(base, ship)
     -- print("Base: "..base.getGUID())
     ship.setVar("cmdBaseGUID",base.getGUID())
 end
-function math.mod(a, b)
-    return a-b*math.floor(a/b)
-end
-function math.round(x)
-    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
-end
-vector={}
-function vector.add(pos, offset)
-    return {pos[1] + offset[1],pos[2] + offset[2],pos[3] + offset[3]}
-end
-function vector.sub(pos, offset)
-    return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
-end
-function vector.length(v)
-    return math.sqrt(v[1]*v[1]+v[2]*v[2]+v[3]*v[3])
-end
-function vector.rotate(direction, yRotation)
-
-    local rotval = math.round(yRotation)
-    local radrotval = math.rad(rotval)
-    local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
-    local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
-    return {xDistance, direction[2], zDistance}
+#include ../../util/vector
+-- function math.mod(a, b)
+--     return a-b*math.floor(a/b)
+-- end
+-- function math.round(x)
+--     return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
+-- end
+-- vector={}
+-- function vector.add(pos, offset)
+--     return {pos[1] + offset[1],pos[2] + offset[2],pos[3] + offset[3]}
+-- end
+-- function vector.sub(pos, offset)
+--     return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
+-- end
+-- function vector.length(v)
+--     return math.sqrt(v[1]*v[1]+v[2]*v[2]+v[3]*v[3])
+-- end
+-- function vector.rotate(direction, yRotation)
+--
+--     local rotval = math.round(yRotation)
+--     local radrotval = math.rad(rotval)
+--     local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
+--     local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
+--     return {xDistance, direction[2], zDistance}
+-- end
+function string:strip(self)
+    return string.strip(self)
 end
 function string.strip(str)
     return  string.gsub(str, '^%s*(.-)%s*$', '%1')
@@ -1010,4 +1055,9 @@ function table.contains(self, val)
     end
 
     return false
+end
+function findObjectByName(name)
+    for i,obj in ipairs(getAllObjects()) do
+        if obj.getName()==name then return obj end
+    end
 end
