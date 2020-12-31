@@ -72,6 +72,7 @@ function onObjectHover(player_color, hovered_object)
             hover[math.floor(pos[1])*100+math.floor(pos[3])] = player_color
         end
         onObjectHover_asteroid(hovered_object,player_color)
+        onObjectHover_scripting_keys(hovered_object,player_color)
     end
 end
 function onObjectSpawn(obj)
@@ -201,7 +202,7 @@ end
 function onSave()
     local save = {}
     for i, ship in ipairs(getAllObjects()) do
-        if ship.tag == "Figurine" and ship.getVar('owner')~=nil then
+        if ship.tag == "Figurine" then -- and ship.getVar('owner')~=nil
             local data = {}
             data["GUID"] = ship.getGUID()
             data["rulerMesh"] = ship.getVar('rulerMesh')
@@ -972,7 +973,7 @@ function onObjectDropped( player_color, dropped_object )
                 if otherIsDial and isOnBase and token~=dropped_object then
                     --printToAll("moving: "..token.getGUID(),{1,0,0})
                     local pos = token.getPosition()
-                    token.setPositionSmooth({pos[1],pos[2]*2+math.min(droppos[2],2),pos[3]},false, true)
+                    token.setPositionSmooth({pos[1],(pos[2]-1)*2+3,pos[3]},false, true)
                 end
             end
             --printToAll("DialDroppedNearOwnedShip",{0,1,0})
@@ -981,13 +982,13 @@ function onObjectDropped( player_color, dropped_object )
             local shippos = ship.getPosition()
             local shippos = ship.getPosition()
             if isCommandBase then
-                dropped_object.setPositionSmooth({shippos[1],droppos[2],shippos[3]}) --shippos[2]+0.807
+                dropped_object.setPositionSmooth({shippos[1],3,shippos[3]}, false, true) --shippos[2]+0.807
                 dropped_object.setRotationSmooth(vector.add(ship.getRotation(),{0,180,0}),false, true)
             else
                 local offset = {0,0,-ship_size[ship.getVar('size')][3]+0.9 }
                 local rotoff = vector.rotate(offset,ship.getRotation()[2])
-                dropped_object.setPositionSmooth({shippos[1]+rotoff[1],math.min(droppos[2],2),shippos[3]+rotoff[3]},false, true) --shippos[2]+0.807
-                dropped_object.setRotationSmooth({0,ship.getRotation()[2]+180,0})
+                dropped_object.setPositionSmooth({shippos[1]+rotoff[1],3,shippos[3]+rotoff[3]},false, true) --shippos[2]+0.807
+                dropped_object.setRotationSmooth({0,ship.getRotation()[2]+180,0},false, true)
             end
 --            dropped_object.lock()
             -- dropped_object.setVar('dropped',true)
@@ -1195,6 +1196,100 @@ function clearButtons(object)
             object.removeButton(i)
         end
     end
+end
+
+hovered_ships = {}
+ruler_index = {}
+function onObjectHover_scripting_keys(hovered_object,player_color)
+    if isShip(hovered_object) then
+        if hovered_ships[player_color]~=nil then
+            hovered_ships[player_color].highlightOff()
+        end
+        hovered_ships[player_color] = hovered_object
+        hovered_object.highlightOn(player_color,0.2)
+    end
+end
+function onScriptingButtonDown(index, color)
+    if ruler_index[color]==nil then
+        ruler_index[color] = 0
+    end
+
+    if index==1 or index==3 then
+
+        if hovered_ships[color]~=nil then
+            hovered_ships[color].highlightOff()
+        end
+        curs_rot = 0
+        if color~=nil then
+            curs_rot = Player[color].getPointerRotation()
+        end
+        print(curs_rot)
+        ships = T(getAllObjects())
+            :Where(isShip)
+            :Where(|s| s~=hovered_ships[color])
+            :Where(|s| s.getVar('owner')==color)
+            :OrderBy(function(s)
+                -- print(s.getName())
+                offset = vector.sub(s.getPosition(),hovered_ships[color].getPosition())
+                -- print("Global: ",vector.tostring(offset))
+                relative_offset = vector.rotate(offset,90+curs_rot)
+                -- print("Local: ",vector.tostring(relative_offset))
+                x_delta = relative_offset[1]
+                if x_delta<0 then
+                    x_delta = x_delta+200
+                end
+                -- print("x_delta: ",x_delta)
+                return x_delta
+            end )
+        if #ships>0 then
+            if index==1 then
+                -- print("selecting: ",ships[1].getName())
+                hovered_ships[color] = ships[1]
+            else
+                -- print("selecting: ",ships[#ships].getName())
+                hovered_ships[color] = ships[#ships]
+            end
+            hovered_ships[color].highlightOn(color,0.2)
+        end
+    end
+    --index 1/3 change ships
+    if hovered_ships[color]~=nil then
+        if rulers[color]==nil then
+            ruler_index[color] = 0
+        end
+        if index==4 then
+            moveRuler(hovered_ships[color],-1,color)
+        end
+        if index==6 then
+            moveRuler(hovered_ships[color],1,color)
+        end
+        -- MUST WAIT FOR RULER TO BE SPAWNED
+        Wait.frames(function()
+            if rulers[color]~=nil then
+                if index==10 then
+                    rulers[color].call('API_move')
+                else
+                    params = {index=ruler_index[color],color=color}
+                    if index==7 then
+                        rulers[color].call('API_rulerLeft')
+                    elseif index==9 then
+                        rulers[color].call('API_rulerRight')
+                    elseif index==8 then
+                        rulers[color].call('API_incrementIndex')
+                    elseif index==5 then
+                        rulers[color].call('API_decrementIndex')
+                    elseif index==2 then
+                        rulers[color].call('Action_RemoveRuler')
+                    end
+                    Wait.frames(|| rulers[color].call("API_highlightIndex",params), 1)
+                end
+            end
+        end,1)
+
+    end
+    -- ruler = rulers[color]
+    -- if ruler==nil or ruler.getVar('ship')==nil or ruler.getVar('ship')==
+    -- print(index)
 end
 --includes util/math
 #include ../../util/vector

@@ -180,6 +180,7 @@ function drawButtons()
 
     end
     y = y + 0.25
+    local maneuver = self.getTable("maneuver")
     for i,cmd in ipairs(cmds) do
         if tonumber(cmd)>-2 then
             self.createButton(buildButton('<',{click_function='Action_RulerLeft'..i,position={0.2,z,y}}))
@@ -188,12 +189,37 @@ function drawButtons()
         if math.abs(tonumber(cmd))==1 then clicks = "|" end
         if math.abs(tonumber(cmd))==2 then clicks = "||" end
         self.createButton(buildButton(clicks,{click_function='DoNothing',position={0,z,y},color={0,0,0},font_color={1,1,1}}))
+        rulers[i].clearButtons()
+        font_color = {0,0,0,10}
+        color = {0,0,0,0.1}
+        if maneuver~=nil then
+            -- print("Found Manuever")
+            if #cmds>#maneuver then
+                -- rulers[i].setColorTint({1,0,0})
+                -- font_color = {1,0,0}
+                rulers[i].createButton(buildButton("?",{click_function='DoNothing',position={0,z,0.8},width=200,height=300,font_size=200,color=color,font_color=font_color}))
+            else
+                -- rulers[i].setColorTint({1,1,1})
+                segment = maneuver[#cmds][i]
+                value = 0
+                if segment=="I" then value = 1 end
+                if segment=="II" then value = 2 end
+                -- print(i,segment,value,cmd)
+                if math.abs(tonumber(cmd))>value then
+                    font_color = {1,1,1,1}
+                    color = {1,0,0,1}
+                else
+                    font_color = {0,0.5,0,10}
+                end
+                rulers[i].createButton(buildButton(segment,{click_function='DoNothing',position={0,z,0.8},width=200,height=300,font_size=200,color=color,font_color=font_color}))
+            end
+        else
+        end
         if tonumber(cmd)<2 then
             self.createButton(buildButton('>',{click_function='Action_RulerRight'..i,position={-0.2,z,y}}))
         end
         y = y + 0.25
     end
-    local maneuver = self.getTable("maneuver")
     if maneuver~=nil then
 
         --for i,speed in ipairs(maneuver) do
@@ -374,12 +400,22 @@ function RotateRuler(i, direction)
     buildRuler(cmds)
 end
 function Action_AddRuler()
-    table.insert(cmds,"0")
-    buildRuler(cmds)
+    if #cmds<4 then
+        if highlighted_index==#cmds then
+            highlighted_index = highlighted_index + 1
+        end
+        table.insert(cmds,"0")
+        buildRuler(cmds)
+    end
 end
 function Action_RemoveRuler()
-    table.remove(cmds)
-    buildRuler(cmds)
+    if #cmds>0 then
+        if highlighted_index==#cmds then
+            highlighted_index = highlighted_index - 1
+        end
+        table.remove(cmds)
+        buildRuler(cmds)
+    end
 end
 function Action_ClearRuler()
     self.setVar('moved',false)
@@ -495,6 +531,60 @@ function extendSelf(this, index, new_cmds)
     --newruler.setRotationSmooth(obj_parameters.rotation,false,true)
     --newruler.lock()
 end
+highlighted_index = 0
+owner_color = "black"
+function API_highlightIndex(params) --index, color
+    if params~=nil then
+        owner_color = params.color
+    end
+    if highlighted_index==0 then
+        self.highlightOn(owner_color, 2000)
+    else
+        self.highlightOff()
+    end
+    for i,ruler in ipairs(rulers) do
+        if i==highlighted_index then
+            rulers[i].highlightOn(owner_color, 2000)
+        else
+            rulers[i].highlightOff()
+        end
+    end
+end
+function API_incrementIndex()
+    if highlighted_index==#cmds then
+        Action_AddRuler()
+    else
+        highlighted_index = highlighted_index + 1
+    end
+end
+function API_decrementIndex()
+    if highlighted_index>0 then
+        highlighted_index = highlighted_index - 1
+    end
+end
+function API_rulerLeft()
+    if highlighted_index==0 then
+        Action_RulerLeft0()
+    else
+        RotateRuler(highlighted_index,-1)
+    end
+end
+function API_rulerRight()
+    if highlighted_index==0 then
+        Action_RulerRight0()
+    else
+        RotateRuler(highlighted_index,1)
+    end
+end
+function API_move()
+    if self.getVar('moved') then
+        Action_ClearRuler()
+    else
+        Action_Move()
+    end
+
+end
+
 -- function lockRuler()
 --     for i=1, 50, 1 do
 --         coroutine.yield(0)

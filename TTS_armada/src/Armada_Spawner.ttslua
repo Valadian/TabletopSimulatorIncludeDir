@@ -250,12 +250,13 @@ end
 function Action_select_objective(card)
     card.setPositionSmooth({-40.66,0.97,-0.09}, false, false)
     card.clearButtons()
-    if MAPS["Objective: "..card.getName()]~=nil then
-        spawnBlankCanvas()
-        spawnGuides("Objective: "..card.getName())
-    else
-        resetCanvas()
-    end
+    -- TODO: Test map feature!
+    -- if MAPS["Objective: "..card.getName()]~=nil then
+    --     spawnBlankCanvas()
+    --     spawnGuides("Objective: "..card.getName())
+    -- else
+    --     resetCanvas()
+    -- end
 end
 -- function onObjectLeaveContainer(Container, object)
 --     --Create a Button on the card for leaving a container
