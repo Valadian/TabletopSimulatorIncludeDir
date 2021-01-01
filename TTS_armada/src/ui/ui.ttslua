@@ -1,35 +1,68 @@
 function onClick_ToggleUI(player, _, idValue)
-    if UI.getAttribute("armadaDisplay", "height")=="30" then
+    isMinimized = UI.getAttribute("armadaDisplay", "height")=="30"
+    switchToCloud = UI.getValue("spawnerTitle")=="Armada Fleet Spawner" and idValue=="cloudBtn"
+    switchToSpawn = UI.getValue("spawnerTitle")=="Armada Score Reporter" and idValue=="minimizeBtn"
+    if isMinimized or switchToCloud or switchToSpawn then
         UI.show("spawnerTitle")
-        UI.show("fleetSpawnerPanel")
-        --UI.hide("shipSpawnerPanel")
+        UI.hide("shipSpawnerPanel")
+        UI.hide("upgradeSpawnerPanel")
         UI.show("tabContainer")
         UI.setAttribute("armadaDisplay", "height", "800")
         UI.setAttribute("armadaDisplay", "width", "400")
-        UI.setAttribute("minimizeBtn", "colors", "transparent|#FF0000|#800000|transparent")
-        UI.setAttribute("minimizeBtn", "tooltip", "Minimize")
+        if idValue=="minimizeBtn" then
+            UI.show("fleetSpawnerPanel")
+            UI.hide("gameReporterPanel")
+            UI.show("tabContainer")
+            UI.setValue("spawnerTitle","Armada Fleet Spawner")
+            UI.setAttribute("spawnerTitle","color","white")
+            UI.setAttribute("minimizeBtn", "colors", "transparent|#803030|#800000|transparent")
+            UI.setAttribute("minimizeBtn", "tooltip", "Minimize")
+            UI.setAttribute("cloudBtn", "colors", "transparent|#308030|#308000|transparent")
+            UI.setAttribute("cloudBtn", "tooltip", "Show ScoreReporting")
+        elseif idValue=="cloudBtn" then
+            UI.hide("fleetSpawnerPanel")
+            UI.show("gameReporterPanel")
+            UI.hide("tabContainer")
+            UI.setValue("spawnerTitle","Armada Score Reporter")
+            UI.setAttribute("spawnerTitle","color","#FFA040")
+            UI.setAttribute("minimizeBtn", "colors", "transparent|#308030|#008000|transparent")
+            UI.setAttribute("minimizeBtn", "tooltip", "Show Armada Fleet Spawner")
+            UI.setAttribute("cloudBtn", "colors", "transparent|#803030|#800000|transparent")
+            UI.setAttribute("cloudBtn", "tooltip", "Minimize")
+        end
         UI.setAttribute("shortTitle","alignment","MiddleLeft")
+        UI.show("shortTitle")
         -- UI.setAttribute("armadaDisplay","outlineSize","0 0")
         -- UI.setAttribute("armadaDisplay","outline","white")
     else
         UI.hide("spawnerTitle")
         UI.hide("fleetSpawnerPanel")
-        -- UI.hide("fleetSpawnerInputParsed")
-        -- UI.show("fleetListPasteStandin")
         UI.hide("shipSpawnerPanel")
         UI.hide("upgradeSpawnerPanel")
         UI.hide("gameReporterPanel")
         UI.hide("tabContainer")
         UI.setAttribute("armadaDisplay", "height", "30")
-        UI.setAttribute("armadaDisplay", "width", "128")
-        UI.setAttribute("minimizeBtn", "colors", "transparent|#00FF00|#008000|transparent")
+        UI.setAttribute("armadaDisplay", "width", "0")
+        UI.setAttribute("minimizeBtn", "colors", "transparent|#308030|#008000|transparent")
         UI.setAttribute("minimizeBtn", "tooltip", "Show Armada Fleet Spawner")
+        UI.setAttribute("cloudBtn", "colors", "transparent|#308030|#800000|transparent")
+        UI.setAttribute("cloudBtn", "tooltip", "Show ScoreReporting")
         UI.setAttribute("shortTitle","alignment","MiddleCenter")
+        UI.hide("shortTitle")
         -- UI.setAttribute("armadaDisplay","outlineSize","1 1")
         -- UI.setAttribute("armadaDisplay","outline","#303030")
     end
 end
 function onClick_selectArmadaTab(player, _, idValue)
+    if UI.getAttribute("armadaDisplay", "height")=="30" then
+        onClick_ToggleUI(player, _, idValue)
+    end
+    if idValue=="cloudBtn" then
+        idValue="gameReporter"
+    end
+    if idValue=="minimizeBtn" then
+        idValue="fleetSpawner"
+    end
     local xml = UI.getXmlTable()
     for i=1,#xml do
         if(xml[i].attributes.id == "armadaDisplay") then
@@ -270,6 +303,7 @@ function onClick_fleet_spawn(player, _, idValue)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
 end
 function Action_fleet_spawn(datacard, color, alt_click)
+    onClick_fleet_clear({color=color}, _, nil)
     list = datacard.getDescription()
     lines = string:split(list, "\n")
     lineobjs = linesToLineobjs(lines)
@@ -443,8 +477,26 @@ function updateScrollButtons(player)
         UI.setAttribute("parseScrollDown", "iconColor", "#FFFFFF")
     end
 end
-function onClick_dismiss_commandPopup(player, _, idValue)
-    UI.hide("commandPopup")
+function onClick_toggle_commandPopup(player, _, idValue)
+    local active = UI.getAttribute("commandPopup","active")
+    if active==nil or active=="true" then
+        UI.hide("commandPopup")
+    else
+        UI.show("commandPopup")
+    end
+end
+function onClick_show_helpPage(player, _, idValue)
+    for i=0,10 do
+        UI.hide("helpPage"..i)
+        UI.setAttribute("helpPage"..i.."btn","class","pagination")
+        UI.setAttribute("helpPage"..i.."btn","color","black")
+        UI.setAttribute("helpPage"..i.."btn","textColor","white")
+    end
+    UI.show(idValue:gsub("btn",""))
+    UI.setAttribute(idValue,"class","paginationActive")
+    UI.setAttribute(idValue,"color","yellow")
+    UI.setAttribute(idValue,"textColor","black")
+
 end
 function onClick_dismiss_fleetHelp(plauer, _, idValue)
     UI.hide("fleetSpawnerHelpOuter")

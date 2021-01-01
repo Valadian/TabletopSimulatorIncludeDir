@@ -99,7 +99,7 @@ ship = {
 --  Relay, Screen
 Squadron:new(ship, SEPARATISTS_SQUAD, {
 	name = "Belbullab-22 Starfighter Squadron",
-    front = "https://i.imgur.com/AYE4WqR.jpeg",
+    front = "https://i.imgur.com/zxJrlMf.jpg",
     cost = 15,
     aliases = {'Belbullab-22 Starfighter Squadrons', "Belbullab-22 Starfighter", "Belbullab-22"}
 })

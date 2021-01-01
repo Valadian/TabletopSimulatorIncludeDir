@@ -4,13 +4,13 @@ WeaponsTeam = {
 }
 
 --rebel
-Card:new(WeaponsTeam,{name="Caitken and Shollan", front="https://i.imgur.com/5msklkl.jpg", cost=6})
+Card:new(WeaponsTeam,Rebel,{name="Caitken and Shollan", front="https://i.imgur.com/5msklkl.jpg", cost=6})
 
 --imperial
-Card:new(WeaponsTeam,{name="Gunnery Chief Varnillian", front="https://i.imgur.com/JG9I88l.jpg", cost=6})
+Card:new(WeaponsTeam,Empire,{name="Gunnery Chief Varnillian", front="https://i.imgur.com/JG9I88l.jpg", cost=6})
 
 --republic
-Card:new(WeaponsTeam,{name="Clone Gunners", front="https://i.imgur.com/8Rr4vE5.jpeg", cost=4})
+Card:new(WeaponsTeam,Republic,{name="Clone Gunners", front="https://i.imgur.com/8Rr4vE5.jpeg", cost=4})
 
 --generic
 Card:new(WeaponsTeam,{name="Fire-Control Team", front="https://i.imgur.com/VFlRiDL.jpg", cost=2})

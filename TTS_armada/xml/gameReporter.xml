@@ -39,28 +39,33 @@
             </HorizontalLayout>
             <HorizontalLayout preferredHeight="30">
                 <HorizontalLayout preferredWidth="170">
-                    <Text id="Player1name">?</Text>
-                    <Text id="Player1listFound" active="false" color="Green" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
-                    <Text id="Player1listNotFound" color="Red" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                    <Text id="Player1name" color="#FF4040">?</Text>
+                    <Text id="Player1listFound" active="false" color="#80FF00" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player1listNotFound" color="#FF4040" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
                 </HorizontalLayout>
                 <Text preferredWidth="60"></Text>
                 <HorizontalLayout preferredWidth="170">
-                    <Text id="Player2name">?</Text>
-                    <Text id="Player2listFound" active="false" color="Green" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
-                    <Text id="Player2listNotFound" color="Red" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                    <Text id="Player2name" color="#FF4040">?</Text>
+                    <Text id="Player2listFound" active="false" color="#80FF00" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player2listNotFound" color="#FF4040" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
                 </HorizontalLayout>
             </HorizontalLayout>
             <HorizontalLayout preferredHeight="30">
                 <Text preferredWidth="170"></Text>
                 <Text preferredWidth="60">Obj:</Text>
-                <Text preferredWidth="170" id="activeObjective"></Text>
+                <Text preferredWidth="170" id="activeObjective" verticalOverflow="Overflow"></Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text id="objectiveWarning" color="#FF4040">Place Objective in Designated Spot
+ on Left side of board!</Text>
+                <Button id="objectiveRefresh" icon="REFRESH" onclick="030220/onClick_refreshObjective"></Button>
             </HorizontalLayout>
             <Text></Text>
 
             <HorizontalLayout preferredHeight="30">
-                <InputField preferredWidth="170" placeholder="Player 1 Score" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player1score"></InputField>
+                <InputField id="player1score" preferredWidth="170" placeholder="Player 1 Score" outline="#FF4040" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player1score"></InputField>
                 <Text preferredWidth="60">Score</Text>
-                <InputField preferredWidth="170" placeholder="Player 2 Score" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player2score"></InputField>
+                <InputField id="player2score" preferredWidth="170" placeholder="Player 2 Score" outline="#FF4040" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player2score"></InputField>
             </HorizontalLayout>
             <HorizontalLayout preferredHeight="30">
                 <Text id="Player1points" preferredWidth="170">-</Text>
@@ -68,11 +73,11 @@
                 <Text id="Player2points" preferredWidth="170">-</Text>
             </HorizontalLayout>
             <HorizontalLayout preferredHeight="30">
-                <Text preferredWidth="170" id="Player1iswinner"></Text>
+                <Text preferredWidth="170" id="Player1iswinner" color="#80FF00"></Text>
                 <Text preferredWidth="60"></Text>
-                <Text preferredWidth="170" id="Player2iswinner">Winner!</Text>
+                <Text preferredWidth="170" id="Player2iswinner" color="#80FF00"></Text>
             </HorizontalLayout>
-            <Text preferredHeight="400"></Text>
+            <Text preferredHeight="300"></Text>
         </VerticalLayout>
         <Button text="Submit Score" preferredHeight="40" onClick="030220/onClick_score_submit"  color="#008000" />
     </VerticalLayout>

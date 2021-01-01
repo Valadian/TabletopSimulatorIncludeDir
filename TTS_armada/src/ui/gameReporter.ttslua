@@ -3,9 +3,9 @@ local Http = require('ge_tts/Http')
 Http.setProxyUrl('https://ttsarmada.herokuapp.com/forward')
 
 function onClick_selectGameReporterTab(player, _, idValue)
-    onClick_selectArmadaTab(player, _, idValue)
+    onClick_ToggleUI(player, _, idValue)
 
-    UI.setValue("objective",findObjective())
+    onClick_refreshObjective()
     --Autocalculate Players
     --Autocalculate Scores?
     for i, color in ipairs(Player.getColors()) do
@@ -20,6 +20,19 @@ function onClick_selectGameReporterTab(player, _, idValue)
         end
     end
     updateScore()
+end
+function onClick_refreshObjective(player, _, idValue)
+    local objective = findObjective()
+    UI.setValue("activeObjective",objective)
+    if objective=="None?" then
+        UI.setAttribute("activeObjective","color","#FF4040")
+        UI.show("objectiveWarning")
+        UI.show("objectiveRefresh")
+    else
+        UI.setAttribute("activeObjective","color","#80FF00")
+        UI.hide("objectiveWarning")
+        UI.hide("objectiveRefresh")
+    end
 end
 function flatten(fleet)
     cards = {}
@@ -59,11 +72,11 @@ function onClick_score_submit(player, _, idValue)
         print("No fleet found for Player 1!")
         return
     end
+    player2fleet = flatten(createSpawningStructure(fleets[UI.getAttribute("Player2name","color")]))
     if #player2fleet == 0 then
         print("No fleet found for Player 2!")
         return
     end
-    player2fleet = flatten(createSpawningStructure(fleets[UI.getAttribute("Player2name","color")]))
     submitted = os.date("!%Y%m%dT%H%M%S").."."..string.format("%03d",math.random (999))
     -- print(submitted)
     broadcastToAll("Posting Game to Cloud.....", {1,1,1})
@@ -121,7 +134,7 @@ function onClick_selectPlayer(idValue,i)
             UI.show("Player"..i.."listNotFound")
         end
     else
-        UI.setAttribute("Player"..i.."name", "color", color)
+        UI.setAttribute("Player"..i.."name", "color", "#FF4040") --color
         UI.setValue("Player"..i.."name", "?")
         UI.hide("Player"..i.."listFound")
         UI.show("Player"..i.."listNotFound")
@@ -136,20 +149,30 @@ function findObjective()
     end
     return "None?"
 end
-player1score = 0
+player1score = nil
 function onInput_player1score(player, value, idValue)
-    player1score = tonumber(value) or 0
+    player1score = value --tonumber(value) or 0
     updateScore()
+    if value==nil then
+        UI.setAttribute("player1score","outline","#FF4040")
+    else
+        UI.setAttribute("player1score","outline","#80FF00")
+    end
 end
-player2score = 0
+player2score = nil
 function onInput_player2score(player, value, idValue)
-    player2score = tonumber(value) or 0
+    player2score = value --tonumber(value) or 0
     updateScore()
+    if value==nil then
+        UI.setAttribute("player2score","outline","#FF4040")
+    else
+        UI.setAttribute("player2score","outline","#80FF00")
+    end
 end
 player1points=0
 player2points=0
 function updateScore()
-    margin = math.abs(player1score - player2score)
+    margin = math.abs((player1score or 0) - (player2score or 0))
     score1 = nil
     score2 = nil
     if margin>=300 then
@@ -168,17 +191,24 @@ function updateScore()
         score1=6
         score2=5
     end
-    if player1score>player2score then
-        player1points=score1
-        player2points=score2
-        UI.setValue("Player1iswinner","Winner!")
-        UI.setValue("Player2iswinner","")
-    else
-        player2points=score1
-        player1points=score2
+    if player1score==nil or player2score==nil then
         UI.setValue("Player1iswinner","")
-        UI.setValue("Player2iswinner","Winner!")
+        UI.setValue("Player2iswinner","")
+        UI.setValue("Player1points","-")
+        UI.setValue("Player2points","-")
+    else
+        if player1score>player2score then
+            player1points=score1
+            player2points=score2
+            UI.setValue("Player1iswinner","Winner!")
+            UI.setValue("Player2iswinner","")
+        else
+            player2points=score1
+            player1points=score2
+            UI.setValue("Player1iswinner","")
+            UI.setValue("Player2iswinner","Winner!")
+        end
+        UI.setValue("Player1points",player1points)
+        UI.setValue("Player2points",player2points)
     end
-    UI.setValue("Player1points",player1points)
-    UI.setValue("Player2points",player2points)
 end

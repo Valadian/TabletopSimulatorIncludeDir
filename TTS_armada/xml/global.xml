@@ -21,30 +21,38 @@
     <Text class="cost" preferredWidth="20" />
     <Button class="upgradeCard" onClick="030220/onClick_spawnCard" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" textColor="white" textAlignment="MiddleLeft"/>
     <Button class="shipCard" onClick="030220/onClick_spawnCard" active="false" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" textColor="white" textAlignment="MiddleLeft"/>
+    <Button class="pagination" color="black" outlineSize="1 1 1 0" outline="#606060" onClick="030220/onClick_show_helpPage"/>
+    <Button class="paginationActive" color="yellow" textColor="black" outlineSize="1 1 1 0" outline="#606060" onClick="030220/onClick_show_helpPage"/>
+    <VerticalLayout class="helpPanel"  padding="20 20 40 20"/>
+    <HorizontalLayout class="helpHeading" padding="20 20 0 3" ignoreLayout="true" rectAlignment="UpperCenter" width="440" height="40"/>
 </Defaults>
 <!-- height="800"
 width="400" -->
 <VerticalLayout color="black"
     id="armadaDisplay"
     height="30"
-    width="128"
+    width="0"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     rectAlignment="UpperRight"
-    offsetXY="0 -160"
+    offsetXY="-40 -160"
     outlineSize="1 1"
     outline="#303030"
     >
     <HorizontalLayout color="transparent" preferredHeight="30" spacing="8">
-        <Text id="spawnerTitle" preferredWidth="264" alignment="MiddleRight" active="false">Armada Fleet</Text>
-        <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter">Spawner</Text>
-        <Button id="minimizeBtn" color="#FFFFFF" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_ToggleUI" tooltipPosition="Above" tooltip="Show Armada Fleet Spawner" colors="transparent|#00FF00|#008000|transparents" />
+        <Text id="spawnerTitle" preferredWidth="264" alignment="MiddleCenter" active="false">Armada Fleet Spawner</Text>
+        <!-- <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter" active="false">Spawner</Text> -->
+        <VerticalLayout ignoreLayout="true" offsetXY="40 0" rectAlignment="UpperRight" width="40" height="120" outlineSize="1 1" outline="#303030" color="black">
+            <Button id="minimizeBtn" color="#FFFFFF" icon="Rebel Empire" onClick="030220/onClick_ToggleUI" tooltipPosition="Left" tooltip="Show Armada Fleet Spawner" colors="transparent|#308030|#008000|transparent" />
+            <Button id="cloudBtn" color="#FFFFFF" iconColor="#FFA040" icon="PODIUM" onClick="030220/onClick_selectGameReporterTab" tooltipPosition="Left" tooltip="Show ScoreReporting" colors="transparent|#308030|#008000|transparent" />
+            <Button id="helpBtn" color="#FFFFFF" iconColor="#40A0FF" icon="Help" onClick="030220/onClick_toggle_commandPopup" tooltipPosition="Left" tooltip="Show Help" colors="transparent|#308030|#008000|transparent" />
+        </VerticalLayout>
     </HorizontalLayout>
     <HorizontalLayout id="tabContainer" active="false" preferredHeight="20">
         <Button text="Fleet"  id="fleetSpawner"  class="tab" />
         <Button text="Ships"  id="shipSpawner"  class="tab" />
         <Button text="Upgrades"  id="upgradeSpawner"  class="tab" />
-        <Button text="Cloud"  id="gameReporter"  class="tab" onClick="030220/onClick_selectGameReporterTab" />
+        <!-- <Button text="Cloud"  id="gameReporter"  class="tab" onClick="030220/onClick_selectGameReporterTab" /> -->
     </HorizontalLayout>
 <Include src="fleetSpawner.xml"/>
 <Include src="shipSpawner.xml"/>

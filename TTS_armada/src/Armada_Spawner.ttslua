@@ -218,7 +218,7 @@ SHIPS = {}
 CARDS = {}
 function onObjectSpawn(object)
     --Create a Button on the card for leaving a container
-    if object.tag ~= "Figurine" and object.getName()~=nil and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) then
+    if object.tag ~= "Figurine" and object.getName()~=nil and (SHIPS[string.lower(object.getName())] != nil or string.starts(object.getDescription(),"Custom")) and not isDatacard(object) then
         createSpawnButtons(object)
     end
 
@@ -250,6 +250,7 @@ end
 function Action_select_objective(card)
     card.setPositionSmooth({-40.66,0.97,-0.09}, false, false)
     card.clearButtons()
+    Wait.time(||onClick_refreshObjective(),2,0)
     -- TODO: Test map feature!
     -- if MAPS["Objective: "..card.getName()]~=nil then
     --     spawnBlankCanvas()
@@ -387,7 +388,7 @@ function onload()
 
 #include defs/cards/objectives
     setRulerMeshes()
-    drawListSpawnerButtons()
+    -- drawListSpawnerButtons()
 end
 function setRulerMeshes()
     for _,ship in ipairs(getAllObjects()) do
@@ -402,31 +403,31 @@ function setRulerMeshes()
         end
     end
 end
-function drawListSpawnerButtons()
-    for _,listSpawner in ipairs(getAllObjects()) do
-        if listSpawner.getName()=="List Spawner" then
-            Action_CloseListSpawner(listSpawner)
-        end
-    end
-end
-function Action_CloseListSpawner(listSpawner)
-    listSpawner.clearButtons()
-    listSpawner.clearInputs()
-    listSpawner.createButton({label = ">", click_function = 'Action_OpenListSpawner', rotation = {0, 0, 0},
-        position = {0.4, 0.4, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={0,1,0}, font_color={0,0,0}})
-
-end
-function Action_OpenListSpawner(listSpawner)
-    listSpawner.clearButtons()
-    listSpawner.clearInputs()
-    listSpawner.createButton({label = "<", click_function = 'Action_CloseListSpawner', rotation = {0, 0, 0},
-        position = {-0.4, 0.2, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={1,0,0}, font_color={0,0,0}})
-    listSpawner.createInput({label = "paste list here", input_function = 'Input_UpdateList', rotation = {0, 0, 0},
-        position = {3.2, 0.2, 0}, width = 3000, height = 6000, font_size = 85, function_owner = self, font_color={0,0,0}})
-    listSpawner.createButton({label = "V V V     Spawn!     V V V", click_function = 'Action_SpawnListSpawner', rotation = {0, -90, 0},
-        position = {7, 0.2, 0}, width = 6000, height = 500, font_size = 400, function_owner = self, color={0,1,0}, font_color={0,0,0}})
-    listSpawner.createButton()
-end
+-- function drawListSpawnerButtons()
+--     for _,listSpawner in ipairs(getAllObjects()) do
+--         if listSpawner.getName()=="List Spawner" then
+--             Action_CloseListSpawner(listSpawner)
+--         end
+--     end
+-- end
+-- function Action_CloseListSpawner(listSpawner)
+--     listSpawner.clearButtons()
+--     listSpawner.clearInputs()
+--     listSpawner.createButton({label = ">", click_function = 'Action_OpenListSpawner', rotation = {0, 0, 0},
+--         position = {0.4, 0.4, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+--
+-- end
+-- function Action_OpenListSpawner(listSpawner)
+--     listSpawner.clearButtons()
+--     listSpawner.clearInputs()
+--     listSpawner.createButton({label = "<", click_function = 'Action_CloseListSpawner', rotation = {0, 0, 0},
+--         position = {-0.4, 0.2, -5.9}, width = 400, height = 400, font_size = 300, function_owner = self, color={1,0,0}, font_color={0,0,0}})
+--     listSpawner.createInput({label = "paste list here", input_function = 'Input_UpdateList', rotation = {0, 0, 0},
+--         position = {3.2, 0.2, 0}, width = 3000, height = 6000, font_size = 85, function_owner = self, font_color={0,0,0}})
+--     listSpawner.createButton({label = "V V V     Spawn!     V V V", click_function = 'Action_SpawnListSpawner', rotation = {0, -90, 0},
+--         position = {7, 0.2, 0}, width = 6000, height = 500, font_size = 400, function_owner = self, color={0,1,0}, font_color={0,0,0}})
+--     listSpawner.createButton()
+-- end
 function Input_UpdateList(obj, color, input, stillEditing)
     obj.setVar("list",input)
 end
@@ -468,9 +469,15 @@ function clearSpawnArea(listSpawner)
         if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
            ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
             -- print("Destroying: "..item.getName())
-            item.destruct()
+            if not isDatacard(item) then
+                item.destruct()
+            end
         end
     end
+end
+function isDatacard(object)
+    custom = object.getCustomObject()
+    return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
 end
 function Action_SpawnListSpawner(listSpawner)
     clearSpawnArea(listSpawner)

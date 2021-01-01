@@ -127,9 +127,12 @@ function onload(save_string)
     drawSquadronButtons()
     onload_asteroid()
 end
+function isDatacard(object)
+    custom = object.getCustomObject()
+    return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
+end
 function drawDatacardButtons(obj)
-    custom = obj.getCustomObject()
-    if custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX" then
+    if isDatacard(obj) then
     -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
         obj.createButton({
             ['click_function'] = "Action_fleet_spawn",
@@ -1214,7 +1217,7 @@ function onScriptingButtonDown(index, color)
         ruler_index[color] = 0
     end
 
-    if index==1 or index==3 then
+    if index==7 or index==9 then --next/prev ship
 
         if hovered_ships[color]~=nil then
             hovered_ships[color].highlightOff()
@@ -1223,7 +1226,7 @@ function onScriptingButtonDown(index, color)
         if color~=nil then
             curs_rot = Player[color].getPointerRotation()
         end
-        print(curs_rot)
+        -- print(curs_rot)
         ships = T(getAllObjects())
             :Where(isShip)
             :Where(|s| s~=hovered_ships[color])
@@ -1242,7 +1245,7 @@ function onScriptingButtonDown(index, color)
                 return x_delta
             end )
         if #ships>0 then
-            if index==1 then
+            if index==7 then
                 -- print("selecting: ",ships[1].getName())
                 hovered_ships[color] = ships[1]
             else
@@ -1257,10 +1260,10 @@ function onScriptingButtonDown(index, color)
         if rulers[color]==nil then
             ruler_index[color] = 0
         end
-        if index==4 then
+        if index==1 then
             moveRuler(hovered_ships[color],-1,color)
         end
-        if index==6 then
+        if index==3 then
             moveRuler(hovered_ships[color],1,color)
         end
         -- MUST WAIT FOR RULER TO BE SPAWNED
@@ -1270,9 +1273,9 @@ function onScriptingButtonDown(index, color)
                     rulers[color].call('API_move')
                 else
                     params = {index=ruler_index[color],color=color}
-                    if index==7 then
+                    if index==4 then
                         rulers[color].call('API_rulerLeft')
-                    elseif index==9 then
+                    elseif index==6 then
                         rulers[color].call('API_rulerRight')
                     elseif index==8 then
                         rulers[color].call('API_incrementIndex')

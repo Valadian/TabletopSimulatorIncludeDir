@@ -1,7 +1,7 @@
 
 <VerticalLayout color="black"
     id="commandPopup"
-    height="500"
+    height="300"
     width="500"
     rectAlignment="MiddleCenter"
     allowDragging="true"
@@ -10,39 +10,138 @@
     outlineSize="1 1"
     outline="#303030">
 
-    <HorizontalLayout padding="20 20 3 3">
-        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
-        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">List Spawner</Text>
-    </HorizontalLayout>
-    <VerticalLayout padding="40 20 0 0">
-        <Text alignment="MiddleLeft" >"Spawner" found on far right side of screen.</Text>
-        <HorizontalLayout>
-            <Text alignment="MiddleLeft" preferredWidth="20">Click: </Text>
-            <Image image="ARROWDOWN" preferredWidth="20"></Image>
-            <Text alignment="MiddleLeft"  preferredWidth="350">to Expand</Text>
+    <VerticalLayout id="helpPage0" padding="50 20 0 20">
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="20 20 3 3"> Need Help? </Text>
+        <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
+            <Text alignment="MiddleLeft"> Click the page numbers below to explore recent features </Text>
         </HorizontalLayout>
-        <Text alignment="MiddleLeft" >Lists can be pasted from most List Builders, but Ryan Kingston, Armada Warlords, and the Android Armada Fleet Designer are best supported</Text>
-        <Text alignment="MiddleLeft" color="red">Lines in red will not spawn.</Text>
-        <Text alignment="MiddleLeft">If that is a mistake, Click "?" to attempt to resolve it.</Text>
+        <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
+            <Text alignment="MiddleLeft"> Join discord : https://discord.gg/MXFgPq68gR </Text>
+        </HorizontalLayout>
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="20 20 3 3"> How to get started? </Text>
+        <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
+            <Text alignment="MiddleLeft" > Start with one of the Tutorial Datacards on the left OR </Text>
+        </HorizontalLayout>
+        <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
+            <Text alignment="MiddleLeft" preferredWidth="60">Click: </Text>
+            <Panel preferredWidth="60"><Image image="Rebel Empire" width="40" height="40" ></Image></Panel>
+
+            <Text alignment="MiddleLeft"  preferredWidth="340"> to spawn a list</Text>
+        </HorizontalLayout>
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="20 20 3 3"> Want to Contribute? </Text>
+        <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
+            <Text alignment="MiddleLeft" preferredWidth="60">Click: </Text>
+            <Panel preferredWidth="60"><Image image="PODIUM" width="40" height="40" color="#FFA040" ></Image></Panel>
+
+            <Text alignment="MiddleLeft"  preferredWidth="340"> to Submit your finished game score to the cloud.</Text>
+        </HorizontalLayout>
+    </VerticalLayout>
+    <VerticalLayout id="helpPage1" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Hotkey Support</Text>
+        </HorizontalLayout>
+        <Text alignment="MiddleLeft" >Maneuvering Ruler can now be controlled by hotkeys!</Text>
+        <Text alignment="MiddleLeft" >By default, TTS hotkeys are mapped to numpad1-numpad9 and numpad0</Text>
+        <Text alignment="MiddleLeft" >For those without a numpad, I recommend remapping to: N M , H J K Y U I RightALT (Which will require remapping or unbinding: "nudge","magnify", "hide hand","under") </Text>
+        <Text alignment="MiddleLeft" >Default bindings are: </Text>
+        <HorizontalLayout padding="40 80 0 0" spacing="20">
+            <Text preferredWidth="100" alignment="MiddleRight">Prev Ship  <textcolor color="orange"><b>7</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler (+) <textcolor color="orange"><b>8</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Next Ship  <textcolor color="orange"><b>9</b></textcolor></Text>
+        </HorizontalLayout>
+        <HorizontalLayout padding="40 80 0 0" spacing="20">
+            <Text preferredWidth="100" alignment="MiddleRight">Yaw L (<![CDATA[<]]>) <textcolor color="orange"><b>4</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler (-) <textcolor color="orange"><b>5</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Yaw R (<![CDATA[>]]>) <textcolor color="orange"><b>6</b></textcolor></Text>
+        </HorizontalLayout>
+        <HorizontalLayout padding="40 80 0 0" spacing="20">
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler L (M) <textcolor color="orange"><b>1</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Shrink Ruler <textcolor color="orange"><b>2</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler R (M) <textcolor color="orange"><b>3</b></textcolor></Text>
+        </HorizontalLayout>
+        <HorizontalLayout padding="40 80 0 0" spacing="20">
+            <Text preferredWidth="100" alignment="MiddleRight">Move/Done <textcolor color="orange"><b>0</b></textcolor></Text>
+            <Text preferredWidth="100"></Text>
+            <Text preferredWidth="100"></Text>
+        </HorizontalLayout>
+
+    </VerticalLayout>
+    <VerticalLayout id="helpPage2" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Obstacle Rulers</Text>
+        </HorizontalLayout>
+        <VerticalLayout padding="20 0 0 0">
+            <Text alignment="MiddleLeft" >Obstacles can be found in <textcolor color="brown">brown bag</textcolor> on left side.</Text>
+            <Text alignment="MiddleLeft" >All Obstacles and Tokens now have Range 1-5 Rulers (Targeting has Close/Medium/Long).</Text>
+            <Text alignment="MiddleLeft" >After placing one click the <textcolor color="#40FF40">"Lock"</textcolor> button.</Text>
+            <Text alignment="MiddleLeft" >To Check Range, click on the obstacles (It has a big invisible button)</Text>
+            <Text alignment="MiddleLeft" >The Obstacle will remember the last range used.</Text>
+            <Text alignment="MiddleLeft" >When ruler is visible, a <textcolor color="#4060FF">"Move"</textcolor> button will appear to facility ranged obstacle movement.</Text>
+        </VerticalLayout>
+    </VerticalLayout>
+    <VerticalLayout id="helpPage3" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Datacards</Text>
+        </HorizontalLayout>
+        <VerticalLayout padding="20 0 0 0">
+            <Text alignment="MiddleLeft" >On the left side of the table near the rules, you will find 4 datacards.</Text>
+            <Text alignment="MiddleLeft" >These represent the 4 default fleets in the Core/Fleet Starter "Let's Play" rulebooks.</Text>
+            <Text alignment="MiddleLeft" >Clicking: "<textcolor color="#D9B46D">Spawn Fleet</textcolor>" will create the fleet in front of you.</Text>
+            <Text alignment="MiddleLeft" >When lists are spawned from the Fleet Spawner, they will generate a "Datacard".</Text>
+            <Text alignment="MiddleLeft" >These can be saved for later by right clicking <![CDATA[>]]> Save Object, and restored later by Objects <![CDATA[>]]> Saved Objects</Text>
+        </VerticalLayout>
+    </VerticalLayout>
+    <VerticalLayout id="helpPage4" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">List Spawner</Text>
+        </HorizontalLayout>
+        <VerticalLayout padding="20 0 0 0">
+            <Text alignment="MiddleLeft" >"Spawner" found on far right side of screen.</Text>
+            <HorizontalLayout preferredHeight="20">
+                <Text alignment="MiddleLeft" preferredWidth="40">Click: </Text>
+                <Panel preferredWidth="40"><Image image="Rebel Empire" width="25" height="25" ></Image></Panel>
+
+                <Text alignment="MiddleLeft"  preferredWidth="350"> to Expand</Text>
+            </HorizontalLayout>
+            <Text alignment="MiddleLeft" >Lists can be pasted from most List Builders: Ryan Kingston, Armada Warlords, and the Android Armada Fleet Designer are best supported</Text>
+            <Text alignment="MiddleLeft" color="red">Lines in red will not spawn.</Text>
+            <Text alignment="MiddleLeft">If that is a mistake, Click "?" to attempt to resolve it.</Text>
+            <Text alignment="MiddleLeft">To spawn individual ships/squadrons/ugprades/objectives, access the "<b>Ships</b>" and "<b>Upgrades</b>" tabs </Text>
+        </VerticalLayout>
     </VerticalLayout>
 
-    <HorizontalLayout padding="20 20 3 3">
-        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
-        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Command Dial Update</Text>
-    </HorizontalLayout>
-    <VerticalLayout padding="40 20 0 0">
-        <Text alignment="MiddleLeft" >Command Dials are now unified. They will be spawned with ship spawner, and can be found next to the Defense Token sources next to Rules.</Text>
-        <Text alignment="MiddleLeft" >They now use "States". To Change Dial, press 1-4:</Text>
-        <VerticalLayout padding="40 0 0 0">
-            <Text alignment="MiddleLeft" color="#66CC66">1. Repair</Text>
-            <Text alignment="MiddleLeft" color="#CC6666">2. Navigate</Text>
-            <Text alignment="MiddleLeft" color="#3366CC">3. Concentrate Fire</Text>
-            <Text alignment="MiddleLeft" color="#6666CC">4. Squadron</Text>
+    <VerticalLayout id="helpPage5" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Command Dial Update</Text>
+        </HorizontalLayout>
+        <VerticalLayout padding="20 0 0 0">
+            <Text alignment="MiddleLeft" >Command Dials are now unified. They will be spawned with ship spawner, and can be found next to the Defense Token sources next to Rules.</Text>
+            <Text alignment="MiddleLeft" >They now use "States". To Change Dial, press 1-4:</Text>
+            <VerticalLayout padding="40 0 0 0">
+                <Text alignment="MiddleLeft" color="#66CC66">1. Repair</Text>
+                <Text alignment="MiddleLeft" color="#CC6666">2. Navigate</Text>
+                <Text alignment="MiddleLeft" color="#3366CC">3. Concentrate Fire</Text>
+                <Text alignment="MiddleLeft" color="#6666CC">4. Squadron</Text>
+            </VerticalLayout>
+            <Text alignment="MiddleLeft" >You can "peek" at the value of the Command Dial by hovering it and holding alt+shift together</Text>
+            <Text alignment="MiddleLeft" >Flip a dial by typing "f" while holding it.</Text>
+            <Text alignment="MiddleLeft" >They can be stacked on ships or the metallic Command Bases, and are meant to be reused each round</Text>
         </VerticalLayout>
-        <Text alignment="MiddleLeft" >You can "peek" at the value of the Command Dial by hovering it and holding alt+shift together</Text>
-        <Text alignment="MiddleLeft" >Flip a dial by typing "f" while holding it.</Text>
-        <Text alignment="MiddleLeft" >They can be stacked on ships or the metallic Command Bases, and are meant to be reused each round</Text>
     </VerticalLayout>
     <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
-    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_commandPopup"  color="#FF0000" />
+    <Button icon="Help" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_commandPopup" color="#00000000" iconColor="#0080FF" />
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_commandPopup"  color="#FF0000" />
+    <HorizontalLayout rectAlignment="LowerCenter" width="270" height="20" ignoreLayout="true" spacing="30" offsetXY="0 -30 " >
+        <Button id="helpPage0btn" class="paginationActive">•</Button>
+        <Button id="helpPage1btn" class="pagination">1</Button>
+        <Button id="helpPage2btn" class="pagination">2</Button>
+        <Button id="helpPage3btn" class="pagination">3</Button>
+        <Button id="helpPage4btn" class="pagination">4</Button>
+        <Button id="helpPage5btn" class="pagination">5</Button>
+    </HorizontalLayout>
 </VerticalLayout>

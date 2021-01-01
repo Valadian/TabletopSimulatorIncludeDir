@@ -305,7 +305,7 @@ function update_asteroid_buttons(obj,player)
     custom = obj.getCustomObject()
     h = 0.15
     z_rot = 0
-    if math.abs(obj.getRotation()[3])>10 then
+    if obj.is_face_down then --math.abs(obj.getRotation()[3])>10
         h = 0.1-h
         z_rot = 180
     end
@@ -403,33 +403,33 @@ function LoadAsteroidRuler(obj, size, player) --size 1-5
 end
 function Action_MoveAsteroid(obj, player, _)
     -- Spawn Shadow
-    print(">>> Action_MoveAsteroid")
+    -- print(">>> Action_MoveAsteroid")
     local obj_parameters = {}
     obj_parameters.type = 'Custom_Model'
     obj_parameters.position = obj.getPosition()
     obj_parameters.rotation = obj.getRotation()
-    print("Spawning Object... ")
+    -- print("Spawning Object... ")
     local shadow = spawnObject(obj_parameters)
     local custom = {}
-    print("Getting collider... ")
+    -- print("Getting collider... ")
     local obstacle_collider = obj.getCustomObject().collider
     custom.mesh = obstacle_collider
     custom.collider = obstacle_collider
     custom.material = 3
-    print("Setting custom... ")
+    -- print("Setting custom... ")
     shadow.setCustomObject(custom)
-    print("Setting tint... ")
+    -- print("Setting tint... ")
     shadow.setColorTint({0.3,0.3,0.3})
-    print("Locking shadow... ")
+    -- print("Locking shadow... ")
     shadow.lock()
-    print("Setting shadow var... ")
+    -- print("Setting shadow var... ")
     obj.setVar("shadow",shadow)
 
-    print("Repositioning obstacle... ")
+    -- print("Repositioning obstacle... ")
     obj.setPosition(vector.add(obj.getPosition(),{0,1,0}))
     obj.unlock() --DO NOT UNLOCK WITH OVERLAPPING COLLIDERs
     -- Wait.frames(||obj.unlock(), 10)
-    print("Waiting to update UI... ")
+    -- print("Waiting to update UI... ")
     Wait.frames(||update_asteroid_buttons(obj, player),1)
 end
 function Action_LockAsteroid(obj, player, _)
