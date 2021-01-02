@@ -66,6 +66,19 @@
 -- For questions, message valadian#6997 on discord,
 --     or join ArmadaTTS Server: https://discord.gg/3MrP8db
 --
+function table.copy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = orig_value
+        end
+    else -- number, string, boolean, etc
+    copy = orig
+    end
+    return copy
+end
 function findObjectByName(name)
     for i,obj in ipairs(getAllObjects()) do
         if obj.getName()==name then return obj end
@@ -80,9 +93,9 @@ DEF_SALVO = '5028b2'
 Ship = { collider = "", convex = true, type = 1, material = 3, maneuver = {},
     defense_tokens = {}, shields = {1,1,1,1,1,1}, cost = 0, name = "",
     front = "", back = "", aliases = {}, faction = "" }
-function Ship:new (o,...)
-    o = o or {}
-    o = table.copy(o)
+DefaultShip = table.copy(Ship)
+function Ship:new (...)
+    o = table.copy(DefaultShip)
     if ... ~= nil then
         for i,tab in ipairs({...}) do
             for k, v in pairs(tab) do
@@ -105,9 +118,9 @@ HugeShip = { collider = "http://paste.ee/r/ClCL3" }
 Squadron = { collider = "http://paste.ee/r/nAMCQ", convex = false, type = 1,
     material = 1, health = 0, move = 0, defense_tokens = {}, cost = 0,
     name = "", front = "", back = "", aliases = {}, faction = "" }
-function Squadron:new (o, ...)
-    o = o or {}
-    o = table.copy(o)
+DefaultSquad = table.copy(Squadron)
+function Squadron:new (...)
+    o = table.copy(DefaultSquad)
     if ... ~= nil then
         for i,tab in ipairs({...}) do
             for k, v in pairs(tab) do
