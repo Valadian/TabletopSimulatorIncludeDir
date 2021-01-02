@@ -298,11 +298,14 @@ function onClick_fleet_spawn(player, _, idValue)
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
     -- print(width)
     base_x = 55-width/2
-    spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), listSpawner.getRotation(),fleets[player.color][1].original)
+    spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), listSpawner.getRotation(),fleets[player.color][1].original)
     -- print(base_x)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
 end
 function Action_fleet_spawn(datacard, color, alt_click)
+    if alt_click then
+        return
+    end
     onClick_fleet_clear({color=color}, _, nil)
     list = datacard.getDescription()
     lines = string:split(list, "\n")
@@ -319,8 +322,8 @@ function Action_fleet_spawn(datacard, color, alt_click)
             position = datacard.getPosition()
         })
     end
-    clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2]-180)), false, false)
-    clonedatacard.setRotationSmooth(listSpawner.getRotation(), false, false)
+    clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), false, false)
+    clonedatacard.setRotationSmooth(listSpawner.getRotation() + Vector(0,180,0), false, false)
 end
 function fleetToString(fleet)
     if fleet==nil then return "" end
@@ -383,7 +386,7 @@ function spawnDataCard(fleet, pos, rot, name)
     local obj_parameters = {}
     obj_parameters.type = 'Custom_Model'
     obj_parameters.position = pos
-    obj_parameters.rotation = rot
+    obj_parameters.rotation = vector.add(rot,{0,180,0})
     obj_parameters.scale = {1, 1, 1}
 
 

@@ -151,6 +151,8 @@ function Cache(DEFS,o)
     if o.cost~=nil then
         DEFS[string.lower(o.name.." ("..o.cost..")")] = o
         CacheNgrams(o.name.." ("..o.cost..")")
+        DEFS[string.lower(o.name.." "..o.cost)] = o
+        CacheNgrams(o.name.." "..o.cost)
     else
         CacheNgrams(o.name)
     end
@@ -160,6 +162,8 @@ function Cache(DEFS,o)
         if o.cost~=nil then
             DEFS[string.lower(alias.." ("..o.cost..")")] = o
             CacheNgrams(alias.." ("..o.cost..")")
+            DEFS[string.lower(alias.." "..o.cost)] = o
+            CacheNgrams(alias.." "..o.cost)
         else
             CacheNgrams(alias)
         end
@@ -459,19 +463,24 @@ B_COLORS = {{0.1,0.1,0.44},
             {0.48,0.41,0.93},
             {0.18,0.31,0.31}}
 function clearSpawnArea(listSpawner)
-    pos = listSpawner.getPosition()
-    rot = listSpawner.getRotation()
-    min_pos = vector.add(pos, vector.rotate({1.2,0,-5},rot[2]-180))
-    max_pos = vector.add(pos, vector.rotate({109,0,14},rot[2]-180))
+    -- pos = listSpawner.getPosition()
+    -- rot = listSpawner.getRotation()
+    -- min_pos = listSpawner.positionToWorld({1.2,0,-5}) --vector.add(pos, vector.rotate({1.2,0,-5},rot[2]))
+    -- max_pos = listSpawner.positionToWorld({109,0,14}) --vector.add(pos, vector.rotate({109,0,14},rot[2]))
+    ll = {1.2,0,-5}
+    ur = {109,0,14}
     -- printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
     for _,item in ipairs(getAllObjects()) do
-        item_pos = item.getPosition()
-        if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
-           ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
+        local_pos = listSpawner.positionToLocal(item.getPosition())
+        if item.getName()=="BlueD8" then
+            print(local_pos:string())
+        end
+        if vector.between(local_pos, ll, ur) and not isDatacard(item) then
+        -- if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
+        --    ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
             -- print("Destroying: "..item.getName())
-            if not isDatacard(item) then
-                item.destruct()
-            end
+            -- print(item.getName())
+            item.destruct()
         end
     end
 end
@@ -710,10 +719,10 @@ function layout(player, fleet, pos, rot, base_x, spawn)
     if spawn then
         source = getObjectFromGUID(COMMAND_SOURCE)
         command_source_poses = {
-            {-1,0,1},
-            {1,0,1},
-            {1,0,-1},
-            {-1,0,-1}
+            Vector(-1,0,1),
+            Vector(1,0,1),
+            Vector(1,0,-1),
+            Vector(-1,0,-1)
         }
         command_source_rots = { 0, 90, 180, 270 }
         command_source_guids = {
@@ -731,12 +740,12 @@ function layout(player, fleet, pos, rot, base_x, spawn)
         --CMD_MESHES
         for i=1,4 do
             local obj_parameters = {}
-            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(command_source_poses[i],{x-4,4,9.5}),rot[2]-180)) --{x-2,5,9.5}
+            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(command_source_poses[i],{x-4,4,9.5}),rot[2])) --{x-2,5,9.5}
             -- print(obj_parameters.position[1],",",obj_parameters.position[2],",",obj_parameters.position[3])
             source = getObjectFromGUID(command_source_guids[i])
             command_source = source.clone(obj_parameters)
 
-            command_source.setRotation(vector.add(rot,{0,i*90 - 135,180}))
+            command_source.setRotation(vector.add(rot,{0,i*90 + 45,180}))
             command_source.setScale({0.65,0.65,0.65})
             command_source.setColorTint({0.5,0.5,0.5})
             command_source.createButton({label = i, click_function="donothing", font_size=2000, position=vector.add({0,-0.5,0},{0,0,0.6}), rotation={180,-(i*90+45),0}, color={0,0,0,0.9}, font_color=CMD_COLORS[i], width=0, height=0})
@@ -748,9 +757,10 @@ function layout(player, fleet, pos, rot, base_x, spawn)
         for i,source_guid in ipairs(COMMAND_TOKEN_SOURCES) do
             source = getObjectFromGUID(source_guid)
             local obj_parameters = {}
-            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(vector.scale(command_source_poses[i],2.2),{x-4,-1,9.5}),rot[2]-180))
+            obj_parameters.position = vector.add(pos,vector.rotate(vector.add(vector.scale(command_source_poses[i],2.2),{x-4,-1,9.5}),rot[2]))
             -- obj_parameters.position = vector.add(pos,vector.rotate({x,-1,7.5-i*3},rot[2]-180))
-            source.clone(obj_parameters)
+            token_source = source.clone(obj_parameters)
+            token_source.setRotation(rot+Vector(0,180,0))
         end
     end
     x = x+OBJ_X_GAP
@@ -800,7 +810,7 @@ function layout(player, fleet, pos, rot, base_x, spawn)
 end
 function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
     if spawnModel==nil then spawnModel=true end
-    pos =  vector.add(pos,vector.rotate(offset, rot[2]-180))
+    pos =  vector.add(pos,vector.rotate(offset, rot[2]))
     -- scale = {1.37,1,1.37}
     scale = {1,1,1}
     if def.maneuver~=nil then
@@ -820,7 +830,7 @@ function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
         posY = pos[2],
         posZ = pos[3],
         rotX = rot[1],
-        rotY = rot[2],
+        rotY = rot[2]+180,
         rotZ = rot[3],
         scaleX = scale[1],
         scaleY = scale[2],
@@ -907,7 +917,8 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             custom.diffuse = ship_def.diffuse
             custom.convex = ship_def.convex
             custom.type = ship_def.type
-            custom.material = ship_def.material
+            -- print(ship_def.material)
+            custom.material = ship_def.material or 1
             ship.setCustomObject(custom)
 
             ship.setName(name)

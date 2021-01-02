@@ -939,7 +939,7 @@ function onObjectDropped( player_color, dropped_object )
         dropped_object.setVar('owner',player_color)
         if isSquad(dropped_object) then
             local team = 1
-            if table.contains({"Green", "Teal", "Brown","Orange","Pink"},player_color) then
+            if table.contains({"Green", "Teal", "Brown","Blue","Purple"},player_color) then
                 --Red, Purple, White, Blue, Yellow
                 team = 2
             end
@@ -1204,7 +1204,7 @@ end
 hovered_ships = {}
 ruler_index = {}
 function onObjectHover_scripting_keys(hovered_object,player_color)
-    if isShip(hovered_object) then
+    if isShip(hovered_object) and hovered_object.getVar('owner')==player_color then
         if hovered_ships[player_color]~=nil then
             hovered_ships[player_color].highlightOff()
         end

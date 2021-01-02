@@ -79,3 +79,7 @@ function vector.forward(obj)
     -- log(guid .. " for x: "..round(xForward,2).." y: "..round(zForward,2))
     return {xForward, 0, zForward}
 end
+function vector.between(v,ll,ur)
+    return ((v[1]>ll[1] and v[1]<ur[1]) or (v[1]<ll[1] and v[1]>ur[1])) and
+           ((v[3]>ll[3] and v[3]<ur[3]) or (v[3]<ll[3] and v[3]>ur[3]))
+end
