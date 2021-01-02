@@ -13,7 +13,7 @@
     <HorizontalLayout class="fleetRow" preferredHeight="20" minHeight="20"/>
     <InputField textColor="white" color="black" outlineSize="1 1" outline="white"></InputField>
     <Dropdown textColor="white" itemTextColor="white" dropdownBackgroundColor="black" arrowColor="white" itemBackgroundColors="black|#303030|#303030|black" color="black" outlineSize="1 1" outline="white"></Dropdown>
-    <Button class="faction" onClick="030220/onClick_selectFaction" fontSize="18" iconWidth="10" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060"/>
+    <Button class="faction" onClick="030220/onClick_selectFaction" fontSize="16" iconWidth="10" resizeTextForBestFit="true" resizeTextMaxSize="16" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060"/>
     <Button class="shipSquadron" onClick="030220/onClick_selectShipSquadron" fontSize="14" iconWidth="10" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060"/>
     <Button class="upgradeCategory" onClick="030220/onClick_loadCategory" outlineSize="1 1 1 0" outline="white" colors="transparent|#A0A0A0|white|transparent" color="#606060" tooltipPosition="Below"/>
     <Text class="openParen" preferredWidth="5" color="#606060" alignment="MiddleRight"/>
@@ -50,7 +50,7 @@ width="400" -->
     </HorizontalLayout>
     <HorizontalLayout id="tabContainer" active="false" preferredHeight="20">
         <Button text="Fleet"  id="fleetSpawner"  class="tab" />
-        <Button text="Ships"  id="shipSpawner"  class="tab" />
+        <Button text="Ships"  id="shipSpawner" class="tab" onClick="030220/onClick_selectShipSpawnerTab" />
         <Button text="Upgrades"  id="upgradeSpawner"  class="tab" />
         <!-- <Button text="Cloud"  id="gameReporter"  class="tab" onClick="030220/onClick_selectGameReporterTab" /> -->
     </HorizontalLayout>

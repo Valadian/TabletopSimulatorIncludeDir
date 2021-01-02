@@ -1,19 +1,77 @@
+ALL_FACTIONS = {"Rebellion","Empire","Republic","Separatist"}
+faction_index = 1
+
+function onClick_selectShipSpawnerTab(player, _, idValue)
+    onClick_selectArmadaTab(player, _, idValue)
+    --checkFactions
+    -- print("Finding Factions")
+    factions = T(SHIPS):Select(|s|s.faction):Distinct()
+    for _,v in ipairs(factions) do
+        if not table.contains(ALL_FACTIONS,v) then
+            table.insert(ALL_FACTIONS, v)
+            print("Found a new faction: "..v)
+        end
+    end
+    updateFactionButtons()
+end
 
 selected_faction = "Rebellion"
 selected_category = nil
 function onClick_selectFaction(player, _, idValue)
-    idValue = idValue:gsub("_upgrade","")
-    idValue = idValue:gsub("_ship","")
+    selected_faction = UI.getAttribute(idValue,"text")
+    -- idValue = idValue:gsub("_upgrade","")
+    -- idValue = idValue:gsub("_ship","")
     -- print("Faction: "..idValue)
-    for i,v in ipairs({"Rebellion","Empire","Republic","Separatist"}) do
-        UI.setAttribute(v.."_ship","textColor","#FFFFFF")
-        UI.setAttribute(v.."_upgrade","textColor","#FFFFFF")
-    end
-    UI.setAttribute(idValue.."_ship","textColor","#FFD700")
-    UI.setAttribute(idValue.."_upgrade","textColor","#FFD700")
-    selected_faction = idValue
+    updateFactionButtons()
     update_upgrade_card_list()
     update_ship_card_list()
+end
+function onClick_prevFactions(player, _, idValue)
+    faction_index = math.max(1,faction_index-4)
+    updateFactionButtons()
+end
+function onClick_nextFactions(player, _, idValue)
+    faction_index = faction_index+4
+    updateFactionButtons()
+end
+function updateFactionButtons()
+    for i=1,4 do
+        -- print(faction_index+i-1)
+        -- print(ALL_FACTIONS[faction_index+i-1])
+        UI.setAttribute("ship_faction_"..i,"text",ALL_FACTIONS[faction_index+i-1])
+        UI.setAttribute("upgrade_faction_"..i,"text",ALL_FACTIONS[faction_index+i-1])
+
+        if ALL_FACTIONS[faction_index+i-1]==nil then
+            UI.setAttribute("ship_faction_"..i,"active",false)
+            UI.setAttribute("upgrade_faction_"..i,"active",false)
+        else
+            UI.setAttribute("ship_faction_"..i,"active",true)
+            UI.setAttribute("upgrade_faction_"..i,"active",true)
+        end
+
+        if ALL_FACTIONS[faction_index+i-1]==selected_faction then
+            UI.setAttribute("ship_faction_"..i,"textColor","#FFD700")
+            UI.setAttribute("upgrade_faction_"..i,"textColor","#FFD700")
+        else
+            UI.setAttribute("ship_faction_"..i,"textColor","#FFFFFF")
+            UI.setAttribute("upgrade_faction_"..i,"textColor","#FFFFFF")
+        end
+    end
+    if faction_index>1 then
+        UI.show("prevFactions_ship")
+        UI.show("prevFactions_upgrade")
+    else
+        UI.hide("prevFactions_ship")
+        UI.hide("prevFactions_upgrade")
+    end
+
+    if #ALL_FACTIONS>=faction_index+4 then
+        UI.show("nextFactions_ship")
+        UI.show("nextFactions_upgrade")
+    else
+        UI.hide("nextFactions_ship")
+        UI.hide("nextFactions_upgrade")
+    end
 end
 selected_special_objectives = false
 function onClick_loadCategory(player, _, idValue)

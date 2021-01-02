@@ -995,6 +995,7 @@ function SetCmdBaseGUIDonShip(base, ship)
     ship.setVar("cmdBaseGUID",base.getGUID())
 end
 #include ../../util/vector
+#include ../../util/table
 -- function math.mod(a, b)
 --     return a-b*math.floor(a/b)
 -- end

@@ -1,3 +1,13 @@
+table.Distinct = function(t)
+    local distinct = T{}
+    for k,v in pairs(t) do
+        if not distinct:Contains(v) then
+            table.insert(distinct,v)
+        end
+    end
+
+    return distinct
+end
 table.Sum = function(t)
     local sum = 0
     for k,v in pairs(t) do

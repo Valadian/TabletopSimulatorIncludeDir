@@ -1,3 +1,4 @@
+
 --onClick_selectFaction SEE: upgradeSpawner.ttslua
 ship_or_squadrons = nil
 function update_ship_card_list()

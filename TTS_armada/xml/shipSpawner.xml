@@ -1,10 +1,12 @@
 <Panel id="shipSpawnerPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout>
-        <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
-            <Button id="Rebellion_ship" class="faction" textColor="#FFD700">Rebellion</Button><!-- icon="Rebellion" -->
-            <Button id="Empire_ship" class="faction" >Empire</Button><!-- icon="Empire" -->
-            <Button id="Republic_ship" class="faction" >Republic</Button><!-- icon="Republic" -->
-            <Button id="Separatist_ship" class="faction" >Separatist</Button><!-- icon="Separatist" -->
+        <HorizontalLayout preferredHeight="40" padding="0 0 5 0" spacing="0">
+            <Button id="prevFactions_ship" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_prevFactions"><![CDATA[<]]></Button>
+            <Button id="ship_faction_1" preferredWidth="70" class="faction" textColor="#FFD700">Rebellion</Button><!-- icon="Rebellion" -->
+            <Button id="ship_faction_2" preferredWidth="70" class="faction" >Empire</Button><!-- icon="Empire" -->
+            <Button id="ship_faction_3" preferredWidth="70" class="faction" >Republic</Button><!-- icon="Republic" -->
+            <Button id="ship_faction_4" preferredWidth="70" class="faction" >Separatist</Button><!-- icon="Separatist" -->
+            <Button id="nextFactions_ship" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_nextFactions"><![CDATA[>]]></Button>
         </HorizontalLayout>
         <HorizontalLayout preferredHeight="30" padding="5 5 5 0" spacing="5">
             <Button id="squadrons_ship" class="shipSquadron">Squadrons</Button><!-- icon="Rebellion" -->
