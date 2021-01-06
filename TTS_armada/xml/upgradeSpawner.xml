@@ -1,12 +1,12 @@
 <Panel id="upgradeSpawnerPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout>
         <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
-            <Button id="prevFactions_upgrade" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_prevFactions"><![CDATA[<]]></Button>
+            <Button id="prevFactions_upgrade" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_prevFactions">◄</Button>
             <Button id="upgrade_faction_1" class="faction" textColor="#FFD700" >Rebellion</Button><!-- icon="Rebellion" -->
             <Button id="upgrade_faction_2" class="faction" >Empire</Button><!-- icon="Empire" -->
             <Button id="upgrade_faction_3" class="faction" >Republic</Button><!-- icon="Republic" -->
             <Button id="upgrade_faction_4" class="faction" >Separatist</Button><!-- icon="Separatist" -->
-            <Button id="nextFactions_upgrade" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_nextFactions"><![CDATA[>]]></Button>
+            <Button id="nextFactions_upgrade" preferredWidth="12" class="faction" active="false" onClick="030220/onClick_nextFactions">►</Button>
         </HorizontalLayout>
         <GridLayout cellSize="50 50" preferredHeight="100">
             <Button id="Commander" class="upgradeCategory" icon="Commander" tooltip="Commander"/>

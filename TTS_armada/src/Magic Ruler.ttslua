@@ -18,6 +18,7 @@ local ASTEROID_TOKENS = {
 }
 --real_rot = 0
 function onload()
+    self.interactable = false
     drawButtons()
     last_rot = self.getRotation()[2]
     target_rot = self.getRotation()[2]
@@ -31,7 +32,7 @@ function update ()
     self.setDescription("");
     if string.len(cmd_string)>0 then
         printToAll('Processing Cmd "'..cmd_string..'"',{1,0,0})
-        local new_cmds = string:split(cmd_string,",",5,false)
+        local new_cmds = cmd_string:split(",",5,false)
         if #new_cmds>0 then
             if isCmd(new_cmds[1]) then
                 buildRuler(new_cmds)
@@ -274,7 +275,6 @@ function Action_Move()
     if ship == nil then
         ship = findNearestShip(self.getPosition(),self.getRotation()[2])
     end
-    printToAll("Moving: "..ship.getName(),{1,0,0})
     local offset = vector.sub(ship.getPosition(),self.getPosition())
     local lastRuler = self
     if #rulers>0 then
@@ -286,11 +286,27 @@ function Action_Move()
     last_rot = ship.getRotation()
     local new_pos = vector.add(lastRuler.getPosition(),rotatedOffset)
     local new_rot = vector.add(last_rot,{0,yRot,0})
+    if vector.eq(ship.getPosition(),new_pos) and vector.eq(ship.getRotation(),new_rot) then
+        printToAll("Cancelling Move: "..ship.getName(),{1,0,0})
+        drawButtons()
+        return
+    else
+        printToAll("Moving: "..ship.getName(),{1,0,0})
+    end
     ship.setPositionSmooth(new_pos,false,true)
     ship.setRotationSmooth(new_rot,false,true)
     moved_tokens = moveTokens(ship,last_pos,last_rot,new_pos,new_rot)
     storeUndo(ship,moved_tokens)
     drawButtons()
+end
+function API_MOVE_SHIP(params)
+    --params = { ship, pos, rot }
+    old_pos = params.ship.getPosition()
+    old_rot = params.ship.getRotation()
+    params.ship.setPositionSmooth(params.pos,false,true)
+    params.ship.setRotationSmooth(params.rot,false,true)
+    moved_tokens = moveTokens(params.ship,old_pos,old_rot,params.pos,params.rot)
+    storeUndo(params.ship,moved_tokens)
 end
 ship_size = {
     {0.807,0,1.398,1.398},
@@ -641,6 +657,12 @@ function vector.scale(v,s)
 end
 function vector.tostring(v)
     return "{"..math.round(v[1],1)..","..math.round(v[2],1)..","..math.round(v[3],1).."}"
+end
+function math.approxeq(a, b)
+    return math.abs(a-b)<0.01
+end
+function vector.eq(a,b)
+    return math.approxeq(a[1],b[1]) and math.approxeq(a[2],b[2]) and math.approxeq(a[3],b[3])
 end
 function math.clamp(val, lower, upper)
     assert(val and lower and upper, "sent nil value to clamp")

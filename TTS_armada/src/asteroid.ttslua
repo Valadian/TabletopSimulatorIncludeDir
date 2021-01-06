@@ -303,7 +303,7 @@ end
 function update_asteroid_buttons(obj,player)
     obj.clearButtons()
     custom = obj.getCustomObject()
-    h = 0.15
+    h = 0.25
     z_rot = 0
     if obj.is_face_down then --math.abs(obj.getRotation()[3])>10
         h = 0.1-h
@@ -370,7 +370,10 @@ function Action_LoadAsteroidRuler2(obj, player, _)  LoadAsteroidRuler(obj, 2, pl
 function Action_LoadAsteroidRuler3(obj, player, _)  LoadAsteroidRuler(obj, 3, player) end
 function Action_LoadAsteroidRuler4(obj, player, _)  LoadAsteroidRuler(obj, 4, player) end
 function Action_LoadAsteroidRuler5(obj, player, _)  LoadAsteroidRuler(obj, 5, player) end
-function Action_LoadLastAsteroidRuler(obj, player, _)
+function Action_LoadLastAsteroidRuler(obj, player, alt_click)
+    if alt_click then
+        return
+    end
     size = obj.getVar('last_ruler_size')
     if size==nil then
         def = Obstacle.lookup(obj.getCustomObject().collider)
@@ -390,7 +393,7 @@ function LoadAsteroidRuler(obj, size, player) --size 1-5
     local obj_parameters = {}
     obj_parameters.type = 'Custom_Model'
     obj_parameters.position = obj.getPosition() --vector.add(obj.getPosition(),{0.1,0,0.1})
-    obj_parameters.rotation = obj.getRotation()
+    obj_parameters.rotation = {0,obj.getRotation()[2],0}
     local ruler = spawnObject(obj_parameters)
     local custom = {}
     custom.mesh = def.rulers[size]

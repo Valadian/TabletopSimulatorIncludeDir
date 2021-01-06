@@ -92,7 +92,7 @@ function onClick_score_submit(player, _, idValue)
             player2 = { stringValue = tostring(player2)},
             player2fleet = { arrayValue = { values = player2fleet}},
             player2score = { integerValue = player2score or 0},
-            player2points = { integerValue = player2oints or 6},
+            player2points = { integerValue = player2points or 6},
             submitted = { stringValue = submitted}
         }
     },{['Content-Type']="application/json"}, handle_score_submit)
@@ -151,7 +151,11 @@ function findObjective()
 end
 player1score = nil
 function onInput_player1score(player, value, idValue)
-    player1score = value --tonumber(value) or 0
+    if value~=nil then
+        player1score = tonumber(value)
+    else
+        player1score = value
+    end
     updateScore()
     if value==nil then
         UI.setAttribute("player1score","outline","#FF4040")
@@ -161,7 +165,11 @@ function onInput_player1score(player, value, idValue)
 end
 player2score = nil
 function onInput_player2score(player, value, idValue)
-    player2score = value --tonumber(value) or 0
+    if value~=nil then
+        player2score = tonumber(value)
+    else
+        player2score = value
+    end
     updateScore()
     if value==nil then
         UI.setAttribute("player2score","outline","#FF4040")
@@ -203,8 +211,8 @@ function updateScore()
             UI.setValue("Player1iswinner","Winner!")
             UI.setValue("Player2iswinner","")
         else
-            player2points=score1
             player1points=score2
+            player2points=score1
             UI.setValue("Player1iswinner","")
             UI.setValue("Player2iswinner","Winner!")
         end

@@ -7,6 +7,14 @@ DEF_REDIRECT = '36f595'
 DEF_SCATTER = '895e91'
 DEF_SALVO = '5028b2'
 
+ALL_DEFENSE_TOKENS = {
+    BRACE = DEF_BRACE,
+    CONTAIN = DEF_CONTAIN,
+    EVADE = DEF_EVADE,
+    REDIRECT = DEF_REDIRECT,
+    SCATTER = DEF_SCATTER,
+    SALVO = DEF_SALVO
+}
 SPEED_SOURCE = 'b75a56'
 COMMAND_SOURCE = '2516df'
 COM_ENG = ''
@@ -291,39 +299,62 @@ function createSpawnButtons(object)
         -- printToAll(object.getDescription(),{1,1,1})
         -- printToAll("/end desc",{1,1,1})
         -- Custom|Ship|Large|mesh|diffuse|ruler|II|I,II|-,I,II
-        local model_data = string:split(object.getDescription(),'\n',nil,false)
+        local model_data = string.split(object.getDescription(),'\n',nil,false)
         local ship_data = {}
         -- printToAll(model_data[2],{1,1,1})
         -- printToAll(string.starts(model_data[2],"Ship"),{1,1,1})
         -- printToAll(model_data[3],{1,1,1})
         -- printToAll(string.starts(model_data[3],"Small"),{1,1,1})
         if string.strip(model_data[2])=="Ship" then
+            local shields = {1,1,1,1}
+            local defense_tokens = {}
             -- 7 will be shields (F,L,R,B)
             -- local shields = list(map(int,string:split(model_data[7],",",nil,false)))
             -- local defense_tokens = string:split(model_data[8],",",nil,false)
             -- 8 will be defense
             local maneuver = {}
             -- lolnope loadstring("maneuver = "..model_data[7])
-            table.insert(maneuver,model_data[7]:strip():split(",",nil,false))
-            if #model_data>7 then
-                table.insert(maneuver,model_data[8]:strip():split(",",nil,false))
-            end
-            if #model_data>8 then
+            if table.contains({"I","II","-"},model_data[7]) then
+                table.insert(maneuver,model_data[7]:strip():split(",",nil,false))
+                if #model_data>7 then
+                    table.insert(maneuver,model_data[8]:strip():split(",",nil,false))
+                end
+                if #model_data>8 then
+                    table.insert(maneuver,model_data[9]:strip():split(",",nil,false))
+                end
+                if #model_data>9 then
+                    table.insert(maneuver,model_data[10]:strip():split(",",nil,false))
+                end
+            else
+
+                    -- 7 will be shields (F,L,R,B)
+                shields = T(model_data[7]:strip():split(",",nil,false)):Select(|s| tonumber(s))
+                defense_tokens = T(model_data[8]:strip():split(",",nil,false)):Select(|s| ALL_DEFENSE_TOKENS[s])
                 table.insert(maneuver,model_data[9]:strip():split(",",nil,false))
-            end
-            if #model_data>9 then
-                table.insert(maneuver,model_data[10]:strip():split(",",nil,false))
+                if #model_data>9 then
+                    table.insert(maneuver,model_data[10]:strip():split(",",nil,false))
+                end
+                if #model_data>10 then
+                    table.insert(maneuver,model_data[11]:strip():split(",",nil,false))
+                end
+                if #model_data>11 then
+                    table.insert(maneuver,model_data[12]:strip():split(",",nil,false))
+                end
+                --TODO: Implement shield/defense tokens
             end
             ship_data = {
+                name = object.getName(),
+                cost = string.match(object.getName(),"[%s ]+%([%s ]*(%d+)[%s ]*%)$"),
                 mesh = string.strip(model_data[4]),
                 diffuse = string.strip(model_data[5]),
                 ruler = string.strip(model_data[6]),
                 maneuver = maneuver,
-                --defense_tokens = defense_tokens,
-                --shields = shields,
+                defense_tokens = defense_tokens,
+                shields = shields,
                 convex = true,
                 type = 1,
                 material = 3,
+                command = 1
             }
             if string.strip(model_data[3])=="Small" then
                 ship_data.collider = SmallShip.collider
@@ -333,8 +364,14 @@ function createSpawnButtons(object)
                 ship_data.collider = LargeShip.collider
             end
         elseif string.strip(model_data[2])=="Squadron" then
-            -- Custom|Squadron|mesh|diffuse|health|move
+            -- Custom|Squadron|mesh|diffuse|health|move|defense_tokens
+            defense_tokens = {}
+            if #model_data>6 then
+                defense_tokens = T(model_data[7]:strip():split(",",nil,false)):Select(|s| ALL_DEFENSE_TOKENS[s])
+            end
             ship_data = {
+                name = object.getName(),
+                cost = string.match(object.getName(),"[%s ]+%([%s ]*(%d+)[%s ]*%)$"),
                 mesh = string.strip(model_data[3]),
                 diffuse = string.strip(model_data[4]),
                 health =  string.strip(model_data[5]),
@@ -342,7 +379,8 @@ function createSpawnButtons(object)
                 collider = "http://paste.ee/r/nAMCQ",
                 convex = false,
                 type = 1,
-                material = 1 }
+                material = 1,
+                defense_tokens = defense_tokens}
         end
         object.setTable('Custom',ship_data)
     end
@@ -359,6 +397,7 @@ function Action_DoneSpawn(card)
     card.clearButtons()
 end
 function onload()
+    self.interactable = false
 #include defs/rebel/ships
 #include defs/empire/ships
     local ship = nil
@@ -462,24 +501,14 @@ B_COLORS = {{0.1,0.1,0.44},
             {0,1,1},
             {0.48,0.41,0.93},
             {0.18,0.31,0.31}}
-function clearSpawnArea(listSpawner)
-    -- pos = listSpawner.getPosition()
-    -- rot = listSpawner.getRotation()
-    -- min_pos = listSpawner.positionToWorld({1.2,0,-5}) --vector.add(pos, vector.rotate({1.2,0,-5},rot[2]))
-    -- max_pos = listSpawner.positionToWorld({109,0,14}) --vector.add(pos, vector.rotate({109,0,14},rot[2]))
+function inFleetSpawnArea(listSpawner, obj)
     ll = {1.2,0,-5}
     ur = {109,0,14}
-    -- printToAll("Destroying between: ("..min_pos[1]..","..min_pos[3]..") and ("..max_pos[1]..","..max_pos[3]..")",{1,0,0})
+    return vector.between(listSpawner.positionToLocal(obj.getPosition()), ll, ur)
+end
+function clearSpawnArea(listSpawner)
     for _,item in ipairs(getAllObjects()) do
-        local_pos = listSpawner.positionToLocal(item.getPosition())
-        if item.getName()=="BlueD8" then
-            print(local_pos:string())
-        end
-        if vector.between(local_pos, ll, ur) and not isDatacard(item) then
-        -- if ((item_pos[1]>min_pos[1] and item_pos[1]<max_pos[1]) or (item_pos[1]<min_pos[1] and item_pos[1]>max_pos[1])) and
-        --    ((item_pos[3]>min_pos[3] and item_pos[3]<max_pos[3]) or (item_pos[3]<min_pos[3] and item_pos[3]>max_pos[3])) then
-            -- print("Destroying: "..item.getName())
-            -- print(item.getName())
+        if inFleetSpawnArea(listSpawner,item) and not isDatacard(item) then
             item.destruct()
         end
     end
@@ -820,6 +849,9 @@ function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
         scale = {1.37,1,1.37}
     end
     nick = def.name.." ("..def.cost..")"
+    if count~=nil and count > 1 then
+        nick = count .. " x " .. nick
+    end
     if def.type == "Objective" then
         nick = def.name
     end
@@ -851,9 +883,9 @@ function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
         }
       }
     }
-    if count~=nil and count>1 then
-        jsonRepresentation['Nickname'] = "["..count.."]"..jsonRepresentation['Nickname']
-    end
+    -- if count~=nil and count>1 then
+    --     jsonRepresentation['Nickname'] = "["..count.."]"..jsonRepresentation['Nickname']
+    -- end
     -- if count~=nil and count>1 then
     --     jsonRepresentation['Description'] = "spawn "..count
     -- elseif  count~=nil and count==1 then
@@ -872,11 +904,11 @@ function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
     end
 end
 function setCardDescriptionToSpawn(card)
-    count = string.match(card.getName(), "^%[(%d+)%]")
+    count = string.match(card.getName(), "^(%d+) x ")
     if count~=nil then
         count = tonumber(count)
-        name = string.gsub(card.getName(),"^%[%d+%]","")
-        card.setName(name)
+        name = string.gsub(card.getName(),"^%d+ x ","")
+        -- card.setName(name)
         -- card.clearButtons()
     else
         name = card.getName()
@@ -908,7 +940,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = vector.add({pos[1],4+i,pos[3]},vector.rotate({0,0,8},y_rotation-180))
+            obj_parameters.position = vector.add({pos[1],i,pos[3]},vector.rotate({0,0,8},y_rotation-180))
             obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
             local ship = spawnObject(obj_parameters)
             local custom = {}
@@ -926,6 +958,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             ship.setTable("maneuver",ship_def.maneuver)
             ship.setTable("shields",ship_def.shields)
             last_ship = ship
+            wait_then_storeInitialPosition(ship)
         end
         if ship_def.defense_tokens~=nil then
             for i,source_guid in ipairs(ship_def.defense_tokens) do
@@ -989,10 +1022,16 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
     --end
     end
 end
+function wait_then_storeInitialPosition(ship)
+    Wait.frames(|| storeInitialPosition(ship), 1)
+end
 function SetCmdBaseGUIDonShip(base, ship)
     -- print("Ship: "..ship.getGUID())
     -- print("Base: "..base.getGUID())
     ship.setVar("cmdBaseGUID",base.getGUID())
+end
+function storeInitialPosition(ship)
+    ship.setTable("InitialPosition",ship.getPosition())
 end
 #include ../../util/vector
 #include ../../util/table
@@ -1020,39 +1059,8 @@ end
 --     local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
 --     return {xDistance, direction[2], zDistance}
 -- end
-function string:strip(self)
-    return string.strip(self)
-end
-function string.strip(str)
-    return  string.gsub(str, '^%s*(.-)%s*$', '%1')
-end
-function string.starts(String,Start)
-    return string.sub(String,1,string.len(Start))==Start
-end
-function string:split(this,sSeparator, nMax, bRegexp)
-    assert(sSeparator ~= '')
-    assert(nMax == nil or nMax >= 1)
 
-    local aRecord = {}
-
-    if this:len() > 0 then
-        local bPlain = not bRegexp
-        nMax = nMax or -1
-
-        local nField, nStart = 1, 1
-        local nFirst,nLast = this:find(sSeparator, nStart, bPlain)
-        while nFirst and nMax ~= 0 do
-            aRecord[nField] = this:sub(nStart, nFirst-1)
-            nField = nField+1
-            nStart = nLast+1
-            nFirst,nLast = this:find(sSeparator, nStart, bPlain)
-            nMax = nMax-1
-        end
-        aRecord[nField] = this:sub(nStart)
-    end
-
-    return aRecord
-end
+#include ../../util/string
 function table.copy(orig)
     local orig_type = type(orig)
     local copy

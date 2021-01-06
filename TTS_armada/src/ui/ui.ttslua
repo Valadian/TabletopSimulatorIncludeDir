@@ -164,6 +164,9 @@ function linesToLineobjs(lines)
     end
     return line_objs
 end
+lastParsed_lineObjs = nil
+fleetOffset = 0
+owning_color = nil
 function onClick_fleet_parseFleet(player, _, idValue)
     fleetOffsets[player.color]=0
     UI.hide("fleetSpawnerInputLayout")
@@ -178,17 +181,21 @@ function onClick_fleet_parseFleet(player, _, idValue)
         -- UI.hide("fleetSpawnerHelpInner")
         return
     end
-    lines = string:split(list, "\n")
+    lines = list:split("\n")
     lineobjs = linesToLineobjs(lines)
     fleets[player.color]=line_objs
+    lastParsed_lineObjs = line_objs
+    owning_color = player.color
+    UI.setAttribute("spacingButton","outlineSize","1 1")
+    UI.setAttribute("spacingButton","outline",owning_color) --"#"..Color.fromString(color):toHex(false))
+    UI.setAttribute("spacingButton","textColor","white")
     updateParsed(player)
     -- layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
 end
-lastParsed_lineObjs = nil
 function updateParsed(player)
-    line_objs = fleets[player.color]
-    lastParsed_lineObjs = line_objs
-    offset = fleetOffsets[player.color] or 0
+    -- line_objs = fleets[player.color]
+    line_objs = lastParsed_lineObjs
+    offset = fleetOffset--fleetOffsets[player.color] or 0
     -- UI.setAttribute("fleetMasterLayout", "minHeight", (#line_objs)*30)
     -- for i,obj in ipairs(line_objs) do
     -- print(offset)
@@ -226,7 +233,7 @@ function updateParsed(player)
                     UI.show("line"..i.."count")
                     UI.setValue("line"..i.."count","O:")
                     UI.hide("line"..i.."_indicator")
-                    UI.setAttribute("line"..i.."Name","visibility",player.color)
+                    UI.setAttribute("line"..i.."Name","visibility",owning_color)
                 elseif obj.def.move~=nil then
                     UI.show("line"..i.."_indicator")
                     UI.setValue("line"..i.."_indicator","x")
@@ -308,7 +315,7 @@ function Action_fleet_spawn(datacard, color, alt_click)
     end
     onClick_fleet_clear({color=color}, _, nil)
     list = datacard.getDescription()
-    lines = string:split(list, "\n")
+    lines = list:split("\n")
     lineobjs = linesToLineobjs(lines)
     fleets[color] = lineobjs
     fleet = createSpawningStructure(lineobjs)
@@ -324,6 +331,42 @@ function Action_fleet_spawn(datacard, color, alt_click)
     end
     clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), false, false)
     clonedatacard.setRotationSmooth(listSpawner.getRotation() + Vector(0,180,0), false, false)
+end
+function Action_store_fleet(obj, color, alt_click)
+    if alt_click then
+        return
+    end
+    listSpawner = findObjectByName("List Spawner ("..color..")")
+    list = T(getAllObjects()):Where(|o| o.tag=="Card"):Where(|c| inFleetSpawnArea(listSpawner, c)):OrderBy(|c| listSpawner.positionToLocal(c.getPosition())[1] - listSpawner.positionToLocal(c.getPosition())[3]/100):Select(|c| c.getName())
+    lineobjs = linesToLineobjs(list)
+    fleet = createSpawningStructure(lineobjs)
+    datacardNames = T(getAllObjects()):Where(isDatacard):Where(|c| inFleetSpawnArea(listSpawner, c)):Select(|d| d.getName())
+
+    if #datacardNames>0 then
+        obj.setName(datacardNames[1])
+        broadcastToColor("Inherited Fleet name from existing datacard...\n"..datacardNames[1],color,{0,1,1})
+    else
+        obj.setName("Right Click and change Name in Name Field")
+    end
+    obj.setDescription(fleetToString(fleet))
+    broadcastToColor("Stored Fleet to Datacard!", color, {0,1,0})
+    -- for _,card in ipairs(list) do
+    --     print (card.getName())
+    -- end
+    faction = nil
+    if #fleet.ships > 0 then
+        faction = fleet.ships[1].def.faction
+    end
+
+    if faction=="Empire" then
+        obj.setColorTint({52/255,52/255,52/255})
+    elseif faction=="Republic" then
+        obj.setColorTint({78/255,0,0})
+    elseif faction=="Separatist" then
+        obj.setColorTint({23/255,51/255,142/255})
+    end
+
+    Global.call('drawDatacardButtons',obj)
 end
 function fleetToString(fleet)
     if fleet==nil then return "" end
@@ -417,8 +460,8 @@ function findObjectByName(name)
 end
 function onClick_fleet_OmitLine(player, _, idValue)
     i = tonumber(idValue:match("line(%d+)omit"))
-    idx = i + fleetOffsets[player.color] or 0
-    line_objs = fleets[player.color]
+    idx = i +  fleetOffset -- fleetOffsets[player.color] or 0
+    line_objs = lastParsed_lineObjs --fleets[player.color]
     if line_objs[idx].origdef == nil then
         line_objs[idx].origdef = line_objs[idx].def
     end
@@ -427,13 +470,17 @@ function onClick_fleet_OmitLine(player, _, idValue)
 end
 function onClick_fleet_AddLine(player, _, idValue)
     i = tonumber(idValue:match("line(%d+)add"))
-    idx = i + fleetOffsets[player.color] or 0
+    line_objs = lastParsed_lineObjs
+    -- idx = i + fleetOffsets[player.color] or 0
+    idx = i + fleetOffset
     line_objs[idx].def = line_objs[idx].origdef
     updateParsed(player)
 end
 function onClick_fleet_SearchLine(player, _, idValue)
+    line_objs = lastParsed_lineObjs
     i = tonumber(idValue:match("line(%d+)search"))
-    idx = i + fleetOffsets[player.color] or 0
+    -- idx = i + fleetOffsets[player.color] or 0
+    idx = i + fleetOffset
     if line_objs[idx].origdef == nil then
         line_objs[idx].origdef = line_objs[idx].def
     end
@@ -451,19 +498,25 @@ function onClick_fleet_SearchLine(player, _, idValue)
 end
 fleetOffsets = {}
 function onClick_fleet_scrollDown(player, _, idValue)
-    fleetOffsets[player.color] = math.min(34,(fleetOffsets[player.color] or 0)+5)
-    maxOffset = math.max(#fleets[player.color]-36,0)
-    fleetOffsets[player.color] = math.min(maxOffset, fleetOffsets[player.color])
+    -- fleetOffsets[player.color] = math.min(34,(fleetOffsets[player.color] or 0)+5)
+    -- maxOffset = math.max(#fleets[player.color]-36,0)
+    -- fleetOffsets[player.color] = math.min(maxOffset, fleetOffsets[player.color])
+
+    fleetOffset = math.min(34,(fleetOffset)+5)
+    maxOffset = math.max(#lastParsed_lineObjs-36,0)
+    fleetOffset = math.min(maxOffset, fleetOffset)
     updateParsed(player)
     updateScrollButtons(player)
 end
 function onClick_fleet_scrollUp(player, _, idValue)
-    fleetOffsets[player.color] = math.max(0,(fleetOffsets[player.color] or 0)-5)
+    -- fleetOffsets[player.color] = math.max(0,(fleetOffsets[player.color] or 0)-5)
+    fleetOffset = math.max(0,fleetOffset-5)
     updateParsed(player)
     updateScrollButtons(player)
 end
 function updateScrollButtons(player)
-    if fleetOffsets[player.color]==nil or fleetOffsets[player.color]==0 then
+    -- if fleetOffsets[player.color]==nil or fleetOffsets[player.color]==0 then
+    if fleetOffset==0 then
         UI.setAttribute("parseScrollUp", "iconColor", "#404040")
         -- UI.setAttribute("parseScrollDown", "colors", "transparent|transparent|transparents|transparent")
         -- UI.setAttribute("parseScrollUp", "interactable", "false")
@@ -473,8 +526,10 @@ function updateScrollButtons(player)
         -- UI.setAttribute("parseScrollUp", "interactable", "true")
     end
 
-    maxOffset = math.max(#fleets[player.color]-36,0)
-    if fleetOffsets[player.color]==maxOffset then
+    -- maxOffset = math.max(#fleets[player.color]-36,0)
+    -- if fleetOffsets[player.color]==maxOffset then
+    maxOffset = math.max(#lastParsed_lineObjs-36,0)
+    if fleetOffset==maxOffset then
         UI.setAttribute("parseScrollDown", "iconColor", "#404040")
     else
         UI.setAttribute("parseScrollDown", "iconColor", "#FFFFFF")

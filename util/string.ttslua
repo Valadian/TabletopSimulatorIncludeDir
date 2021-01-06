@@ -34,8 +34,13 @@ function string.split(str, sSeparator, nMax, bRegexp)
 
    return aRecord
 end
+function string:strip(self)
+    return string.strip(self)
+end
 function string.strip(str)
-    return  string.gsub(str, '^%s*(.-)%s*$', '%1')
+    str = string.gsub(str, '^%s*', '')
+    str = string.gsub(str, '%s*$', '')
+    return str
 end
 
 function string.hexToColor(stringColor)

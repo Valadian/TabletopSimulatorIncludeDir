@@ -30,7 +30,7 @@ end
 
 function rollDie()
     if dieObjs != nil then
-        for i, obj in pairs(dieObjs) do
+        for i, obj in pairs(dieRollerZone.getObjects()) do --dieObjs
             if obj != nil then
                 obj.roll()
             end

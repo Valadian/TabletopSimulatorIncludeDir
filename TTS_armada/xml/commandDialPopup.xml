@@ -12,6 +12,9 @@
 
     <VerticalLayout id="helpPage0" padding="50 20 0 20">
         <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="20 20 3 3"> Need Help? </Text>
+        <HorizontalLayout preferredHeight="40" padding="20 0 0 0">
+            <Text alignment="MiddleLeft"> Getting "<textcolor color="red">Model not found</textcolor>" errors? Have Malwarebytes installed? <textcolor color="teal">Add paste.ee as an allowed host</textcolor> </Text>
+        </HorizontalLayout>
         <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
             <Text alignment="MiddleLeft"> Click the page numbers below to explore recent features </Text>
         </HorizontalLayout>
@@ -38,6 +41,43 @@
     </VerticalLayout>
     <VerticalLayout id="helpPage1" active="false" class="helpPanel">
         <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="blue">Pro-tip #1:</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Proximity Mines</Text>
+        </HorizontalLayout>
+        <Text alignment="MiddleLeft" >If you are doing Proximity Mine shenanigans with moving obstacles:</Text>
+        <Text alignment="MiddleLeft" >Before moving, Click F6 to "attach" the proximity mines to the obstacle.</Text>
+        <Text alignment="MiddleLeft" >To free the mines, just "Attach" the obstacle to nothing.</Text>
+
+        <HorizontalLayout>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="blue">Pro-tip #2:</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Dice Rerolling</Text>
+        </HorizontalLayout>
+        <Text alignment="MiddleLeft" >If you need to reroll dice. Lock the ones you want to keep.</Text>
+        <Text alignment="MiddleLeft" >Then mash the roll button to roll the rest. This prevents accidental bumps!</Text>
+    </VerticalLayout>
+    <VerticalLayout id="helpPage2" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Score Reporting</Text>
+        </HorizontalLayout>
+        <Text alignment="MiddleLeft" >Game Results can be recorded to the cloud!</Text>
+        <HorizontalLayout preferredHeight="20" padding="0 0 0 0">
+            <Text alignment="MiddleLeft" >Only takes a few seconds, start by clicking: </Text>
+            <Panel preferredWidth="60"><Image image="PODIUM" width="40" height="40" color="#FFA040" ></Image></Panel>
+            <Text preferredWidth="100"/>
+        </HorizontalLayout>
+        <Text alignment="MiddleLeft" >Requires:</Text>
+        <Text alignment="MiddleLeft" > 1. <textcolor color="#FFA040"><b>Both Players Present</b></textcolor></Text>
+        <Text alignment="MiddleLeft" > 2. <textcolor color="#FFA040"><b>Fleets spawned</b></textcolor> from GUI or Datacards</Text>
+        <Text alignment="MiddleLeft" > 3. <textcolor color="#FFA040"><b>Objective in the designated spot</b></textcolor> left of board near turn counter ("Choose" button will move it there!)</Text>
+        <Text alignment="MiddleLeft" >Then all you have to do is: </Text>
+        <Text alignment="MiddleLeft" > 1. <textcolor color="#40FF80"><b>click colors for 1st and 2nd player</b></textcolor> (filtered by the current players)</Text>
+        <Text alignment="MiddleLeft" > 2. <textcolor color="#40FF80"><b>Type in Scores</b></textcolor> (This will have automated assistance in the future)</Text>
+        <Text alignment="MiddleLeft" > 3. <textcolor color="#40FF80"><b>Click Submit!</b></textcolor></Text>
+
+    </VerticalLayout>
+    <VerticalLayout id="helpPage3" active="false" class="helpPanel">
+        <HorizontalLayout class="helpHeading">
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Hotkey Support</Text>
         </HorizontalLayout>
@@ -46,19 +86,19 @@
         <Text alignment="MiddleLeft" >For those without a numpad, I recommend remapping to: N M , H J K Y U I RightALT (Which will require remapping or unbinding: "nudge","magnify", "hide hand","under") </Text>
         <Text alignment="MiddleLeft" >Default bindings are: </Text>
         <HorizontalLayout padding="40 80 0 0" spacing="20">
-            <Text preferredWidth="100" alignment="MiddleRight">Prev Ship  <textcolor color="orange"><b>7</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Yaw L (◄)  <textcolor color="orange"><b>7</b></textcolor></Text>
             <Text preferredWidth="100" alignment="MiddleRight">Ruler (+) <textcolor color="orange"><b>8</b></textcolor></Text>
-            <Text preferredWidth="100" alignment="MiddleRight">Next Ship  <textcolor color="orange"><b>9</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Yaw R (►)  <textcolor color="orange"><b>9</b></textcolor></Text>
         </HorizontalLayout>
         <HorizontalLayout padding="40 80 0 0" spacing="20">
-            <Text preferredWidth="100" alignment="MiddleRight">Yaw L (<![CDATA[<]]>) <textcolor color="orange"><b>4</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler L (M) <textcolor color="orange"><b>4</b></textcolor></Text>
             <Text preferredWidth="100" alignment="MiddleRight">Ruler (-) <textcolor color="orange"><b>5</b></textcolor></Text>
-            <Text preferredWidth="100" alignment="MiddleRight">Yaw R (<![CDATA[>]]>) <textcolor color="orange"><b>6</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Ruler R (M)<textcolor color="orange"><b>6</b></textcolor></Text>
         </HorizontalLayout>
         <HorizontalLayout padding="40 80 0 0" spacing="20">
-            <Text preferredWidth="100" alignment="MiddleRight">Ruler L (M) <textcolor color="orange"><b>1</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Prev Ship <textcolor color="orange"><b>1</b></textcolor></Text>
             <Text preferredWidth="100" alignment="MiddleRight">Shrink Ruler <textcolor color="orange"><b>2</b></textcolor></Text>
-            <Text preferredWidth="100" alignment="MiddleRight">Ruler R (M) <textcolor color="orange"><b>3</b></textcolor></Text>
+            <Text preferredWidth="100" alignment="MiddleRight">Next Ship <textcolor color="orange"><b>3</b></textcolor></Text>
         </HorizontalLayout>
         <HorizontalLayout padding="40 80 0 0" spacing="20">
             <Text preferredWidth="100" alignment="MiddleRight">Move/Done <textcolor color="orange"><b>0</b></textcolor></Text>
@@ -67,7 +107,7 @@
         </HorizontalLayout>
 
     </VerticalLayout>
-    <VerticalLayout id="helpPage2" active="false" class="helpPanel">
+    <VerticalLayout id="helpPage4" active="false" class="helpPanel">
         <HorizontalLayout class="helpHeading">
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Obstacle Rulers</Text>
@@ -81,7 +121,7 @@
             <Text alignment="MiddleLeft" >When ruler is visible, a <textcolor color="#4060FF">"Move"</textcolor> button will appear to facility ranged obstacle movement.</Text>
         </VerticalLayout>
     </VerticalLayout>
-    <VerticalLayout id="helpPage3" active="false" class="helpPanel">
+    <VerticalLayout id="helpPage5" active="false" class="helpPanel">
         <HorizontalLayout class="helpHeading">
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Datacards</Text>
@@ -89,12 +129,13 @@
         <VerticalLayout padding="20 0 0 0">
             <Text alignment="MiddleLeft" >On the left side of the table near the rules, you will find 4 datacards.</Text>
             <Text alignment="MiddleLeft" >These represent the 4 default fleets in the Core/Fleet Starter "Let's Play" rulebooks.</Text>
-            <Text alignment="MiddleLeft" >Clicking: "<textcolor color="#D9B46D">Spawn Fleet</textcolor>" will create the fleet in front of you.</Text>
+            <Text alignment="MiddleLeft" >Clicking: "<textcolor color="#D9B46D"><b>Spawn Fleet</b></textcolor>" will create the fleet in front of you.</Text>
             <Text alignment="MiddleLeft" >When lists are spawned from the Fleet Spawner, they will generate a "Datacard".</Text>
-            <Text alignment="MiddleLeft" >These can be saved for later by right clicking <![CDATA[>]]> Save Object, and restored later by Objects <![CDATA[>]]> Saved Objects</Text>
+            <Text alignment="MiddleLeft" >These can be saved for later by right clicking ► <textcolor color="#FFFF80"><b>Save Object</b></textcolor>, and restored later by Objects ► <textcolor color="#FF8080"><b>Saved Objects</b></textcolor></Text>
+            <Text alignment="MiddleLeft">If you would like to capture your manually assembled list, Place all cards from your list on your side of the board, grab an empty datacard from between the dice rollers, and click "<textcolor color="#FFA040"><b>Store Fleet</b></textcolor>" </Text>
         </VerticalLayout>
     </VerticalLayout>
-    <VerticalLayout id="helpPage4" active="false" class="helpPanel">
+    <VerticalLayout id="helpPage6" active="false" class="helpPanel">
         <HorizontalLayout class="helpHeading">
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">List Spawner</Text>
@@ -113,8 +154,7 @@
             <Text alignment="MiddleLeft">To spawn individual ships/squadrons/ugprades/objectives, access the "<b>Ships</b>" and "<b>Upgrades</b>" tabs </Text>
         </VerticalLayout>
     </VerticalLayout>
-
-    <VerticalLayout id="helpPage5" active="false" class="helpPanel">
+    <VerticalLayout id="helpPage7" active="false" class="helpPanel">
         <HorizontalLayout class="helpHeading">
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow">New Feature!</Text>
             <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft">Command Dial Update</Text>
@@ -136,12 +176,15 @@
     <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
     <Button icon="Help" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_commandPopup" color="#00000000" iconColor="#0080FF" />
     <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_commandPopup"  color="#FF0000" />
-    <HorizontalLayout rectAlignment="LowerCenter" width="270" height="20" ignoreLayout="true" spacing="30" offsetXY="0 -30 " >
+    <HorizontalLayout rectAlignment="LowerCenter" width="450" height="30" ignoreLayout="true" spacing="30" offsetXY="0 -45 " >
         <Button id="helpPage0btn" class="paginationActive">•</Button>
         <Button id="helpPage1btn" class="pagination">1</Button>
         <Button id="helpPage2btn" class="pagination">2</Button>
         <Button id="helpPage3btn" class="pagination">3</Button>
         <Button id="helpPage4btn" class="pagination">4</Button>
         <Button id="helpPage5btn" class="pagination">5</Button>
+        <Button id="helpPage6btn" class="pagination">6</Button>
+        <Button id="helpPage7btn" class="pagination">7</Button>
+        <!-- By default ttslua code supports 10 pages -->
     </HorizontalLayout>
 </VerticalLayout>

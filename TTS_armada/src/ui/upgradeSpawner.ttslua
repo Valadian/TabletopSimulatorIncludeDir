@@ -187,7 +187,7 @@ function onClick_spawnCard(player, _, idValue)
                     debug        = false,
                 })
                 if #hitList == 0 then
-                    spawnCard(def, {-24, 2, 11}, {i*x_step, 0, j*-y_step}, {0, 180, 0}, nil, false)
+                    spawnCard(def, {-24, 2, 11}, {i*x_step, 0, j*-y_step}, {0, 0, 0}, nil, false)
                     return
                 end
             end

@@ -100,6 +100,9 @@ end
 #include asteroid
 spawner = nil
 function onload(save_string)
+    Lighting.ambient_type = 2
+    Lighting.ambient_intensity = 4
+    Lighting.apply()
      MAGIC_RULER = findObjectByName('Magic Ruler')
      shield_dials = findObjectByName('Shield Dials')
      spawner = findObjectByName('Armada Spawner')
@@ -120,8 +123,10 @@ function onload(save_string)
             obj.setVar('team',shipdata["team"])
             obj.setVar('rulerMesh',shipdata["rulerMesh"])
             obj.setTable('maneuver',shipdata["maneuver"])
+            obj.setTable('shields',shipdata["shields"])
             obj.setVar('hasShields',shipdata["hasShields"])
             obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
+            obj.setTable('InitialPosition',shipdata["InitialPosition"])
         end
     end
     drawSquadronButtons()
@@ -133,47 +138,75 @@ function isDatacard(object)
 end
 function drawDatacardButtons(obj)
     if isDatacard(obj) then
-    -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
-        obj.createButton({
-            ['click_function'] = "Action_fleet_spawn",
-            ['function_owner'] = spawner,
-            ['label'] = "Spawn\nFleet",
-            ['position'] = {0,0.35,-0.42},
-            ['rotation'] =  {0,0,0},
-            ['width'] = 600,
-            ['height'] = 600,
-            ['font_size'] = 200,
-            ['color'] = {217/256,180/256,109/256,0.9},
-            ['font_color']={0,0,0,1.11}})
-        name = obj.getName()
-        if string.len(name)>24 then
-            splits = math.floor(string.len(name)/24)
-            split_name = name:split(" ")
-            word_count = #split_name
-            words_per_line = math.floor(word_count/(splits+1))
-            name = ""
-            for i,word in ipairs(split_name) do
-                name = name .. word
-                if i~=word_count then
-                    if i==words_per_line  then
-                        name = name .. "\n"
-                    else
-                        name = name .. " "
+        if obj.getDescription()~=nil and #obj.getDescription()>0 then
+            obj.clearButtons()
+        -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
+            obj.createButton({
+                ['click_function'] = "Action_fleet_spawn",
+                ['function_owner'] = spawner,
+                ['label'] = "Spawn\nFleet",
+                ['position'] = {0,0.35,-0.42},
+                ['rotation'] =  {0,0,0},
+                ['width'] = 600,
+                ['height'] = 600,
+                ['font_size'] = 200,
+                ['color'] = {217/256,180/256,109/256,0.9},
+                ['font_color']={0,0,0,1.11}})
+            name = obj.getName()
+            if string.len(name)>24 then
+                splits = math.floor(string.len(name)/24)
+                split_name = name:split(" ")
+                word_count = #split_name
+                words_per_line = math.floor(word_count/(splits+1))
+                name = ""
+                for i,word in ipairs(split_name) do
+                    name = name .. word
+                    if i~=word_count then
+                        if i==words_per_line  then
+                            name = name .. "\n"
+                        else
+                            name = name .. " "
+                        end
                     end
                 end
             end
+            obj.createButton({
+                ['click_function'] = "Action_fleet_spawn",
+                ['function_owner'] = spawner,
+                ['label'] = name,
+                ['position'] = {0,0.25,1},
+                ['rotation'] =  {0,0,0},
+                ['width'] = 1000,
+                ['height'] = 450,
+                ['font_size'] = 80,
+                ['color'] = {0,0,0,0.9},
+                ['font_color']={1,1,1,1.11}})
+        else
+            obj.clearButtons()
+
+            obj.createButton({
+                ['click_function'] = "Action_store_fleet",
+                ['function_owner'] = spawner,
+                ['label'] = "Store\nFleet",
+                ['position'] = {0,0.35,-0.42},
+                ['rotation'] =  {0,0,0},
+                ['width'] = 600,
+                ['height'] = 600,
+                ['font_size'] = 200,
+                ['color'] = {217/256,180/256,109/256,0.9},
+                ['font_color']={0,0,0,1.11}})
+            obj.createButton({
+                ['click_function'] = "Action_store_fleet",
+                ['function_owner'] = spawner,
+                ['label'] = "EMPTY DATACARD",
+                ['position'] = {0,0.25,1},
+                ['rotation'] =  {0,0,0},
+                ['width'] = 1000,
+                ['height'] = 450,
+                ['font_size'] = 80,
+                ['color'] = {1,0,0,0.9},
+                ['font_color']={1,1,1,1.11}})
         end
-        obj.createButton({
-            ['click_function'] = "Action_fleet_spawn",
-            ['function_owner'] = spawner,
-            ['label'] = name,
-            ['position'] = {0,0.25,1},
-            ['rotation'] =  {0,0,0},
-            ['width'] = 1000,
-            ['height'] = 450,
-            ['font_size'] = 80,
-            ['color'] = {0,0,0,0.9},
-            ['font_color']={1,1,1,1.11}})
     end
 end
 function drawSquadronButtons()
@@ -193,6 +226,9 @@ function drawSquadronButtons()
     end
     white.createButton(buildButton(label.." Squadron Attack",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
     blue.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
+
+    white.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
+    blue.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
 end
 function Action_ToggleSquadronMovement()
     restrict_squadrons = not restrict_squadrons
@@ -201,6 +237,33 @@ end
 function Action_ToggleSquadronAttack()
     squadrons_extended_attack = not squadrons_extended_attack
     drawSquadronButtons()
+end
+function Action_ToggleDestroyShipButtons()
+    for _,ship in ipairs(getAllObjects()) do
+        if isShip(ship) or isSquad(ship) then
+            ship.clearButtons()
+            ship.createButton(buildRelativeButton(ship, "DESTROY",{click_function="Action_destroy",position={0,3,-0.3},width=800, height=500, color={1, 0, 0 ,0.9}, font_color={1,1,1,1.11}, tooltip="Move Ship to side"},ship_button_def))
+        end
+    end
+    Wait.time(|| redraw_ships(), 8, 0)
+end
+function redraw_ships()
+    for _,ship in ipairs(getAllObjects()) do
+        if isShip(ship) then
+            drawShipButtons(ship)
+        end
+        if isSquad(ship) then
+            updateSquadButtons(ship)
+        end
+    end
+end
+function Action_destroy(ship)
+    pos = ship.getTable("InitialPosition")
+    if isShip(ship) then
+        MAGIC_RULER.call("API_MOVE_SHIP",{ship=ship,pos=pos,rot={0,0,0}})
+    else
+        ship.setPositionSmooth(pos, false, true)
+    end
 end
 function onSave()
     local save = {}
@@ -212,8 +275,10 @@ function onSave()
             data["maneuver"] = ship.getTable('maneuver')
             data["owner"] = ship.getVar('owner')
             data["team"] = ship.getVar('team')
+            data["shields"] = ship.getTable('shields')
             data["hasShields"] = ship.getVar('hasShields')
             data["cmdBaseGUID"] = ship.getVar('cmdBaseGUID')
+            data["InitialPosition"] = ship.getTable('InitialPosition')
             save[ship.getGUID()] = data
         end
     end
@@ -1204,20 +1269,35 @@ end
 hovered_ships = {}
 ruler_index = {}
 function onObjectHover_scripting_keys(hovered_object,player_color)
-    if isShip(hovered_object) and hovered_object.getVar('owner')==player_color then
-        if hovered_ships[player_color]~=nil then
-            hovered_ships[player_color].highlightOff()
-        end
-        hovered_ships[player_color] = hovered_object
-        hovered_object.highlightOn(player_color,0.2)
-    end
+    -- Disable hover, causes confusing behaviors
+    -- if isShip(hovered_object) and hovered_object.getVar('owner')==player_color then
+    --     if hovered_ships[player_color]~=nil then
+    --         hovered_ships[player_color].highlightOff()
+    --     end
+    --     hovered_ships[player_color] = hovered_object
+    --     hovered_object.highlightOn(player_color,0.2)
+    -- end
 end
 function onScriptingButtonDown(index, color)
     if ruler_index[color]==nil then
         ruler_index[color] = 0
     end
 
-    if index==7 or index==9 then --next/prev ship
+    PREV_SHIP_HOTKEY = 1
+    NEXT_SHIP_HOTKEY = 3
+    RULER_LEFT_HOTKEY = 4
+    RULER_RIGHT_HOTKEY = 6
+    YAW_LEFT_HOTKEY = 7
+    YAW_RIGHT_HOTKEY = 9
+    SHRINK_RULER_HOTKEY = 2
+    PREV_RULER_HOTKEY = 5
+    NEXT_RULER_HOTKEY = 8
+    MOVE_UNDO_HOTKEY = 10
+
+
+
+
+    if index==PREV_SHIP_HOTKEY or index==NEXT_SHIP_HOTKEY then --next/prev ship
 
         if hovered_ships[color]~=nil then
             hovered_ships[color].highlightOff()
@@ -1231,11 +1311,18 @@ function onScriptingButtonDown(index, color)
             :Where(isShip)
             :Where(|s| s~=hovered_ships[color])
             :Where(|s| s.getVar('owner')==color)
-            :OrderBy(function(s)
-                -- print(s.getName())
-                offset = vector.sub(s.getPosition(),hovered_ships[color].getPosition())
+
+        if #ships>1 then
+            relative_pos = Vector(0,0,0)
+            if hovered_ships[color]~=nil then
+                relative_pos = hovered_ships[color].getPosition()
+            end
+            ships = ships:OrderBy(function(s)
+                -- print(" = = = ",s.getName()," = = = ")
+                offset = vector.sub(s.getPosition(),relative_pos)
                 -- print("Global: ",vector.tostring(offset))
-                relative_offset = vector.rotate(offset,90+curs_rot)
+                relative_offset = vector.rotate(offset,180-curs_rot)
+                -- print("Rot: ",curs_rot+180)
                 -- print("Local: ",vector.tostring(relative_offset))
                 x_delta = relative_offset[1]
                 if x_delta<0 then
@@ -1244,14 +1331,22 @@ function onScriptingButtonDown(index, color)
                 -- print("x_delta: ",x_delta)
                 return x_delta
             end )
+        end
         if #ships>0 then
-            if index==7 then
+            if index==PREV_SHIP_HOTKEY then
                 -- print("selecting: ",ships[1].getName())
-                hovered_ships[color] = ships[1]
+                hovered_ships[color] = ships[#ships]
             else
                 -- print("selecting: ",ships[#ships].getName())
-                hovered_ships[color] = ships[#ships]
+                hovered_ships[color] = ships[1]
             end
+
+            -- Player[color].lookAt({
+            --     position = hovered_ships[color].getPosition() ,
+            --     pitch    = 45,
+            --     yaw      = hovered_ships[color].getRotation()[2],
+            --     distance = 20,
+            -- })
             hovered_ships[color].highlightOn(color,0.2)
         end
     end
@@ -1260,28 +1355,40 @@ function onScriptingButtonDown(index, color)
         if rulers[color]==nil then
             ruler_index[color] = 0
         end
-        if index==1 then
+        if index==RULER_LEFT_HOTKEY then
             moveRuler(hovered_ships[color],-1,color)
+            Player[color].lookAt({
+                position = hovered_ships[color].positionToWorld(Vector(-3,0,4)) ,
+                pitch    = 45,
+                yaw      = hovered_ships[color].getRotation()[2],
+                distance = 8,
+            })
         end
-        if index==3 then
+        if index==RULER_RIGHT_HOTKEY then
             moveRuler(hovered_ships[color],1,color)
+            Player[color].lookAt({
+                position = hovered_ships[color].positionToWorld(Vector(3,0,4)) ,
+                pitch    = 45,
+                yaw      = hovered_ships[color].getRotation()[2],
+                distance = 8,
+            })
         end
         -- MUST WAIT FOR RULER TO BE SPAWNED
         Wait.frames(function()
             if rulers[color]~=nil then
-                if index==10 then
+                if index==MOVE_UNDO_HOTKEY then
                     rulers[color].call('API_move')
                 else
                     params = {index=ruler_index[color],color=color}
-                    if index==4 then
+                    if index==YAW_LEFT_HOTKEY then
                         rulers[color].call('API_rulerLeft')
-                    elseif index==6 then
+                    elseif index==YAW_RIGHT_HOTKEY then
                         rulers[color].call('API_rulerRight')
-                    elseif index==8 then
+                    elseif index==NEXT_RULER_HOTKEY then
                         rulers[color].call('API_incrementIndex')
-                    elseif index==5 then
+                    elseif index==PREV_RULER_HOTKEY then
                         rulers[color].call('API_decrementIndex')
-                    elseif index==2 then
+                    elseif index==SHRINK_RULER_HOTKEY then
                         rulers[color].call('Action_RemoveRuler')
                     end
                     Wait.frames(|| rulers[color].call("API_highlightIndex",params), 1)
