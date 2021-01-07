@@ -139,9 +139,9 @@ end
 Card = { cost = 0, name = "", type = "", front = "", back = "", aliases = {},
     iscard = true,  faction = nil
 }
-function Card:new (o, ...)
-    o = o or {}
-    o = table.copy(o)
+DefaultCard = table.copy(Card)
+function Card:new (...)
+    o = table.copy(DefaultCard)
     if ... ~= nil then
         for i,tab in ipairs({...}) do
             for k, v in pairs(tab) do

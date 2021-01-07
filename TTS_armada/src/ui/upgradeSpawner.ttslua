@@ -14,6 +14,19 @@ function onClick_selectShipSpawnerTab(player, _, idValue)
     end
     updateFactionButtons()
 end
+function onClick_selectUpgradeSpawnerTab(player, _, idValue)
+    onClick_selectArmadaTab(player, _, idValue)
+    factionGroups = T(CARDS):Select(|c|c.factions):Distinct()
+    for _,vg in ipairs(factionGroups) do
+        for _,v in ipairs(vg) do
+            if not table.contains(ALL_FACTIONS,v) then
+                table.insert(ALL_FACTIONS, v)
+                print("Found a new faction: "..v)
+            end
+        end
+    end
+    updateFactionButtons()
+end
 
 selected_faction = "Rebellion"
 selected_category = nil

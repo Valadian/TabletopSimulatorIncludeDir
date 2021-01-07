@@ -51,7 +51,7 @@ width="400" -->
     <HorizontalLayout id="tabContainer" active="false" preferredHeight="20">
         <Button text="Fleet"  id="fleetSpawner"  class="tab" />
         <Button text="Ships"  id="shipSpawner" class="tab" onClick="030220/onClick_selectShipSpawnerTab" />
-        <Button text="Upgrades"  id="upgradeSpawner"  class="tab" />
+        <Button text="Upgrades"  id="upgradeSpawner"  class="tab" onClick="030220/onClick_selectUpgradeSpawnerTab"/>
         <!-- <Button text="Cloud"  id="gameReporter"  class="tab" onClick="030220/onClick_selectGameReporterTab" /> -->
     </HorizontalLayout>
 <Include src="fleetSpawner.xml"/>

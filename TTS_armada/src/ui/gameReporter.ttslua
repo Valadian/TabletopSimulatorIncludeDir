@@ -93,7 +93,9 @@ function onClick_score_submit(player, _, idValue)
             player2fleet = { arrayValue = { values = player2fleet}},
             player2score = { integerValue = player2score or 0},
             player2points = { integerValue = player2points or 6},
-            submitted = { stringValue = submitted}
+            submitted = { stringValue = submitted},
+            ranked = { booleanValue = RANKED},
+            tournamentCode = { stringValue = TOURNAMENT_CODE or ""}
         }
     },{['Content-Type']="application/json"}, handle_score_submit)
 end
@@ -219,4 +221,43 @@ function updateScore()
         UI.setValue("Player1points",player1points)
         UI.setValue("Player2points",player2points)
     end
+end
+RANKED = false
+function onClick_casualRanked(player, _, idValue)
+    if idValue=="casual" then
+        RANKED = false
+        UI.setAttribute("casual","fontStyle","bold")
+        UI.setAttribute("casual","fontSize","18")
+        UI.setAttribute("casual","color","#C0C0C0")
+        UI.setAttribute("casual","outline","white")
+        UI.setAttribute("casual","textColor","black")
+
+        UI.setAttribute("ranked","fontStyle","Normal")
+        UI.setAttribute("ranked","fontSize","14")
+        UI.setAttribute("ranked","color","black")
+        UI.setAttribute("ranked","outline","#443B00")
+        UI.setAttribute("ranked","textColor","#443B00")
+
+        UI.hide("rankedWarning")
+    else
+        RANKED = true
+        UI.setAttribute("casual","fontStyle","Normal")
+        UI.setAttribute("casual","fontSize","14")
+        UI.setAttribute("casual","color","black")
+        UI.setAttribute("casual","outline","#404040")
+        UI.setAttribute("casual","textColor","#404040")
+
+        UI.setAttribute("ranked","fontStyle","bold")
+        UI.setAttribute("ranked","fontSize","18")
+        UI.setAttribute("ranked","color","#DAA520")
+        UI.setAttribute("ranked","outline","#FFD700")
+        UI.setAttribute("ranked","textColor","black")
+
+        UI.show("rankedWarning")
+
+    end
+end
+TOURNAMENT_CODE = nil
+function onInput_tournamentCode(player, value, idValue)
+    TOURNAMENT_CODE = value
 end
