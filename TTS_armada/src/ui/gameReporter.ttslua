@@ -67,12 +67,22 @@ function onClick_score_submit(player, _, idValue)
     player1points = UI.getValue("Player1points")
     player2points = UI.getValue("Player2points")
     objective = UI.getValue("activeObjective")
-    player1fleet = flatten(createSpawningStructure(fleets[UI.getAttribute("Player1name","color")]))
+    fleet = createSpawningStructure(fleets[UI.getAttribute("Player1name","color")])
+    player1faction = nil
+    if #fleet.ships > 0 then
+        player1faction = fleet.ships[1].def.faction
+    end
+    player1fleet = flatten(fleet)
     if #player1fleet == 0 then
         print("No fleet found for Player 1!")
         return
     end
-    player2fleet = flatten(createSpawningStructure(fleets[UI.getAttribute("Player2name","color")]))
+    fleet = createSpawningStructure(fleets[UI.getAttribute("Player2name","color")])
+    player2faction = nil
+    if #fleet.ships > 0 then
+        player2faction = fleet.ships[1].def.faction
+    end
+    player2fleet = flatten(fleet)
     if #player2fleet == 0 then
         print("No fleet found for Player 2!")
         return
@@ -86,11 +96,13 @@ function onClick_score_submit(player, _, idValue)
         ['fields'] = {
             player1 = { stringValue = tostring(player1)},
             player1fleet = { arrayValue = { values = player1fleet} },
+            player1faction = { stringValue = tostring(player1faction)},
             player1score = { integerValue = player1score or 0},
             player1points = { integerValue = player1points or 5},
             objective = { stringValue = tostring(objective)},
             player2 = { stringValue = tostring(player2)},
             player2fleet = { arrayValue = { values = player2fleet}},
+            player2faction = { stringValue = tostring(player2faction)},
             player2score = { integerValue = player2score or 0},
             player2points = { integerValue = player2points or 6},
             submitted = { stringValue = submitted},
