@@ -37,8 +37,8 @@ end
 function flatten(fleet)
     cards = {}
     if fleet == nil then return cards end
-    for _,def in ipairs(fleet.objectives) do
-        table.insert(cards,def.category..": "..def.name)
+    for _,obj in ipairs(fleet.objectives) do
+        table.insert(cards,obj.def.category..": "..obj.def.name)
     end
     for _,ship in ipairs(fleet.ships) do
         table.insert(cards,ship.def.name.." ("..ship.def.cost..")")
@@ -67,7 +67,8 @@ function onClick_score_submit(player, _, idValue)
     player1points = UI.getValue("Player1points")
     player2points = UI.getValue("Player2points")
     objective = UI.getValue("activeObjective")
-    fleet = createSpawningStructure(fleets[UI.getAttribute("Player1name","color")])
+    print("Getting fleet for player1: "..UI.getAttribute("Player1name","color"))
+    fleet = fleets[UI.getAttribute("Player1name","color")]
     player1faction = nil
     if #fleet.ships > 0 then
         player1faction = fleet.ships[1].def.faction
@@ -77,7 +78,8 @@ function onClick_score_submit(player, _, idValue)
         print("No fleet found for Player 1!")
         return
     end
-    fleet = createSpawningStructure(fleets[UI.getAttribute("Player2name","color")])
+    print("Getting fleet for player2: "..UI.getAttribute("Player2name","color"))
+    fleet = fleets[UI.getAttribute("Player2name","color")]
     player2faction = nil
     if #fleet.ships > 0 then
         player2faction = fleet.ships[1].def.faction
@@ -120,19 +122,10 @@ function onClick_selectPlayer1color(player, _, idValue)
 end
 function onClick_selectPlayer2color(player, _, idValue)
     onClick_selectPlayer(idValue,2)
-    -- UI.setValue("objective1","?")
-    -- UI.setValue("objective2","?")
-    -- UI.setValue("objective3","?")
-    -- if fleets[idValue]~=nil then
-    --     print("Found fleet")
-    --     fleet = createSpawningStructure(fleets[idValue])
-    --     for i, def in ipairs(fleet.objectives) do
-    --         print("found objective: "..def.name)
-    --         -- TODO:Evidently impossible
-    --         UI.setValue("objective"..i,def.name)
-    --     end
-    -- end
 end
+PLAYER_HAS_FLEET = {
+    false, false
+}
 function onClick_selectPlayer(idValue,i)
     color = UI.getAttribute(idValue,"color")
     -- printToAll(color,{1,1,1})
@@ -140,6 +133,10 @@ function onClick_selectPlayer(idValue,i)
         -- print(Player[color].steam_name)
         UI.setAttribute("Player"..i.."name", "color", color)
         UI.setValue("Player"..i.."name", Player[color].steam_name)
+        fleets[color] = buildFleetFromZone(color)
+        print("Stored fleet in: "..color)
+        PLAYER_HAS_FLEET[i] = fleets[color]~=nil
+        updateFleetCostDisplay(color)
         if fleets[color]~=nil then
             UI.show("Player"..i.."listFound")
             UI.hide("Player"..i.."listNotFound")
@@ -148,16 +145,35 @@ function onClick_selectPlayer(idValue,i)
             UI.show("Player"..i.."listNotFound")
         end
     else
+        PLAYER_HAS_FLEET[i] = false
         UI.setAttribute("Player"..i.."name", "color", "#FF4040") --color
         UI.setValue("Player"..i.."name", "?")
         UI.hide("Player"..i.."listFound")
         UI.show("Player"..i.."listNotFound")
+    end
+    local p1hasfleet = PLAYER_HAS_FLEET[1]
+    local p2hasfleet = PLAYER_HAS_FLEET[2]
+    print(p1hasfleet,p2hasfleet)
+    if p1hasfleet and p2hasfleet then
+        Wait.frames(function()
+            local p1color = UI.getAttribute("Player1name","color")
+            local p2color = UI.getAttribute("Player2name","color")
+            print(p1color, p2color)
+            local p1score = FLEET_SCORE[p1color]
+            local p2score = FLEET_SCORE[p2color]
+            player1score = p2score['lost']+p1score['objective']
+            player2score = p1score['lost']+p2score['objective']
+            UI.setAttribute("player1score","text",player1score)
+            UI.setAttribute("player2score","text",player2score)
+            updateScore()
+        end,1)
     end
 
 end
 function findObjective()
     for _,object in ipairs(getAllObjects()) do
         if  vector.length(vector.sub(object.getPosition(),{-40.66,0.97,-0.09}))<2 then
+            Action_select_objective(object)
             return object.getName()
         end
     end

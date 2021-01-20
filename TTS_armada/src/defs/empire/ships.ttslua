@@ -250,7 +250,8 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
     shields = {6,3,3,2,3,3},
     cost = 220,
     aliases = {"SSD Command Prototype","Command Prototype"},
-    command = 4
+    command = 4,
+    hull = 22
 })
 Ship:new(HugeShip,EMPIRE_SHIP,{
 	name = "Star Dreadnought Assault Prototype",
@@ -263,7 +264,8 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
     shields = {6,3,3,2,3,3},
     cost = 250,
     aliases = {"SSD Assault Prototype","Assault Prototype"},
-    command = 4
+    command = 4,
+    hull = 22
 })
 Ship:new(HugeShip,EMPIRE_SHIP,{
 	name = "Executor I-class Star Dreadnought",
@@ -276,7 +278,8 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
     shields = {6,5,5,3,5,5},
     cost = 381,
     aliases = {"Executor I Star Dreadnought", "Executor I SSD","Executor I"},
-    command = 4
+    command = 4,
+    hull = 33
 })
 Ship:new(HugeShip,EMPIRE_SHIP,{
 	name = "Executor II-class Star Dreadnought",
@@ -289,7 +292,8 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
     shields = {6,5,5,3,5,5},
     cost = 411,
     aliases = {"Executor II Star Dreadnought", "Executor II SSD","Executor II"},
-    command = 4
+    command = 4,
+    hull = 33
 })
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Onager-class Testbed",

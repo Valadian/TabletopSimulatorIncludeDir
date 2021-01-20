@@ -32,7 +32,7 @@ function vector.rotate(direction, yRotation)
     local radrotval = math.rad(rotval)
     local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
     local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
-    return {xDistance, direction[2], zDistance}
+    return Vector(xDistance, direction[2], zDistance)
 end
 function vector.toangle(v)
     return math.atan2(-v[3],v[1])*180/math.pi - 90

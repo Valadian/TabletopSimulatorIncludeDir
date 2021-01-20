@@ -16,6 +16,13 @@ table.Sum = function(t)
 
     return sum
 end
+table.FirstOrNil = function(t)
+    if #t>0 then
+        return t[1]
+    else
+        return nil
+    end
+end
 table.removeByValue = function(table1, value)
     for k,v in pairs(table1) do
       if v == value then
@@ -110,6 +117,17 @@ table.ShallowCopy = function(orig)
     end
     return copy
 end
+table.IndexOf = function(t,item)
+    for i,v in ipairs(t) do
+        if v==item then
+            return i
+        end
+    end
+    return -1
+end
+table.Any = function(t)
+    return #t>0
+end
 table.Keys = function(tbl)
     local keyset={}
     local n=0
@@ -122,10 +140,12 @@ table.Keys = function(tbl)
 end
 function T(t)
     local tmp = {}
-    local i = 1
-    for _,val in pairs(t) do
-        tmp[i]=val
-        i=i+1
+    if t~=nil then
+        local i = 1
+        for _,val in pairs(t) do
+            tmp[i]=val
+            i=i+1
+        end
     end
     return setmetatable(tmp, {__index = table})
 end
@@ -175,4 +195,20 @@ function spairs(t, order)
             return keys[i], t[keys[i]]
         end
     end
+end
+
+function table.merge(self, ...)
+    if self == nil then
+        copy = {}
+    else
+        copy = table.copy(self)
+    end
+    if ... ~= nil then
+        for i,tab in ipairs({...}) do
+            for k, v in pairs(tab) do
+                copy[k] = v
+            end
+        end
+    end
+    return copy
 end

@@ -1,4 +1,4 @@
-#include ui/ui
+#include ui/fleetSpawner
 
 DEF_BRACE = '79d121'
 DEF_CONTAIN = '68abfc'
@@ -260,6 +260,15 @@ function onObjectSpawn(object)
 end
 #include MapManager
 function Action_select_objective(card)
+    def = CARDS[string.lower(card.getName())]
+    onClick_select_victoryToken(nil, nil, "Victory_0")
+    if def~=nil then
+        if def.victory~=nil then
+            onClick_select_victoryToken(nil, nil, "Victory_"..tostring(def.victory))
+        elseif table.contains({"Most Wanted","Opening Salvo","Intel Sweep"},def.name) then
+            onClick_select_victoryToken(nil, nil, "Victory_"..def.name:gsub(" ",""))
+        end
+    end
     card.setPositionSmooth({-40.66,0.97,-0.09}, false, false)
     card.clearButtons()
     Wait.time(||onClick_refreshObjective(),2,0)
@@ -388,9 +397,9 @@ end
 function Action_Spawn(card)
     if card.getTable('Custom') != nil then
         printToAll("Spawning Custom Ship",{0,1,1})
-        spawnDefinition(card.getTable('Custom'),card.getName(),card.getPosition(),1,card.getRotation()[2])
+        spawnDefinition(card.getTable('Custom'),card.getName(),card.getPosition(),1,card.getRotation()[2], card)
     else
-        spawnShip(card.getName(),card.getPosition(),1,card.getRotation()[2])
+        spawnShip(card.getName(),card.getPosition(),1,card.getRotation()[2],card)
     end
 end
 function Action_DoneSpawn(card)
@@ -431,6 +440,7 @@ function onload()
 
 #include defs/cards/objectives
     setRulerMeshes()
+    findObjective()
     -- drawListSpawnerButtons()
 end
 function setRulerMeshes()
@@ -508,7 +518,7 @@ function inFleetSpawnArea(listSpawner, obj)
 end
 function clearSpawnArea(listSpawner)
     for _,item in ipairs(getAllObjects()) do
-        if inFleetSpawnArea(listSpawner,item) and not isDatacard(item) then
+        if inFleetSpawnArea(listSpawner,item) and not isDatacard(item) and item.tag~="Scripting" then
             item.destruct()
         end
     end
@@ -591,7 +601,7 @@ function Action_SpawnListSpawner(listSpawner)
                 end
                 if def~=nil then
                     if def.type == "Objective" then --IS OBJECTIVE
-                        table.insert(fleet.objectives, def)
+                        table.insert(fleet.objectives, {def=obj.def})
                     elseif def.maneuver~=nil then --IS SHIP
                         last_ship = {def=def, upgrades = {}}
                         table.insert(fleet.ships, last_ship)
@@ -613,7 +623,6 @@ function Action_SpawnListSpawner(listSpawner)
 
     layout(nil, fleet, listSpawner.getPosition(), listSpawner.getRotation())
 end
-
 function createSpawningStructure(lineobjs)
     if lineobjs==nil then return nil end
     fleet = {
@@ -630,12 +639,12 @@ function createSpawningStructure(lineobjs)
             -- end
         if obj.def~=nil then
             if obj.def.type == "Objective" then --IS OBJECTIVE
-                table.insert(fleet.objectives, obj.def)
+                table.insert(fleet.objectives, {def=obj.def, card=obj.card})
             elseif obj.def.maneuver~=nil then --IS SHIP
-                last_ship = {def=obj.def, upgrades = {}, upgradeCost=0}
+                last_ship = {def=obj.def, upgrades = {}, upgradeCost=0, card=obj.card}
                 table.insert(fleet.ships, last_ship)
             elseif obj.def.move~=nil then
-                table.insert(fleet.squads, {def=obj.def, count=tonumber(obj.count)})
+                table.insert(fleet.squads, {def=obj.def, count=tonumber(obj.count) or 1, card=obj.card})
             else --MUST BE UPGRADE????
                 if last_ship==nil then
                     printToAll("Cannot spawn upgrade: "..obj.def.name.." since no ship found?",{1,0,0})
@@ -737,10 +746,10 @@ function layout(player, fleet, pos, rot, base_x, spawn)
     end
     local MAX_X = 104
     -- print(x)
-    for i,def in ipairs(fleet.objectives) do
+    for i,obj in ipairs(fleet.objectives) do
         -- printToAll("Objective: "..def.name,{1,1,1})
         if spawn then
-            spawnCard(def, pos, {x,0,4-(i-1)*Y_OFFSET}, vector.add(rot,{0,0,180}))
+            spawnCard(obj.def, pos, {x,0,4-(i-1)*Y_OFFSET}, vector.add(rot,{0,0,180}))
         end
     end
     x = x+OBJ_X_GAP
@@ -837,7 +846,37 @@ function layout(player, fleet, pos, rot, base_x, spawn)
     -- print(x)
     return x
 end
-function spawnCard(def, pos, offset, rot, count, spawnModel) --TODO: count
+function isShipOrSquad(ship)
+    name = string.gsub(ship.getName(),"^%d+ x ","")
+    def = SHIPS[string.lower(name)]
+    return def~=nil
+end
+
+function buildFleetFromZone(color)
+    local zone = getObjectFromGUID(FLEETZONES[color])
+    local listSpawner = findObjectByName("List Spawner ("..color..")")
+    local fleetCards = T(zone.getObjects())
+                        :Where(|c| c.tag=="Card" and c.getCustomObject().face~=DAMAGE_FACE)
+                        :OrderBy(|c| listSpawner.positionToLocal(c.getPosition())[1] - listSpawner.positionToLocal(c.getPosition())[3]/100)
+    local lineobjs = linesToLineobjs(fleetCards:Select(|c| c.getName()))
+    for i, obj in ipairs(lineobjs) do
+        obj['card'] = fleetCards[i]
+    end
+    local fleet = createSpawningStructure(lineobjs)
+    fleet.datacard = T(zone.getObjects()):Where(isDatacard):FirstOrNil()
+    if #fleet.ships==0 then
+        fleet = nil
+    end
+    return fleet
+end
+#include Armada_Spawner/ScoreManager
+function onObjectEnterScriptingZone_spawner(params) -- zone, object
+    onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
+end
+function onObjectLeaveScriptingZone_spawner(params) -- zone, object
+    onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
+end
+function spawnCard(def, pos, offset, rot, count, spawnModel)
     if spawnModel==nil then spawnModel=true end
     pos =  vector.add(pos,vector.rotate(offset, rot[2]))
     -- scale = {1.37,1,1.37}
@@ -916,17 +955,24 @@ function setCardDescriptionToSpawn(card)
     end
     if SHIPS[string.lower(name)]~=nil then
         Wait.frames(function() card.clearButtons() end, 2)
-        spawnShip(name,card.getPosition(),count,card.getRotation()[2])
+        spawnShip(name,card.getPosition(),count,card.getRotation()[2],card)
     end
 end
-function spawnShip(name,pos,count,rotation)
+function spawnShip(name,pos,count,rotation, card)
     -- printToAll("Spawning: "..name,{1,0,0})
     local ship_def = SHIPS[string.lower(name)]
-    spawnDefinition(ship_def,name,pos,count,rotation)
+    spawnDefinition(ship_def,name,pos,count,rotation, card)
 end
 -- token_offsets = {{-0.86,0,-3.64},{0.86,0,-3.64},{-0.86,0,-4.94},{0.86,0,-4.94},{-0.86,0,-6.24},{0.86,0,-6.24}}
 token_offsets = {{-0.86,0,3.54},{0.86,0,3.54},{-0.86,0,4.84},{0.86,0,4.84},{-0.86,0,6.14},{0.86,0,6.14}}
-function spawnDefinition(ship_def, name, pos,count,y_rotation)
+function addSpawn(card, ship)
+    Wait.frames(function()
+        cardspawns = card.getTable('spawns') or {}
+        table.insert(cardspawns,ship.getGUID())
+        card.setTable('spawns',cardspawns)
+    end, 1)
+end
+function spawnDefinition(ship_def, name, pos,count,y_rotation, card)
     --local ship_def = SHIPS[name]
     if ship_def~=nil then
     --for _,ship_def in ipairs(SHIPS) do
@@ -940,7 +986,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
         for i=1, count, 1 do
             local obj_parameters = {}
             obj_parameters.type = 'Custom_Model'
-            obj_parameters.position = vector.add({pos[1],i,pos[3]},vector.rotate({0,0,8},y_rotation-180))
+            obj_parameters.position = vector.add({pos[1],1+(i-1)*0.3,pos[3]},vector.rotate({0,0,8},y_rotation-180))
             obj_parameters.rotation = {0,y_rotation-rotation_offset,0 }
             local ship = spawnObject(obj_parameters)
             local custom = {}
@@ -957,6 +1003,10 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             ship.setVar("rulerMesh",ship_def.ruler)
             ship.setTable("maneuver",ship_def.maneuver)
             ship.setTable("shields",ship_def.shields)
+            if card~=nil then
+                addSpawn(card, ship)
+                ship.setVar('card',card.getGUID())
+            end
             last_ship = ship
             wait_then_storeInitialPosition(ship)
         end
@@ -1004,6 +1054,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
             custom.material = 2 --metal?
             base.setCustomObject(custom)
             base.setName(ship_def.name.."\nCommand Base")
+            base.lock()
             Wait.frames(|| SetCmdBaseGUIDonShip(base, last_ship), 1)
 
         end
@@ -1023,7 +1074,7 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation)
     end
 end
 function wait_then_storeInitialPosition(ship)
-    Wait.frames(|| storeInitialPosition(ship), 1)
+    Wait.frames(|| storeInitialPosition(ship), 10)
 end
 function SetCmdBaseGUIDonShip(base, ship)
     -- print("Ship: "..ship.getGUID())

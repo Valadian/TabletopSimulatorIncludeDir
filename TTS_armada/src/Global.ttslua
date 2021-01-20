@@ -98,14 +98,14 @@ function onObjectSpawn(obj)
     onObjectSpawn_asteroid(obj)
 end
 #include asteroid
-spawner = nil
+SPAWNER = nil
 function onload(save_string)
     Lighting.ambient_type = 2
     Lighting.ambient_intensity = 4
     Lighting.apply()
      MAGIC_RULER = findObjectByName('Magic Ruler')
      shield_dials = findObjectByName('Shield Dials')
-     spawner = findObjectByName('Armada Spawner')
+     SPAWNER = findObjectByName('Armada Spawner')
    for i,obj in ipairs(getAllObjects()) do
        drawDatacardButtons(obj)
 --        if isShip(ship) then
@@ -119,17 +119,22 @@ function onload(save_string)
         local data = JSON.decode(save_string)
         for i, shipdata in pairs(data) do
             local obj = getObjectFromGUID(shipdata["GUID"])
-            obj.setVar('owner',shipdata["owner"])
-            obj.setVar('team',shipdata["team"])
-            obj.setVar('rulerMesh',shipdata["rulerMesh"])
-            obj.setTable('maneuver',shipdata["maneuver"])
-            obj.setTable('shields',shipdata["shields"])
-            obj.setVar('hasShields',shipdata["hasShields"])
-            obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
-            obj.setTable('InitialPosition',shipdata["InitialPosition"])
+            if obj.tag == "Figurine" then
+                obj.setVar('owner',shipdata["owner"])
+                obj.setVar('team',shipdata["team"])
+                obj.setVar('rulerMesh',shipdata["rulerMesh"])
+                obj.setTable('maneuver',shipdata["maneuver"])
+                obj.setTable('shields',shipdata["shields"])
+                obj.setVar('hasShields',shipdata["hasShields"])
+                obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
+                obj.setTable('InitialPosition',shipdata["InitialPosition"])
+                obj.setVar('card',shipdata["card"])
+            elseif obj.tag == "Card" then
+                obj.setTable('spawns',shipdata["spawns"])
+            end
         end
     end
-    drawSquadronButtons()
+    -- drawSquadronButtons()
     onload_asteroid()
 end
 function isDatacard(object)
@@ -143,7 +148,7 @@ function drawDatacardButtons(obj)
         -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then
             obj.createButton({
                 ['click_function'] = "Action_fleet_spawn",
-                ['function_owner'] = spawner,
+                ['function_owner'] = SPAWNER,
                 ['label'] = "Spawn\nFleet",
                 ['position'] = {0,0.35,-0.42},
                 ['rotation'] =  {0,0,0},
@@ -172,7 +177,7 @@ function drawDatacardButtons(obj)
             end
             obj.createButton({
                 ['click_function'] = "Action_fleet_spawn",
-                ['function_owner'] = spawner,
+                ['function_owner'] = SPAWNER,
                 ['label'] = name,
                 ['position'] = {0,0.25,1},
                 ['rotation'] =  {0,0,0},
@@ -186,7 +191,7 @@ function drawDatacardButtons(obj)
 
             obj.createButton({
                 ['click_function'] = "Action_store_fleet",
-                ['function_owner'] = spawner,
+                ['function_owner'] = SPAWNER,
                 ['label'] = "Store\nFleet",
                 ['position'] = {0,0.35,-0.42},
                 ['rotation'] =  {0,0,0},
@@ -197,7 +202,7 @@ function drawDatacardButtons(obj)
                 ['font_color']={0,0,0,1.11}})
             obj.createButton({
                 ['click_function'] = "Action_store_fleet",
-                ['function_owner'] = spawner,
+                ['function_owner'] = SPAWNER,
                 ['label'] = "EMPTY DATACARD",
                 ['position'] = {0,0.25,1},
                 ['rotation'] =  {0,0,0},
@@ -209,40 +214,40 @@ function drawDatacardButtons(obj)
         end
     end
 end
-function drawSquadronButtons()
-    local white = getObjectFromGUID(BOTTOM_REF_WHITE_GUID)
-    local blue = getObjectFromGUID(BOTTOM_REF_BLUE_GUID)
-    white.clearButtons()
-    blue.clearButtons()
-    local label = "Free"
-    if restrict_squadrons then
-        label = "Normal"
-    end
-    white.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronMovement",position = {0,0.5,2},width = 2000, height = 200},squad_button_def))
-    blue.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronMovement",position = {0,0.5,2},width = 2000, height = 200},squad_button_def))
-    local label = "Normal"
-    if squadrons_extended_attack then
-        label = "Rhymer"
-    end
-    white.createButton(buildButton(label.." Squadron Attack",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
-    blue.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
-
-    white.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
-    blue.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
-end
-function Action_ToggleSquadronMovement()
-    restrict_squadrons = not restrict_squadrons
-    drawSquadronButtons()
-end
-function Action_ToggleSquadronAttack()
-    squadrons_extended_attack = not squadrons_extended_attack
-    drawSquadronButtons()
-end
+-- function drawSquadronButtons()
+--     local white = getObjectFromGUID(BOTTOM_REF_WHITE_GUID)
+--     local blue = getObjectFromGUID(BOTTOM_REF_BLUE_GUID)
+--     white.clearButtons()
+--     blue.clearButtons()
+--     local label = "Free"
+--     if restrict_squadrons then
+--         label = "Normal"
+--     end
+--     white.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronMovement",position = {0,0.5,2},width = 2000, height = 200},squad_button_def))
+--     blue.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronMovement",position = {0,0.5,2},width = 2000, height = 200},squad_button_def))
+--     local label = "Normal"
+--     if squadrons_extended_attack then
+--         label = "Rhymer"
+--     end
+--     white.createButton(buildButton(label.." Squadron Attack",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
+--     blue.createButton(buildButton(label.." Squadron Movement",{click_function="Action_ToggleSquadronAttack",position = {0,0.5,2.5},width = 2000, height = 200},squad_button_def))
+--
+--     white.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
+--     blue.createButton(buildButton("Destroy Ships",{click_function="Action_ToggleDestroyShipButtons",position = {0,0.5,3},width = 2000, height = 200, color={1,0,0}, font_color={1,1,1}},squad_button_def))
+-- end
+-- function Action_ToggleSquadronMovement()
+--     restrict_squadrons = not restrict_squadrons
+--     drawSquadronButtons()
+-- end
+-- function Action_ToggleSquadronAttack()
+--     squadrons_extended_attack = not squadrons_extended_attack
+--     drawSquadronButtons()
+-- end
 function Action_ToggleDestroyShipButtons()
     for _,ship in ipairs(getAllObjects()) do
         if isShip(ship) or isSquad(ship) then
             ship.clearButtons()
-            ship.createButton(buildRelativeButton(ship, "DESTROY",{click_function="Action_destroy",position={0,3,-0.3},width=800, height=500, color={1, 0, 0 ,0.9}, font_color={1,1,1,1.11}, tooltip="Move Ship to side"},ship_button_def))
+            ship.createButton(buildRelativeButton(ship, "DESTROY",{click_function="Action_destroy",position={0,1,-0.3},width=800, height=500, color={1, 0, 0 ,0.9}, font_color={1,1,1,1.11}, tooltip="Move Ship to side"},ship_button_def))
         end
     end
     Wait.time(|| redraw_ships(), 8, 0)
@@ -259,11 +264,24 @@ function redraw_ships()
 end
 function Action_destroy(ship)
     pos = ship.getTable("InitialPosition")
+    if pos[3]>0 then
+        pos = pos:setAt(3,pos[3]+8)
+    else
+        pos = pos:setAt(3,pos[3]-8)
+    end
+    ship.lock()
+    local ruler = ship.getVar('ruler')
+    if ruler~=nil then
+        ruler.destruct()
+    end
     if isShip(ship) then
+        ship.setVar('ruler',nil)
         MAGIC_RULER.call("API_MOVE_SHIP",{ship=ship,pos=pos,rot={0,0,0}})
     else
+        squad_move_rulers[ship.getGUID()]=nil
         ship.setPositionSmooth(pos, false, true)
     end
+    -- Wait.frames(|| spawner.call('updateFleetCostDisplay',ship.getVar('owner')),20)
 end
 function onSave()
     local save = {}
@@ -279,6 +297,13 @@ function onSave()
             data["hasShields"] = ship.getVar('hasShields')
             data["cmdBaseGUID"] = ship.getVar('cmdBaseGUID')
             data["InitialPosition"] = ship.getTable('InitialPosition')
+            data["card"] = ship.getVar('card')
+            save[ship.getGUID()] = data
+        end
+        if ship.tag == "Card" then
+            local data = {}
+            data["GUID"] = ship.getGUID()
+            data["spawns"] = ship.getTable('spawns')
             save[ship.getGUID()] = data
         end
     end
@@ -351,6 +376,7 @@ function update()
     end
     restrictMoveDistance(moving_with_ruler)
 end
+
 function printCmds(ship)
     --printToAll("printCmds",{1,0,0})
     local owner = ship.getVar('owner')

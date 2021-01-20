@@ -308,6 +308,7 @@ function onClick_fleet_spawn(player, _, idValue)
     spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), listSpawner.getRotation(),fleets[player.color][1].original)
     -- print(base_x)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
+    -- updateFleetCostDisplay(player.color)
 end
 function Action_fleet_spawn(datacard, color, alt_click)
     if alt_click then
@@ -331,6 +332,20 @@ function Action_fleet_spawn(datacard, color, alt_click)
     end
     clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), false, false)
     clonedatacard.setRotationSmooth(listSpawner.getRotation() + Vector(0,180,0), false, false)
+    clonedatacard.setLock(false)
+    -- Wait.frames(|| updateFleetCostDisplay(color), 10)
+end
+function GetShipSquadronCardsForColor(color)
+    listSpawner = findObjectByName("List Spawner ("..color..")")
+    cards = T(getAllObjects()):Where(|o| o.tag=="Card"):Where(|c| inFleetSpawnArea(listSpawner, c)):OrderBy(|c| listSpawner.positionToLocal(c.getPosition())[1] - listSpawner.positionToLocal(c.getPosition())[3]/100)
+        :Where(|c| c.getName())
+    return cards
+end
+function GetFleetForColor(color)
+    listSpawner = findObjectByName("List Spawner ("..color..")")
+    list = T(getAllObjects()):Where(|o| o.tag=="Card" and inFleetSpawnArea(listSpawner, o)):OrderBy(|c| listSpawner.positionToLocal(c.getPosition())[1] - listSpawner.positionToLocal(c.getPosition())[3]/100):Select(|c| c.getName())
+    lineobjs = linesToLineobjs(list)
+    return createSpawningStructure(lineobjs)
 end
 function Action_store_fleet(obj, color, alt_click)
     if alt_click then
@@ -340,7 +355,7 @@ function Action_store_fleet(obj, color, alt_click)
     list = T(getAllObjects()):Where(|o| o.tag=="Card"):Where(|c| inFleetSpawnArea(listSpawner, c)):OrderBy(|c| listSpawner.positionToLocal(c.getPosition())[1] - listSpawner.positionToLocal(c.getPosition())[3]/100):Select(|c| c.getName())
     lineobjs = linesToLineobjs(list)
     fleet = createSpawningStructure(lineobjs)
-    datacardNames = T(getAllObjects()):Where(isDatacard):Where(|c| inFleetSpawnArea(listSpawner, c)):Select(|d| d.getName())
+    datacardNames = T(getAllObjects()):Where(|c| isDatacard(c) and inFleetSpawnArea(listSpawner, c)):Select(|d| d.getName())
 
     if #datacardNames>0 then
         obj.setName(datacardNames[1])
@@ -374,8 +389,8 @@ function fleetToString(fleet)
     commander = nil
     totalPoints = 0
     local str = "\n"
-    for _,def in ipairs(fleet.objectives) do
-        str = str..def.category..": "..def.name.."\n"
+    for _,obj in ipairs(fleet.objectives) do
+        str = str..obj.def.category..": "..obj.def.name.."\n"
     end
     str = str.."\n"
     for _,ship in ipairs(fleet.ships) do
@@ -542,6 +557,41 @@ function onClick_toggle_commandPopup(player, _, idValue)
     else
         UI.show("commandPopup")
     end
+end
+VICTORY_TOKEN_VALUE = 0
+DOUBLE_OBJECTIVE_SHIP = false
+HALF_SCORE_DAMAGED_SHIP = false
+MOST_VICTORY_75 = false
+function onClick_toggle_victoryToken(player, _, idValue)
+    local active = UI.getAttribute("victoryTokenPopup","active")
+    if active==nil or active=="true" then
+        UI.hide("victoryTokenPopup")
+    else
+        UI.show("victoryTokenPopup")
+    end
+end
+VICTORY_BUTTONS = {
+    "Victory_10","Victory_15","Victory_20","Victory_25","Victory_30","Victory_40","Victory_50","Victory_IntelSweep","Victory_MostWanted","Victory_OpeningSalvo"
+}
+function onClick_select_victoryToken(player, _, idValue)
+    for _,id in ipairs(VICTORY_BUTTONS) do
+        UI.setAttribute(id,"color", "black")
+        UI.setAttribute(id,"textColor", "white")
+        UI.setAttribute(idValue,"fontStyle", "Normal")
+    end
+    UI.setAttribute(idValue,"color", "#FFFF80")
+    UI.setAttribute(idValue,"textColor", "black")
+    UI.setAttribute(idValue,"fontStyle", "Bold")
+    idValue = idValue:gsub("Victory_","")
+    points = tonumber(idValue)
+    if points~=nil then
+        VICTORY_TOKEN_VALUE = points
+    else
+        VICTORY_TOKEN_VALUE = 0
+    end
+    DOUBLE_OBJECTIVE_SHIP = idValue=="MostWanted"
+    HALF_SCORE_DAMAGED_SHIP = idValue=="OpeningSalvo"
+    MOST_VICTORY_75 = idValue=="IntelSweep"
 end
 function onClick_show_helpPage(player, _, idValue)
     for i=0,10 do

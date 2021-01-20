@@ -1,0 +1,290 @@
+FLEETZONES = {
+    ['Red'] = '4f3ef2',
+    ['Blue'] = '9923b6',
+    ['Yellow'] = '4f3ef2',
+    ['White'] = '4f3ef2',
+    ['Orange'] = '4f3ef2',
+    ['Pink'] = '4f3ef2',
+    ['Teal'] = '9923b6',
+    ['Green'] = '9923b6',
+    ['Brown'] = '9923b6',
+    ['Purple'] = '9923b6'
+}
+OPPONENTZONES = {
+    ['Red'] = '9923b6',
+    ['Blue'] = '4f3ef2',
+    ['Yellow'] = '9923b6',
+    ['White'] = '9923b6',
+    ['Orange'] = '9923b6',
+    ['Pink'] = '9923b6',
+    ['Teal'] = '4f3ef2',
+    ['Green'] = '4f3ef2',
+    ['Brown'] = '4f3ef2',
+    ['Purple'] = '4f3ef2'
+}
+OPPONENTCOLORS = {
+    ['Red'] = {'Blue','Teal','Green','Brown','Purple'},
+    ['Blue'] = {'Red','Yellow','White','Orange','Pink'},
+    ['Yellow'] = {'Blue','Teal','Green','Brown','Purple'},
+    ['White'] = {'Blue','Teal','Green','Brown','Purple'},
+    ['Orange'] = {'Blue','Teal','Green','Brown','Purple'},
+    ['Pink'] = {'Blue','Teal','Green','Brown','Purple'},
+    ['Teal'] = {'Red','Yellow','White','Orange','Pink'},
+    ['Green'] = {'Red','Yellow','White','Orange','Pink'},
+    ['Brown'] = {'Red','Yellow','White','Orange','Pink'},
+    ['Purple'] = {'Red','Yellow','White','Orange','Pink'}
+}
+
+DAMAGE_FACE = "http://i.imgur.com/l2lA0hL.jpg"
+
+function onClick_RefreshScore(player, _, idValue)
+    fleet[player.color] = buildFleetFromZone(player.color)
+    if fleet[player.color]~= nil then
+        processFleetMetrics(player.color)
+        updateCardCostDisplayText(player.color)
+    end
+end
+function tokenCount(obj)
+    local quantity = obj.getQuantity()
+    if quantity<1 then
+        quantity = 1
+    end
+    return quantity
+end
+function hasObjectiveToken(card)
+    for _,ship_GUID in ipairs(card.getTable('spawns')) do
+        ship = getObjectFromGUID(ship_GUID)
+        prev_transforms = ship.getTable('prev_transforms')
+        if prev_transforms~=nil and #prev_transforms>0 then
+            for _,token in ipairs(prev_transforms[#prev_transforms][3]) do --[3] == move_objects
+                if token.getName()=="Objective" then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+function isObjectiveCard(card)
+    def = CARDS[string.lower(card.getName())]
+    return def~=nil and def.type=="Objective"
+end
+function isDamaged(card)
+    damage = card.getTable('damage')
+    return damage ~=nil and #damage>0
+end
+function isDamageCard(obj)
+    if obj==nil or obj.tag~="Card" then return false end
+    local custom = obj.getCustomObject()
+    return obj.tag=="Card" and custom~=nil and custom.face==DAMAGE_FACE
+end
+function isDamageCardOrDeck(obj)
+    if obj.tag=="Card" then
+        return isDamageCard(obj)
+    end
+    if obj.tag=="Deck" then
+        --TODO: Check if cards are actually damaged?
+        return true
+        -- for i,card in ipairs(obj.getObjects()) do
+        --     print(card.guid)
+        --     print(getObjectFromGUID(card.guid))
+        --     if isDamageCard(card) then
+        --         return true
+        --     end
+        -- end
+    end
+    return false
+end
+function notInPlayArea(s)
+    -- out = (s==nil) or (math.abs(s.getPosition()[3])>18) or (math.abs(s.getPosition()[1])>36)
+    -- print("Checking if: "..s.getName().." ["..s.getPosition()[1]..","..s.getPosition()[3].."] in Play Area: "..tostring(out))
+    return (s==nil) or (math.abs(s.getPosition()[3])>18) or (math.abs(s.getPosition()[1])>36)
+end
+function isCrippled(fleetitem, color)
+    isHugeShip = fleetitem.def.collider == HugeShip.collider
+    if not isHugeShip then return false end
+    damageCards = allDamageCardsAndDecks(fleetitem.card,color)
+    damage = 0
+    for _,obj in ipairs(damageCards) do
+        if isDamageCard(obj) then
+            damage = damage + 1
+        end
+        if obj.tag=="Deck" then
+            --TODO: Check if cards are actually damaged?
+            for i,card in ipairs(obj.getObjects()) do
+                damage = damage + 1
+                -- if isDamageCard(card) then
+                --     damage = damage + 1
+                -- end
+            end
+        end
+    end
+    return damage>=math.ceil(fleetitem.def.hull/2)
+end
+function isDamaged(card, color)
+    return allDamageCardsAndDecks(card,color):Any()
+end
+function allDamageCardsAndDecks(card, color)
+    fleet = fleet[color]
+    damageCards = T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(isDamageCardOrDeck):OrderBy(|c|c.getPosition()[1])
+    if #damageCards==0 then
+        return T({})
+    end
+    shipCards = T(fleet.ships):Select(|s|s.card):OrderBy(|c|c.getPosition()[1])
+    index = shipCards:IndexOf(card)
+    min = -100
+    if index>1 then
+        min = (shipCards[index-1].getPosition()[1]+card.getPosition()[1])/2
+    end
+    max = 100
+    if index<#shipCards then
+        max = (card.getPosition()[1] + shipCards[index+1].getPosition()[1])/2
+    end
+    return damageCards:Where(|c|c.getPosition()[1]>min and c.getPosition()[1]<max)
+end
+function processFleetMetrics(color)
+    fleet = fleet[color]
+    fleet.totalCost = 0
+    fleet.totalDead = 0
+    -- fleet.bonusCost = 0
+    fleet.nonFlotillaCount = 0
+    fleet.nonFlotillaDead = 0
+    fleet.maxPoints = 0
+    fleet.secondPlayer = #T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(isObjectiveCard)==2
+    for _, fleetitem in ipairs(fleet.ships) do
+        -- fleetitem.bonusCost = 0
+        fleetitem.totalDead = 0
+        fleetitem.totalCost = fleetitem.def.cost + fleetitem.upgradeCost
+        fleet.totalCost = fleet.totalCost + fleetitem.totalCost
+        -- for _,spawn in ipairs(fleetitem.card.getTable('spawns')) do
+        --     print(spawn)
+        -- end
+        fleetitem.numDead = #T(fleetitem.card.getTable('spawns')):Select(getObjectFromGUID):Where(notInPlayArea)
+        if fleetitem.numDead>0 then
+            fleetitem.totalDead = fleetitem.totalCost
+
+            -- Objective Tokens
+            if DOUBLE_OBJECTIVE_SHIP and fleetitem.def.shields~=nil and hasObjectiveToken(fleetitem.card) then
+                fleetitem.totalDead = fleetitem.totalCost+fleetitem.def.cost
+                -- fleet.bonusCost = fleet.bonusCost + fleetitem.def.cost
+            end
+            -- fleet.totalDead = fleet.totalDead + fleetitem.totalDead
+        else
+            if HALF_SCORE_DAMAGED_SHIP and isDamaged(fleetitem.card, color) then
+            -- fleet.bonusCost = fleet.bonusCost + math.ceil(fleetitem.def.cost/2)
+            --TODO: Damaged?
+            fleetitem.totalDead = math.ceil(fleetitem.totalCost/2)
+            end
+            if isCrippled(fleetitem, color) then -- Have to add incase you are playing Opening Salvo (Bad choice)
+                fleetitem.totalDead = fleetitem.totalDead + math.ceil(fleetitem.totalCost/2)
+            end
+
+        end
+        fleet.totalDead = fleet.totalDead + fleetitem.totalDead
+        if fleetitem.def.cost>30 then
+            fleet.nonFlotillaCount = fleet.nonFlotillaCount + 1
+            fleet.nonFlotillaDead = fleet.nonFlotillaDead + fleetitem.numDead
+        end
+    end
+    for _, fleetitem in ipairs(fleet.squads) do
+        fleetitem.totalCost = fleetitem.def.cost * (fleetitem.count or 0)
+        fleet.totalCost = fleet.totalCost + fleetitem.totalCost
+        -- for _,spawn in ipairs(fleetitem.card.getTable('spawns')) do
+        --     print(spawn)
+        -- end
+        fleetitem.numDead = #T(fleetitem.card.getTable('spawns')):Select(getObjectFromGUID):Where(notInPlayArea)
+        -- print(fleetitem.numDead)
+        if fleetitem.numDead>0 then
+            fleetitem.totalDead = fleetitem.def.cost*fleetitem.numDead
+            fleet.totalDead = fleet.totalDead + fleetitem.totalDead
+        else
+            fleetitem.totalDead = 0
+        end
+    end
+    if fleet.nonFlotillaCount==fleet.nonFlotillaDead then
+        fleet.totalDead = math.ceil(fleet.totalCost/100)*100 --"Max"
+    end
+    fleet.victoryTokens = T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(|t| t.getName()=="Victory"):Select(tokenCount):Sum()
+end
+function updateCardCostDisplayText(color)
+    fleet = fleet[color]
+    if fleet==nil then
+        printToAll("No Ships found for: "..color,{1,0,0})
+        return
+    end
+    -- processFleetMetrics(color)
+    for _, fleetitem in ipairs(fleet.ships) do
+        updateCardCostDisplay_forCard(fleet, fleetitem)
+    end
+    for _, fleetitem in ipairs(fleet.squads) do
+        updateCardCostDisplay_forCard(fleet, fleetitem)
+    end
+    scale = Vector(1,1,1)
+    offset = Vector(0,0,0)
+    anchor = fleet.datacard
+    if anchor==nil then
+        anchor = fleet.ships[1].card
+        offset = Vector(-4,0,2.6)
+        if string.match(anchor.getName(),"Star Dread") then
+            scale = Vector(0.5,0,1)
+            offset = Vector(-8,0,2.6)
+        end
+    end
+    scale = vector.scale(scale,vector.onedividedby(anchor.getScale()))
+    --TODO: draw totals on datacard
+    editLabel(anchor, 'btn_TotalValue', "("..fleet.totalCost..")", {position = vector.scale(scale,Vector(0, 0.3, 2.5)+offset), scale = scale, font_color={0.5,0.5,0.5}}, SCORE_BTN_TEMPLATE)
+
+    totalDeadLabel = ""
+    if fleet.totalDead>0 then totalDeadLabel = "-"..(fleet.totalDead) end
+    editLabel(anchor, 'btn_TotalDead', totalDeadLabel, {position = vector.scale(scale,Vector(0, 0.3, 3.5)+offset), scale = scale, font_color={1,0,0}}, SCORE_BTN_TEMPLATE)
+
+    objectivePoints = fleet.victoryTokens*VICTORY_TOKEN_VALUE
+    if MOST_VICTORY_75 then
+        if fleet.victoryTokens>T(OPPONENTCOLORS[color]):Select(|c| fleet[color].victoryTokens):Sum() then
+            objectivePoints = 75
+        end
+    end
+    editLabel(anchor, 'btn_Victory', "+"..objectivePoints, {position = vector.scale(scale,Vector(0, 0.3, 4.5)+offset), scale = scale, font_color={1,1,0}}, SCORE_BTN_TEMPLATE)
+end
+SCORE_BTN_TEMPLATE = {position = Vector(0, 0, 0),
+                     scale = {1,1,1}, width = 0, height = 0, font_size = 400, function_owner = self, font_color={0.5,0.5,0.5}}
+function updateCardCostDisplay_forCard(fleet, fleetitem)
+    if fleetitem.card~=nil then
+        -- fleetitem.card.clearButtons()
+        if string.match(fleetitem.card.getName(),"Star Dread") then scale = {0.5,0,1} else scale = {1,1,1} end
+        scale = vector.scale(scale,vector.onedividedby(fleetitem.card.getScale()))
+        detailLabel = ""
+        if fleetitem.upgradeCost~=nil and fleetitem.upgradeCost>0 then --FOR SHIPS
+            detailLabel = tostring(fleetitem.def.cost).." + "..tostring(fleetitem.upgradeCost)
+        elseif fleetitem.count~=nil and fleetitem.count>0  then --FOR SQUADRONS
+            detailLabel = fleetitem.count.." x "..fleetitem.def.cost
+        end
+        editLabel(fleetitem.card, 'btn_Detail', detailLabel, {position = vector.scale(scale,{0, 0.3, 4.2}), scale = scale, font_color={0.5,0.5,0.5}}, SCORE_BTN_TEMPLATE)
+
+        valueLabel = "("..fleetitem.totalCost..")"
+        editLabel(fleetitem.card, 'btn_Value', valueLabel, {position = vector.scale(scale,{0, 0.3, 5.2}), scale = scale, font_color={0.5,0.5,0.5}}, SCORE_BTN_TEMPLATE)
+
+        totalDeadLabel = ""
+        if fleetitem.totalDead>0 then totalDeadLabel = "-"..tostring(fleetitem.totalDead)  end
+        editLabel(fleetitem.card, 'btn_Dead', totalDeadLabel, {position = vector.scale(scale,{0, 0.3, 6.2}), scale = scale, font_color={1,0,0}}, SCORE_BTN_TEMPLATE)
+    end
+end
+function editLabel(item, uid, label, props, defaults)
+    local btn = T(item.getButtons()):Where(|t| t.click_function==uid):FirstOrNil()
+    if btn~=nil then
+        item.editButton(table.merge({index=btn.index, label=label}, props))
+    else
+        item.createButton(table.merge(defaults, props, {click_function=uid, label=label}))
+    end
+    -- table.merge()
+end
+--TODO: onObjectDestroyed?
+function updateCardCostDisplay_onFigurineDeath(color)
+    --TODO: update objective tokens?
+end
+function updateCardCostDisplay_onDamage(color) --ondrop damage card
+    --TODO: Add Variable Pointing to owning Ship?
+end
+function updateCardCostDisplay_onVictoryToken(color) --ondrop victory token
+    --TODO: Add to array in fleet?
+end

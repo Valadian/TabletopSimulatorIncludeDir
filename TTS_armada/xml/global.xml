@@ -42,10 +42,13 @@ width="400" -->
     <HorizontalLayout color="transparent" preferredHeight="30" spacing="8">
         <Text id="spawnerTitle" preferredWidth="264" alignment="MiddleCenter" active="false">Armada Fleet Spawner</Text>
         <!-- <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter" active="false">Spawner</Text> -->
-        <VerticalLayout ignoreLayout="true" offsetXY="40 0" rectAlignment="UpperRight" width="40" height="120" outlineSize="1 1" outline="#303030" color="black">
+        <VerticalLayout ignoreLayout="true" offsetXY="40 0" rectAlignment="UpperRight" width="40" height="200" outlineSize="1 1" outline="#303030" color="black">
             <Button id="minimizeBtn" color="#FFFFFF" icon="Rebel Empire" onClick="030220/onClick_ToggleUI" tooltipPosition="Left" tooltip="Show Armada Fleet Spawner" colors="transparent|#308030|#008000|transparent" />
             <Button id="cloudBtn" color="#FFFFFF" iconColor="#FFA040" icon="PODIUM" onClick="030220/onClick_selectGameReporterTab" tooltipPosition="Left" tooltip="Show ScoreReporting" colors="transparent|#308030|#008000|transparent" />
-            <Button id="helpBtn" color="#FFFFFF" iconColor="#40A0FF" icon="Help" onClick="030220/onClick_toggle_commandPopup" tooltipPosition="Left" tooltip="Show Help" colors="transparent|#308030|#008000|transparent" />
+            <Button id="helpBtn" color="#FFFFFF" iconColor="#40A0FF" icon="Help" onClick="030220/onClick_toggle_commandPopup" tooltipPosition="Left" tooltip="Show Help" colors="transparent|#FFFFFF|#FFFFFF|transparent" />
+            <Button id="victoryBtn" color="#FFFFFF" iconColor="#FFFFFF" icon="ObjectiveToken" onClick="030220/onClick_toggle_victoryToken" tooltipPosition="Left" tooltip="Victory Token Value" colors="transparent|#808030|#808000|transparent" />
+            <Button id="destroyBtn" color="#FFFFFF" iconColor="#FFFFFF" icon="EXPLOSION" onClick="Action_ToggleDestroyShipButtons" tooltipPosition="Left" tooltip="Destroy Ships" colors="transparent|#803030|#800000|transparent" />
+            <Button id="refreshBtn" color="#FFFFFF" iconColor="#FFFF00" icon="REFRESH" onClick="030220/onClick_RefreshScore" tooltipPosition="Left" tooltip="Refresh Score Display" colors="transparent|#308030|#008000|transparent" />
         </VerticalLayout>
     </HorizontalLayout>
     <HorizontalLayout id="tabContainer" active="false" preferredHeight="20">
@@ -60,3 +63,4 @@ width="400" -->
 <Include src="gameReporter.xml"/>
 </VerticalLayout>
 <Include src="commandDialPopup.xml"/>
+<Include src="victoryTokens.xml"/>

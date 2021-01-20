@@ -1,0 +1,36 @@
+
+<VerticalLayout color="black"
+    id="victoryTokenPopup"
+    height="300"
+    width="400"
+    rectAlignment="MiddleCenter"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    offsetXY="0 0"
+    outlineSize="1 1"
+    outline="#303030"
+    active="false">
+
+    <VerticalLayout class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleCenter" color="yellow">Victory Token Value</Text>
+        </HorizontalLayout>
+        <GridLayout cellSize="80 50" >
+            <Button id="Victory_10" text="10" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_15" text="15" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_20" text="20" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_25" text="25" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_30" text="30" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_40" text="40" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_50" text="50" onClick="030220/onClick_select_victoryToken"></Button>
+        </GridLayout>
+        <VerticalLayout>
+            <Button id="Victory_IntelSweep" text="Player with Most Victory Tokens gets 75 pts" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_MostWanted" text="Double Destoyed Objective Ship Cost" onClick="030220/onClick_select_victoryToken"></Button>
+            <Button id="Victory_OpeningSalvo" text="1/2 Ship Cost of Enemy Ships with Damage Cards" onClick="030220/onClick_select_victoryToken"></Button>
+        </VerticalLayout>
+    </VerticalLayout>
+    <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
+    <Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" />
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />
+</VerticalLayout>
