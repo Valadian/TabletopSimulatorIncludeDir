@@ -129,6 +129,7 @@ function onload(save_string)
                 obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
                 obj.setTable('InitialPosition',shipdata["InitialPosition"])
                 obj.setVar('card',shipdata["card"])
+                -- obj.setTable('moved_objects',shipdata["moved_objects"])
             elseif obj.tag == "Card" then
                 obj.setTable('spawns',shipdata["spawns"])
             end
@@ -264,6 +265,11 @@ function redraw_ships()
 end
 function Action_destroy(ship)
     pos = ship.getTable("InitialPosition")
+    pos = Vector(pos['x'],pos['y'],pos['z'])
+    -- print(#pos)
+    -- print(pos['x'])
+    -- print(pos['y'])
+    -- print(pos['z'])
     if pos[3]>0 then
         pos = pos:setAt(3,pos[3]+8)
     else
@@ -298,6 +304,7 @@ function onSave()
             data["cmdBaseGUID"] = ship.getVar('cmdBaseGUID')
             data["InitialPosition"] = ship.getTable('InitialPosition')
             data["card"] = ship.getVar('card')
+            -- data["moved_objects"] = ship.getTable('moved_objects')
             save[ship.getGUID()] = data
         end
         if ship.tag == "Card" then
@@ -1217,9 +1224,15 @@ function Action_Done(squad)
     squad.lock()
 end
 function Action_ruler_left(ship, player_clicker_color, alt_click)
+    hovered_ships[player_clicker_color] = ship
+    ship.highlightOn(player_clicker_color,0.2)
+
     moveRuler(ship, -1, player_clicker_color)
 end
 function Action_ruler_right(ship, player_clicker_color, alt_click)
+    hovered_ships[player_clicker_color] = ship
+    ship.highlightOn(player_clicker_color,0.2)
+
     moveRuler(ship, 1, player_clicker_color)
 end
 function moveRuler(ship, direction, player_clicker_color)

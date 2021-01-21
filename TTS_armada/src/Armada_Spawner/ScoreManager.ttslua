@@ -38,10 +38,26 @@ OPPONENTCOLORS = {
 DAMAGE_FACE = "http://i.imgur.com/l2lA0hL.jpg"
 
 function onClick_RefreshScore(player, _, idValue)
-    fleet[player.color] = buildFleetFromZone(player.color)
-    if fleet[player.color]~= nil then
-        processFleetMetrics(player.color)
-        updateCardCostDisplayText(player.color)
+    findObjective()
+    updateAllScores()
+end
+function updateAllScores()
+    for _,player in pairs(Player.getPlayers()) do
+        if player.seated then
+            printToAll("Processing fleet for: "..player.steam_name, Color.fromString(player.color))
+            FLEETS[player.color] = buildFleetFromZone(player.color)
+            if FLEETS[player.color]~= nil then
+                processFleetMetrics(player.color)
+            end
+        end
+    end
+    for _,player in ipairs(Player.getPlayers()) do
+        if player.seated then
+            printToAll("Updating score display for: "..player.steam_name, Color.fromString(player.color))
+            if FLEETS[player.color]~= nil then
+                updateCardCostDisplayText(player.color)
+            end
+        end
     end
 end
 function tokenCount(obj)
@@ -125,7 +141,7 @@ function isDamaged(card, color)
     return allDamageCardsAndDecks(card,color):Any()
 end
 function allDamageCardsAndDecks(card, color)
-    fleet = fleet[color]
+    fleet = FLEETS[color]
     damageCards = T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(isDamageCardOrDeck):OrderBy(|c|c.getPosition()[1])
     if #damageCards==0 then
         return T({})
@@ -143,7 +159,7 @@ function allDamageCardsAndDecks(card, color)
     return damageCards:Where(|c|c.getPosition()[1]>min and c.getPosition()[1]<max)
 end
 function processFleetMetrics(color)
-    fleet = fleet[color]
+    fleet = FLEETS[color]
     fleet.totalCost = 0
     fleet.totalDead = 0
     -- fleet.bonusCost = 0
@@ -205,9 +221,21 @@ function processFleetMetrics(color)
         fleet.totalDead = math.ceil(fleet.totalCost/100)*100 --"Max"
     end
     fleet.victoryTokens = T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(|t| t.getName()=="Victory"):Select(tokenCount):Sum()
+
+    fleet.objective = fleet.victoryTokens*VICTORY_TOKEN_VALUE
+    if MOST_VICTORY_75 then
+        if fleet.victoryTokens>T(OPPONENTCOLORS[color]):Select(|c| FLEETS[c].victoryTokens):Sum() then
+            fleet.objective = 75
+        end
+    end
+    if Player[color].seated then
+        fleet.steam_name = Player[color].steam_name
+        fleet.steam_id = Player[color].steam_id
+    end
+    fleet.color = color
 end
 function updateCardCostDisplayText(color)
-    fleet = fleet[color]
+    fleet = FLEETS[color]
     if fleet==nil then
         printToAll("No Ships found for: "..color,{1,0,0})
         return
@@ -238,13 +266,7 @@ function updateCardCostDisplayText(color)
     if fleet.totalDead>0 then totalDeadLabel = "-"..(fleet.totalDead) end
     editLabel(anchor, 'btn_TotalDead', totalDeadLabel, {position = vector.scale(scale,Vector(0, 0.3, 3.5)+offset), scale = scale, font_color={1,0,0}}, SCORE_BTN_TEMPLATE)
 
-    objectivePoints = fleet.victoryTokens*VICTORY_TOKEN_VALUE
-    if MOST_VICTORY_75 then
-        if fleet.victoryTokens>T(OPPONENTCOLORS[color]):Select(|c| fleet[color].victoryTokens):Sum() then
-            objectivePoints = 75
-        end
-    end
-    editLabel(anchor, 'btn_Victory', "+"..objectivePoints, {position = vector.scale(scale,Vector(0, 0.3, 4.5)+offset), scale = scale, font_color={1,1,0}}, SCORE_BTN_TEMPLATE)
+    editLabel(anchor, 'btn_Victory', "+"..fleet.objective, {position = vector.scale(scale,Vector(0, 0.3, 4.5)+offset), scale = scale, font_color={1,1,0}}, SCORE_BTN_TEMPLATE)
 end
 SCORE_BTN_TEMPLATE = {position = Vector(0, 0, 0),
                      scale = {1,1,1}, width = 0, height = 0, font_size = 400, function_owner = self, font_color={0.5,0.5,0.5}}

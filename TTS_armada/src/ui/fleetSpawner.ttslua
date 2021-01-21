@@ -84,7 +84,7 @@ fleet_pastes = {}
 function onEndEdit_updateList(player, value, id)
     fleet_pastes[player.color] = value
 end
-fleets = {}
+FLEETS = {}
 ALL_TEAMS = "White|Brown|Red|Orange|Yellow|Green|Teal|Blue|Purple|Pink|Grey|Black"
 -- function onClick_fleet_private(player, _, idValue)
 --     local color = player.color
@@ -183,7 +183,7 @@ function onClick_fleet_parseFleet(player, _, idValue)
     end
     lines = list:split("\n")
     lineobjs = linesToLineobjs(lines)
-    fleets[player.color]=line_objs
+    FLEETS[player.color]=line_objs
     lastParsed_lineObjs = line_objs
     owning_color = player.color
     UI.setAttribute("spacingButton","outlineSize","1 1")
@@ -193,7 +193,7 @@ function onClick_fleet_parseFleet(player, _, idValue)
     -- layout(fleet, listSpawner.getPosition(), listSpawner.getRotation())
 end
 function updateParsed(player)
-    -- line_objs = fleets[player.color]
+    -- line_objs = FLEETS[player.color]
     line_objs = lastParsed_lineObjs
     offset = fleetOffset--fleetOffsets[player.color] or 0
     -- UI.setAttribute("fleetMasterLayout", "minHeight", (#line_objs)*30)
@@ -297,15 +297,15 @@ function onClick_fleet_clear(player, _, idValue)
 end
 function onClick_fleet_spawn(player, _, idValue)
 
-    -- fleet = createSpawningStructure(fleets[player.color])
-    fleets[player.color] = lastParsed_lineObjs
+    -- fleet = createSpawningStructure(FLEETS[player.color])
+    FLEETS[player.color] = lastParsed_lineObjs
     fleet = createSpawningStructure(lastParsed_lineObjs) --Use visible, NOT last parsed for player
     listSpawner = findObjectByName("List Spawner ("..player.color..")")
 
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
     -- print(width)
     base_x = 55-width/2
-    spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), listSpawner.getRotation(),fleets[player.color][1].original)
+    spawnDataCard(fleet, vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), listSpawner.getRotation(),FLEETS[player.color][1].original)
     -- print(base_x)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
     -- updateFleetCostDisplay(player.color)
@@ -318,7 +318,7 @@ function Action_fleet_spawn(datacard, color, alt_click)
     list = datacard.getDescription()
     lines = list:split("\n")
     lineobjs = linesToLineobjs(lines)
-    fleets[color] = lineobjs
+    FLEETS[color] = lineobjs
     fleet = createSpawningStructure(lineobjs)
     listSpawner = findObjectByName("List Spawner ("..color..")")
     width = layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),0,false) --testrun
@@ -476,7 +476,7 @@ end
 function onClick_fleet_OmitLine(player, _, idValue)
     i = tonumber(idValue:match("line(%d+)omit"))
     idx = i +  fleetOffset -- fleetOffsets[player.color] or 0
-    line_objs = lastParsed_lineObjs --fleets[player.color]
+    line_objs = lastParsed_lineObjs --FLEETS[player.color]
     if line_objs[idx].origdef == nil then
         line_objs[idx].origdef = line_objs[idx].def
     end
@@ -514,7 +514,7 @@ end
 fleetOffsets = {}
 function onClick_fleet_scrollDown(player, _, idValue)
     -- fleetOffsets[player.color] = math.min(34,(fleetOffsets[player.color] or 0)+5)
-    -- maxOffset = math.max(#fleets[player.color]-36,0)
+    -- maxOffset = math.max(#FLEETS[player.color]-36,0)
     -- fleetOffsets[player.color] = math.min(maxOffset, fleetOffsets[player.color])
 
     fleetOffset = math.min(34,(fleetOffset)+5)
@@ -541,7 +541,7 @@ function updateScrollButtons(player)
         -- UI.setAttribute("parseScrollUp", "interactable", "true")
     end
 
-    -- maxOffset = math.max(#fleets[player.color]-36,0)
+    -- maxOffset = math.max(#FLEETS[player.color]-36,0)
     -- if fleetOffsets[player.color]==maxOffset then
     maxOffset = math.max(#lastParsed_lineObjs-36,0)
     if fleetOffset==maxOffset then

@@ -21,3 +21,8 @@ function math.sign(x)
     elseif x>0 then return 1
     else return 0 end
 end
+function math.clamp(val, lower, upper)
+    assert(val and lower and upper, "sent nil value to clamp")
+    if lower > upper then lower, upper = upper, lower end -- swap if boundaries supplied the wrong way
+    return math.max(lower, math.min(upper, val))
+end

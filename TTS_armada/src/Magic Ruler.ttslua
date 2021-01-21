@@ -354,6 +354,7 @@ function storeUndo(ship,moved_objects)
     end
     table.insert(prev_transforms,{ship.getPosition(),ship.getRotation(),moved_objects})
     ship.setTable('prev_transforms',prev_transforms)
+    -- ship.setTable('moved_objects',T(moved_objects):Select(|o|o.guid))
     -- last_pos = ship.getPosition()
     -- last_rot = ship.getRotation()
     -- last_moved = ship
@@ -637,97 +638,6 @@ function clearButtons(object)
         end
     end
 end
-vector = {}
-function vector.add(pos, offset)
-    return {pos[1] + offset[1],pos[2] + offset[2],pos[3] + offset[3]}
-end
-function vector.sub(pos, offset)
-    return {pos[1] - offset[1],pos[2] - offset[2],pos[3] - offset[3]}
-end
-function vector.rotate(direction, yRotation)
-
-    local rotval = math.round(yRotation)
-    local radrotval = math.rad(rotval)
-    local xDistance = math.cos(radrotval) * direction[1] + math.sin(radrotval) * direction[3]
-    local zDistance = math.sin(radrotval) * direction[1] * -1 + math.cos(radrotval) * direction[3]
-    return {xDistance, direction[2], zDistance}
-end
-function vector.scale(v,s)
-    return {v[1] * s[1],v[2] * s[2],v[3] * s[3]}
-end
-function vector.tostring(v)
-    return "{"..math.round(v[1],1)..","..math.round(v[2],1)..","..math.round(v[3],1).."}"
-end
-function math.approxeq(a, b)
-    return math.abs(a-b)<0.01
-end
-function vector.eq(a,b)
-    return math.approxeq(a[1],b[1]) and math.approxeq(a[2],b[2]) and math.approxeq(a[3],b[3])
-end
-function math.clamp(val, lower, upper)
-    assert(val and lower and upper, "sent nil value to clamp")
-    if lower > upper then lower, upper = upper, lower end -- swap if boundaries supplied the wrong way
-    return math.max(lower, math.min(upper, val))
-end
-function math.mod(a,b)
-    return a - math.floor(a/b)*b
-end
-function math.round(x)
-    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
-end
-
-function math.round(num, idp)
-    if num == nil then return nil end
-    local mult = 10^(idp or 0)
-    if num >= 0 then return math.floor(num * mult + 0.5) / mult
-    else return math.ceil(num * mult - 0.5) / mult end
-end
-function string:split(this,sSeparator, nMax, bRegexp)
-    assert(sSeparator ~= '')
-    assert(nMax == nil or nMax >= 1)
-
-    local aRecord = {}
-
-    if this:len() > 0 then
-        local bPlain = not bRegexp
-        nMax = nMax or -1
-
-        local nField, nStart = 1, 1
-        local nFirst,nLast = this:find(sSeparator, nStart, bPlain)
-        while nFirst and nMax ~= 0 do
-            aRecord[nField] = this:sub(nStart, nFirst-1)
-            nField = nField+1
-            nStart = nLast+1
-            nFirst,nLast = this:find(sSeparator, nStart, bPlain)
-            nMax = nMax-1
-        end
-        aRecord[nField] = this:sub(nStart)
-    end
-
-    return aRecord
-end
-function string.starts(String,Start)
-    return string.sub(String,1,string.len(Start))==Start
-end
-function table.contains(self, val)
-    for index, value in ipairs (self) do
-        if value == val then
-            return true
-        end
-    end
-
-    return false
-end
-function table.copy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in pairs(orig) do
-            copy[orig_key] = orig_value
-        end
-    else -- number, string, boolean, etc
-    copy = orig
-    end
-    return copy
-end
+#include ../../util/string
+#include ../../util/vector
+#include ../../util/table

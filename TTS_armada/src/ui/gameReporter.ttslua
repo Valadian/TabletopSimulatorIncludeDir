@@ -2,24 +2,61 @@
 local Http = require('ge_tts/Http')
 Http.setProxyUrl('https://ttsarmada.herokuapp.com/forward')
 
+FIRST_FLEET = nil
+SECOND_FLEET = nil
 function onClick_selectGameReporterTab(player, _, idValue)
     onClick_ToggleUI(player, _, idValue)
 
     onClick_refreshObjective()
-    --Autocalculate Players
     --Autocalculate Scores?
+    updateAllScores()
     for i, color in ipairs(Player.getColors()) do
-        if color~="Grey" then
-            if Player[color].seated then
-                UI.show(color.."1")
-                UI.show(color.."2")
-            else
-                UI.hide(color.."1")
-                UI.hide(color.."2")
-            end
+        UI.hide(color.."1")
+        UI.hide(color.."2")
+    end
+    for color, fleet in pairs(FLEETS) do
+        if fleet~=nil then
+            UI.show(color.."1")
+            UI.show(color.."2")
         end
     end
+    --Autocalculate Players
+    autoSelectFirstSecondPlayer()
     updateScore()
+end
+function autoSelectFirstSecondPlayer()
+    -- for _,color in ipairs(Player.getColors()) do
+    --     if FLEETS[color]~=nil then
+    --         if FLEETS[color].secondPlayer then
+    --             onClick_selectPlayer(color..2,2)
+    --             break
+    --         end
+    --     end
+    -- end
+    -- for _,color in ipairs(Player.getColors()) do
+    --     if FLEETS[color]~=nil then
+    --         if not FLEETS[color].secondPlayer then
+    --             onClick_selectPlayer(color..1,1)
+    --             break
+    --         end
+    --     end
+    -- end
+    FIRST_FLEET = nil
+    SECOND_FLEET = nil
+    for color, fleet in pairs(FLEETS) do
+        if fleet.secondPlayer then
+            -- SECOND_FLEET = fleet
+            onClick_selectPlayer(color..2,2)
+            break
+        end
+    end
+    for color, fleet in pairs(FLEETS) do
+        if not fleet.secondPlayer then
+            -- FIRST_FLEET = fleet
+            onClick_selectPlayer(color..1,1)
+            break
+        end
+    end
 end
 function onClick_refreshObjective(player, _, idValue)
     local objective = findObjective()
@@ -68,7 +105,7 @@ function onClick_score_submit(player, _, idValue)
     player2points = UI.getValue("Player2points")
     objective = UI.getValue("activeObjective")
     print("Getting fleet for player1: "..UI.getAttribute("Player1name","color"))
-    fleet = fleets[UI.getAttribute("Player1name","color")]
+    fleet = FLEETS[UI.getAttribute("Player1name","color")]
     player1faction = nil
     if #fleet.ships > 0 then
         player1faction = fleet.ships[1].def.faction
@@ -79,7 +116,7 @@ function onClick_score_submit(player, _, idValue)
         return
     end
     print("Getting fleet for player2: "..UI.getAttribute("Player2name","color"))
-    fleet = fleets[UI.getAttribute("Player2name","color")]
+    fleet = FLEETS[UI.getAttribute("Player2name","color")]
     player2faction = nil
     if #fleet.ships > 0 then
         player2faction = fleet.ships[1].def.faction
@@ -94,18 +131,24 @@ function onClick_score_submit(player, _, idValue)
     broadcastToAll("Posting Game to Cloud.....", {1,1,1})
     url = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/games"
     -- url = "https://ttsarmada.herokuapp.com/databases/(default)/documents/games"
+    -- print(FIRST_FLEET.score)
+    -- print(SECOND_FLEET.score)
     Http.post(url,{
         ['fields'] = {
             player1 = { stringValue = tostring(player1)},
+            player1SteamId = { stringValue = tostring(FIRST_FLEET.steam_id)},
             player1fleet = { arrayValue = { values = player1fleet} },
             player1faction = { stringValue = tostring(player1faction)},
             player1score = { integerValue = player1score or 0},
+            player1scoreVerified = { integerValue = FIRST_FLEET.score},
             player1points = { integerValue = player1points or 5},
             objective = { stringValue = tostring(objective)},
             player2 = { stringValue = tostring(player2)},
+            player2SteamId = { stringValue = tostring(SECOND_FLEET.steam_id)},
             player2fleet = { arrayValue = { values = player2fleet}},
             player2faction = { stringValue = tostring(player2faction)},
             player2score = { integerValue = player2score or 0},
+            player2scoreVerified = { integerValue = SECOND_FLEET.score},
             player2points = { integerValue = player2points or 6},
             submitted = { stringValue = submitted},
             ranked = { booleanValue = RANKED},
@@ -114,7 +157,24 @@ function onClick_score_submit(player, _, idValue)
     },{['Content-Type']="application/json"}, handle_score_submit)
 end
 function handle_score_submit(resp, error)
-    print("Error: "..tostring(error))
+    --Resp
+    --statusCode
+    --body>error>message
+    if resp~=nil and resp['statusCode']==400 then
+        broadcastToAll("Error with posting game!", {1,0,0})
+        broadcastToAll("Send error in chat log to Valadian", {0,1,1})
+        print(resp['body']['error']['message'])
+        return
+    end
+    -- print("Resp: ")
+    -- for k,v in pairs(resp) do
+    --     print("  ",k,":",v)
+    -- end
+    if error~=nil then
+        broadcastToAll("Error: "..tostring(error), {1,0,0})
+        broadcastToAll("Send error in chat log to Valadian", {0,1,1})
+        return
+    end
     broadcastToAll("Game Successfully posted!", {0,1,0})
 end
 function onClick_selectPlayer1color(player, _, idValue)
@@ -123,59 +183,76 @@ end
 function onClick_selectPlayer2color(player, _, idValue)
     onClick_selectPlayer(idValue,2)
 end
-PLAYER_HAS_FLEET = {
-    false, false
-}
+-- PLAYER_HAS_FLEET = {
+--     false, false
+-- }
 function onClick_selectPlayer(idValue,i)
     color = UI.getAttribute(idValue,"color")
     -- printToAll(color,{1,1,1})
-    if Player[color].seated then
+    if i==1 then
+        FIRST_FLEET = FLEETS[color]
+    else
+        SECOND_FLEET = FLEETS[color]
+    end
+    if FLEETS[color]~=nil then
         -- print(Player[color].steam_name)
         UI.setAttribute("Player"..i.."name", "color", color)
-        UI.setValue("Player"..i.."name", Player[color].steam_name)
-        fleets[color] = buildFleetFromZone(color)
-        print("Stored fleet in: "..color)
-        PLAYER_HAS_FLEET[i] = fleets[color]~=nil
-        updateFleetCostDisplay(color)
-        if fleets[color]~=nil then
-            UI.show("Player"..i.."listFound")
-            UI.hide("Player"..i.."listNotFound")
+        -- FLEETS[color].color = color
+        if FLEETS[color].steam_name~=nil then
+            -- FLEETS[color].steam_name = Player[color].steam_name
+            -- FLEETS[color].steam_id = Player[color].steam_id
+            UI.setValue("Player"..i.."name", FLEETS[color].steam_name)
         else
-            UI.hide("Player"..i.."listFound")
-            UI.show("Player"..i.."listNotFound")
+            -- FLEETS[color].steam_name = "Unknown"
+            -- FLEETS[color].steam_id = nil
+            UI.setValue("Player"..i.."name", "Unknown?")
         end
+        -- FLEETS[color] = buildFleetFromZone(color)
+        -- print("Stored fleet in: "..color)
+        -- PLAYER_HAS_FLEET[i] = FLEETS[color]~=nil
+        -- updateFleetCostDisplay(color)
+        UI.show("Player"..i.."listFound")
+        UI.hide("Player"..i.."listNotFound")
     else
-        PLAYER_HAS_FLEET[i] = false
+        -- PLAYER_HAS_FLEET[i] = false
         UI.setAttribute("Player"..i.."name", "color", "#FF4040") --color
         UI.setValue("Player"..i.."name", "?")
         UI.hide("Player"..i.."listFound")
         UI.show("Player"..i.."listNotFound")
     end
-    local p1hasfleet = PLAYER_HAS_FLEET[1]
-    local p2hasfleet = PLAYER_HAS_FLEET[2]
-    print(p1hasfleet,p2hasfleet)
-    if p1hasfleet and p2hasfleet then
+    -- local p1hasfleet = PLAYER_HAS_FLEET[1]
+    -- local p2hasfleet = PLAYER_HAS_FLEET[2]
+    -- print(p1hasfleet,p2hasfleet)
+    if FIRST_FLEET~=nil and SECOND_FLEET~=nil then
         Wait.frames(function()
-            local p1color = UI.getAttribute("Player1name","color")
-            local p2color = UI.getAttribute("Player2name","color")
-            print(p1color, p2color)
-            local p1score = FLEET_SCORE[p1color]
-            local p2score = FLEET_SCORE[p2color]
-            player1score = p2score['lost']+p1score['objective']
-            player2score = p1score['lost']+p2score['objective']
-            UI.setAttribute("player1score","text",player1score)
-            UI.setAttribute("player2score","text",player2score)
+            -- local p1color = UI.getAttribute("Player1name","color")
+            -- local p2color = UI.getAttribute("Player2name","color")
+            -- print(p1color, p2color)
+            -- local p1score = FLEET_SCORE[p1color]
+            -- local p2score = FLEET_SCORE[p2color]
+            player1score = FIRST_FLEET.objective + SECOND_FLEET.totalDead
+            FIRST_FLEET.score = player1score--p2score['lost']+p1score['objective']
+
+            UI.setAttribute("player1score","outline","#80FF00")
+            player2score = SECOND_FLEET.objective + FIRST_FLEET.totalDead
+            SECOND_FLEET.score = player2score--p1score['lost']+p2score['objective']
+            UI.setAttribute("player2score","outline","#80FF00")
+            UI.setAttribute("player1score","text",FIRST_FLEET.score)
+            UI.setAttribute("player2score","text",SECOND_FLEET.score)
             updateScore()
         end,1)
     end
 
 end
-function findObjective()
+function findObjective(noerror)
     for _,object in ipairs(getAllObjects()) do
         if  vector.length(vector.sub(object.getPosition(),{-40.66,0.97,-0.09}))<2 then
             Action_select_objective(object)
             return object.getName()
         end
+    end
+    if not noerror then
+        printToAll("Click 'Choose' on Objective to move to Proper Location for auto-detection!",{1,0,0})
     end
     return "None?"
 end
