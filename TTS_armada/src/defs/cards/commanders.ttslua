@@ -33,7 +33,7 @@ Card:new(Commander,Empire,{name="Emperor Palpatine",  front="http://i.imgur.com/
 Card:new(Commander,Empire,{name="General Romodi",  front="http://i.imgur.com/U9wK3K8.jpg", cost=20})
 Card:new(Commander,Empire,{name="General Tagge",  front="http://i.imgur.com/LduHiR8.jpg", cost=25})
 Card:new(Commander,Empire,{name="Grand Admiral Thrawn",  front="http://i.imgur.com/FSpE1gl.jpg", cost=32})
-Card:new(Commander,Empire,{name="Grand Moff Tarkin",  front="http://i.imgur.com/OxvHWmA.jpg", cost=29})
+Card:new(Commander,Empire,{name="Grand Moff Tarkin",  front="http://i.imgur.com/OxvHWmA.jpg", cost=28})
 Card:new(Commander,Empire,{name="Moff Jerjerrod",  front="http://i.imgur.com/qZAVH6a.jpg", cost=23})
 
 Republic = {
