@@ -36,7 +36,6 @@ OPPONENTCOLORS = {
 }
 
 DAMAGE_FACE = "http://i.imgur.com/l2lA0hL.jpg"
-
 function onClick_RefreshScore(player, _, idValue)
     findObjective()
     updateAllScores()

@@ -13,7 +13,7 @@ Card:new(Title,Rebel,{name="Tantive IV", front="https://i.imgur.com/THWav9j.jpg"
 
 Card:new(Title,Rebel,{name="Garel's Honor", front="https://i.imgur.com/tl2VV0J.jpg", cost=4, aliases={"Garels Honor"}})
 Card:new(Title,Rebel,{name="Task Force Antilles", front="https://i.imgur.com/NWw9f29.jpg", cost=3})
-Card:new(Title,Rebel,{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg", cost=2})
+Card:new(Title,Rebel,{name="Task Force Organa", front="https://i.imgur.com/FwbIwpU.jpg", cost=1})
 
 Card:new(Title,Rebel,{name="Redemption", front="https://i.imgur.com/Dp0ayI3.jpg", cost=8})
 Card:new(Title,Rebel,{name="Salvation", front="https://i.imgur.com/xjIXfVD.jpg", cost=7})
@@ -99,3 +99,5 @@ Card:new(Title,Separatist,{name="Foreman's Labor", front="https://i.imgur.com/cf
 
 Card:new(Title,Separatist,{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg", cost=5})
 Card:new(Title,Separatist,{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg", cost=2})
+
+Card:new(Title,Separatist,{name="Invisible Hand", front="https://i.imgur.com/gW84lFN.png", cost=9})

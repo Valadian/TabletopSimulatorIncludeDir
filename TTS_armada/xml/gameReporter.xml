@@ -1,6 +1,10 @@
 <Panel id="gameReporterPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
     <VerticalLayout preferredHeight="750">
-        <VerticalLayout preferredHeight="710" padding="10 10 20 20">
+        <!-- <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
+            <Button id="scoreTab" >Report Score</Button><!- - icon="Rebellion" - ->
+            <Button id="standingsTab" >Ranked Standings</Button><!- - icon="Empire" - ->
+        </HorizontalLayout> -->
+        <VerticalLayout id="scoreTabBody" preferredHeight="710" padding="10 10 20 20">
             <Text>You can report the results of your games!</Text>
             <Text>This data will be utilized for list building assistance, ELO calculation, and competitive card discussions!</Text>
             <Text></Text>

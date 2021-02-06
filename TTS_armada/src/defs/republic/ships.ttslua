@@ -7,7 +7,7 @@ Ship:new(SmallShip,REPUBLIC_SHIP,{
     front = "https://i.imgur.com/CV9k4Fz.jpeg",
     back = "https://i.imgur.com/nzWUP25.jpg",
     mesh = "http://paste.ee/r/EVWCx",
-    diffuse = "http://i.imgur.com/qNEdxDn.jpg",
+    diffuse = "http://i.imgur.com/gNV78vp.jpg",
     ruler = "http://paste.ee/r/1pgB9",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
@@ -21,7 +21,7 @@ Ship:new(SmallShip,REPUBLIC_SHIP,{
     front = "https://i.imgur.com/CXHwzPR.jpeg",
     back = "https://i.imgur.com/vpvKfAO.jpeg",
     mesh = "http://paste.ee/r/EVWCx",
-    diffuse = "http://i.imgur.com/SbZMyrq.jpg",
+    diffuse = "http://i.imgur.com/M9yLf83.jpg",
     ruler = "http://paste.ee/r/1pgB9",
     maneuver = {{"II"},{"II","I"},{"I","I","I"},{"I","-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
@@ -36,7 +36,7 @@ Ship:new(MediumShip,REPUBLIC_SHIP,{
     front = "https://i.imgur.com/6JbZwXG.jpeg",
     back = "https://i.imgur.com/T9fOJEE.jpg",
     mesh = "http://paste.ee/r/TUCP2",
-    diffuse = "http://i.imgur.com/0MglVoM.jpg",
+    diffuse = "http://i.imgur.com/NKJBCL0.jpg",
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
@@ -50,7 +50,7 @@ Ship:new(MediumShip,REPUBLIC_SHIP,{
     front = "https://i.imgur.com/NhED6cA.jpg",
     back = "https://i.imgur.com/IpDPpzX.jpeg",
     mesh = "http://paste.ee/r/TUCP2",
-    diffuse = "http://i.imgur.com/wfn0n32.jpg",
+    diffuse = "http://i.imgur.com/icQUnge.jpg",
     ruler = "http://paste.ee/r/r0umF",
     maneuver = {{"I"},{"I","-"},{"-","I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
@@ -58,4 +58,50 @@ Ship:new(MediumShip,REPUBLIC_SHIP,{
     cost = 71,
 	aliases = {"Acclamator II Assault Ship", "Acclamator II"},
     command = 3
+})
+
+Ship:new(LargeShip,REPUBLIC_SHIP,{
+	name = "Venator I-class Star Destroyer",
+    front = "http://i.imgur.com/KEIFF2n.jpeg",
+    back = "http://i.imgur.com/SL4kIqp.jpg",
+    mesh = "https://paste.ee/r/HGn2s",
+    diffuse = "http://i.imgur.com/fKlpIqc.jpeg",
+    ruler = "http://paste.ee/r/xTAdu",
+    maneuver = {{"I"},{"I","I"},{"-","I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+    shields = {4,3,3,2},
+    cost = 90,
+	aliases = {"Venator I Star Destroyer", "Venator I"},
+    command = 3
+})
+
+--Missing upgrades & cost
+-- Ship:new(LargeShip,REPUBLIC_SHIP,{
+-- 	name = "Venator II-class Star Destroyer",
+--     front = "",
+--     back = "",
+--     mesh = "http://paste.ee/p/kgyOU",
+--     diffuse = "",
+--     ruler = "http://paste.ee/r/xTAdu",
+--     maneuver = {{"I"},{"I","I"},{"-","I","-"}},
+--     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+--     shields = {4,3,3,2},
+--     cost = 0,
+-- 	aliases = {"Venator II Star Destroyer", "Venator I"},
+--     command = 3
+-- })
+
+Ship:new(SmallShip,REPUBLIC_SHIP,{
+	name = "Pelta-class Medical Frigate",
+    front = "https://i.imgur.com/lC6GsSz.jpg",
+    back = "https://i.imgur.com/3saMSsF.jpeg",
+    mesh = "https://paste.ee/r/BEzxN",
+    diffuse = "https://i.imgur.com/vezZAah.jpeg",
+    ruler = "http://paste.ee/p/RDjaZ",
+    maneuver = {{"II"},{"I","I"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
+    shields = {3,2,2,1},
+    cost = 49,
+	aliases = {"Pelta Medical Frigate"},
+    command = 2
 })

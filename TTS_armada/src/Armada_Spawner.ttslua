@@ -870,12 +870,12 @@ function buildFleetFromZone(color)
     return fleet
 end
 #include Armada_Spawner/ScoreManager
-function onObjectEnterScriptingZone_spawner(params) -- zone, object
-    onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
-end
-function onObjectLeaveScriptingZone_spawner(params) -- zone, object
-    onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
-end
+-- function onObjectEnterScriptingZone_spawner(params) -- zone, object
+--     onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
+-- end
+-- function onObjectLeaveScriptingZone_spawner(params) -- zone, object
+--     onObjectChangeScriptingZone_ScoreManager(params.zone, params.object)
+-- end
 function spawnCard(def, pos, offset, rot, count, spawnModel)
     if spawnModel==nil then spawnModel=true end
     pos =  vector.add(pos,vector.rotate(offset, rot[2]))
@@ -938,11 +938,15 @@ function spawnCard(def, pos, offset, rot, count, spawnModel)
     else
         spawnObjectJSON({
             json = JSON.encode(jsonRepresentation),
-            -- callback_function = setCardDescriptionToSpawn
+            -- callback_function = lockCard
         })
     end
 end
+-- function lockCard(card)
+--     card.lock()
+-- end
 function setCardDescriptionToSpawn(card)
+    -- card.lock()
     count = string.match(card.getName(), "^(%d+) x ")
     if count~=nil then
         count = tonumber(count)

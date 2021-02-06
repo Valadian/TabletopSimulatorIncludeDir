@@ -101,7 +101,7 @@ end
 SPAWNER = nil
 function onload(save_string)
     Lighting.ambient_type = 2
-    Lighting.ambient_intensity = 4
+    Lighting.ambient_intensity = 2
     Lighting.apply()
      MAGIC_RULER = findObjectByName('Magic Ruler')
      shield_dials = findObjectByName('Shield Dials')
@@ -129,6 +129,9 @@ function onload(save_string)
                 obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
                 obj.setTable('InitialPosition',shipdata["InitialPosition"])
                 obj.setVar('card',shipdata["card"])
+                if shipdata["rulerGUID"]~=nil then
+                    obj.setVar(getObjectFromGUID(shipdata["rulerGUID"]))
+                end
                 -- obj.setTable('moved_objects',shipdata["moved_objects"])
             elseif obj.tag == "Card" then
                 obj.setTable('spawns',shipdata["spawns"])
@@ -304,6 +307,9 @@ function onSave()
             data["cmdBaseGUID"] = ship.getVar('cmdBaseGUID')
             data["InitialPosition"] = ship.getTable('InitialPosition')
             data["card"] = ship.getVar('card')
+            if ship.getVar('ruler')~=nil then
+                data["rulerGUID"] = ship.getVar('ruler').guid
+            end
             -- data["moved_objects"] = ship.getTable('moved_objects')
             save[ship.getGUID()] = data
         end
@@ -1103,14 +1109,14 @@ function onObjectDropped( player_color, dropped_object )
         end
     end
 
-    local isChip = dropped_object.tag == "Chip"
-    if isChip then
-        local isRulerChip = table.contains(RULER_DESCRIPTIONS, dropped_object.getDescription())
-        local isTargeting = custom~=nil and table.contains(TARGETING_MESHES,custom.diffuse)
-        if isRulerChip then
-            Draw_token_buttons(dropped_object)
-        end
-    end
+    -- local isChip = dropped_object.tag == "Chip"
+    -- if isChip then
+    --     local isRulerChip = table.contains(RULER_DESCRIPTIONS, dropped_object.getDescription())
+    --     local isTargeting = custom~=nil and table.contains(TARGETING_MESHES,custom.diffuse)
+    --     if isRulerChip then
+    --         Draw_token_buttons(dropped_object)
+    --     end
+    -- end
     onObjectDropped_asteroid(dropped_object, player_color)
 end
 RULER_DESCRIPTIONS = {"R,C-L", "D,1", "D,3"} --, "R,C", "R,M", "R,L", "D,1-5",

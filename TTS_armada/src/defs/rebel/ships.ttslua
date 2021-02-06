@@ -109,7 +109,7 @@ Ship:new(SmallShip,REBEL_SHIP,{
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Modified Pelta-class Command Ship",
     front = "https://i.imgur.com/x6gMgaX.png",
-    mesh = "http://paste.ee/r/GpRDE",
+    mesh = "https://paste.ee/r/sekzT",
     diffuse = "http://i.imgur.com/aiGsc3c.jpg",
     ruler = "http://paste.ee/p/RDjaZ",
     maneuver = {{"II"},{"I","I"}},

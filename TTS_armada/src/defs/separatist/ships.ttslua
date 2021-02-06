@@ -6,7 +6,7 @@ Ship:new(SmallShip,SEPARATIST_SHIP,{
     front = "https://i.imgur.com/T7QWSb4.jpeg",
     back = "https://i.imgur.com/c9yNLyu.jpg",
     mesh = "http://paste.ee/r/XbByc",
-    diffuse = "http://i.imgur.com/ALhJKGI.jpg",
+    diffuse = "http://i.imgur.com/DPMogsn.jpg",
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
@@ -20,7 +20,7 @@ Ship:new(SmallShip,SEPARATIST_SHIP,{
     front = "https://i.imgur.com/X96bJDW.jpeg",
     back = "https://i.imgur.com/Q46N3zb.jpeg",
     mesh = "http://paste.ee/r/XbByc",
-    diffuse = "http://i.imgur.com/KQiWyCh.jpeg",
+    diffuse = "http://i.imgur.com/gNirPbU.jpg",
     ruler = "http://paste.ee/r/NxRRi",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
@@ -35,7 +35,7 @@ Ship:new(MediumShip,SEPARATIST_SHIP,{
     front = "https://i.imgur.com/T5LCaof.jpeg",
     back = "https://i.imgur.com/5BgxeQS.jpeg",
     mesh = "http://paste.ee/r/5vQzm",
-    diffuse = "http://i.imgur.com/UHhtE2H.png",
+    diffuse = "http://i.imgur.com/TgQcfEb.jpg",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
@@ -49,7 +49,7 @@ Ship:new(MediumShip,SEPARATIST_SHIP,{
     front = "https://i.imgur.com/kN6lJzW.jpeg",
     back = "https://i.imgur.com/8qP8mto.jpeg",
     mesh = "http://paste.ee/r/5vQzm",
-    diffuse = "http://i.imgur.com/drGaSmk.jpg",
+    diffuse = "http://i.imgur.com/HvEVMbS.jpg",
     ruler = "http://paste.ee/r/wq1eM",
     maneuver = {{"I"},{"I","II"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
@@ -58,3 +58,64 @@ Ship:new(MediumShip,SEPARATIST_SHIP,{
 	aliases = {"Munificent Star Frigate"},
     command = 2
 })
+
+
+--Missing command values
+-- Ship:new(LargeShip,REPUBLIC_SHIP,{
+-- 	name = "Recusant-class Light Destroyer",
+--     front = "",
+--     back = "",
+--     mesh = "",
+--     diffuse = "",
+--     ruler = "http://paste.ee/r/D0Zp2",
+--     maneuver = {{"I"},{"I","I"},{"-","II","I"}},
+--     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+--     shields = {3,3,3,2},
+--     cost = 85,
+-- 	aliases = {"Recusant Light Destroyer"},
+--     command = 3
+-- })
+Ship:new(LargeShip,SEPARATIST_SHIP,{
+	name = "Recusant-class Support Destroyer",
+    front = "https://i.imgur.com/EnEIdGQ.jpg",
+    back = "https://i.imgur.com/Rpp4vuk.jpeg",
+    mesh = "https://paste.ee/r/d7jlM",
+    diffuse = "https://i.imgur.com/cgwf6PT.jpg",
+    ruler = "https://paste.ee/r/0jjff",
+    maneuver = {{"I"},{"I","I"},{"-","II","I"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {3,3,3,2},
+    cost = 90,
+	aliases = {"Recusant Support Destroyer"},
+    command = 3
+})
+
+Ship:new(LargeShip,SEPARATIST_SHIP,{
+	name = "Providence-class Carrier",
+    front = "https://i.imgur.com/pScwKfv.jpg",
+    back = "https://i.imgur.com/kjGJsSC.jpg",
+    mesh = "https://paste.ee/r/hJbfr",
+    diffuse = "https://i.imgur.com/8BDjFDY.jpg",
+    ruler = "http://paste.ee/r/YcTl3",
+    maneuver = {{"II"},{"I","I"},{"I","-","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+    shields = {5,3,3,2},
+    cost = 105,
+	aliases = {"Providence Carrier"},
+    command = 3
+})
+--Missing command values
+-- Ship:new(LargeShip,REPUBLIC_SHIP,{
+-- 	name = "Providence-class Dreadnought",
+--     front = "",
+--     back = "",
+--     mesh = "",
+--     diffuse = "",
+--     ruler = "",
+--     maneuver = {{"II"},{"I","I"},{"I","-","-"}},
+--     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+--     shields = {5,3,3,2},
+--     cost = 105,
+-- 	aliases = {"Providence Dreadnought"},
+--     command = 3
+-- })

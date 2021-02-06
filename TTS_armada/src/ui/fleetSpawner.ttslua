@@ -309,7 +309,7 @@ function onClick_fleet_spawn(player, _, idValue)
     -- print(base_x)
     layout(player, fleet, listSpawner.getPosition(), listSpawner.getRotation(),base_x,true)
     -- updateFleetCostDisplay(player.color)
-    Wait.time(|| updateAllScores(),2,0)
+    -- Wait.time(|| updateAllScores(),2,0)
 end
 function Action_fleet_spawn(datacard, color, alt_click)
     if alt_click then
@@ -334,7 +334,7 @@ function Action_fleet_spawn(datacard, color, alt_click)
     clonedatacard.setPositionSmooth(vector.add(listSpawner.getPosition(),vector.rotate({base_x-3,0,0.7}, listSpawner.getRotation()[2])), false, false)
     clonedatacard.setRotationSmooth(listSpawner.getRotation() + Vector(0,180,0), false, false)
     clonedatacard.setLock(false)
-    Wait.time(|| updateAllScores(),2,0)
+    -- Wait.time(|| updateAllScores(),2,0)
     -- Wait.frames(|| updateFleetCostDisplay(color), 10)
 end
 function GetShipSquadronCardsForColor(color)
