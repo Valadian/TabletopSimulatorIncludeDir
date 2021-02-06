@@ -81,7 +81,7 @@ Ship:new(LargeShip,SEPARATIST_SHIP,{
     back = "https://i.imgur.com/Rpp4vuk.jpeg",
     mesh = "https://paste.ee/r/d7jlM",
     diffuse = "https://i.imgur.com/cgwf6PT.jpg",
-    ruler = "https://paste.ee/r/0jjff",
+    ruler = "https://paste.ee/r/CX9QP",
     maneuver = {{"I"},{"I","I"},{"-","II","I"}},
     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
     shields = {3,3,3,2},
