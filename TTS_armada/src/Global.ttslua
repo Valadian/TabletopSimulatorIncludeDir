@@ -932,6 +932,42 @@ function spawnSquadRuler(squadron,type)
     clearButtons(squadron)
     btn_y = 1.5
     if type==SQUAD_MOVE_RULER then
+        --spawn follow along range ruler
+        local attackruler = spawnObject({
+            type = 'Custom_Model', position = squadron.getPosition(), rotation = { 0, 0, 0 }
+        })
+        attackruler.setColorTint({0.5,0,0})
+        attackruler.setCustomObject({
+            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+        })
+        squadron.addAttachment(attackruler)
+        attackruler2 = spawnObject({
+            type = 'Custom_Model', position = squadron.getPosition(), rotation = { 180, 0, 0 }
+        })
+        attackruler2.setColorTint({0.5,0,0})
+        attackruler2.setCustomObject({
+            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+        })
+        squadron.addAttachment(attackruler2)
+
+        if squadron.getVar('extended_attack') then
+            local attackruler = spawnObject({
+                type = 'Custom_Model', position = squadron.getPosition(), rotation = { 0, 0, 0 }
+            })
+            attackruler.setColorTint({0.5,0,0.5})
+            attackruler.setCustomObject({
+                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+            })
+            squadron.addAttachment(attackruler)
+            attackruler2 = spawnObject({
+                type = 'Custom_Model', position = squadron.getPosition(), rotation = { 180, 0, 0 }
+            })
+            attackruler2.setColorTint({0.5,0,0.5})
+            attackruler2.setCustomObject({
+                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+            })
+            squadron.addAttachment(attackruler2)
+        end
         squadron.unlock()
         current_speed = squadron.getVar('speed_override') or squad.speed(squadron)
         squadron.createButton(buildButton("Undo",{position={0,0.3,0.4},width=400,font_size=100, color={1,0,0,0.3}, font_color={1,1,1,3.33}},squad_button_def))
@@ -1227,6 +1263,7 @@ function Action_Done(squad)
     squad_move_rulers[squad.getGUID()]=nil
     updateSquadButtons(squad)
     ruler.destruct()
+    squad.destroyAttachments()
     squad.lock()
 end
 function Action_ruler_left(ship, player_clicker_color, alt_click)

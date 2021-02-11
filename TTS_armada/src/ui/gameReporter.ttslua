@@ -106,6 +106,7 @@ function onClick_score_submit(player, _, idValue)
     objective = UI.getValue("activeObjective")
     print("Getting fleet for player1: "..UI.getAttribute("Player1name","color"))
     fleet = FLEETS[UI.getAttribute("Player1name","color")]
+    FIRST_FLEET = fleet
     player1faction = nil
     if #fleet.ships > 0 then
         player1faction = fleet.ships[1].def.faction
@@ -117,6 +118,7 @@ function onClick_score_submit(player, _, idValue)
     end
     print("Getting fleet for player2: "..UI.getAttribute("Player2name","color"))
     fleet = FLEETS[UI.getAttribute("Player2name","color")]
+    SECOND_FLEET = fleet
     player2faction = nil
     if #fleet.ships > 0 then
         player2faction = fleet.ships[1].def.faction
