@@ -318,13 +318,14 @@ ship_size = {
 function moveTokens(ship, old_pos, old_rot, new_pos, new_rot)
     local moved_objects = {}
     for _,obj in ipairs(getAllObjects()) do
-        if obj.tag~="Figurine" and obj~=self then -- and not table.contains(ASTEROIDS,obj.getCustomObject().mesh) and not table.contains(ASTEROID_TOKENS,obj.getCustomObject().image)
+        local isShipIdentifier = obj.tag=="Figurine" and obj.getCustomObject()~=nil and obj.getCustomObject().thickness~=nil
+        if (obj.tag~="Figurine" or isShipIdentifier) and obj~=self then -- and not table.contains(ASTEROIDS,obj.getCustomObject().mesh) and not table.contains(ASTEROID_TOKENS,obj.getCustomObject().image)
             local offset = vector.rotate(vector.sub(obj.getPosition(),old_pos),-old_rot[2])
             local size = ship_size[ship.getVar('size')]
             local ontopofshipbase = obj.getPosition()[2]>1.25
             if math.abs(offset[1])<math.abs(size[1]) and offset[3]>-size[3] and offset[3]<size[4] and ontopofshipbase then
                 -- WAS ON BASE
-                --printToAll(obj.name, {1,1,1})
+                printToAll(obj.name, {1,1,1})
                 table.insert(moved_objects,obj)
                 local new_pos = vector.add(new_pos,vector.rotate(offset, new_rot[2]))
                 local new_rot = vector.add(vector.sub(new_rot,old_rot),obj.getRotation())

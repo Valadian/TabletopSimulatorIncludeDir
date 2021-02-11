@@ -119,22 +119,24 @@ function onload(save_string)
         local data = JSON.decode(save_string)
         for i, shipdata in pairs(data) do
             local obj = getObjectFromGUID(shipdata["GUID"])
-            if obj.tag == "Figurine" then
-                obj.setVar('owner',shipdata["owner"])
-                obj.setVar('team',shipdata["team"])
-                obj.setVar('rulerMesh',shipdata["rulerMesh"])
-                obj.setTable('maneuver',shipdata["maneuver"])
-                obj.setTable('shields',shipdata["shields"])
-                obj.setVar('hasShields',shipdata["hasShields"])
-                obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
-                obj.setTable('InitialPosition',shipdata["InitialPosition"])
-                obj.setVar('card',shipdata["card"])
-                if shipdata["rulerGUID"]~=nil then
-                    obj.setVar(getObjectFromGUID(shipdata["rulerGUID"]))
+            if obj~=nil then
+                if obj.tag == "Figurine" then
+                    obj.setVar('owner',shipdata["owner"])
+                    obj.setVar('team',shipdata["team"])
+                    obj.setVar('rulerMesh',shipdata["rulerMesh"])
+                    obj.setTable('maneuver',shipdata["maneuver"])
+                    obj.setTable('shields',shipdata["shields"])
+                    obj.setVar('hasShields',shipdata["hasShields"])
+                    obj.setVar('cmdBaseGUID',shipdata["cmdBaseGUID"])
+                    obj.setTable('InitialPosition',shipdata["InitialPosition"])
+                    obj.setVar('card',shipdata["card"])
+                    if shipdata["rulerGUID"]~=nil then
+                        obj.setVar(getObjectFromGUID(shipdata["rulerGUID"]))
+                    end
+                    -- obj.setTable('moved_objects',shipdata["moved_objects"])
+                elseif obj.tag == "Card" then
+                    obj.setTable('spawns',shipdata["spawns"])
                 end
-                -- obj.setTable('moved_objects',shipdata["moved_objects"])
-            elseif obj.tag == "Card" then
-                obj.setTable('spawns',shipdata["spawns"])
             end
         end
     end
@@ -764,14 +766,16 @@ function Action_15range_ruler(ship)
         --local mesh = ship.getVar("rulerMesh")
         local obj_parameters = {}
         obj_parameters.type = 'Custom_Model'
+        local rot = {0,ship.getRotation()[2],0}
         obj_parameters.position = ship.getPosition()
-        obj_parameters.rotation = ship.getRotation()
+        obj_parameters.rotation = rot
         local newruler = spawnObject(obj_parameters)
         local custom = {}
         custom.mesh = RANGE_RULER_MESH[ship.getVar('size')]
         custom.collider = ATTACK_RULERS[ship.getVar('size')]
         newruler.setCustomObject(custom)
         newruler.lock()
+        Wait.frames(||newruler.setRotation(rot),1)
         ship.setVar('ruler',newruler)
     else
         ruler.destruct()
@@ -785,6 +789,7 @@ function Action_attack_ruler(ship)
         local mesh = ship.getVar("rulerMesh")
         local obj_parameters = {}
         obj_parameters.type = 'Custom_Model'
+        local rot = {0,ship.getRotation()[2],0}
         obj_parameters.position = ship.getPosition()
         obj_parameters.rotation = ship.getRotation()
         local newruler = spawnObject(obj_parameters)
@@ -793,6 +798,7 @@ function Action_attack_ruler(ship)
         custom.collider = ATTACK_RULERS[ship.getVar('size')]
         newruler.setCustomObject(custom)
         newruler.lock()
+        Wait.frames(||newruler.setRotation(rot),1)
         ship.setVar('ruler',newruler)
     else
         ruler.destruct()
