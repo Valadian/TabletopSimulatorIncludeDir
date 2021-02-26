@@ -146,7 +146,7 @@ function moveChildren()
     end
 end
 function drawButtons()
-    clearButtons(self)
+    self.clearButtons()
     local z = 0.3
     if #cmds<4 then
         self.createButton(buildButton('+',{click_function='Action_AddRuler',position={-0.2,z,0.9}}))
@@ -631,14 +631,14 @@ function moveChild(this, index)
         moveChild(child, index+1)
     end
 end
-function clearButtons(object)
-    --this is a workaround for obj.clearButtons() being broken as of v7.10
-    if object.getButtons() ~= nil then
-        for i=#object.getButtons()-1,0,-1 do
-            object.removeButton(i)
-        end
-    end
-end
+-- function clearButtons(object)
+--     --this is a workaround for obj.clearButtons() being broken as of v7.10
+--     if object.getButtons() ~= nil then
+--         for i=#object.getButtons()-1,0,-1 do
+--             object.removeButton(i)
+--         end
+--     end
+-- end
 #include ../../util/string
 #include ../../util/vector
 #include ../../util/table

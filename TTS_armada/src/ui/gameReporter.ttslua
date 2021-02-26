@@ -24,6 +24,192 @@ function onClick_selectGameReporterTab(player, _, idValue)
     autoSelectFirstSecondPlayer()
     updateScore()
 end
+function onClick_selectReportingTab(player, _, idValue)
+    UI.show("scoreTabBody")
+    UI.show("submitScore")
+    UI.hide("resultTabBody")
+end
+standingOffset = 0
+function onClick_standings_scrollUp(player, _, idValue)
+    if standingOffset>0 then
+        standingOffset = standingOffset - 10
+    end
+    updateStandingsScrollButtons()
+    updateRankings()
+end
+function onClick_standings_scrollDown(player, _, idValue)
+    if standingOffset+10<#rankings then
+        standingOffset = standingOffset + 10
+    end
+    updateStandingsScrollButtons()
+    updateRankings()
+end
+function updateStandingsScrollButtons()
+    if standingOffset==0 then
+        UI.setAttribute("parseStandingScrollUp", "iconColor", "#404040")
+    else
+        UI.setAttribute("parseStandingScrollUp", "iconColor", "#FFFFFF")
+    end
+    if standingOffset+10<#standings then
+        UI.setAttribute("parseStandingScrollDown", "iconColor", "#404040")
+    else
+        UI.setAttribute("parseStandingScrollDown", "iconColor", "#FFFFFF")
+    end
+end
+standings = nil
+function onClick_selectStandingsTab(player, _, idValue)
+    UI.show("resultTabBody")
+    UI.hide("scoreTabBody")
+    UI.hide("submitScore")
+    if standings == nil then
+        standings = {}
+        -- result_api = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/players/Kelorn"
+        -- WebRequest.get(result_api, self, "loadResults")
+        ranking_api = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/index/ranked"
+        WebRequest.get(ranking_api, self, "loadRanked")
+    end
+    onClick_loadMyStandings(player, _, idValue)
+end
+function onClick_loadMyStandings(player, _, idValue)
+    UI.setValue("myresultName", player.steam_name)
+    UI.setValue("myrankedresultName", player.steam_name)
+    UI.setValue("myresultGames",0)
+    UI.setValue("myrankedresultELO",1000)
+    UI.setValue("myrankedresultWins",0)
+    UI.setValue("myrankedresultGames",0)
+    UI.setValue("myrankedresultRate",0)
+    UI.setValue("myrankedresultRanking","")
+
+    if results[player.steam_name]==nil then
+        result_api = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/players/"..player.steam_name
+        -- print(result_api)
+        WebRequest.get(result_api, self, "loadResults")
+    else
+        updateRankings()
+    end
+end
+rankings = {}
+function loadRanked(res)
+    if res.is_error then
+        printToAll(res.error,{1,0,0})
+    else
+        ranked = JSON.decode(res.text)
+        for i,value in ipairs(ranked['fields']['players']['arrayValue']['values']) do
+            name = value['stringValue']
+            rankings[i] = name
+            if results[name]==nil then
+                result_api = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/players/"..name
+                -- print(result_api)
+                WebRequest.get(result_api, self, "loadResults")
+            end
+        end
+        updateStandingsScrollButtons()
+    end
+end
+results = {}
+function loadResults(res)
+    if res.is_error then
+        printToAll(res.error,{1,0,0})
+    else
+        standings = JSON.decode(res.text)
+
+        result = {
+            name = standings['fields']['steamname']['stringValue'],
+            elo = tonumber(standings['fields']['ranked_elo']['integerValue']),
+            unranked_elo = tonumber(standings['fields']['hidden_elo']['integerValue']),
+            winrate = 0,
+            unranked_winrate = 0
+        }
+        result.wins = tonumber(standings['fields']['ranked_won']['integerValue'])
+        result.games = tonumber(standings['fields']['ranked_played']['integerValue'])
+        result.unranked_wins = tonumber(standings['fields']['games_won']['integerValue'])
+        result.unranked_games = tonumber(standings['fields']['games_played']['integerValue'])
+        if result.games>0 then
+            result.winrate = math.floor(100*result.wins/result.games)
+        end
+        if result.unranked_games>0 then
+            result.unranked_winrate = math.floor(100*result.unranked_wins/result.unranked_games)
+        end
+        results[result.name] = result
+        -- print(res.text)
+        updateRankings()
+    end
+end
+function updateRankings()
+    local max_games = 1
+    local max_wins = 1
+    local max_elo = 1000
+    local min_elo = 1000
+    for _,ranking in pairs(results) do
+        if ranking.games>max_games then
+            max_games = ranking.games
+        end
+        if ranking.wins>max_wins then
+            max_wins = ranking.wins
+        end
+        if ranking.elo>max_elo then
+            max_elo = ranking.elo
+        end
+        if ranking.elo<min_elo then
+            min_elo = ranking.elo
+        end
+    end
+    for i=1,10 do
+        name = rankings[standingOffset+i]
+        result = results[name]
+        if result~=nil then
+            UI.show("resultRow"..i)
+            UI.setValue("resultRanking"..i,standingOffset+i)
+            UI.setValue("resultName"..i,result.name)
+            UI.setValue("resultELO"..i,result.elo)
+            UI.setAttribute("resultELO"..i, "color", "rgb(1,1,"..(1-math.pow((result.elo-min_elo)/(max_elo-min_elo),2))..")")
+            UI.setValue("resultWins"..i,result.wins)
+            UI.setAttribute("resultWins"..i, "color", "rgb("..(0.3+0.7*(1-math.pow(result.wins/max_wins,2)))..",1,"..(0.3+0.7*(1-math.pow(result.wins/max_wins,2)))..")")
+            UI.setValue("resultGames"..i,result.games)
+            UI.setAttribute("resultGames"..i, "color", "rgb("..(0.3+0.7*(1-math.pow(result.games/max_games,2)))..","..(0.3+0.7*(1-math.pow(result.games/max_games,2)))..",1)")
+            UI.setValue("resultRate"..i,result.winrate)
+            UI.setAttribute("resultRate"..i, "color", "rgb("..math.min(2*(1-result.winrate/100),1)..","..math.min(2*(result.winrate/100),1)..",0)")
+        else
+            UI.hide("resultRow"..i)
+        end
+    end
+    name = UI.getValue("myresultName")
+    result = results[name]
+    if result~=nil then
+        -- UI.setValue("myresultELO",result.unranked_elo)
+        -- UI.setAttribute("myresultELO", "color", "rgb(1,1,"..(1-math.pow((result.unranked_elo-min_elo)/(max_elo-min_elo),2))..")")
+        -- UI.setValue("myresultWins",result.unranked_wins)
+        -- UI.setAttribute("myresultWins", "color", "rgb("..(0.3+0.7*(1-math.pow(result.unranked_wins/max_wins,2)))..",1,"..(0.3+0.7*(1-math.pow(result.unranked_wins/max_wins,2)))..")")
+        UI.setValue("myresultGames",result.unranked_games)
+        UI.setAttribute("myresultGames", "color", "rgb("..(0.3+0.7*(1-math.pow(result.unranked_games/max_games,2)))..","..(0.3+0.7*(1-math.pow(result.unranked_games/max_games,2)))..",1)")
+        -- UI.setValue("myresultRate",result.unranked_winrate)
+        -- UI.setAttribute("myresultRate", "color", "rgb("..math.min(2*(1-result.unranked_winrate/100),1)..","..math.min(2*(result.unranked_winrate/100),1)..",0)")
+
+
+        UI.setValue("myrankedresultELO",result.elo)
+        UI.setAttribute("myrankedresultELO", "color", "rgb(1,1,"..(1-math.pow((result.elo-min_elo)/(max_elo-min_elo),2))..")")
+        UI.setValue("myrankedresultWins",result.wins)
+        UI.setAttribute("myrankedresultWins", "color", "rgb("..(0.3+0.7*(1-math.pow(result.wins/max_wins,2)))..",1,"..(0.3+0.7*(1-math.pow(result.wins/max_wins,2)))..")")
+        UI.setValue("myrankedresultGames",result.games)
+        UI.setAttribute("myrankedresultGames", "color", "rgb("..(0.3+0.7*(1-math.pow(result.games/max_games,2)))..","..(0.3+0.7*(1-math.pow(result.games/max_games,2)))..",1)")
+        UI.setValue("myrankedresultRate",result.winrate)
+        UI.setAttribute("myrankedresultRate", "color", "rgb("..math.min(2*(1-result.winrate/100),1)..","..math.min(2*(result.winrate/100),1)..",0)")
+
+        if result.games<5 then
+            UI.setValue("mynotes","Only "..tostring(5-result.games).." games left for Ranked Placement!")
+            UI.setAttribute("mynotes","color", "#FF8080")
+        else
+            UI.setValue("mynotes","")
+            for i,ranked_name in ipairs(rankings) do
+                if ranked_name==name then
+                    UI.setValue("mynotes","Currently Ranked: #"..tostring(i))
+                    UI.setValue("myrankedresultRanking",tostring(i))
+                    UI.setAttribute("mynotes","color", "#80FF80")
+                end
+            end
+        end
+    end
+end
 function autoSelectFirstSecondPlayer()
     -- for _,color in ipairs(Player.getColors()) do
     --     if FLEETS[color]~=nil then

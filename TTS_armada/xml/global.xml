@@ -25,6 +25,7 @@
     <Button class="paginationActive" color="yellow" textColor="black" outlineSize="1 1 1 0" outline="#606060" onClick="030220/onClick_show_helpPage"/>
     <VerticalLayout class="helpPanel"  padding="20 20 40 20"/>
     <HorizontalLayout class="helpHeading" padding="20 20 0 3" ignoreLayout="true" rectAlignment="UpperCenter" width="440" height="40"/>
+    <Text class="passive" color="#606060"/>
 </Defaults>
 <!-- height="800"
 width="400" -->

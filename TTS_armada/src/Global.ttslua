@@ -1,4 +1,4 @@
-
+--italia table: https://i.imgur.com/ZH3BOIY.jpg
 local SQUAD_MOVE_RULER = 1
 local SQUAD_ATTACK_RULER = 2
 local SQUAD_ATTACK_CLOSE_RULER = 3
@@ -775,7 +775,7 @@ function Action_15range_ruler(ship)
         custom.collider = ATTACK_RULERS[ship.getVar('size')]
         newruler.setCustomObject(custom)
         newruler.lock()
-        Wait.frames(||newruler.setRotation(rot),1)
+        Wait.time(|| newruler~=nil and newruler.setRotation(rot),1,0)
         ship.setVar('ruler',newruler)
     else
         ruler.destruct()
@@ -798,7 +798,7 @@ function Action_attack_ruler(ship)
         custom.collider = ATTACK_RULERS[ship.getVar('size')]
         newruler.setCustomObject(custom)
         newruler.lock()
-        Wait.frames(||newruler.setRotation(rot),1)
+        Wait.time(|| newruler~=nil and newruler.setRotation(rot),1,0)
         ship.setVar('ruler',newruler)
     else
         ruler.destruct()
