@@ -132,6 +132,7 @@ function linesToLineobjs(lines)
             line = replace(line, "%s%+%s%d+%:%s%d+","") -- handle Starhawk-class Mk.II (150 + 84: 234)
             line = replace(line, "[%s ]+%(com%)","") -- remove " (com)" indicator
             line = replace(line, "[%s ]+%(off%)","") -- remove " (off)" indicator
+            line = replace(line, "[%s ]+%(wpn%)","") -- remove " (wpn)" indicator
             line = replace(line, "^[%s ]*[•%-·][%s ]+","") -- remove all bullets NOTE: THAT IS NOT A NORMAL SPACE!
             line = replace(line, "%d+%s+x%s+","") -- remove "• 2 x " for squadrons
             line = replace(line,"^%d+[%s ]+","") -- remove "2 " for squadrons

@@ -1,0 +1,161 @@
+<Panel id="gameReporterPanel" class="buttonPanel" active="false" preferredHeight="750" color="black">
+    <VerticalLayout preferredHeight="750">
+        <HorizontalLayout preferredHeight="40" padding="5 5 5 0" spacing="5">
+            <Button id="reportingTab" class="faction" onClick="030220/onClick_selectReportingTab" >Report Score</Button>
+            <Button id="standingsTab" class="faction" onClick="030220/onClick_selectStandingsTab" >Ranked Standings</Button>
+        </HorizontalLayout>
+        <VerticalLayout id="resultTabBody" active="false" preferredHeight="750" padding="10 10 20 20">
+            <!-- <Text id="resultLoading">Loading...</Text> -->
+            <Text color="#909090">Ranked Leaderboard</Text>
+            <Text color="#909090">(completed 5 ranked games):</Text>
+            <?foreach I in 1;2;3;4;5;6;7;8;9;10?>
+            <HorizontalLayout id="resultRow$(var.I)">
+                <Text preferredWidth="30" id="resultRanking$(var.I)" class="passive"></Text>
+                <Text preferredWidth="145" id="resultName$(var.I)"></Text>
+                <Text preferredWidth="8" class="passive">[</Text>
+                <Text preferredWidth="40" id="resultELO$(var.I)"></Text>
+                <Text preferredWidth="65" class="passive">] ( Won: </Text>
+                <Text preferredWidth="30" id="resultWins$(var.I)"></Text>
+                <Text preferredWidth="20" class="passive"> of</Text>
+                <Text preferredWidth="30" id="resultGames$(var.I)"></Text>
+                <Text preferredWidth="8" class="passive">: </Text>
+                <Text preferredWidth="30" id="resultRate$(var.I)"></Text>
+                <Text preferredWidth="25" class="passive">%)</Text>
+            </HorizontalLayout>
+            <?endforeach?>
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="320"/>
+                <Button id="parseStandingScrollDown" preferredWidth="40" icon="ARROWDOWN" onClick="030220/onClick_standings_scrollDown"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Down" colors="transparent|#808080|#404040|transparent"/>
+                <Button id="parseStandingScrollUp" preferredWidth="40" icon="ARROWUP" onClick="030220/onClick_standings_scrollUp"  color="#FFFFFF" tooltipPosition="Below" tooltip="Scroll Up" colors="transparent|#808080|#404040|transparent" iconColor="#404040"/>
+            </HorizontalLayout>
+            <Text preferredHeight="50"></Text>
+            <Button preferredHeight="20" id="myStandings" class="faction" onclick="030220/onClick_loadMyStandings" color="#808080" outlineSize="1 1 1 0" outline="white"  colors="#404040|#A0A0A0|white|#404040" >Load My Standings</Button>
+            <Text preferredHeight="20"></Text>
+            <Text>All:</Text>
+            <HorizontalLayout id="unrankedresultRow">
+                <Text preferredWidth="30"></Text>
+                <Text preferredWidth="145" id="myresultName"></Text>
+                <Text preferredWidth="115" class="passive" alignment="MiddleRight">Played: </Text>
+                <Text preferredWidth="30" id="myresultGames"></Text>
+                <Text preferredWidth="115" class="passive" alignment="MiddleLeft"> games</Text>
+                <!-- <Text preferredWidth="8" class="passive">[</Text>
+                <Text preferredWidth="40" id="myresultELO"></Text>
+                <Text preferredWidth="65" class="passive">] ( Won: </Text>
+                <Text preferredWidth="30" id="myresultWins"></Text>
+                <Text preferredWidth="20" class="passive"> of</Text>
+                <Text preferredWidth="30" id="myresultGames"></Text>
+                <Text preferredWidth="8" class="passive">: </Text>
+                <Text preferredWidth="30" id="myresultRate"></Text>
+                <Text preferredWidth="25" class="passive">%)</Text> -->
+            </HorizontalLayout>
+            <Text>Ranked:</Text>
+            <HorizontalLayout id="rankedresultRow">
+                <Text preferredWidth="30" id="myrankedresultRanking" class="passive"></Text>
+                <Text preferredWidth="145" id="myrankedresultName"></Text>
+                <Text preferredWidth="8" class="passive">[</Text>
+                <Text preferredWidth="40" id="myrankedresultELO"></Text>
+                <Text preferredWidth="65" class="passive">] ( Won: </Text>
+                <Text preferredWidth="30" id="myrankedresultWins"></Text>
+                <Text preferredWidth="20" class="passive"> of</Text>
+                <Text preferredWidth="30" id="myrankedresultGames"></Text>
+                <Text preferredWidth="8" class="passive">: </Text>
+                <Text preferredWidth="30" id="myrankedresultRate"></Text>
+                <Text preferredWidth="25" class="passive">%)</Text>
+            </HorizontalLayout>
+            <Text id="myNotes"></Text>
+            <Text preferredHeight="100"></Text>
+        </VerticalLayout>
+        <VerticalLayout id="scoreTabBody" preferredHeight="710" padding="10 10 20 20">
+            <Text>You can report the results of your games!</Text>
+            <Text>This data will be utilized for list building assistance, ELO calculation, and competitive card discussions!</Text>
+            <Text></Text>
+
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170">First Player</Text>
+                <Text preferredWidth="60"></Text>
+                <Text preferredWidth="170">Second Player</Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="17">
+                <HorizontalLayout preferredWidth="170">
+                    <Button id="White1" color="White" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Red1" color="Red" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Yellow1" color="Yellow" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Blue1" color="Blue" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Purple1" color="Purple" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Pink1" color="Pink" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Orange1" color="Orange" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Brown1" color="Brown" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Green1" color="Green" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                    <Button id="Teal1" color="Teal" preferredWidth="17" onClick="030220/onClick_selectPlayer1color"></Button>
+                </HorizontalLayout>
+                <Text preferredWidth="60">Color</Text>
+                <HorizontalLayout preferredWidth="170">
+                    <Button id="White2" color="White" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Red2" color="Red" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Yellow2" color="Yellow" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Blue2" color="Blue" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Purple2" color="Purple" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Pink2" color="Pink" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Orange2" color="Orange" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Brown2" color="Brown" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Green2" color="Green" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                    <Button id="Teal2" color="Teal" preferredWidth="17" onClick="030220/onClick_selectPlayer2color"></Button>
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <HorizontalLayout preferredWidth="170">
+                    <Text id="Player1name" color="#FF4040">?</Text>
+                    <Text id="Player1listFound" active="false" color="#80FF00" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player1listNotFound" color="#FF4040" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                </HorizontalLayout>
+                <Text preferredWidth="60"></Text>
+                <HorizontalLayout preferredWidth="170">
+                    <Text id="Player2name" color="#FF4040">?</Text>
+                    <Text id="Player2listFound" active="false" color="#80FF00" textColor="white" tooltip="Fleet Found!" tooltipPosition="Below"> ✔ </Text>
+                    <Text id="Player2listNotFound" color="#FF4040" textColor="white" tooltip="No Fleet Found!" tooltipPosition="Below"> ✘ </Text>
+                </HorizontalLayout>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170"></Text>
+                <Text preferredWidth="60">Obj:</Text>
+                <Text preferredWidth="170" id="activeObjective" verticalOverflow="Overflow"></Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text id="objectiveWarning" color="#FF4040">Place Objective in Designated Spot
+ on Left side of board!</Text>
+                <Button id="objectiveRefresh" icon="REFRESH" onclick="030220/onClick_refreshObjective"></Button>
+            </HorizontalLayout>
+            <Text preferredHeight="50"></Text>
+
+            <HorizontalLayout preferredHeight="30">
+                <InputField id="player1score" preferredWidth="170" placeholder="Player 1 Score" outline="#FF4040" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player1score"></InputField>
+                <Text preferredWidth="60">Score</Text>
+                <InputField id="player2score" preferredWidth="170" placeholder="Player 2 Score" outline="#FF4040" characterValidation="Integer" characterLimit="4" onValueChanged="030220/onInput_player2score"></InputField>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text id="Player1points" preferredWidth="170">-</Text>
+                <Text preferredWidth="60"></Text>
+                <Text id="Player2points" preferredWidth="170">-</Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text preferredWidth="170" id="Player1iswinner" color="#80FF00"></Text>
+                <Text preferredWidth="60"></Text>
+                <Text preferredWidth="170" id="Player2iswinner" color="#80FF00"></Text>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="70" padding="40 40 40 0" spacing="40">
+                <Button id="casual" color="#C0C0C0" textColor="black" fontSize="18" fontStyle="bold"  onClick="030220/onClick_casualRanked">Casual</Button>
+                <Button id="ranked" color="black" textColor="#443B00" outlineSize="1 1" outline="#443B00" onClick="030220/onClick_casualRanked">Ranked</Button>
+            </HorizontalLayout>
+            <HorizontalLayout preferredHeight="30">
+                <Text active="false" id="rankedWarning" color="#DAA520">Ranked Games will impact Competitive Ranking</Text>
+            </HorizontalLayout>
+            <Text preferredHeight="30"></Text>
+            <Text preferredHeight="30" fontStyle="Italic">Optional Tournament Code:</Text>
+            <HorizontalLayout preferredHeight="30" padding="60 60 0 0">
+                <InputField id="tournamentLabel" placeholder="If Tournament Enter Code" outline="#C0C0C0" onValueChanged="030220/onInput_tournamentCode"></InputField>
+            </HorizontalLayout>
+            <Text preferredHeight="20"></Text>
+        </VerticalLayout>
+        <Button id="submitScore" text="Submit Score" preferredHeight="40" onClick="030220/onClick_score_submit"  color="#008000" />
+    </VerticalLayout>
+</Panel>

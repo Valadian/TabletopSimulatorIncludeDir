@@ -45,8 +45,9 @@ CMD_COLORS["http://i.imgur.com/XbJbScU.jpg"] = {0.8,0.4,0.8} --squadron
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
-local SQUAD = "http://paste.ee/r/nAMCQ"
-local SQUAD_HTTPS = "https://paste.ee/r/nAMCQ"
+local SQUAD_COLLIDERS = {"http://paste.ee/r/nAMCQ", "https://paste.ee/r/nAMCQ", "http://paste.ee/r/ZKM7E", "https://paste.ee/r/ZKM7E"}
+local SQUAD = "http://paste.ee/r/ZKM7E"--"http://paste.ee/r/nAMCQ"
+local SQUAD_HTTPS = "https://paste.ee/r/ZKM7E" --"https://paste.ee/r/nAMCQ"
 local A_COLOR = {0,0.5,1.0 }
 local B_COLOR = {1.0,0.25,0}
 --local A_SECONDARY_COLOR = {0.5,0,1.0 }
@@ -256,7 +257,7 @@ function Action_ToggleDestroyShipButtons()
             ship.createButton(buildRelativeButton(ship, "DESTROY",{click_function="Action_destroy",position={0,1,-0.3},width=800, height=500, color={1, 0, 0 ,0.9}, font_color={1,1,1,1.11}, tooltip="Move Ship to side"},ship_button_def))
         end
     end
-    Wait.time(|| redraw_ships(), 8, 0)
+    Wait.time(|| redraw_ships(), 3, 0)
 end
 function redraw_ships()
     for _,ship in ipairs(getAllObjects()) do
@@ -902,7 +903,7 @@ function isShip(ship)
 --        or name:match " SR$" or name:match " MR$" or name:match " LR$")
 end
 function isSquad(ship)
-    return SQUAD ==ship.getCustomObject().collider or SQUAD_HTTPS ==ship.getCustomObject().collider
+    return table.contains(SQUAD_COLLIDERS, ship.getCustomObject().collider) --SQUAD ==ship.getCustomObject().collider or SQUAD_HTTPS ==ship.getCustomObject().collider
 --    local name = ship.getName()
 --    return ship.tag == "Figurine" and name:match " Sq$"
 end
@@ -934,6 +935,8 @@ function Action_ToggleRhymerAttack(squad, player)
     ruler.destruct()
     spawnSquadRuler(squad,SQUAD_ATTACK_RULER)
 end
+SQUADRON_STATIC_COLLIDER = 'http://paste.ee/r/eQsOn'
+SQUADRON_MOVING_COLLIDER = 'https://paste.ee/r/aWUGS'
 function spawnSquadRuler(squadron,type)
     clearButtons(squadron)
     btn_y = 1.5
@@ -944,7 +947,7 @@ function spawnSquadRuler(squadron,type)
         })
         attackruler.setColorTint({0.5,0,0})
         attackruler.setCustomObject({
-            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = SQUADRON_MOVING_COLLIDER --'http://pastebin.com/raw/fnyPsyke'
         })
         squadron.addAttachment(attackruler)
         attackruler2 = spawnObject({
@@ -952,7 +955,7 @@ function spawnSquadRuler(squadron,type)
         })
         attackruler2.setColorTint({0.5,0,0})
         attackruler2.setCustomObject({
-            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+            mesh = SQUAD_RULERS[SQUAD_ATTACK_RULER], collider = SQUADRON_MOVING_COLLIDER --'http://pastebin.com/raw/fnyPsyke'
         })
         squadron.addAttachment(attackruler2)
 
@@ -962,7 +965,7 @@ function spawnSquadRuler(squadron,type)
             })
             attackruler.setColorTint({0.5,0,0.5})
             attackruler.setCustomObject({
-                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = SQUADRON_MOVING_COLLIDER --'http://pastebin.com/raw/fnyPsyke'
             })
             squadron.addAttachment(attackruler)
             attackruler2 = spawnObject({
@@ -970,7 +973,7 @@ function spawnSquadRuler(squadron,type)
             })
             attackruler2.setColorTint({0.5,0,0.5})
             attackruler2.setCustomObject({
-                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = 'http://pastebin.com/raw/fnyPsyke'
+                mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER], collider = SQUADRON_MOVING_COLLIDER  -- 'http://pastebin.com/raw/fnyPsyke'
             })
             squadron.addAttachment(attackruler2)
         end
@@ -1036,7 +1039,7 @@ function spawnSquadRuler(squadron,type)
     if type == SQUAD_ATTACK_RULER and extended_attack then
         custom.mesh = SQUAD_RULERS[SQUAD_ATTACK_CLOSE_RULER]
     end
-    custom.collider = 'http://pastebin.com/raw/fnyPsyke'
+    custom.collider = SQUADRON_STATIC_COLLIDER --'http://pastebin.com/raw/fnyPsyke'
     newruler.setCustomObject(custom)
     newruler.lock()
     newruler.scale(scale)

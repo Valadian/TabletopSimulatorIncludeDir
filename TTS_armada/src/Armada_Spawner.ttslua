@@ -92,7 +92,7 @@ HugeShip = {
     collider = "http://paste.ee/r/ClCL3"
 }
 Squadron = {
-    collider = "http://paste.ee/r/nAMCQ",
+    collider = "http://paste.ee/r/ZKM7E", --"http://paste.ee/r/nAMCQ",
     convex = false,
     type = 1,
     material = 1,
@@ -385,7 +385,7 @@ function createSpawnButtons(object)
                 diffuse = string.strip(model_data[4]),
                 health =  string.strip(model_data[5]),
                 move = string.strip(model_data[6]),
-                collider = "http://paste.ee/r/nAMCQ",
+                collider = "http://paste.ee/r/ZKM7E", -- "http://paste.ee/r/nAMCQ",
                 convex = false,
                 type = 1,
                 material = 1,

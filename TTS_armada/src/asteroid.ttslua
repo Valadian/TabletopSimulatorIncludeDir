@@ -41,8 +41,10 @@ function Obstacle:new (o,...)
     end
     setmetatable(o, Obstacle)
     Obstacle.__index = Obstacle
-    if o.collider~="" then
-        OBSTACLES[o.collider] = o
+    if o.colliders~="" then
+        for _, collider in ipairs(o.colliders) do
+            OBSTACLES[collider] = o
+        end
     end
     return o
 end
@@ -53,7 +55,7 @@ end
 function loadAsteroidDefs()
 Obstacle:new({
     name = "Asteroid 1", --Eclair
-    collider = "http://paste.ee/r/Ul5Zt",
+    colliders = {"http://paste.ee/r/Ul5Zt","http://paste.ee/r/u960L"},
     rulers = {
         "http://paste.ee/r/0I8WT",
         "http://paste.ee/r/vchJj",
@@ -68,7 +70,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Debris 2", --Chicken leg
-    collider = "http://paste.ee/r/Fk1So",
+    colliders = {"http://paste.ee/r/Fk1So","http://paste.ee/r/xJ3Vm"},
     rulers = {
         "http://paste.ee/r/WAySf",
         "http://paste.ee/r/qTWTp",
@@ -82,7 +84,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Debris 3", --muffin
-    collider = "http://paste.ee/r/FJVoR",
+    colliders = {"http://paste.ee/r/FJVoR","http://paste.ee/r/WUL3V"},
     rulers = {
         "http://paste.ee/r/vM2oD",
         "http://paste.ee/r/tFdE0",
@@ -96,7 +98,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Asteroid 4", --sharktooth
-    collider = "http://paste.ee/r/sgn4L",
+    colliders = {"http://paste.ee/r/sgn4L","http://paste.ee/r/JZSVK"},
     rulers = {
         "http://paste.ee/r/S0kIT",
         "http://paste.ee/r/aRBJY",
@@ -111,7 +113,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Asteroid 5", --tornado
-    collider = "http://paste.ee/r/t10DL",
+    colliders = {"http://paste.ee/r/t10DL","http://paste.ee/r/n43Kl"},
     rulers = {
         "http://paste.ee/r/2UGUR",
         "http://paste.ee/r/rAQce",
@@ -127,7 +129,7 @@ Obstacle:new({
 
 Obstacle:new({
     name = "Station",
-    collider = "http://paste.ee/r/Hm8Hf",
+    colliders = {"http://paste.ee/r/Hm8Hf","http://paste.ee/r/2r7bq"},
     rulers = {
         "http://paste.ee/r/h79JB",
         "http://paste.ee/r/h770l",
@@ -142,7 +144,7 @@ Obstacle:new({
 
 Obstacle:new({
     name = "Gas Cloud 1", --double bump?
-    collider = "http://paste.ee/r/CGICy",
+    colliders = {"http://paste.ee/r/CGICy","http://paste.ee/r/oEuEI"},
     rulers = {
         "http://paste.ee/r/vmniW",
         "http://paste.ee/r/aaObV",
@@ -156,7 +158,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Gas Cloud 2",
-    collider = "http://paste.ee/r/N9UN7",
+    colliders = {"http://paste.ee/r/N9UN7","http://paste.ee/r/DmDpr"},
     rulers = {
         "http://paste.ee/r/ysaqI",
         "http://paste.ee/r/ERhup",
@@ -171,7 +173,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Gravity Rift",
-    collider = "http://paste.ee/r/DpEzj",
+    colliders = {"http://paste.ee/r/DpEzj","http://paste.ee/r/Vtola"},
     rulers = {
         "http://paste.ee/r/2Fsao",
         "http://paste.ee/r/gPUKr",
@@ -186,7 +188,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Exogorth 1",
-    collider = "http://paste.ee/r/GJm0K",
+    colliders = {"http://paste.ee/r/GJm0K","http://paste.ee/r/X9TRv"},
     rulers = {
         "http://paste.ee/r/e5du8",
         "http://paste.ee/r/2l8Y5",
@@ -200,7 +202,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Exogorth 2", --hook?
-    collider = "http://paste.ee/r/I3IZm",
+    colliders = {"http://paste.ee/r/I3IZm","http://paste.ee/r/UfCaR"},
     rulers = {
         "http://paste.ee/r/87QKX",
         "http://paste.ee/r/gcy3y",
@@ -214,7 +216,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Purrgil 1", --open mouth (hump tail)
-    collider = "http://paste.ee/r/HRGiE",
+    colliders = {"http://paste.ee/r/HRGiE","http://paste.ee/r/SQ4Pt"},
     rulers = {
         "http://paste.ee/r/DJ0EM",
         "http://paste.ee/r/DnkHS",
@@ -228,7 +230,7 @@ Obstacle:new({
 })
 Obstacle:new({ --TODO: Move within 2
     name = "Purrgil 2",
-    collider = "http://paste.ee/r/4QT4q",
+    colliders = {"http://paste.ee/r/4QT4q","http://paste.ee/r/TTaOC"},
     rulers = {
         "http://paste.ee/r/vddgi",
         "http://paste.ee/r/yq43j",
@@ -242,7 +244,7 @@ Obstacle:new({ --TODO: Move within 2
 })
 Obstacle:new({
     name = "Objective Token",
-    collider = "http://paste.ee/r/9DQmH",
+    colliders = {"http://paste.ee/r/9DQmH"},
     rulers = {
         "http://paste.ee/r/OpxJX",
         "http://paste.ee/r/IltC6",
@@ -254,7 +256,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Gravity Well",
-    collider = "http://paste.ee/r/AZMeZ", --"http://paste.ee/r/FcelK", --http://paste.ee/r/1KFnT",
+    colliders = {"http://paste.ee/r/AZMeZ"}, --"http://paste.ee/r/FcelK", --http://paste.ee/r/1KFnT",
     rulers = {
         "http://paste.ee/r/OpxJX",
         "http://paste.ee/r/IltC6",
@@ -267,7 +269,7 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Targeting Token",
-    collider = "http://paste.ee/r/OGmMO", --"http://paste.ee/r/feeFX", --http://paste.ee/r/1pouf",
+    colliders = {"http://paste.ee/r/OGmMO"}, --"http://paste.ee/r/feeFX", --http://paste.ee/r/1pouf",
     rulers = {
         "http://paste.ee/r/He0Vy"
     },
@@ -280,33 +282,62 @@ Obstacle:new({
 -- move obstacle 2
 -- purrgil move 2
 end
-function onObjectHover_asteroid(obj, player)
+OBSTACLE_BTN_NORMAL = 1
+OBSTACLE_BTN_HIGH = 2
+OBSTACLE_BTN_NONE = 0
+current_obstacle_btn_state = 1
+function onClick_ToggleAsteroidBtns(player, _, idValue)
+    current_obstacle_btn_state = math.mod(current_obstacle_btn_state + 1,3)
+    if current_obstacle_btn_state == OBSTACLE_BTN_NORMAL then
+        broadcastToAll("Set obstacle buttons to NORMAL", {0,1,0})
+    end
+    if current_obstacle_btn_state == OBSTACLE_BTN_HIGH then
+        broadcastToAll("Set obstacle buttons to ELEVATED", {1,0,0})
+    end
+    if current_obstacle_btn_state == OBSTACLE_BTN_NONE then
+        broadcastToAll("Set obstacle buttons to HIDDEN", {0,0,0})
+    end
+    for _,obj in ipairs(getAllObjects()) do
+        if isObstacle(obj) then
+            update_asteroid_buttons(obj, player.color)
+        end
+    end
+
+end
+function isObstacle(obj)
     custom = obj.getCustomObject()
-    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+    return custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil
+end
+function onObjectHover_asteroid(obj, player)
+    if isObstacle(obj) then
         if not obj.getLock() then --Only update while unlocked to recover from flipping
             update_asteroid_buttons(obj,player)
         end
     end
 end
 function onObjectDropped_asteroid(obj, player)
-    custom = obj.getCustomObject()
-    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+    if isObstacle(obj) then
         update_asteroid_buttons(obj,player)
     end
 end
 function onObjectSpawn_asteroid(obj)
-    custom = obj.getCustomObject()
-    if custom~=nil and custom.collider~=nil and Obstacle.lookup(custom.collider)~=nil and custom.diffuse~="" and custom.diffuse~=nil then
+    if isObstacle(obj) then
         update_asteroid_buttons(obj)
     end
 end
 function update_asteroid_buttons(obj,player)
     obj.clearButtons()
+    if current_obstacle_btn_state == OBSTACLE_BTN_NONE then
+        return
+    end
     custom = obj.getCustomObject()
     h = 0.25
+    if current_obstacle_btn_state == OBSTACLE_BTN_HIGH then
+        h = 2
+    end
     z_rot = 0
     if obj.is_face_down then --math.abs(obj.getRotation()[3])>10
-        h = 0.1-h
+        h = -h --0.1
         z_rot = 180
     end
     def = Obstacle.lookup(custom.collider)
@@ -314,7 +345,11 @@ function update_asteroid_buttons(obj,player)
         obj.createButton(billboard({label="Lock",click_function="Action_LockAsteroid", position={0,h,0}, rotation={0,0,z_rot}, width=800*def.scale, height=300*def.scale, font_size=200*def.scale, color={0,1,0,0.5}, font_color={1,1,1,2}},obj,player))
     else
         if obj.getVar('ruler')==nil then
-            obj.createButton(billboard({label="",click_function="Action_LoadLastAsteroidRuler",position={0,h,0}, rotation={0,0,z_rot},width=800*def.scale,height=800*def.scale,color={0,0,0,0.5},tooltip="Spawn Range Ruler"},obj,player))
+            color = {0,0,0,0.5}
+            if current_obstacle_btn_state == OBSTACLE_BTN_HIGH then
+                color = {1,0,0,0.5}
+            end
+            obj.createButton(billboard({label="",click_function="Action_LoadLastAsteroidRuler",position={0,h,0}, rotation={0,0,z_rot},width=800*def.scale,height=800*def.scale,color=color,tooltip="Spawn Range Ruler"},obj,player))
         else
             obj.createButton(billboard({label="Clear", position={0,h,0.5}, rotation={0,0,z_rot},click_function="Action_ClearAsteroidRuler",width=800, height=300, font_size=200, color={1,0,0,0.5}, font_color={1,1,1,2}},obj,player))
             obj.createButton(billboard({label="Move", position={0,h,-1.5}, rotation={0,0,z_rot},click_function="Action_MoveAsteroid",width=800, height=300, font_size=200, color={0,0.5,1,0.5}, font_color={1,1,1,2}},obj,player))

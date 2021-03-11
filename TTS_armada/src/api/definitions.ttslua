@@ -115,7 +115,7 @@ SmallShip = { collider = "http://paste.ee/r/eDbf1" }
 MediumShip = { collider = "http://paste.ee/r/6LYTT" }
 LargeShip = { collider = "http://paste.ee/r/a7mfW" }
 HugeShip = { collider = "http://paste.ee/r/ClCL3" }
-Squadron = { collider = "http://paste.ee/r/nAMCQ", convex = false, type = 1,
+Squadron = { collider = "http://paste.ee/r/ZKM7E", convex = false, type = 1, --http://paste.ee/r/nAMCQ
     material = 1, health = 0, move = 0, defense_tokens = {}, cost = 0,
     name = "", front = "", back = "", aliases = {}, faction = "" }
 DefaultSquad = table.copy(Squadron)

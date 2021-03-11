@@ -1,0 +1,37 @@
+<VerticalLayout color="black"
+    id="rulerProxyPopup"
+    height="400"
+    width="100"
+    rectAlignment="UpperLeft"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    offsetXY="100 0"
+    outlineSize="1 1"
+    outline="#303030">
+
+    <VerticalLayout class="helpPanel">
+        <HorizontalLayout>
+            <Button>◄</Button>
+            <Button>II</Button>
+            <Button>►</Button>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <Button>◄</Button>
+            <Button>II</Button>
+            <Button>►</Button>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <Button>◄</Button>
+            <Button>II</Button>
+            <Button>►</Button>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <Button>◄</Button>
+            <Button>II</Button>
+            <Button>►</Button>
+        </HorizontalLayout>
+    </VerticalLayout>
+    <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
+    <!-- <Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" />
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" /> -->
+</VerticalLayout>
