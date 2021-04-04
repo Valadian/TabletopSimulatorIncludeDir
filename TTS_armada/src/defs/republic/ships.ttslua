@@ -76,20 +76,20 @@ Ship:new(LargeShip,REPUBLIC_SHIP,{
 })
 
 --Missing upgrades & cost
--- Ship:new(LargeShip,REPUBLIC_SHIP,{
--- 	name = "Venator II-class Star Destroyer",
---     front = "",
---     back = "",
---     mesh = "http://paste.ee/p/kgyOU",
---     diffuse = "",
---     ruler = "http://paste.ee/r/xTAdu",
---     maneuver = {{"I"},{"I","I"},{"-","I","-"}},
---     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
---     shields = {4,3,3,2},
---     cost = 0,
--- 	aliases = {"Venator II Star Destroyer", "Venator I"},
---     command = 3
--- })
+Ship:new(LargeShip,REPUBLIC_SHIP,{
+	name = "Venator II-class Star Destroyer",
+    front = "https://i.imgur.com/RouFvsV.jpeg",
+    back = "https://i.imgur.com/NwlVAqx.jpeg",
+    mesh = "http://paste.ee/p/kgyOU",
+    diffuse = "https://i.imgur.com/v6GaES5.jpeg",
+    ruler = "http://paste.ee/r/xTAdu",
+    maneuver = {{"I"},{"I","I"},{"-","I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+    shields = {4,3,3,2},
+    cost = 100,
+	aliases = {"Venator II Star Destroyer", "Venator II"},
+    command = 3
+})
 
 Ship:new(SmallShip,REPUBLIC_SHIP,{
 	name = "Pelta-class Medical Frigate",

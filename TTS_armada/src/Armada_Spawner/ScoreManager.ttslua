@@ -165,7 +165,7 @@ function processFleetMetrics(color)
     fleet.nonFlotillaCount = 0
     fleet.nonFlotillaDead = 0
     fleet.maxPoints = 0
-    fleet.secondPlayer = #T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(isObjectiveCard)==2
+    fleet.secondPlayer = not #T(getObjectFromGUID(FLEETZONES[color]).getObjects()):Where(isObjectiveCard)==3
     for _, fleetitem in ipairs(fleet.ships) do
         -- fleetitem.bonusCost = 0
         fleetitem.totalDead = 0

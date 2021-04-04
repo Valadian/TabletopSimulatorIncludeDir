@@ -258,7 +258,7 @@ function onObjectSpawn(object)
             ['font_color']={0,0,0}})
     end
 end
-#include MapManager
+-- #include MapManager
 function Action_select_objective(card)
     def = CARDS[string.lower(card.getName())]
     onClick_select_victoryToken(nil, nil, "Victory_0")

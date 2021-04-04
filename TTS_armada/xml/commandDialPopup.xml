@@ -118,7 +118,7 @@
             <Text alignment="MiddleLeft" >After placing one click the <textcolor color="#40FF40">"Lock"</textcolor> button.</Text>
             <Text alignment="MiddleLeft" >To Check Range, click on the obstacles (It has a big invisible button)</Text>
             <Text alignment="MiddleLeft" >The Obstacle will remember the last range used.</Text>
-            <Text alignment="MiddleLeft" >When ruler is visible, a <textcolor color="#4060FF">"Move"</textcolor> button will appear to facility ranged obstacle movement.</Text>
+            <Text alignment="MiddleLeft" >When ruler is visible, a <textcolor color="#4060FF">"Move"</textcolor> button will appear to facilitate ranged obstacle movement.</Text>
         </VerticalLayout>
     </VerticalLayout>
     <VerticalLayout id="helpPage5" active="false" class="helpPanel">

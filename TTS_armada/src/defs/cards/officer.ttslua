@@ -50,12 +50,20 @@ Card:new(Officer,Empire,{name="Wulff Yularen", front="https://i.imgur.com/dvWsOm
 Card:new(Officer,Republic,{name="Clone Captain Zak", front="https://i.imgur.com/A1FePh3.jpeg", cost=5})
 Card:new(Officer,Republic,{name="Clone Navigation Officer", front="https://i.imgur.com/Mt2SoH7.jpg", cost=4})
 Card:new(Officer,Republic,{name="Barriss Offee", front="https://i.imgur.com/TK5hk9G.png", cost=6})
+Card:new(Officer,Republic,{name="Adi Gallia", front="https://i.imgur.com/NtfCKwG.jpeg", cost=3})
+Card:new(Officer,Republic,{name="Clone Captain Silver", front="https://i.imgur.com/VzHNQTY.jpg", cost=4})
+Card:new(Officer,Republic,{name="Clone Cmdr. Wolffe", front="https://i.imgur.com/pb3QjZp.jpg", cost=6})
+Card:new(Officer,Republic,{name="Ahsoka Tano", front="https://i.imgur.com/SVAWnrZ.jpeg", cost=6})
 
 --separatist
 Card:new(Officer,Separatist,{name="Rune Haako", front="https://i.imgur.com/aEgMSwp.jpg", cost=4})
 Card:new(Officer,Separatist,{name="Wat Tambor", front="https://i.imgur.com/MYpNhXT.jpeg", cost=5})
 Card:new(Officer,Separatist,{name="T-Series Tactical Droid", front="https://i.imgur.com/8H1wATK.jpeg", cost=4})
 Card:new(Officer,Separatist,{name="Shu Mai", front="https://i.imgur.com/8dG1YpO.png", cost=4})
+Card:new(Officer,Separatist,{name="TI-99", front="https://i.imgur.com/V9CYOEU.png", cost=4})
+Card:new(Officer,Separatist,{name="Tikkes", front="https://i.imgur.com/l7G05tI.png", cost=2})
+Card:new(Officer,Separatist,{name="San Hill", front="https://i.imgur.com/AcVqv40.png", cost=3})
+Card:new(Officer,Separatist,{name="Passel Argente", front="https://i.imgur.com/fVSYbCJ.png", cost=6})
 
 --generic
 Card:new(Officer,{name="Chart Officer", front="https://i.imgur.com/HVWr1Ru.jpg", cost=2})

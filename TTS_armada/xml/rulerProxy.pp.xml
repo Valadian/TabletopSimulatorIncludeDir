@@ -1,7 +1,7 @@
 <VerticalLayout color="black"
     id="rulerProxyPopup"
-    height="400"
-    width="100"
+    height="300"
+    width="150"
     rectAlignment="UpperLeft"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
@@ -9,28 +9,40 @@
     outlineSize="1 1"
     outline="#303030">
 
-    <VerticalLayout class="helpPanel">
+    <VerticalLayout padding="10 10 0 10">
+        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3"> Ruler </Text>
+        <?foreach I in 4;3;2;1;0?>
         <HorizontalLayout>
-            <Button>◄</Button>
-            <Button>II</Button>
-            <Button>►</Button>
+            <Button class="rulerTurn" id="ruler_-1_2_$(var.I)">II</Button>
+            <Button class="rulerTurn" id="ruler_-1_1_$(var.I)">I</Button>
+            <Button class="rulerTurn" id="ruler_0_0_$(var.I)">-</Button>
+            <Button class="rulerTurn" id="ruler_1_1_$(var.I)">I</Button>
+            <Button class="rulerTurn" id="ruler_1_2_$(var.I)">II</Button>
+            <Button class="rulerTurn" id="ruler_$(var.I)">$(var.I)</Button>
         </HorizontalLayout>
-        <HorizontalLayout>
-            <Button>◄</Button>
+        <?endforeach?>
+
+        <!-- <HorizontalLayout>
+            <Button class="rulerTurn">◄</Button>
             <Button>II</Button>
-            <Button>►</Button>
-        </HorizontalLayout>
+            <Button class="rulerTurn">►</Button>
+            <Button>$(var.I)</Button>
+        </HorizontalLayout> -->
         <HorizontalLayout>
-            <Button>◄</Button>
-            <Button>II</Button>
-            <Button>►</Button>
-        </HorizontalLayout>
-        <HorizontalLayout>
-            <Button>◄</Button>
-            <Button>II</Button>
-            <Button>►</Button>
+            <Button class="rulerTurn">M</Button>
+
+            <Text></Text>
+
+            <Button class="rulerTurn">M</Button>
         </HorizontalLayout>
     </VerticalLayout>
+    <HorizontalLayout>
+        <Button class="rulerTurn">Prev</Button>
+        <Text></Text>
+        <Button class="rulerTurn">Next</Button>
+    </HorizontalLayout>
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_ruler"  color="#FF0000" />
+
     <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
     <!-- <Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" />
     <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" /> -->

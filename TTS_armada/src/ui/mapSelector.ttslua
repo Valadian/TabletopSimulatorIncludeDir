@@ -1,0 +1,37 @@
+MAPS = {}
+
+MAPS["original"] = "https://i.imgur.com/0KjWlZ5.jpeg"
+MAPS["classic_setup"] = "https://i.imgur.com/vyTXggp.jpg"
+MAPS["classic_setup_d4"] = "https://i.imgur.com/mW0Sff7.jpg"
+MAPS["classic_setup_d5"] = "https://i.imgur.com/CRIHRpv.jpg"
+MAPS["classic_setup_center"] = "https://i.imgur.com/DXBXRgh.jpeg"
+MAPS["classic_setup_center_d5"] = "https://i.imgur.com/uiVVSBF.jpeg"
+MAPS["classic_setup_3ft_d24"] = "https://i.imgur.com/76qYPRN.jpg"
+MAPS["classic_setup_3ft_d1"] = "https://i.imgur.com/DcCv5TL.jpeg"
+MAPS["take_the_station"] = "https://i.imgur.com/iSATBMI.jpg"
+MAPS["fleet_ambush"] = "https://i.imgur.com/pP1DERr.jpeg"
+MAPS["classic"] = "https://i.imgur.com/w7gX3wI.jpg"
+MAPS["hoth"] = "https://i.imgur.com/b0V8PIb.jpg"
+MAPS["scarif"] = "https://i.imgur.com/fhbvvWR.jpg"
+MAPS["solar_corona_left"] = "https://i.imgur.com/uYQ4vm5.jpg"
+MAPS["solar_corona_right"] = "https://i.imgur.com/5H1j6D7.jpg"
+MAPS["doomed_station"] = "https://i.imgur.com/fFKS59s.jpg"
+MAPS["italia"] = "https://i.imgur.com/ZH3BOIY.jpg"
+MAPS["task_force"] = "https://i.imgur.com/GccejV5.jpeg"
+function onClick_select_map(player, _, idValue)
+    customUrl = MAPS[idValue]
+    if customUrl~=nil then
+        Tables.setCustomURL(customUrl)
+    else
+        print(idValue.." not recognized as custom map")
+    end
+end
+function onClick_ToggleTableSelect(player, _, idValue)
+    local active = UI.getAttribute("mapSelectorPopup","active")
+    if active==nil or active=="true" then
+        UI.hide("mapSelectorPopup")
+    else
+        UI.show("mapSelectorPopup")
+    end
+
+end

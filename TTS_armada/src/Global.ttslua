@@ -252,6 +252,9 @@ end
 -- end
 function Action_ToggleDestroyShipButtons()
     for _,ship in ipairs(getAllObjects()) do
+        if isSquad(ship) then
+            clearSquadRulers(ship)
+        end
         if isShip(ship) or isSquad(ship) then
             ship.clearButtons()
             ship.createButton(buildRelativeButton(ship, "DESTROY",{click_function="Action_destroy",position={0,1,-0.3},width=800, height=500, color={1, 0, 0 ,0.9}, font_color={1,1,1,1.11}, tooltip="Move Ship to side"},ship_button_def))
@@ -1266,14 +1269,19 @@ function findCommandBase(position)
         end
     end
 end
-function Action_Done(squad)
+function clearSquadRulers(squad)
     local ruler = squad.getVar('ruler')
-    --local squad = object.getVar('parent')
-    squad_move_rulers[squad.getGUID()]=nil
-    updateSquadButtons(squad)
-    ruler.destruct()
-    squad.destroyAttachments()
+    if ruler then
+        squad_move_rulers[squad.getGUID()]=nil
+        ruler.destruct()
+        squad.setVar('ruler',nil)
+        squad.destroyAttachments()
+    end
     squad.lock()
+end
+function Action_Done(squad)
+    clearSquadRulers(squad)
+    updateSquadButtons(squad)
 end
 function Action_ruler_left(ship, player_clicker_color, alt_click)
     hovered_ships[player_clicker_color] = ship

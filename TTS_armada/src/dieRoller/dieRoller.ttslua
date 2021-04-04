@@ -1,3 +1,4 @@
+SCRIPT = "function onDestroy() dieRollerInfo = Global.getTable('dieRollerInfo') dieRoller = getObjectFromGUID(dieRollerInfo."..colorSide.."DieRollerGUID) dieRoller.call('waitToUpdate') end function onDrop()  dieRollerInfo = Global.getTable('dieRollerInfo') dieRoller = getObjectFromGUID(dieRollerInfo."..colorSide.."DieRollerGUID) dieRoller.call('waitToUpdate') end"
 function onLoad(save_state)
     self.interactable = false
     -- colorSide = "red"
@@ -29,13 +30,13 @@ function dud()
 end
 
 function rollDie()
-    if dieObjs != nil then
-        for i, obj in pairs(dieRollerZone.getObjects()) do --dieObjs
-            if obj != nil then
-                obj.roll()
-            end
+    -- if dieObjs != nil then
+    for i, obj in pairs(dieRollerZone.getObjects()) do --dieObjs
+        if obj != nil then
+            obj.roll()
         end
     end
+    -- end
 end
 
 function createDieTimer(timerDelay)
@@ -51,30 +52,40 @@ function createDieTimer(timerDelay)
     })
 
 end
-
+function getDieColor(obj)
+    local dieColor = obj.getVar("dieColor")
+    if dieColor==nil then
+        custom = obj.getCustomObject()
+        isDie = (custom~=nil and custom.image ~=nil)
+        if isDie then
+            obj.setVar("dieColor",DIE_COLORS[custom.image])
+        end
+        dieColor = obj.getVar("dieColor")
+    end
+    return dieColor
+end
 function printDieValues()
     local dieRecord = {}
     dieRecord.hit = 0
     dieRecord.crit = 0
     dieRecord.acc = 0
-    if dieObjs != nil then
-        for i, obj in pairs(dieObjs) do
+    local zoneObjs = dieRollerZone.getObjects()
+    if zoneObjs != nil then
+        for i, obj in pairs(zoneObjs) do
             if obj != nil then
                 local sDieValue = obj.getValue()
-                if sDieValue==nil then
-                    break
+                if sDieValue~=nil then
+                    local sDieColor = getDieColor(obj) --obj.getVar("dieColor")
+                    if sDieColor ~=nil then
+                        local sDieResult = dieRollerInfo.dieValues[sDieColor][sDieValue]
+                        if sDieResult == nil then
+                            print(tostring(sDieColor)..tostring(sDieValue))
+                        end
+                        for _,icon in pairs(sDieResult) do
+                            dieRecord[icon] = dieRecord[icon] + 1
+                        end
+                    end
                 end
-                local sDieColor = obj.getVar("dieColor")
-
-                local sDieResult = dieRollerInfo.dieValues[sDieColor][sDieValue]
-                if sDieResult == nil then
-                    print(tostring(sDieColor)..tostring(sDieValue))
-                end
-                for _,icon in pairs(sDieResult) do
-                    dieRecord[icon] = dieRecord[icon] + 1
-                end
-
-
             end
         end
     end
@@ -109,10 +120,13 @@ function spawnRedAttackDice()
 end
 
 
+dieObjs = {}
+dieGuidCache = {}
 function spawnDie(dieColor)
 
     if dieObjs == nil then
         dieObjs = {}
+        dieGuidCache = {}
     else
         for i, obj in pairs(dieObjs) do
             dieCount = i
@@ -147,9 +161,10 @@ function spawnDie(dieColor)
             position = pos,
             rotation = diceRot
         })
+        dieGuidCache[dieObjs[dieCount].getGUID()] = dieObjs[dieCount]
 
         dieObjs[dieCount].setPosition(pos)
-        dieObjs[dieCount].setLuaScript("function onDestroy() dieRollerInfo = Global.getTable('dieRollerInfo') dieRoller = getObjectFromGUID(dieRollerInfo."..colorSide.."DieRollerGUID) dieRoller.call('waitToUpdate') end")
+        dieObjs[dieCount].setLuaScript(SCRIPT)
 
         dieObjs[dieCount].setVar("dieColor", dieColor)
 
@@ -158,15 +173,17 @@ function spawnDie(dieColor)
 end
 
 function clearDie()
-    if dieObjs != nil then
-        for i, obj in pairs(dieObjs) do
-            if obj != nil then
-                destroyObject(obj)
-            end
-        end
-        dieObjs = nil
-        dieCount = 0
-    end
+    dieCount = 0
+    dieObjs = {}
+    -- if dieObjs != nil then
+    --     for i, obj in pairs(dieObjs) do
+    --         if obj != nil then
+    --             destroyObject(obj)
+    --         end
+    --     end
+    --     dieObjs = nil
+    --     dieCount = 0
+    -- end
 
     local zoneObjs = dieRollerZone.getObjects()
 
@@ -176,6 +193,13 @@ function clearDie()
         end
     end
 end
+RED_DIFFUSE = "http://i.imgur.com/MmwVdPY.jpg"
+BLUE_DIFFUSE = "http://i.imgur.com/iMYTEPL.jpg"
+BLACK_DIFFUSE = "http://i.imgur.com/1VkLvkX.jpg"
+DIE_COLORS = {}
+DIE_COLORS["http://i.imgur.com/MmwVdPY.jpg"] = "red"
+DIE_COLORS["http://i.imgur.com/iMYTEPL.jpg"] = "blue"
+DIE_COLORS["http://i.imgur.com/1VkLvkX.jpg"] = "black"
 
 function updateDieCountDisplay()
     dieColorCount = {}
@@ -183,11 +207,43 @@ function updateDieCountDisplay()
     dieColorCount.blue = 0
     dieColorCount.red = 0
 
-    if dieObjs != nil then
-        for i, obj in pairs(dieObjs) do
+    if dieRollerZone==nil then
+        return
+    end
+    local zoneObjs = dieRollerZone.getObjects()
+    for _,newObj in pairs(zoneObjs) do
+        if newObj != self and newObj~=nil then
+            if dieGuidCache[newObj.getGUID()]==nil then
+                -- print("Found something new?")
+                custom = newObj.getCustomObject()
+                isDie = (custom~=nil and custom.image ~=nil)
+                if isDie then
+                    newObj.setVar("dieColor",DIE_COLORS[custom.image])
+                    newObj.setLuaScript(SCRIPT)
+                    -- print("setting color to: "..DIE_COLORS[custom.image])
+                    for i, dieObj in pairs(dieObjs) do
+                        dieCount = i
+                        if dieObj == nil then
+                            dieCount = dieCount - 1
+                            break
+                        end
+                    end
+                    dieCount = dieCount + 1
+                    -- print("putting at index: "..tostring(dieCount))
+                    dieObjs[dieCount] = newObj
+                    dieGuidCache[newObj.getGUID()] = newObj
+                end
+            end
+        end
+    end
+
+    if zoneObjs != nil then
+        for i, obj in pairs(zoneObjs) do
             if obj != nil then
-                local selectedColor = obj.getVar("dieColor")
-                dieColorCount[selectedColor] = dieColorCount[selectedColor] + 1
+                local selectedColor = getDieColor(obj) --obj.getVar("dieColor")
+                if dieColorCount[selectedColor]~=nil then
+                    dieColorCount[selectedColor] = dieColorCount[selectedColor] + 1
+                end
             end
         end
     end
@@ -198,6 +254,10 @@ function updateDieCountDisplay()
     updateButtonDisplay(dieRollerInfo.buttonInfo[colorSide.."Player"].blueAttackButtonGUID,"blue")
     updateButtonDisplay(dieRollerInfo.buttonInfo[colorSide.."Player"].redAttackButtonGUID,"red")
 
+end
+--on collision is a bad idea
+function onCollisionEnter(collision_info)
+    updateDieCountDisplay()
 end
 
 function waitToUpdate()

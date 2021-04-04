@@ -1,0 +1,54 @@
+
+<VerticalLayout color="black"
+    id="mapSelectorPopup"
+    height="400"
+    width="600"
+    rectAlignment="MiddleCenter"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    offsetXY="0 0"
+    outlineSize="1 1"
+    outline="#303030"
+    active="false">
+
+    <VerticalLayout class="helpPanel">
+        <HorizontalLayout class="helpHeading">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleCenter" color="yellow">Table Selector</Text>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <GridLayout cellSize="180 30">
+                <Text color="yellow">Setup</Text>
+                <Button id="original" text="Default" class="map"></Button>
+                <Button id="classic_setup" text="Basic" class="map"></Button>
+                <Button id="classic_setup_d4" text="Dist. 4 Player Edge" class="map"></Button>
+                <Button id="classic_setup_d5" text="Dist. 5 Player Edge" class="map"></Button>
+                <Button id="classic_setup_center" text="Center Indicator" class="map"></Button>
+                <Button id="classic_setup_center_d5" text="Dist. 5 + Center" class="map"></Button>
+
+                <Button id="classic_setup_3ft_d24" text="Blockade Run" class="map"></Button>
+                <Button id="classic_setup_3ft_d1" text="Hyperspace Migration" class="map"></Button>
+                <Button id="fleet_ambush" text="Fleet Ambush" class="map"></Button>
+            </GridLayout>
+            <GridLayout cellSize="180 30">
+                <Text color="yellow">No outlines</Text>
+                <Button id="classic" text="Classic" class="map"></Button>
+                <Button id="hoth" text="Hoth" class="map"></Button>
+                <Button id="scarif" text="Scarif Shield Gate" class="map"></Button>
+                <Text color="yellow">Objective Themed</Text>
+                <Button id="solar_corona_left" text="Solar Corona Left" class="map"></Button>
+                <Button id="solar_corona_right" text="Solar Corona Right" class="map"></Button>
+                <Button id="doomed_station" text="Doomed Station" class="map"></Button>
+            </GridLayout>
+            <GridLayout cellSize="180 30">
+                <Text color="yellow">Miscellaneous</Text>
+                <Button id="task_force" text="Task Force (3'x3')" class="map"></Button>
+                <Button id="take_the_station" text="Take the Station" class="map"></Button>
+                <Text color="yellow">Commemorative</Text>
+                <Button id="italia" text="Italia 2021" class="map" ></Button>
+            </GridLayout>
+        </HorizontalLayout>
+    </VerticalLayout>
+    <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
+    <Button icon="TABLE" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_ToggleTableSelect" color="#00000000" iconColor="#FFFFFF" />
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_ToggleTableSelect"  color="#FF0000" />
+</VerticalLayout>

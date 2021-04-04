@@ -294,6 +294,12 @@ function onClick_score_submit(player, _, idValue)
     fleet = FLEETS[UI.getAttribute("Player1name","color")]
     FIRST_FLEET = fleet
     player1faction = nil
+    if fleet==nil then
+        print("No fleet found for Player 1!")
+        print("Please ensure players are seated on the correct side of the board, and reclick the appropriate colors for first and second player.")
+        print("If all else fails, save the game, and reload, and retry score submission")
+        return
+    end
     if #fleet.ships > 0 then
         player1faction = fleet.ships[1].def.faction
     end
@@ -306,6 +312,12 @@ function onClick_score_submit(player, _, idValue)
     fleet = FLEETS[UI.getAttribute("Player2name","color")]
     SECOND_FLEET = fleet
     player2faction = nil
+    if fleet==nil then
+        print("No fleet found for Player 2!")
+        print("Please ensure players are seated on the correct side of the board, and reclick the appropriate colors for first and second player.")
+        print("If all else fails, save the game, and reload, and retry score submission")
+        return
+    end
     if #fleet.ships > 0 then
         player2faction = fleet.ships[1].def.faction
     end
