@@ -56,3 +56,4 @@ Card:new(Commander,Separatist,{name="Kraken",  front="https://i.imgur.com/zLNsrO
 Card:new(Commander,Separatist,{name="General Grievous",  front="https://i.imgur.com/xLHg92l.png", cost=20})
 Card:new(Commander,Separatist,{name="Admiral Trench", front="https://i.imgur.com/eOaryOm.png", cost=36})
 Card:new(Commander,Separatist,{name="Mar Tuuk", front="https://i.imgur.com/POTMBXQ.png", cost=28})
+Card:new(Commander,Separatist,{name="TF-1726", front="https://i.imgur.com/aptrDok.png", cost=26})

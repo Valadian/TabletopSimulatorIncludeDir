@@ -80,7 +80,7 @@ Ship:new(LargeShip,REPUBLIC_SHIP,{
 	name = "Venator II-class Star Destroyer",
     front = "https://i.imgur.com/RouFvsV.jpeg",
     back = "https://i.imgur.com/NwlVAqx.jpeg",
-    mesh = "http://paste.ee/p/kgyOU",
+    mesh = "https://paste.ee/r/HGn2s",
     diffuse = "https://i.imgur.com/v6GaES5.jpeg",
     ruler = "http://paste.ee/r/xTAdu",
     maneuver = {{"I"},{"I","I"},{"-","I","-"}},
@@ -95,7 +95,7 @@ Ship:new(SmallShip,REPUBLIC_SHIP,{
 	name = "Pelta-class Medical Frigate",
     front = "https://i.imgur.com/lC6GsSz.jpg",
     back = "https://i.imgur.com/3saMSsF.jpeg",
-    mesh = "https://paste.ee/r/BEzxN",
+    mesh = "https://paste.ee/p/004bf",
     diffuse = "https://i.imgur.com/vezZAah.jpeg",
     ruler = "http://paste.ee/p/RDjaZ",
     maneuver = {{"II"},{"I","I"}},
@@ -103,5 +103,20 @@ Ship:new(SmallShip,REPUBLIC_SHIP,{
     shields = {3,2,2,1},
     cost = 49,
 	aliases = {"Pelta Medical Frigate"},
+    command = 2
+})
+
+Ship:new(SmallShip,REPUBLIC_SHIP,{
+    name = "Pelta-class Transport Frigate",
+    front = "https://i.imgur.com/8mtcXZo.jpg",
+    back = "https://i.imgur.com/l5NzvDW.jpg",
+    mesh = "https://paste.ee/p/004bf",
+    diffuse = "https://i.imgur.com/TRyu90g.jpg",
+    ruler = "http://paste.ee/p/RDjaZ",
+    maneuver = {{"II"},{"I","I"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT},
+    shields = {3,2,2,1},
+    cost = 45,
+    aliases = {"Pelta Transport Frigate"},
     command = 2
 })

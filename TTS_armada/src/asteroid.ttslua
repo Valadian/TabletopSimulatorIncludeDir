@@ -429,7 +429,7 @@ function LoadAsteroidRuler(obj, size, player) --size 1-5
     obj_parameters.type = 'Custom_Model'
     obj_parameters.position = obj.getPosition() --vector.add(obj.getPosition(),{0.1,0,0.1})
     if obj.is_face_down then --math.abs(obj.getRotation()[3])>10
-        print("face down")
+        -- print("face down")
         obj_parameters.rotation = {0,obj.getRotation()[2],180}
     else
         obj_parameters.rotation = {0,obj.getRotation()[2],0}

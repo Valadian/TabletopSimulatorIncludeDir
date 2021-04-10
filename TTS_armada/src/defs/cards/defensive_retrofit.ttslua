@@ -2,6 +2,11 @@ DefensiveRetrofit = {
     type="DefensiveRetrofit",
     back = "https://i.imgur.com/WXkUkKe.png"
 }
+CloneWars = {
+    factions={"Republic","Separatist"}
+}
+Card:new(DefensiveRetrofit,CloneWars,{name="Thermal Shields", front="https://i.imgur.com/ih2D2Zz.png", cost=5})
+
 Card:new(DefensiveRetrofit,{name="Advanced Projectors", front="https://i.imgur.com/fREeP77.jpg", cost=6})
 Card:new(DefensiveRetrofit,{name="Cluster Bombs", front="https://i.imgur.com/Ngqc1s9.jpg", cost=5})
 Card:new(DefensiveRetrofit,{name="Early Warning System", front="https://i.imgur.com/PBh5gdb.jpg", cost=7})

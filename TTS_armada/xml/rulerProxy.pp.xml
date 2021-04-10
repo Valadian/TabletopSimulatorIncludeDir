@@ -1,49 +1,71 @@
+<Panel>
+<?foreach Color in White;Brown;Red;Orange;Yellow;Green;Teal;Blue;Purple;Pink?>
 <VerticalLayout color="black"
-    id="rulerProxyPopup"
-    height="300"
+    id="rulerProxyPopup_$(var.Color)"
+    height="350"
     width="150"
     rectAlignment="UpperLeft"
     allowDragging="true"
     returnToOriginalPositionWhenReleased="false"
     offsetXY="100 0"
     outlineSize="1 1"
-    outline="#303030">
+    outline="#303030"
+    visibility="$(var.Color)"
+    active="false">
 
     <VerticalLayout padding="10 10 0 10">
         <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3"> Ruler </Text>
-        <?foreach I in 4;3;2;1;0?>
+        <?foreach I in 4;3;2;1?>
         <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_$(var.I)">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_$(var.I)">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_$(var.I)">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_$(var.I)">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_$(var.I)">II</Button>
-            <Button class="rulerTurn" id="ruler_$(var.I)">$(var.I)</Button>
+            <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_$(var.Color)_-2_$(var.I)">II</Button>
+            <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_$(var.Color)_-1_$(var.I)">I</Button>
+            <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_$(var.Color)_0_$(var.I)">-</Button>
+            <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_$(var.Color)_1_$(var.I)">I</Button>
+            <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_$(var.Color)_2_$(var.I)">II</Button>
+            <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_$(var.Color)_$(var.I)">$(var.I)</Button>
         </HorizontalLayout>
         <?endforeach?>
-
+        <HorizontalLayout>
+            <Text></Text>
+            <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+            <Text></Text>
+            <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+            <Text></Text>
+            <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_$(var.Color)_0">0</Button>
+        </HorizontalLayout>
+        <Text></Text>
         <!-- <HorizontalLayout>
             <Button class="rulerTurn">◄</Button>
             <Button>II</Button>
             <Button class="rulerTurn">►</Button>
             <Button>$(var.I)</Button>
         </HorizontalLayout> -->
-        <HorizontalLayout>
-            <Button class="rulerTurn">M</Button>
+        <Panel padding="2 2 2 0" color="white">
+            <HorizontalLayout color="black">
+                <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
 
-            <Text></Text>
+                <Text></Text>
 
-            <Button class="rulerTurn">M</Button>
-        </HorizontalLayout>
+                <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+            </HorizontalLayout>
+        </Panel>
     </VerticalLayout>
     <HorizontalLayout>
-        <Button class="rulerTurn">Prev</Button>
+        <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
         <Text></Text>
-        <Button class="rulerTurn">Next</Button>
+        <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
     </HorizontalLayout>
-    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_ruler"  color="#FF0000" />
+    <Text id="ruler_$(var.Color)_ShipName">Ship Name</Text>
+    <HorizontalLayout>
+        <Button onclick="onClick_move" class="rulerTurn" id="ruler_$(var.Color)_move">Move</Button>
+        <Button onclick="onClick_done" class="rulerTurn" id="ruler_$(var.Color)_done" textColor="#00B000">Done</Button>
+        <Button onclick="onClick_undo" class="rulerTurn" id="ruler_$(var.Color)_undo" textColor="#B00000">Undo</Button>
+    </HorizontalLayout>
+    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI"  color="#FF0000" />
 
     <!-- <Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" /> -->
     <!-- <Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" />
     <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" /> -->
 </VerticalLayout>
+<?endforeach?>
+</Panel>

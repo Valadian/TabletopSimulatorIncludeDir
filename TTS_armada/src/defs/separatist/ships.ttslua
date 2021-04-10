@@ -59,22 +59,20 @@ Ship:new(MediumShip,SEPARATIST_SHIP,{
     command = 2
 })
 
-
---Missing command values
--- Ship:new(LargeShip,REPUBLIC_SHIP,{
--- 	name = "Recusant-class Light Destroyer",
---     front = "",
---     back = "",
---     mesh = "",
---     diffuse = "",
---     ruler = "http://paste.ee/r/D0Zp2",
---     maneuver = {{"I"},{"I","I"},{"-","II","I"}},
---     defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
---     shields = {3,3,3,2},
---     cost = 85,
--- 	aliases = {"Recusant Light Destroyer"},
---     command = 3
--- })
+Ship:new(LargeShip,SEPARATIST_SHIP,{
+    name = "Recusant-class Light Destroyer",
+    front = "https://i.imgur.com/rQUJG5H.jpg",
+    back = "https://i.imgur.com/KWnHiDM.jpg",
+    mesh = "https://paste.ee/r/d7jlM",
+    diffuse = "https://i.imgur.com/vMHdIoD.jpg",
+    ruler = "https://paste.ee/r/CX9QP",
+    maneuver = {{"I"},{"I","I"},{"-","II","I"}},
+    defense_tokens = {DEF_EVADE,DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {3,3,3,2},
+    cost = 85,
+    aliases = {"Recusant Light Destroyer"},
+    command = 3
+})
 Ship:new(LargeShip,SEPARATIST_SHIP,{
 	name = "Recusant-class Support Destroyer",
     front = "https://i.imgur.com/EnEIdGQ.jpg",
@@ -104,18 +102,20 @@ Ship:new(LargeShip,SEPARATIST_SHIP,{
 	aliases = {"Providence Carrier"},
     command = 3
 })
---Missing command values
--- Ship:new(LargeShip,REPUBLIC_SHIP,{
--- 	name = "Providence-class Dreadnought",
---     front = "",
---     back = "",
---     mesh = "",
---     diffuse = "",
---     ruler = "",
---     maneuver = {{"II"},{"I","I"},{"I","-","-"}},
---     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
---     shields = {5,3,3,2},
---     cost = 105,
--- 	aliases = {"Providence Dreadnought"},
---     command = 3
--- })
+
+
+
+Ship:new(LargeShip,SEPARATIST_SHIP,{
+	name = "Providence-class Dreadnought",
+    front = "https://i.imgur.com/2CH9F4i.jpg",
+    back = "https://i.imgur.com/iwkvRIs.jpg",
+    mesh = "https://paste.ee/r/hJbfr",
+    diffuse = "https://i.imgur.com/B2qDRiX.jpeg",
+    ruler = "http://paste.ee/r/YcTl3",
+    maneuver = {{"II"},{"I","I"},{"I","-","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+    shields = {5,3,3,2},
+    cost = 105,
+	aliases = {"Providence Dreadnought"},
+    command = 3
+})

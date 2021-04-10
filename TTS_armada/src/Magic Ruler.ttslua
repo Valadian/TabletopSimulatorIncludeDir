@@ -299,6 +299,12 @@ function Action_Move()
     storeUndo(ship,moved_tokens)
     drawButtons()
 end
+function API_GET_NUM_CMDS()
+    return #cmds
+end
+function API_GET_CMD_AT(idx)
+    return cmds[idx]
+end
 function API_MOVE_SHIP(params)
     --params = { ship, pos, rot }
     old_pos = params.ship.getPosition()
@@ -415,6 +421,30 @@ function isShip(ship)
 end
 function RotateRuler(i, direction)
     cmds[i] = math.clamp(cmds[i]+direction,-2,2)
+    buildRuler(cmds)
+end
+function API_SetSpeed(params)
+    cmdLen = #cmds
+    if params.speed>cmdLen then
+        for i=cmdLen+1,params.speed do
+            table.insert(cmds,"0")
+        end
+    end
+    if params.speed<cmdLen then
+        for i=params.speed,cmdLen-1 do
+            table.remove(cmds)
+        end
+    end
+    buildRuler(cmds)
+end
+function API_SetYaw(params)
+    cmdLen = #cmds
+    if params.idx>cmdLen then
+        for i=cmdLen+1,params.idx do
+            table.insert(cmds,"0")
+        end
+    end
+    cmds[params.idx] = params.value
     buildRuler(cmds)
 end
 function Action_AddRuler()
@@ -601,6 +631,12 @@ function API_move()
         Action_Move()
     end
 
+end
+function API_done()
+    Action_ClearRuler()
+end
+function API_undo()
+    Action_Undo()
 end
 
 -- function lockRuler()

@@ -2,8 +2,15 @@ FleetCommand = {
     type="FleetCommand",
     back = "https://i.imgur.com/etN596C.png" --TODO: Fix this less awful image
 }
+CloneWars = {
+    factions={"Republic","Separatist"}
+}
 Card:new(FleetCommand,{name="All Fighters, Follow Me!", front="https://i.imgur.com/pRqJy8Z.jpg", cost=5})
 Card:new(FleetCommand,{name="Entrapment Formation!", front="https://i.imgur.com/7ipOGiT.jpg", cost=5})
 Card:new(FleetCommand,{name="Intensify Firepower!", front="https://i.imgur.com/X4Pkv96.jpg", cost=6})
 Card:new(FleetCommand,{name="Shields to Maximum!", front="https://i.imgur.com/2I3JN7G.jpg", cost=6})
 Card:new(FleetCommand,{name="Take Evasive Action!", front="https://i.imgur.com/Grqrp2Y.jpg", cost=6})
+
+Card:new(FleetCommand,Republic,{name="Mercy Mission", front="https://i.imgur.com/G5WinB0.png", cost=0})
+Card:new(FleetCommand,Separatist,{name="Jedi Hostage", front="https://i.imgur.com/rtdHtYX.png", cost=3})
+Card:new(FleetCommand,CloneWars,{name="Hot Landing", front="https://i.imgur.com/Gst4AaJ.png", cost=3})

@@ -4,9 +4,11 @@ OffensiveRetrofit = {
 }
 --republic
 Card:new(OffensiveRetrofit,Republic,{name="Hyperspace Rings", front="https://i.imgur.com/GCSZ4Wy.jpeg", cost=3})
+Card:new(OffensiveRetrofit,Republic,{name="SPHA-T", front="https://i.imgur.com/uIvMeUJ.png", cost=7})
 
 --separatist
 Card:new(OffensiveRetrofit,Separatist,{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg", cost=3})
+Card:new(OffensiveRetrofit,Separatist,{name="Super Rocket Troopers", front="https://i.imgur.com/cK6wUox.png", cost=7})
 
 --generic
 Card:new(OffensiveRetrofit,{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg", cost=5}) --modification)
@@ -21,3 +23,4 @@ Card:new(OffensiveRetrofit,{name="Proximity Mines", front="https://i.imgur.com/e
 Card:new(OffensiveRetrofit,{name="Quad Laser Turrets", front="https://i.imgur.com/HKfQx0O.jpg", cost=5})
 Card:new(OffensiveRetrofit,{name="Rapid Launch Bays", front="https://i.imgur.com/PHiQ5fk.jpg", cost=6})
 Card:new(OffensiveRetrofit,{name="Reserve Hangar Deck", front="https://i.imgur.com/CuuMCQr.jpg", cost=3})
+Card:new(OffensiveRetrofit,{name="Flak Guns", front="https://i.imgur.com/pRgw74R.png", cost=3})

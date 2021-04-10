@@ -1,59 +1,682 @@
-<VerticalLayout color="black" id="rulerProxyPopup" height="300" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030">
-    <VerticalLayout padding="10 10 0 10">
-        <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
-        <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_4">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_4">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_4">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_4">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_4">II</Button>
-            <Button class="rulerTurn">4</Button>
-        </HorizontalLayout>
-        <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_3">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_3">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_3">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_3">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_3">II</Button>
-            <Button class="rulerTurn">3</Button>
-        </HorizontalLayout>
-        <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_2">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_2">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_2">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_2">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_2">II</Button>
-            <Button class="rulerTurn">2</Button>
-        </HorizontalLayout>
-        <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_1">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_1">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_1">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_1">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_1">II</Button>
-            <Button class="rulerTurn">1</Button>
-        </HorizontalLayout>
-        <HorizontalLayout>
-            <Button class="rulerTurn" id="ruler_-1_2_0">II</Button>
-            <Button class="rulerTurn" id="ruler_-1_1_0">I</Button>
-            <Button class="rulerTurn" id="ruler_0_0_0">-</Button>
-            <Button class="rulerTurn" id="ruler_1_1_0">I</Button>
-            <Button class="rulerTurn" id="ruler_1_2_0">II</Button>
-            <Button class="rulerTurn">0</Button>
-        </HorizontalLayout>
-        <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>0</Button></HorizontalLayout>-->
-        <HorizontalLayout>
-            <Button class="rulerTurn">M</Button>
+<Panel>
+    <VerticalLayout color="black" id="rulerProxyPopup_White" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="White" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_White_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_White_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_White_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_White_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_White_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_White_0">0</Button>
+            </HorizontalLayout>
             <Text/>
-            <Button class="rulerTurn">M</Button>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
         </HorizontalLayout>
+        <Text id="ruler_White_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_White_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_White_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_White_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
     </VerticalLayout>
-    <HorizontalLayout>
-        <Button class="rulerTurn">Prev</Button>
-        <Text/>
-        <Button class="rulerTurn">Next</Button>
-    </HorizontalLayout>
-    <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_dismiss_ruler" color="#FF0000"/>
-    <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
-    <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
-</VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Brown" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Brown" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Brown_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Brown_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Brown_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Brown_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Brown_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Brown_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Brown_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Brown_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Brown_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Brown_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Red" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Red" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Red_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Red_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Red_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Red_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Red_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Red_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Red_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Red_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Red_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Red_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Orange" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Orange" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Orange_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Orange_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Orange_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Orange_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Orange_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Orange_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Orange_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Orange_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Orange_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Orange_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Yellow" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Yellow" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Yellow_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Yellow_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Yellow_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Yellow_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Yellow_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Yellow_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Yellow_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Yellow_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Yellow_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Yellow_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Green" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Green" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Green_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Green_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Green_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Green_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Green_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Green_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Green_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Green_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Green_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Green_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Teal" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Teal" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Teal_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Teal_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Teal_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Teal_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Teal_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Teal_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Teal_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Teal_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Teal_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Teal_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Blue" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Blue" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Blue_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Blue_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Blue_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Blue_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Blue_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Blue_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Blue_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Blue_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Blue_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Blue_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Purple" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Purple" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Purple_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Purple_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Purple_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Purple_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Purple_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Purple_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Purple_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Purple_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Purple_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Purple_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+    <VerticalLayout color="black" id="rulerProxyPopup_Pink" height="350" width="150" rectAlignment="UpperLeft" allowDragging="true" returnToOriginalPositionWhenReleased="false" offsetXY="100 0" outlineSize="1 1" outline="#303030" visibility="Pink" active="false">
+        <VerticalLayout padding="10 10 0 10">
+            <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="5 20 3 3">Ruler</Text>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-2_4">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_0_4">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_1_4">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_2_4">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Pink_4">4</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-2_3">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_0_3">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_1_3">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_2_3">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Pink_3">3</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-2_2">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_0_2">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_1_2">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_2_2">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Pink_2">2</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-2_1">II</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_-1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_0_1">-</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_1_1">I</Button>
+                <Button onclick="onClick_setYaw" class="rulerTurn" id="ruler_Pink_2_1">II</Button>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Pink_1">1</Button>
+            </HorizontalLayout>
+            <HorizontalLayout>
+                <Text/>
+                <Button onclick="onClick_rotateRulerLeft" class="rulerTurn" id="ruler_rotate_left">◄</Button>
+                <Text/>
+                <Button onclick="onClick_rotateRulerRight" class="rulerTurn" id="ruler_rotate_right">►</Button>
+                <Text/>
+                <Button onclick="onClick_setSpeed" class="rulerTurn" id="ruler_Pink_0">0</Button>
+            </HorizontalLayout>
+            <Text/>
+            <!--<HorizontalLayout><Button class="rulerTurn">◄</Button><Button>II</Button><Button class="rulerTurn">►</Button><Button>1</Button></HorizontalLayout>-->
+            <Panel padding="2 2 2 0" color="white">
+                <HorizontalLayout color="black">
+                    <Button onclick="onClick_moveRulerLeft" class="rulerTurn">M</Button>
+                    <Text/>
+                    <Button onclick="onClick_moveRulerRight" class="rulerTurn">M</Button>
+                </HorizontalLayout>
+            </Panel>
+        </VerticalLayout>
+        <HorizontalLayout>
+            <Button onclick="onClick_prevShip" class="rulerTurn">◄==</Button>
+            <Text/>
+            <Button onclick="onClick_nextShip" class="rulerTurn">==►</Button>
+        </HorizontalLayout>
+        <Text id="ruler_Pink_ShipName">Ship Name</Text>
+        <HorizontalLayout>
+            <Button onclick="onClick_move" class="rulerTurn" id="ruler_Pink_move">Move</Button>
+            <Button onclick="onClick_done" class="rulerTurn" id="ruler_Pink_done" textColor="#00B000">Done</Button>
+            <Button onclick="onClick_undo" class="rulerTurn" id="ruler_Pink_undo" textColor="#B00000">Undo</Button>
+        </HorizontalLayout>
+        <Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="onClick_ToggleRulerGUI" color="#FF0000"/>
+        <!--<Button text="Dismiss" preferredHeight="30" onClick="030220/onClick_dismiss_commandPopup"  color="#008000" />-->
+        <!--<Button icon="ObjectiveToken" rectAlignment="UpperLeft" width="40" height="40" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken" color="#00000000" iconColor="#FFFFFF" /><Button text="X" rectAlignment="UpperRight" width="30" height="30" tooltip="Close Popup" ignoreLayout="true" onClick="030220/onClick_toggle_victoryToken"  color="#FF0000" />-->
+    </VerticalLayout>
+</Panel>

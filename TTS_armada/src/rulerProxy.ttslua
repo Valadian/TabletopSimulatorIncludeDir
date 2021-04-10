@@ -1,0 +1,232 @@
+function onClick_ToggleRulerGUI(player, _, idValue)
+    local active = UI.getAttribute("rulerProxyPopup_"..player.color,"active")
+    if active==nil or active=="true" then
+        UI.hide("rulerProxyPopup_"..player.color)
+    else
+        UI.show("rulerProxyPopup_"..player.color)
+    end
+end
+function onClick_moveRulerLeft(player, _, idValue)
+    if hovered_ships[player.color]==nil then
+        print("Need to select ship first")
+        return
+    end
+    moveRuler(hovered_ships[player.color],-1,player.color)
+    Player[player.color].lookAt({
+        position = hovered_ships[player.color].positionToWorld(Vector(-3,0,4)) ,
+        pitch    = 45,
+        yaw      = hovered_ships[player.color].getRotation()[2],
+        distance = 8,
+    })
+    Wait.frames(|| updateRulerDisplay(player.color), 1)
+end
+function onClick_moveRulerRight(player, _, idValue)
+    if hovered_ships[player.color]==nil then
+        print("Need to select ship first")
+        return
+    end
+    moveRuler(hovered_ships[player.color],1,player.color)
+    Player[player.color].lookAt({
+        position = hovered_ships[player.color].positionToWorld(Vector(3,0,4)) ,
+        pitch    = 45,
+        yaw      = hovered_ships[player.color].getRotation()[2],
+        distance = 8,
+    })
+    Wait.frames(|| updateRulerDisplay(player.color), 1)
+end
+function yawToNumber(yaw)
+    value = 0
+    if yaw=="I" then value = 1 end
+    if yaw=="II" then value = 2 end
+    return value
+end
+function updateRulerDisplay(color)
+    ship = hovered_ships[color]
+    ruler = rulers[color]
+    numcmds = 0
+    cmds = {}
+    if ruler~=nil then
+        numcmds = ruler.call("API_GET_NUM_CMDS")
+        for i=1,numcmds do
+            table.insert(cmds,ruler.call("API_GET_CMD_AT",i))
+        end
+    end
+    if ship~=nil then
+        maneuver = ship.getTable('maneuver')
+        -- print("maneuver~=nil: ",maneuver~=nil)
+        -- print("#maneuver: ",#maneuver)
+        -- print("#cmds: ",#cmds)
+        -- print("maneuver~=nil: ",maneuver~=nil)
+        for i=0,4 do
+            if i==#cmds then
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "colors", "#A0A0A0|#A0A0A0|white|#A0A0A0")
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "color", "black")
+                if i>#maneuver then
+                    UI.setAttribute("ruler_"..color.."_"..tostring(i), "outline", "red")
+                else
+                    UI.setAttribute("ruler_"..color.."_"..tostring(i), "outline", "yellow")
+                end
+            else
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "colors", "transparent|#A0A0A0|white|transparent")
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "color", "#606060")
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "outline", "white")
+            end
+            for j=-2,2 do
+                if cmds[i]~=nil and tonumber(cmds[i])==j then
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "colors", "white|#A0A0A0|white|white")
+
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "color", "black")
+                    if maneuver~=nil and #cmds<=#maneuver and math.abs(j)>yawToNumber(maneuver[#cmds][i]) then
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "outline", "#FF0000")
+                    else
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "outline", "#00FF00")
+                    end
+                else
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "color", "#606060")
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "colors", "transparent|#A0A0A0|white|transparent")
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "outline", "white")
+                end
+            end
+        end
+        if maneuver~=nil and #cmds>0 and #cmds<=#maneuver then
+            yaws = maneuver[numcmds]
+            for i,yaw in ipairs(yaws) do
+                for j=-2,2 do
+                    if math.abs(j)>yawToNumber(yaw) then
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#A00000")
+                    else
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#FFFFFF")
+                    end
+                end
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "textColor", "#FFFFFF")
+            end
+            for i=#yaws+1,#maneuver do
+                for j=-2,2 do
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#606060")
+                end
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "textColor", "#606060")
+            end
+            for i=#maneuver+1,4 do
+                for j=-2,2 do
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#404040")
+                end
+                UI.setAttribute("ruler_"..color.."_"..tostring(i), "textColor", "#404040")
+            end
+            UI.setAttribute("ruler_"..color.."_0", "textColor", "#404040")
+        else
+            for i=1,4 do
+                for j=-2,2 do
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#404040")
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "outline", "white")
+                    if maneuver~=nil and i<=#cmds and j==cmds[i] then
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "colors", "#404040|#A0A0A0|white|#404040")
+                    else
+                        UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "colors", "transparent|#A0A0A0|white|transparent")
+                    end
+                    UI.setAttribute("ruler_"..color.."_"..tostring(j).."_"..tostring(i), "textColor", "#404040")
+                end
+                if maneuver~=nil and i<=#maneuver then
+                    UI.setAttribute("ruler_"..color.."_"..tostring(i), "textColor", "#606060")
+                else
+                    UI.setAttribute("ruler_"..color.."_"..tostring(i), "textColor", "#404040")
+                end
+            end
+            UI.setAttribute("ruler_"..color.."_0", "textColor", "#404040")
+        end
+    end
+    if ruler~=nil then
+        -- cmd = ruler.getTable('cmd') --NO WORKY
+        -- print('#cmd: ',#cmd)
+    end
+end
+function onClick_prevShip(player, _, idValue)
+    selectNextShip(player.color,1)
+    if hovered_ships[player.color]==nil then
+        print("No Ships found")
+        return
+    end
+    UI.setValue("ruler_"..player.color.."_ShipName",hovered_ships[player.color].getName())
+    -- print("ruler_"..color.."_ShipName")
+    UI.setAttribute("ruler_"..player.color.."_ShipName","color","#"..hovered_ships[player.color].getColorTint():toHex())
+    updateRulerDisplay(player.color)
+end
+function onClick_nextShip(player, _, idValue)
+    selectNextShip(player.color,-1)
+    if hovered_ships[player.color]==nil then
+        print("No Ships found")
+        return
+    end
+    UI.setValue("ruler_"..player.color.."_ShipName",hovered_ships[player.color].getName())
+    -- print("ruler_"..color.."_ShipName")
+    UI.setAttribute("ruler_"..player.color.."_ShipName","color","#"..hovered_ships[player.color].getColorTint():toHex())
+    updateRulerDisplay(player.color)
+end
+function onClick_setSpeed(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler==nil then
+        onClick_moveRulerLeft(player, _, idValue)
+        ruler = rulers[player.color]
+    end
+    if ruler~=nil then
+        color, speed = idValue:match("ruler_(%w+)_(%d)")
+        -- speed = idValue:gsub("ruler_","")
+        speed = tonumber(speed)
+        params= {
+            speed = speed
+        }
+        ruler.call("API_SetSpeed",params)
+    else
+        print("No Ruler found?")
+    end
+    Wait.frames(|| updateRulerDisplay(player.color), 1)
+end
+function onClick_setYaw(player, _, idValue)
+    color, value, idx = idValue:match("ruler_(%w+)_(-?%d)_(%d)")
+    ruler = rulers[player.color]
+    if ruler==nil then
+        if tonumber(value)<=0 then
+            onClick_moveRulerLeft(player, _, idValue)
+        else
+            onClick_moveRulerRight(player, _, idValue)
+        end
+        ruler = rulers[player.color]
+    end
+    if ruler~=nil then
+        params = {
+            idx = tonumber(idx),
+            value = tonumber(value)
+        }
+        ruler.call("API_SetYaw",params)
+    end
+    Wait.frames(|| updateRulerDisplay(player.color), 1)
+end
+function onClick_rotateRulerLeft(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler~=nil then
+        ruler.call("Action_RulerLeft0")
+    end
+end
+function onClick_rotateRulerRight(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler~=nil then
+        ruler.call("Action_RulerRight0")
+    end
+end
+function onClick_move(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler~=nil then
+        ruler.call("API_move")
+    end
+end
+function onClick_done(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler~=nil then
+        ruler.call("API_done")
+    end
+end
+function onClick_undo(player, _, idValue)
+    ruler = rulers[player.color]
+    if ruler~=nil then
+        ruler.call("API_undo")
+    end
+end

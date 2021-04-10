@@ -1377,6 +1377,68 @@ function onObjectHover_scripting_keys(hovered_object,player_color)
     --     hovered_object.highlightOn(player_color,0.2)
     -- end
 end
+#include rulerProxy
+function selectNextShip(color, dir)
+    if hovered_ships[color]~=nil then
+        hovered_ships[color].highlightOff()
+    end
+    curs_rot = 0
+    if color~=nil then
+        curs_rot = Player[color].getPointerRotation()
+    end
+    -- print(curs_rot)
+    ships = T(getAllObjects())
+        :Where(isShip)
+        :Where(|s| s~=hovered_ships[color])
+        :Where(|s| s.getVar('owner')==color)
+
+    if #ships>1 then
+        relative_pos = Vector(0,0,0)
+        if hovered_ships[color]~=nil then
+            relative_pos = hovered_ships[color].getPosition()
+        end
+        ships = ships:OrderBy(function(s)
+            -- print(" = = = ",s.getName()," = = = ")
+            offset = vector.sub(s.getPosition(),relative_pos)
+            -- print("Global: ",vector.tostring(offset))
+            relative_offset = vector.rotate(offset,180-curs_rot)
+            -- print("Rot: ",curs_rot+180)
+            -- print("Local: ",vector.tostring(relative_offset))
+            x_delta = relative_offset[1]
+            if x_delta<0 then
+                x_delta = x_delta+200
+            end
+            -- print("x_delta: ",x_delta)
+            return x_delta
+        end )
+    end
+    if #ships>0 then
+        if dir>0 then
+            -- print("selecting: ",ships[1].getName())
+            hovered_ships[color] = ships[#ships]
+        else
+            -- print("selecting: ",ships[#ships].getName())
+            hovered_ships[color] = ships[1]
+        end
+
+        -- Player[color].lookAt({
+        --     position = hovered_ships[color].getPosition() ,
+        --     pitch    = 45,
+        --     yaw      = hovered_ships[color].getRotation()[2],
+        --     distance = 20,
+        -- })
+        hovered_ships[color].highlightOn(color,0.2)
+    end
+    if hovered_ships[color]~=nil then
+        Player[color].lookAt({
+            position = hovered_ships[color].positionToWorld(Vector(0,0,4)) ,
+            pitch    = 45,
+            yaw      = hovered_ships[color].getRotation()[2],
+            distance = 8,
+        })
+    end
+    return hovered_ships[color]
+end
 function onScriptingButtonDown(index, color)
     if ruler_index[color]==nil then
         ruler_index[color] = 0
@@ -1397,57 +1459,57 @@ function onScriptingButtonDown(index, color)
 
 
     if index==PREV_SHIP_HOTKEY or index==NEXT_SHIP_HOTKEY then --next/prev ship
-
-        if hovered_ships[color]~=nil then
-            hovered_ships[color].highlightOff()
-        end
-        curs_rot = 0
-        if color~=nil then
-            curs_rot = Player[color].getPointerRotation()
-        end
-        -- print(curs_rot)
-        ships = T(getAllObjects())
-            :Where(isShip)
-            :Where(|s| s~=hovered_ships[color])
-            :Where(|s| s.getVar('owner')==color)
-
-        if #ships>1 then
-            relative_pos = Vector(0,0,0)
-            if hovered_ships[color]~=nil then
-                relative_pos = hovered_ships[color].getPosition()
-            end
-            ships = ships:OrderBy(function(s)
-                -- print(" = = = ",s.getName()," = = = ")
-                offset = vector.sub(s.getPosition(),relative_pos)
-                -- print("Global: ",vector.tostring(offset))
-                relative_offset = vector.rotate(offset,180-curs_rot)
-                -- print("Rot: ",curs_rot+180)
-                -- print("Local: ",vector.tostring(relative_offset))
-                x_delta = relative_offset[1]
-                if x_delta<0 then
-                    x_delta = x_delta+200
-                end
-                -- print("x_delta: ",x_delta)
-                return x_delta
-            end )
-        end
-        if #ships>0 then
-            if index==PREV_SHIP_HOTKEY then
-                -- print("selecting: ",ships[1].getName())
-                hovered_ships[color] = ships[#ships]
-            else
-                -- print("selecting: ",ships[#ships].getName())
-                hovered_ships[color] = ships[1]
-            end
-
-            -- Player[color].lookAt({
-            --     position = hovered_ships[color].getPosition() ,
-            --     pitch    = 45,
-            --     yaw      = hovered_ships[color].getRotation()[2],
-            --     distance = 20,
-            -- })
-            hovered_ships[color].highlightOn(color,0.2)
-        end
+        selectNextShip(color, index==PREV_SHIP_HOTKEY and 1 or 0)
+        -- if hovered_ships[color]~=nil then
+        --     hovered_ships[color].highlightOff()
+        -- end
+        -- curs_rot = 0
+        -- if color~=nil then
+        --     curs_rot = Player[color].getPointerRotation()
+        -- end
+        -- -- print(curs_rot)
+        -- ships = T(getAllObjects())
+        --     :Where(isShip)
+        --     :Where(|s| s~=hovered_ships[color])
+        --     :Where(|s| s.getVar('owner')==color)
+        --
+        -- if #ships>1 then
+        --     relative_pos = Vector(0,0,0)
+        --     if hovered_ships[color]~=nil then
+        --         relative_pos = hovered_ships[color].getPosition()
+        --     end
+        --     ships = ships:OrderBy(function(s)
+        --         -- print(" = = = ",s.getName()," = = = ")
+        --         offset = vector.sub(s.getPosition(),relative_pos)
+        --         -- print("Global: ",vector.tostring(offset))
+        --         relative_offset = vector.rotate(offset,180-curs_rot)
+        --         -- print("Rot: ",curs_rot+180)
+        --         -- print("Local: ",vector.tostring(relative_offset))
+        --         x_delta = relative_offset[1]
+        --         if x_delta<0 then
+        --             x_delta = x_delta+200
+        --         end
+        --         -- print("x_delta: ",x_delta)
+        --         return x_delta
+        --     end )
+        -- end
+        -- if #ships>0 then
+        --     if index==PREV_SHIP_HOTKEY then
+        --         -- print("selecting: ",ships[1].getName())
+        --         hovered_ships[color] = ships[#ships]
+        --     else
+        --         -- print("selecting: ",ships[#ships].getName())
+        --         hovered_ships[color] = ships[1]
+        --     end
+        --
+        --     -- Player[color].lookAt({
+        --     --     position = hovered_ships[color].getPosition() ,
+        --     --     pitch    = 45,
+        --     --     yaw      = hovered_ships[color].getRotation()[2],
+        --     --     distance = 20,
+        --     -- })
+        --     hovered_ships[color].highlightOn(color,0.2)
+        -- end
     end
     --index 1/3 change ships
     if hovered_ships[color]~=nil then
