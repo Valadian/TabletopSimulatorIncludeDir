@@ -98,7 +98,7 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
 	name = "BTL-B Y-Wing Squadron",
     front = "https://i.imgur.com/qvyTtNf.jpeg",
     cost = 10,
-    aliases = {'BTL-B Y-Wing Squadrons', "BTL-B Y-Wing"}
+    aliases = {'BTL-B Y-Wing Squadrons', "BTL-B Y-Wing",'BLT-B Y-Wing Squadrons'}
 })
 -- Adept, Bomber, Heavy
 Squadron:new(ship, REPUBLIC_SQUAD, {

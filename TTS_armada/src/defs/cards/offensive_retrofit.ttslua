@@ -8,7 +8,7 @@ Card:new(OffensiveRetrofit,Republic,{name="SPHA-T", front="https://i.imgur.com/u
 
 --separatist
 Card:new(OffensiveRetrofit,Separatist,{name="Hyperwave Signal Boost", front="https://i.imgur.com/NJQuMpr.jpeg", cost=3})
-Card:new(OffensiveRetrofit,Separatist,{name="Super Rocket Troopers", front="https://i.imgur.com/cK6wUox.png", cost=7})
+Card:new(OffensiveRetrofit,Separatist,{name="B2 Rocket Troopers", front="https://i.imgur.com/cK6wUox.png", cost=7})
 
 --generic
 Card:new(OffensiveRetrofit,{name="Advanced Transponder Net", front="https://i.imgur.com/vm6HKV1.jpg", cost=5}) --modification)

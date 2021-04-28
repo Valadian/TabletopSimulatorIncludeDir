@@ -41,7 +41,7 @@ Republic = {
 }
 --republic
 Card:new(Commander,Republic,{name="Bail Organa",  front="https://i.imgur.com/SBYa2yD.jpeg", cost=28})
-Card:new(Commander,Republic,{name="Obi-Wan Kenobi",  front="https://i.imgur.com/xkfBnRw.jpeg", cost=28})
+Card:new(Commander,Republic,{name="Obi-Wan Kenobi",  front="https://i.imgur.com/xkfBnRw.jpeg", cost=28, aliases = {"Obi Wan Kenobi"}})
 Card:new(Commander,Republic,{name="Luminara Unduli",  front="https://i.imgur.com/SlkHtHE.png", cost=25})
 Card:new(Commander,Republic,{name="Admiral Tarkin",  front="https://i.imgur.com/mJplVe5.png", cost=30})
 Card:new(Commander,Republic,{name="Admiral Yularen", front="https://i.imgur.com/QloblZJ.jpeg", cost=24})

@@ -22,4 +22,4 @@ Card:new(Turbolaser,{name="Spinal Armament", front="https://i.imgur.com/0eLX7ML.
 Card:new(Turbolaser,{name="Turbolaser Reroute Circuits", front="https://i.imgur.com/6faOpzf.jpg", cost=7})
 Card:new(Turbolaser,{name="XI7 Turbolasers", front="https://i.imgur.com/leeZbxw.jpg", cost=6})
 Card:new(Turbolaser,{name="XX-9 Turbolasers", front="https://i.imgur.com/ttbae06.jpg", cost=5})
-Card:new(Turbolaser,{name="DBY-827 Heavy Turbolaser", front="https://i.imgur.com/wNkyRDb.png", cost=3})
+Card:new(Turbolaser,{name="DBY-827 Heavy Turbolaser", front="https://i.imgur.com/wNkyRDb.png", cost=3, aliases = {"DBY-827 Heavy Turbolasers"}})

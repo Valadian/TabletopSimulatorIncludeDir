@@ -71,7 +71,7 @@ Card:new(Title,Empire,{name="Interdictor", front="https://i.imgur.com/sIO1x2W.jp
 
 Card:new(Title,Empire,{name="Cataclysm", front="https://i.imgur.com/BJwwHvW.jpg", cost=5})
 Card:new(Title,Empire,{name="Rakehell", front="https://i.imgur.com/R3NVdce.jpg", cost=4})
-Card:new(Title,Empire,{name="Sunder", front="https://i.imgur.com/tjMOmDP.jpg", cost=10})
+Card:new(Title,Empire,{name="Sunder", front="https://i.imgur.com/qs97P5O.jpg", cost=10})
 
 Card:new(Title,Empire,{name="Avenger", front="https://i.imgur.com/UOIKPqu.jpg", cost=5})
 Card:new(Title,Empire,{name="Chimaera", front="https://i.imgur.com/o5AtxcG.jpg", cost=4})
