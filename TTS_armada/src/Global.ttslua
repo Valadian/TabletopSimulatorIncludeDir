@@ -101,6 +101,12 @@ end
 #include asteroid
 SPAWNER = nil
 function onload(save_string)
+    if findObjectByName("PARTY!") then
+        UI.hide('cloudBtn')
+        UI.hide('refreshBtn')
+        UI.hide('tableBtn')
+        UI.setAttribute('btnBar', 'height', '240')
+    end
     Lighting.ambient_type = 2
     Lighting.ambient_intensity = 2
     Lighting.apply()
@@ -149,7 +155,10 @@ function isDatacard(object)
     return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
 end
 function drawDatacardButtons(obj)
-    if isDatacard(obj) then
+    Wait.time(|| delayed_drawDatacardButtons(obj), 1, 0)
+end
+function delayed_drawDatacardButtons(obj)
+    if obj~=nil and isDatacard(obj) then
         if obj.getDescription()~=nil and #obj.getDescription()>0 then
             obj.clearButtons()
         -- if custom ~= nil and custom.image=="http://i.imgur.com/EUi3Wog.png" then

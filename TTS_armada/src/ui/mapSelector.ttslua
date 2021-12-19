@@ -18,6 +18,7 @@ MAPS["solar_corona_right"] = "https://i.imgur.com/5H1j6D7.jpg"
 MAPS["doomed_station"] = "https://i.imgur.com/fFKS59s.jpg"
 MAPS["italia"] = "https://i.imgur.com/ZH3BOIY.jpg"
 MAPS["task_force"] = "https://i.imgur.com/GccejV5.jpeg"
+MAPS["urban"] = "https://i.imgur.com/ml1Mwgy.jpeg"
 function onClick_select_map(player, _, idValue)
     customUrl = MAPS[idValue]
     if customUrl~=nil then

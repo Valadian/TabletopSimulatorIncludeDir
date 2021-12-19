@@ -514,11 +514,14 @@ B_COLORS = {{0.1,0.1,0.44},
 function inFleetSpawnArea(listSpawner, obj)
     ll = {1.2,0,-5}
     ur = {109,0,14}
+    if math.abs(listSpawner.getPosition()[3])>40 then
+        ur = {87, 0, 14}
+    end
     return vector.between(listSpawner.positionToLocal(obj.getPosition()), ll, ur)
 end
 function clearSpawnArea(listSpawner)
     for _,item in ipairs(getAllObjects()) do
-        if inFleetSpawnArea(listSpawner,item) and not isDatacard(item) and item.tag~="Scripting" then
+        if inFleetSpawnArea(listSpawner,item) and not isDatacard(item) and item.tag~="Scripting" and not string.match(item.getName(),"List Spawner") then
             item.destruct()
         end
     end
@@ -527,7 +530,9 @@ function isDatacard(object)
     custom = object.getCustomObject()
     return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
 end
-function Action_SpawnListSpawner(listSpawner)
+function Action_SpawnListSpawner(player, _, idValue) --listSpawner
+    print(player.color)
+    listSpawner = findObjectByName("List Spawner ("..player.color..")")
     clearSpawnArea(listSpawner)
     -- local count = 0
     -- for k,v in pairs(SHIPS) do

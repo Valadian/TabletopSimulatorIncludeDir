@@ -46,7 +46,7 @@ width="400" -->
     <HorizontalLayout color="transparent" preferredHeight="30" spacing="8">
         <Text id="spawnerTitle" preferredWidth="264" alignment="MiddleCenter" active="false">Armada Fleet Spawner</Text>
         <!-- <Text id="shortTitle" preferredWidth="80" alignment="MiddleCenter" active="false">Spawner</Text> -->
-        <VerticalLayout ignoreLayout="true" offsetXY="40 0" rectAlignment="UpperRight" width="40" height="320" outlineSize="1 1" outline="#303030" color="black">
+        <VerticalLayout id="btnBar" ignoreLayout="true" offsetXY="40 0" rectAlignment="UpperRight" width="40" height="360" outlineSize="1 1" outline="#303030" color="black">
             <Button id="minimizeBtn" color="#FFFFFF" icon="Rebel Empire" onClick="030220/onClick_ToggleUI" tooltipPosition="Left" tooltip="Show Armada Fleet Spawner" colors="transparent|#308030|#008000|transparent" />
             <Button id="cloudBtn" color="#FFFFFF" iconColor="#FFA040" icon="PODIUM" onClick="030220/onClick_selectGameReporterTab" tooltipPosition="Left" tooltip="Show ScoreReporting" colors="transparent|#308030|#008000|transparent" />
             <Button id="helpBtn" color="#FFFFFF" iconColor="#40A0FF" icon="Help" onClick="030220/onClick_toggle_commandPopup" tooltipPosition="Left" tooltip="Show Help" colors="transparent|#FFFFFF|#FFFFFF|transparent" />

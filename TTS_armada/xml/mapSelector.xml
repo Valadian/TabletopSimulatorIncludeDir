@@ -45,6 +45,7 @@
                 <Button id="take_the_station" text="Take the Station" class="map"></Button>
                 <Text color="yellow">Commemorative</Text>
                 <Button id="italia" text="Italia 2021" class="map" ></Button>
+                <Button id="urban" text="Urban Planet" class="map" ></Button>
             </GridLayout>
         </HorizontalLayout>
     </VerticalLayout>

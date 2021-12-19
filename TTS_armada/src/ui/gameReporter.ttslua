@@ -362,7 +362,7 @@ function handle_score_submit(resp, error)
     --body>error>message
     if resp~=nil and resp['statusCode']==400 then
         broadcastToAll("Error with posting game!", {1,0,0})
-        broadcastToAll("Send error in chat log to Valadian", {0,1,1})
+        broadcastToAll("To fix this error: Save game, reload it, resubmit score. This will cause some objectives to score incorrectly, so double check points.", {0,1,1})
         print(resp['body']['error']['message'])
         return
     end
@@ -372,7 +372,7 @@ function handle_score_submit(resp, error)
     -- end
     if error~=nil then
         broadcastToAll("Error: "..tostring(error), {1,0,0})
-        broadcastToAll("Send error in chat log to Valadian", {0,1,1})
+        broadcastToAll("To fix this error: Save game, reload it, resubmit score. This will cause some objectives to score incorrectly, so double check points.", {0,1,1})
         return
     end
     broadcastToAll("Game Successfully posted!", {0,1,0})
