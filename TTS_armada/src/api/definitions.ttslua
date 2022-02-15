@@ -16,6 +16,7 @@
 -- Definitions merge multiple tables to reduce duplication of common properties:
 -- Examples of Card, Ship, Squadron definitions below.
 --
+function onload()
 --     Commander = {
 --         type="Commander",
 --         back = "https://i.imgur.com/fMJMaYo.png" } -- card back
@@ -66,6 +67,9 @@
 -- For questions, message valadian#6997 on discord,
 --     or join ArmadaTTS Server: https://discord.gg/3MrP8db
 --
+end
+
+-- DO NOT MODIFY CODE BELOW THIS, OR MOD DB MAY NOT WORK!
 function table.copy(orig)
     local orig_type = type(orig)
     local copy
@@ -156,4 +160,13 @@ function Card:new (...)
         spawner.call("API_CacheCard",o)
     end
     return o
+end
+function PurgeCard (name, cost)
+    o = {}
+    o['name'] = name
+    o['cost'] = cost
+    spawner = findObjectByName("Armada Spawner")
+    if spawner~=nil then
+        spawner.call("API_PurgeCard",o)
+    end
 end

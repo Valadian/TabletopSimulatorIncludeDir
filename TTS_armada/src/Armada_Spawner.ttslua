@@ -137,23 +137,70 @@ end
 SHIPS_BY_FACTION = {}
 CARDS_BY_CATEGORY = {}
 function API_CacheShip(o)
+    printToAll("Sideloading Ship: ["..o.name.." ("..o.cost..")]")
     Cache(SHIPS,o)
 end
 function API_CacheCard(o)
+    printToAll("Sideloading Card: ["..o.name.." ("..o.cost..")]")
     Cache(CARDS,o)
 end
+function API_PurgeCard(o)
+    printToAll("Manually Purging: ["..o.name.." ("..o.cost..")]")
+    for category, arr in pairs(CARDS_BY_CATEGORY) do
+        for i,o_cached in ipairs(arr) do
+            if o_cached.name == o.name and o_cached.cost == o.cost then
+                printToAll("Purging existing "..category.." Card entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+                PurgeNGrams(arr[i])
+                arr[i] = nil
+            end
+        end
+    end
+    for faction, arr in pairs(SHIPS_BY_FACTION) do
+        for i,o_cached in ipairs(arr) do
+            if o_cached.name == o.name and o_cached.cost == o.cost then
+                printToAll("Purging existing "..faction.." Ship entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+                PurgeNGrams(arr[i])
+                arr[i] = nil
+            end
+        end
+    end
+end
+function PurgeNGrams(o)
+    if o~=nil then
+        for key,ngram in pairs(NGRAMS) do
+            for i,obj in ipairs(ngram) do
+                if obj==o then
+                    NGRAMS[key][i] = nil
+                end
+            end
+        end
+    end
+end
+function UpdateListByNameAndCost(arr,o)
+    for i,o_cached in ipairs(arr) do
+        if o_cached.name == o.name and o_cached.cost == o.cost then
+            printToAll("Overwriting existing entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+            PurgeNGrams(arr[i])
+            arr[i] = o
+            return
+        end
+    end
+    table.insert(arr,o)
+end
 function Cache(DEFS,o)
-    if o.type~=nil then --Is a card?
+    if o.type~=nil and o.type~=1 then --Is a card? Models have type 1
         if CARDS_BY_CATEGORY[o.type]==nil then
             CARDS_BY_CATEGORY[o.type] = {}
         end
-        table.insert(CARDS_BY_CATEGORY[o.type],o)
+        UpdateListByNameAndCost(CARDS_BY_CATEGORY[o.type],o)
+        --table.insert(CARDS_BY_CATEGORY[o.type],o)
     end
     if o.faction~=nil and (o.move~=nil or o.maneuver~=nil) then --Is a ship or squadron?
         if SHIPS_BY_FACTION[o.faction]==nil then
             SHIPS_BY_FACTION[o.faction] = {}
         end
-        table.insert(SHIPS_BY_FACTION[o.faction],o)
+        UpdateListByNameAndCost(SHIPS_BY_FACTION[o.faction],o)
+        --table.insert(SHIPS_BY_FACTION[o.faction],o)
     end
     -- FUZZY[string.lower(o.name)] = o
     if o.cost~=nil then
