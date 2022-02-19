@@ -1,6 +1,9 @@
 
 local Http = require('ge_tts/Http')
 Http.setProxyUrl('https://ttsarmada.herokuapp.com/forward')
+FIREBASE_COLLECTION = 'games'
+--FIREBASE_COLLECTION = 'games_vassal'
+--FIREBASE_COLLECTION = 'games_vassal_fantasy'
 
 FIRST_FLEET = nil
 SECOND_FLEET = nil
@@ -329,7 +332,7 @@ function onClick_score_submit(player, _, idValue)
     submitted = os.date("!%Y%m%dT%H%M%S").."."..string.format("%03d",math.random (999))
     -- print(submitted)
     broadcastToAll("Posting Game to Cloud.....", {1,1,1})
-    url = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/games"
+    url = "https://firestore.googleapis.com/v1/projects/ttsarmada/databases/(default)/documents/"..FIREBASE_COLLECTION
     -- url = "https://ttsarmada.herokuapp.com/databases/(default)/documents/games"
     -- print(FIRST_FLEET.score)
     -- print(SECOND_FLEET.score)
@@ -355,6 +358,10 @@ function onClick_score_submit(player, _, idValue)
             tournamentCode = { stringValue = TOURNAMENT_CODE or ""}
         }
     },{['Content-Type']="application/json"}, handle_score_submit)
+end
+function API_SET_GAMEREPORTER_COLLECTION(collection_name)
+    printToAll("Set Game Reporter Collection to: "..collection_name, {0,1,1})
+    FIREBASE_COLLECTION = collection_name
 end
 function handle_score_submit(resp, error)
     --Resp

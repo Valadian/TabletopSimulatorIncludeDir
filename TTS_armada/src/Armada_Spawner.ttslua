@@ -137,33 +137,127 @@ end
 SHIPS_BY_FACTION = {}
 CARDS_BY_CATEGORY = {}
 function API_CacheShip(o)
-    printToAll("Sideloading Ship: ["..o.name.." ("..o.cost..")]")
+    printToAll("Sideloading Ship: ["..o.name.." ("..o.cost..")]",{.5, 1,.5})
     Cache(SHIPS,o)
 end
 function API_CacheCard(o)
-    printToAll("Sideloading Card: ["..o.name.." ("..o.cost..")]")
+    if o.cost == nil then
+        printToAll("Sideloading Card: ["..o.name.."]",{.5, 1,.5})
+    else
+        printToAll("Sideloading Card: ["..o.name.." ("..tostring(o.cost)..")]",{.5, 1,.5})
+    end
     Cache(CARDS,o)
 end
 function API_PurgeCard(o)
-    printToAll("Manually Purging: ["..o.name.." ("..o.cost..")]")
+    if o.cost == nil then
+        printToAll("Manually Purging: ["..o.name.."]",{1, .5,.5})
+    else
+        printToAll("Manually Purging: ["..o.name.." ("..tostring(o.cost)..")]",{1, .5,.5})
+    end
+    local i = o.name
+    if o.cost~=nil then
+        i = o.name.." ("..o.cost..")"
+    end
     for category, arr in pairs(CARDS_BY_CATEGORY) do
-        for i,o_cached in ipairs(arr) do
-            if o_cached.name == o.name and o_cached.cost == o.cost then
-                printToAll("Purging existing "..category.." Card entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
-                PurgeNGrams(arr[i])
-                arr[i] = nil
-            end
+        if arr[i]~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == o.name and o_cached.cost == o.cost then
+            printToAll("Purging existing "..category.." Card entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+            PurgeNGrams(arr[i])
+            arr[i] = nil
+            return
+        --     end
+        -- end
         end
     end
     for faction, arr in pairs(SHIPS_BY_FACTION) do
-        for i,o_cached in ipairs(arr) do
-            if o_cached.name == o.name and o_cached.cost == o.cost then
-                printToAll("Purging existing "..faction.." Ship entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
-                PurgeNGrams(arr[i])
-                arr[i] = nil
-            end
+        if arr[i]~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == o.name and o_cached.cost == o.cost then
+            printToAll("Purging existing "..faction.." Ship entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+            PurgeNGrams(arr[i])
+            arr[i] = nil
+            return
+                --TODO: SHIPS/CARDS still contain old ones? Aliases! Etc.
+        --     end
+        -- end
         end
     end
+end
+function API_UpdateCard(update)
+    if update.cost == nil then
+        printToAll("Updating Card: ["..update.name.."]",{.5,.5,1})
+    else
+        printToAll("Updating Card: ["..update.name.." ("..tostring(update.cost)..")]",{.5,.5,1})
+    end
+    local i = update.name
+    if update.cost~=nil then
+        i = update.name.." ("..update.cost..")"
+    end
+    for category, arr in pairs(CARDS_BY_CATEGORY) do
+        if arr[i]~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == update.name and o_cached.cost == update.cost then
+            for key, new_value in pairs(update.o) do
+                printToAll("Updating "..key.." for "..update.name,{0.5,0.5,0.5})
+                arr[i][key] = new_value
+            end
+            if update.cost ~= update.o.cost then --Change Cost?
+                PurgeNGrams(arr[i])
+            end
+            Cache(CARDS,arr[i])
+            return
+        --     end
+        -- end
+        end
+    end
+    for faction, arr in pairs(SHIPS_BY_FACTION) do
+        if arr[i]~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == update.name and o_cached.cost == update.cost then
+            for key, new_value in pairs(update.o) do
+                printToAll("Updating "..key.." for "..update.name,{0.5,0.5,0.5})
+                arr[i][key] = new_value
+            end
+            if update.cost ~= update.o.cost then --Change Cost?
+                PurgeNGrams(arr[i])
+            end
+            Cache(SHIPS,arr[i])
+            return
+        --     end
+        -- end
+        end
+    end
+end
+function API_GetDefinition(o)
+    for category, arr in pairs(CARDS_BY_CATEGORY) do
+        local o_cached = arr[o.name]
+        if o.cost~=nil then
+            o_cached = arr[o.name.." ("..o.cost..")"]
+        end
+        if o_cached~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == o.name and o_cached.cost == o.cost then
+                return o_cached
+        --     end
+        -- end
+        end
+    end
+    for faction, arr in pairs(SHIPS_BY_FACTION) do
+        local o_cached = arr[o.name]
+        if o.cost~=nil then
+            o_cached = arr[o.name.." ("..o.cost..")"]
+        end
+        if o_cached~=nil then
+        -- for i,o_cached in ipairs(arr) do
+        --     if o_cached.name == o.name and o_cached.cost == o.cost then
+            return o_cached
+            -- end
+        -- end
+        end
+    end
+    printToAll("No definition found of name: '"..o.name.."' with cost: "..tostring(o.cost), {1,0,0})
+    return nil
 end
 function PurgeNGrams(o)
     if o~=nil then
@@ -177,15 +271,21 @@ function PurgeNGrams(o)
     end
 end
 function UpdateListByNameAndCost(arr,o)
-    for i,o_cached in ipairs(arr) do
-        if o_cached.name == o.name and o_cached.cost == o.cost then
-            printToAll("Overwriting existing entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
-            PurgeNGrams(arr[i])
-            arr[i] = o
-            return
-        end
+    local i = o.name
+    if o.cost~=nil then
+        i = o.name.." ("..o.cost..")"
     end
-    table.insert(arr,o)
+    if arr[i]~=nil then
+    -- for i,o_cached in ipairs(arr) do
+    --     if o_cached.name == o.name and o_cached.cost == o.cost then
+        printToAll("Overwriting existing entry: ["..o.name.." ("..o.cost..")]!", {1,0,0})
+        PurgeNGrams(arr[i])
+        arr[i] = o
+    --     end
+    -- end
+    end
+    arr[i]=o
+    -- table.insert(arr,o)
 end
 function Cache(DEFS,o)
     if o.type~=nil and o.type~=1 then --Is a card? Models have type 1

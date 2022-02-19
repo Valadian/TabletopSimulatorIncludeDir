@@ -112,7 +112,7 @@ function update_upgrade_card_list()
     if selected_category == "Objective" then
         local filtered_cards = {}
 
-        for _, v in ipairs(cards_of_category) do
+        for _, v in pairs(cards_of_category) do
             if (v.category=="Special") == selected_special_objectives then table.insert(filtered_cards, v) end
         end
 
@@ -127,14 +127,15 @@ function update_upgrade_card_list()
         -- print(selected_faction)
         local filtered_cards = {}
 
-        for _, v in ipairs(cards_of_category) do
+        for _, v in pairs(cards_of_category) do
             if v.factions==nil or table.contains(v.factions,selected_faction) then table.insert(filtered_cards, v) end
         end
 
         cards_of_category = filtered_cards
     end
-    last = 0
-    for i,def in ipairs(cards_of_category) do
+    local last = 0
+    local i = 1
+    for _,def in pairs(cards_of_category) do
         if def.cost~=nil then
             UI.setAttribute("upgrade"..i, "text",def.name.." ("..def.cost..")")
             UI.setAttribute("upgrade"..i, "textColor","white")
@@ -153,6 +154,7 @@ function update_upgrade_card_list()
         end
         last = i
         UI.show("upgrade"..i)
+        i = i+1
     end
     for i = last+1,40 do
         UI.hide("upgrade"..i)
