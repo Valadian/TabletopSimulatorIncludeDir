@@ -89,7 +89,8 @@ function onload()
     Squadron:new(TIE_ADV, {
     	name = "Storm Squadron",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_storm-squadron.png",
-        cost = 11
+        cost = 11,
+        aliases = {"Storm Squadrons"}
     })
     UpdateCard("Darth Vader",21,{
         cost = 24,
@@ -98,7 +99,7 @@ function onload()
     })
     Squadron:new(TIE_ADV, {
         name = "Ved Foslo",
-        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_storm-squadron.png",
+        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_ved-foslo.png",
         diffuse = "http://i.imgur.com/YJm6aoS.png",
         defense_tokens = {DEF_BRACE,DEF_EVADE},
         cost = 16
@@ -110,7 +111,8 @@ function onload()
     Squadron:new(TIE_BOM, {
         name = "Scimitar Squadron",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_scimitar-squadron.png",
-        cost = 12
+        cost = 12,
+        aliases = {"Scimitar Squadrons"}
     })
     Squadron:new(TIE_BOM, {
     	name = "Deathfire",
@@ -120,7 +122,7 @@ function onload()
         cost = 14
     })
     UpdateCard("Major Rhymer",16,{
-        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_tie-bomber-squadron.png",
+        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_major-rhymer.png",
         defense_tokens = {DEF_BRACE,DEF_EVADE},
     })
     UpdateCard("TIE Fighter Squadron",8,{
@@ -130,7 +132,8 @@ function onload()
     Squadron:new(TIE_FIG, {
     	name = "Obsidian Squadron",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_obsidian-squadron.png",
-        cost = 9
+        cost = 9,
+        aliases = {"Obsidian Squadrons"}
     })
     UpdateCard('"Howlrunner"',16,{
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_howlrunner.png",
@@ -152,7 +155,8 @@ function onload()
     Squadron:new(TIE_INT, {
     	name = 'Alpha Squadron',
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_alpha-squadron.png",
-        cost = 12
+        cost = 12,
+        aliases = {"Alpha Squadrons"}
     })
     TIE_INT_ACE = GetDefinition("Soontir Fel",18)
     Squadron:new(TIE_INT_ACE, {
@@ -172,7 +176,8 @@ function onload()
     Squadron:new(A_WING, {
     	name = "Shepherd Squadron",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_shepherd-squad.png",
-        cost = 12
+        cost = 12,
+        aliases = {"Shepherd Squadrons"}
     })
     A_WING_ACE = GetDefinition("Tycho Celchu",16)
     Squadron:new(A_WING_ACE, {
@@ -192,7 +197,8 @@ function onload()
     Squadron:new(B_WING, {
     	name = "Blue Squadron B-wing",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_blue-squadron-bwing.png",
-        cost = 14
+        cost = 14,
+        aliases = {"Blue Squadron (B-wing)","Blue Squadron (B-wing)s"}
     })
     B_WING_ACE = GetDefinition("Keyan Farlander",20)
     Squadron:new(B_WING_ACE, {
@@ -213,7 +219,8 @@ function onload()
     Squadron:new(X_WING, {
     	name = "Blue Squadron X-wing",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_blue-squadron-xwing.png",
-        cost = 12
+        cost = 12,
+        aliases = {"Blue Squadron (X-wing)","Blue Squadron (X-wing)s"}
     })
     UpdateCard("Luke Skywalker",20,{
         cost = 22,
@@ -238,14 +245,15 @@ function onload()
     Squadron:new(Y_WING, {
         name = "Gray Squadron",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_gray-squadron.png",
-        cost = 11
+        cost = 11,
+        aliases = {"Gray Squadrons"}
     })
     Y_WING_ACE = GetDefinition("Norra Wexley",17)
     UpdateCard('"Dutch" Vander',16,{
         cost = 18,
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_dutch-vander.png",
     })
-    Squadron:new(Y_WING, {
+    Squadron:new(Y_WING_ACE, {
         name = "Horton Salm",
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_horton-salm.png",
         cost = 17
