@@ -100,7 +100,7 @@ Card:new(Title,Separatist,{name="Foreman's Labor", front="https://i.imgur.com/cf
 Card:new(Title,Separatist,{name="Sa Nalaor", front="https://i.imgur.com/o0RS5kE.jpg", cost=5})
 Card:new(Title,Separatist,{name="Tide of Progress XII", front="https://i.imgur.com/rcXW6sg.jpeg", cost=2})
 
-Card:new(Title,Separatist,{name="Invisible Hand", front="https://i.imgur.com/gW84lFN.png", cost=9})
+Card:new(Title,Separatist,{name="Invisible Hand", front="https://i.imgur.com/gW84lFN.png", cost=9, aliases = {"Invisible-hand"}})
 Card:new(Title,Separatist,{name="Invincible", front="https://i.imgur.com/NcS65Gb.png", cost=5})
 Card:new(Title,Separatist,{name="Lucid Voice", front="https://i.imgur.com/b5i7cIW.png", cost=8})
 

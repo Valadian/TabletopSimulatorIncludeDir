@@ -27,7 +27,7 @@ function onload()
     })
     UpdateCard("Arquitens-class Light Cruiser",54,{
         maneuver = {{"II"},{"I","II"},{"I","-","II"}},
-        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_arquitens-class-command-cruiser.png"
+        front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_arquitens-class-light-cruiser.png"
     })
     UpdateCard("Raider I-class Corvette",44,{
         cost = 42,
