@@ -21,11 +21,12 @@ function onload()
     SetCloudCollectionName('games_vassal_fantasy')
 
     UpdateCard("Arquitens-class Command Cruiser",59,{
-        cost = 57,
+        defense_tokens = {DEF_EVADE,DEF_REDIRECT,DEF_REDIRECT},    
         maneuver = {{"II"},{"I","II"},{"I","-","II"}},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_arquitens-class-command-cruiser.png"
     })
     UpdateCard("Arquitens-class Light Cruiser",54,{
+        defense_tokens = {DEF_EVADE,DEF_REDIRECT,DEF_REDIRECT},      
         maneuver = {{"II"},{"I","II"},{"I","-","II"}},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_arquitens-class-light-cruiser.png"
     })
@@ -45,14 +46,14 @@ function onload()
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_victory-i-class-star-destroyer.png"
     })
     UpdateCard("Victory II-class Star Destroyer",85,{
-        cost = 79,
+        cost = 81,
         defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
         maneuver = {{"I"},{"I","I"}},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/empire/shipcard_victory-ii-class-star-destroyer.png"
     })
 
     UpdateCard("Assault Frigate Mark II A",81,{
-        cost = 78,
+        cost = 80,
         defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/rebel/shipcard_assault-frigate-mark-II-a.png"
     })
@@ -71,7 +72,6 @@ function onload()
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/rebel/shipcard_cr90b-corvette.png"
     })
     UpdateCard("Nebulon-B Escort Frigate",57,{
-        cost = 54,
         maneuver = {{"II"},{"I","I"},{"-","I","II"}},
         defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_CONTAIN},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/ships/rebel/shipcard_nebulon-b-escort-frigate.png"
@@ -93,7 +93,7 @@ function onload()
         aliases = {"Storm Squadrons"}
     })
     UpdateCard("Darth Vader",21,{
-        cost = 24,
+        cost = 22,
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/empire/squadcard_darth-vader.png",
         defense_tokens = {DEF_BRACE,DEF_EVADE}
     })
@@ -223,7 +223,7 @@ function onload()
         aliases = {"Blue Squadron (X-wing)","Blue Squadron (X-wing)s"}
     })
     UpdateCard("Luke Skywalker",20,{
-        cost = 22,
+        cost = 21,
         defense_tokens = {DEF_BRACE,DEF_EVADE},
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/squadrons/rebel/squadcard_luke-skywalker.png",
     })
@@ -404,7 +404,6 @@ function onload()
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/upgrades/w0_cpt_defense-liaison.png"
     })
     UpdateCard("Veteran Captain",3, {
-        cost = 2,
         front = "https://vassalwarlords.twilightpeaks.net/assets/cards/upgrades/w1_cpt_veteran-captain.png"
     })
     UpdateCard("Weapons Liaison",3, {
