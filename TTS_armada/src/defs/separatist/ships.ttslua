@@ -103,8 +103,6 @@ Ship:new(LargeShip,SEPARATIST_SHIP,{
     command = 3
 })
 
-
-
 Ship:new(LargeShip,SEPARATIST_SHIP,{
 	name = "Providence-class Dreadnought",
     front = "https://i.imgur.com/2CH9F4i.jpg",
@@ -118,4 +116,18 @@ Ship:new(LargeShip,SEPARATIST_SHIP,{
     cost = 105,
 	aliases = {"Providence Dreadnought"},
     command = 3
+})
+Ship:new(SmallShip,SEPARATIST_SHIP,{
+	name = "Gozanti-class Cruisers",
+    front = "https://i.imgur.com/X0jCjeq.png",
+    back = "https://i.imgur.com/RUUhKgD.png",
+    mesh = "https://paste.ee/r/i9QF9",
+    diffuse = "https://i.imgur.com/1Dm6aja.png",
+    ruler = "http://paste.ee/r/jbTlM",
+    maneuver = {{"II"},{"I","I"},{"I","I","-"}},
+    defense_tokens = {DEF_SCATTER, DEF_EVADE},
+    shields = {1,1,1,1},
+    cost = 27,
+    aliases = {"Gozanti Cruisers", "Gozanti-class Cruisers (cis)", "Gozanti Cruisers (cis)"},
+    command = 1
 })

@@ -137,6 +137,15 @@ Squadron:new(ship, REBEL_SQUAD, {
     cost = 19
 })
 Squadron:new(ship, REBEL_SQUAD, {
+	name = "Hera Syndulla",
+    front = "https://i.imgur.com/SIcl56W.png",
+    mesh = "https://paste.ee/p/1UWqP",
+    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 23,
+    aliases = {'Hera Syndulla (xwing)','Hera Syndulla (X-wing)'}
+})
+Squadron:new(ship, REBEL_SQUAD, {
 	name = "Rogue Squadron",
     front = "https://i.imgur.com/A1IByHc.png",
     diffuse = "http://i.imgur.com/6xKSmMQ.png",

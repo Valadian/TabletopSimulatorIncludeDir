@@ -289,3 +289,17 @@ Ship:new(LargeShip,REBEL_SHIP,{
     aliases = {"Starhawk Battleship Mark II", "Starhawk-class Battleship Mk.II", "Starhawk-class Battleship MkII", "Starhawk-class Mk.II", "Starhawk-class MkII"},
     command = 4
 })
+Ship:new(LargeShip,REBEL_SHIP,{
+	name = "Providence-class Carrier",
+    front = "https://i.imgur.com/qIVHR6a.png",
+    back = "https://i.imgur.com/nOWf8m2.png",
+    mesh = "https://paste.ee/r/ywEMf",
+    diffuse = "https://i.imgur.com/dPWMa6R.png",
+    ruler = "http://paste.ee/r/YcTl3",
+    maneuver = {{"I"},{"I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO,DEF_EVADE},
+    shields = {5,3,3,2},
+    cost = 95,
+	aliases = {"Providence Carrier", "Providence-class Carrier (reb)","Providence Carrier (reb)"},
+    command = 3
+})

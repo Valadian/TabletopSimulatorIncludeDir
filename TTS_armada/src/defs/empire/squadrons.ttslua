@@ -295,6 +295,15 @@ Squadron:new(ship, EMPIRE_SQUAD, {
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 21
 })
+Squadron:new(ship, EMPIRE_SQUAD, {
+	name = 'Darth Vader',
+    front = "https://i.imgur.com/Upo0FcJ.png",
+    mesh = "https://paste.ee/r/L5NdY",
+    diffuse = "http://i.imgur.com/2wkGtqX.png",
+    defense_tokens = {DEF_BRACE,DEF_EVADE},
+    cost = 25,
+    aliases = {'Darth Vader (defender)'}
+})
 ship = {
     mesh = "http://paste.ee/p/EriDZ",
     diffuse = "http://i.imgur.com/VE1qnP0.png",

@@ -86,6 +86,16 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 24
 })
+--Adept, Counter 2, Dodge 1
+Squadron:new(ship, REPUBLIC_SQUAD, {
+	name = "Anakin Skywalker",
+    front = "https://i.imgur.com/qkQ5nYn.png",
+    mesh = "https://paste.ee/r/Ngu79",
+    diffuse = "https://i.imgur.com/PMrNdgs.png",
+    defense_tokens = {DEF_BRACE,DEF_SCATTER},
+    cost = 24,
+    aliases = {'Anakin Skywalker (delta)'}
+})
 
 ship = {
     mesh = "http://paste.ee/r/EQXUg",

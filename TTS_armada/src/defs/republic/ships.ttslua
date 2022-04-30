@@ -120,3 +120,17 @@ Ship:new(SmallShip,REPUBLIC_SHIP,{
     aliases = {"Pelta Transport Frigate"},
     command = 2
 })
+Ship:new(MediumShip,REPUBLIC_SHIP,{
+	name = "Victory I-class Star Destroyer",
+    front = "https://i.imgur.com/ApkDgfH.png",
+    back = "https://i.imgur.com/ZFPt98N.png",
+    mesh = "http://paste.ee/r/pPCJ8",
+    diffuse = "https://i.imgur.com/0ZAVuD7.jpeg",
+    ruler = "http://paste.ee/r/f1IHk",
+    maneuver = {{"I"},{"-","I"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO},
+    shields = {3,3,3,1},
+    cost = 75,
+    aliases = {"Victory I Star Destroyer","Victory I", "VSD I", "VSD 1", "Victory I-class Star Destroyer (gar)", "Victory I Star Destroyer (gar)","Victory I (gar)", "VSD I (gar)", "VSD 1 (gar)"},
+    command = 3
+})

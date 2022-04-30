@@ -321,3 +321,17 @@ Ship:new(LargeShip,EMPIRE_SHIP,{
     aliases = {"Onager Star Destroyer"},
     command = 3
 })
+Ship:new(LargeShip,EMPIRE_SHIP,{
+	name = "Venator II-class Star Destroyer (imp)",
+    front = "https://i.imgur.com/apXXabO.png",
+    back = "https://i.imgur.com/Q9Vdi1p.png",
+    mesh = "https://paste.ee/r/IuqFO",
+    diffuse = "https://i.imgur.com/LChyZuT.png",
+    ruler = "http://paste.ee/r/xTAdu",
+    maneuver = {{"I"},{"I","I"},{"-","I","-"}},
+    defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_CONTAIN,DEF_SALVO},
+    shields = {4,3,3,2},
+    cost = 100,
+	aliases = {"Venator II Star Destroyer (imp)", "Venator II (imp)"},
+    command = 3
+})
