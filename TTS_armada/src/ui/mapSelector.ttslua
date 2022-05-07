@@ -19,6 +19,9 @@ MAPS["doomed_station"] = "https://i.imgur.com/fFKS59s.jpg"
 MAPS["italia"] = "https://i.imgur.com/ZH3BOIY.jpg"
 MAPS["task_force"] = "https://i.imgur.com/GccejV5.jpeg"
 MAPS["urban"] = "https://i.imgur.com/ml1Mwgy.jpeg"
+MAPS["rob_shield"] = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/tables/rob_shield.jpg'
+MAPS["rob_frozen"] = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/tables/rob_frozen.jpg'
+MAPS["rob_dockyard"] = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/tables/rob_dockyard.jpg'
 function onClick_select_map(player, _, idValue)
     customUrl = MAPS[idValue]
     if customUrl~=nil then

@@ -46,6 +46,9 @@
                 <Text color="yellow">Commemorative</Text>
                 <Button id="italia" text="Italia 2021" class="map" ></Button>
                 <Button id="urban" text="Urban Planet" class="map" ></Button>
+                <Button id="rob_dockyard" text="Dockyard Foundry" class="map" ></Button>
+                <Button id="rob_frozen" text="Frozen Hideout" class="map" ></Button>
+                <Button id="rob_shield" text="Shield Ring" class="map" ></Button>
             </GridLayout>
         </HorizontalLayout>
     </VerticalLayout>
