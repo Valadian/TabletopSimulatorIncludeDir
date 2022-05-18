@@ -94,7 +94,7 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
     diffuse = "https://i.imgur.com/PMrNdgs.png",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 24,
-    aliases = {'Anakin Skywalker (delta)'}
+    aliases = {'Anakin Skywalker (delta)', 'Anakin Skywalker (Delta-7)'}
 })
 
 ship = {
@@ -117,7 +117,8 @@ Squadron:new(ship, REPUBLIC_SQUAD, {
     diffuse = "http://i.imgur.com/B8UeUf1.jpg",
     mesh = "http://paste.ee/r/QVTLs",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
-    cost = 19
+    cost = 19,
+    aliases = {'Anakin Skywalker (BTL-B)'}
 })
 
 ship = {
