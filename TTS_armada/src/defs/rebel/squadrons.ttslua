@@ -321,7 +321,8 @@ Squadron:new(ship, REBEL_SQUAD, {
     mesh = "http://paste.ee/p/3NpiT",
     diffuse = "http://i.imgur.com/wPzX0MW.png",
     defense_tokens = {DEF_BRACE},
-    cost = 28
+    cost = 28,
+    aliases = {'Hera Syndulla (Ghost)'}
 })
 ship = {
     mesh = "http://paste.ee/p/L9ygS",
