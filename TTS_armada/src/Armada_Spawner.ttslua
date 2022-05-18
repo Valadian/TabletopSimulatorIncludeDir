@@ -554,6 +554,8 @@ function Action_DoneSpawn(card)
 end
 function onload()
     self.interactable = false
+
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 #include defs/rebel/ships
 #include defs/empire/ships
     local ship = nil
