@@ -1,345 +1,345 @@
 REBEL_SQUAD = {
-    back = "https://i.imgur.com/8s63Ngl.png",
+    back =      ASSETS_ROOT.."squadrons/rebel/card_back.jpg",
     faction = "Rebellion"
 }
-ship = {
-    mesh = "http://paste.ee/r/ZqCC6",
-    diffuse = "http://i.imgur.com/QSLaqgW.png",
+bwing = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/bwing/bo_model.obj",
     health = 5,
     move = 2,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(bwing, REBEL_SQUAD, {
 	name = "B-wing Squadron",
-    front = "https://i.imgur.com/bB11RGw.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/bwing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/bwing/base_diffuse.jpg",
     cost = 14,
     aliases = {'B-wing Squadrons', "B-wing"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(bwing, REBEL_SQUAD, {
 	name = "Keyan Farlander",
-    front = "https://i.imgur.com/r4bx4xg.png",
-    diffuse = "http://i.imgur.com/r7YB80F.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/bwing/keyan_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/bwing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 20
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(bwing, REBEL_SQUAD, {
 	name = "Ten Numb",
-    front = "https://i.imgur.com/8zae2YW.png",
-    diffuse = "http://i.imgur.com/r7YB80F.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/bwing/ten_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/bwing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(bwing, REBEL_SQUAD, {
 	name = "Dagger Squadron",
-    front = "https://i.imgur.com/41kkBy6.png",
-    diffuse = "http://i.imgur.com/swXemsa.png",
-    mesh = "http://paste.ee/p/NpCQt",
+    front =     ASSETS_ROOT.."squadrons/rebel/bwing/dagger_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/bwing/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/bwing/bo_sw_model.obj",
     cost = 15
 })
-ship = {
-    mesh = "http://paste.ee/r/AG2g4",
-    diffuse = "http://i.imgur.com/ObUEAK5.png",
+ywing = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/ywing/bo_he_model.obj",
     health = 6,
     move = 3,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ywing, REBEL_SQUAD, {
 	name = "Y-wing Squadron",
-    front = "https://i.imgur.com/20kwNNs.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/ywing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ywing/base_diffuse.jpg",
     cost = 10,
     aliases = {'Y-wing Squadrons', "Y-wing"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ywing, REBEL_SQUAD, {
 	name = '"Dutch" Vander',
-    front = "https://i.imgur.com/97UoG34.png",
-    diffuse = "http://i.imgur.com/pRu0c7d.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/ywing/dutch_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ywing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 16,
     aliases = {"Dutch Vander"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ywing, REBEL_SQUAD, {
 	name = 'Norra Wexley',
-    front = "https://i.imgur.com/VlUNCkM.png",
-    diffuse = "http://i.imgur.com/pRu0c7d.png",
-    mesh = "http://paste.ee/p/5i0Ma",
+    front =     ASSETS_ROOT.."squadrons/rebel/ywing/norra_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ywing/ace_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/ywing/bo_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 17
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ywing, REBEL_SQUAD, {
 	name = 'Gold Squadron',
-    front = "https://i.imgur.com/m6efvmr.png",
-    mesh = "http://paste.ee/p/5i0Ma",
-    diffuse = "http://i.imgur.com/pRu0c7d.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/ywing/gold_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ywing/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/ywing/bo_model.obj",
     cost = 12
 })
-ship = {
-    mesh = "http://paste.ee/r/3Wdv8",
-    diffuse = "http://i.imgur.com/6vlNuEY.png",
+awing = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/awing/co_model.obj",
     health = 4,
     move = 5,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(awing, REBEL_SQUAD, {
 	name = "A-wing Squadron",
-    front = "https://i.imgur.com/JikzQGo.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/awing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/awing/base_diffuse.jpg",
     cost = 11,
     aliases = {'A-wing Squadrons', "A-wing"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(awing, REBEL_SQUAD, {
 	name = "Tycho Celchu",
-    front = "https://i.imgur.com/XsXiGTU.png",
-    diffuse = "http://i.imgur.com/QZPi4e7.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/awing/tycho_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/awing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 16
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(awing, REBEL_SQUAD, {
 	name = "Shara Bey",
-    front = "https://i.imgur.com/QhDp5hB.png",
-    diffuse = "http://i.imgur.com/QZPi4e7.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/awing/shara_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/awing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 17
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(awing, REBEL_SQUAD, {
 	name = "Green Squadron",
-    front = "https://i.imgur.com/a00ZFfc.png",
-    mesh = "http://paste.ee/p/ybtPs",
-    diffuse = "http://i.imgur.com/0awlEmY.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/awing/green_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/awing/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/awing/bo_co_model.obj",
     cost = 12
 })
-ship = {
-    mesh = "http://paste.ee/r/zjUF1",
-    diffuse = "http://i.imgur.com/HHbQ8lf.png",
+xwing = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/xwing/bo_es_model.obj",
     health = 5,
     move = 3,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "X-wing Squadron",
-    front = "https://i.imgur.com/d5QuMBy.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/base_diffuse.jpg",
     cost = 13,
     aliases = {'X-wing Squadrons', "X-wing"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "Luke Skywalker",
-    front = "https://i.imgur.com/CcTsLiM.png",
-    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/luke_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 20
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "Wedge Antilles",
-    front = "https://i.imgur.com/uepzi7O.png",
-    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/wedge_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "Biggs Darklighter",
-    front = "https://i.imgur.com/zLMC2Fc.png",
-    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/biggs_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "Hera Syndulla",
-    front = "https://i.imgur.com/SIcl56W.png",
-    mesh = "https://paste.ee/p/1UWqP",
-    diffuse = "http://i.imgur.com/6xKSmMQ.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/hera_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/ace_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/xwing/bo_do_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 23,
     aliases = {'Hera Syndulla (xwing)','Hera Syndulla (X-wing)'}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(xwing, REBEL_SQUAD, {
 	name = "Rogue Squadron",
-    front = "https://i.imgur.com/A1IByHc.png",
-    diffuse = "http://i.imgur.com/6xKSmMQ.png",
-    mesh = "http://paste.ee/p/PsdOf",
+    front =     ASSETS_ROOT.."squadrons/rebel/xwing/rogue_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/xwing/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/xwing/bo_ro_model.obj",
     cost = 14
 })
-ship = {
-    mesh = "http://paste.ee/r/919yT",
-    diffuse = "http://i.imgur.com/P11kSne.png",
+yt2400 = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt2400/ro_model.obj",
     health = 6,
     move = 4,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt2400, REBEL_SQUAD, {
 	name = "YT-2400",
-    front = "https://i.imgur.com/Ui3LTlu.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt2400/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/base_diffuse.jpg",
     cost = 16,
     aliases = {'YT-2400s'}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt2400, REBEL_SQUAD, {
 	name = "Dash Rendar",
-    front = "https://i.imgur.com/7TfYFsY.png",
-    mesh = "http://paste.ee/r/V5oHI",
-    diffuse = "http://i.imgur.com/3iJ0Wxe.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt2400/dash_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt2400/bo_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 24
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt2400, REBEL_SQUAD, {
 	name = "Mart Mattin",
-    front = "https://i.imgur.com/UyCPNqt.png",
-    mesh = "http://paste.ee/p/4qSjx",
-    diffuse = "http://i.imgur.com/3iJ0Wxe.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt2400/mart_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt2400/gr_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 22
 })
-ship = {
-    mesh = "http://paste.ee/r/hhbic",
-    diffuse = "http://i.imgur.com/bndtRkF.png",
+yt1300 = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt1300/co_es_model.obj",
     health = 7,
     move = 2,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt1300, REBEL_SQUAD, {
 	name = "YT-1300",
-    front = "https://i.imgur.com/pFKaprO.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt1300/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/base_diffuse.jpg",
     cost = 13,
     aliases = {'YT-1300s'}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt1300, REBEL_SQUAD, {
 	name = "Han Solo",
-    front = "https://i.imgur.com/8ni1bSl.png",
-    mesh = "http://paste.ee/r/6yDva",
-    diffuse = "http://i.imgur.com/v16flTU.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt1300/han_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt1300/gr_ro_model.obj",
     move = 3,
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 26
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(yt1300, REBEL_SQUAD, {
 	name = "Lando Calrissian",
-    front = "https://i.imgur.com/Xk43ysd.png",
-    mesh = "http://paste.ee/r/6yDva",
-    diffuse = "http://i.imgur.com/v16flTU.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/yt1300/lando_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/yt1300/gr_ro_model.obj",
     move = 3,
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 23
 })
-ship = {
-    mesh = "http://paste.ee/r/DURQd",
-    diffuse = "http://i.imgur.com/03TMKSR.png",
+hwk = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/hwk/co_in_model.obj",
     health = 4,
     move = 3,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(hwk, REBEL_SQUAD, {
 	name = "HWK-290",
-    front = "https://i.imgur.com/Zm7888b.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/hwk/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/base_diffuse.jpg",
     cost = 12,
     aliases = {'HWK-290s'}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(hwk, REBEL_SQUAD, {
 	name = "Jan Ors",
-    front = "https://i.imgur.com/NQqAVr8.png",
-    diffuse = "http://i.imgur.com/bnknApA.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/hwk/jan_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/unique_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(hwk, REBEL_SQUAD, {
 	name = "Kanan Jarrus",
-    front = "https://i.imgur.com/Cpp6DXG.png",
-    mesh = "http://paste.ee/p/csGHI",
-    diffuse = "http://i.imgur.com/bnknApA.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/hwk/kanan_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/hwk/as_cl_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
-ship = {
-    mesh = "http://paste.ee/r/dvrOX",
-    diffuse = "http://i.imgur.com/4Stv3go.png",
+scurrg = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/scurrg/bo_gr_he_model.obj",
     health = 6,
     move = 3 }
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(scurrg, REBEL_SQUAD, {
 	name = "Scurrg H-6 Bomber",
-    front = "https://i.imgur.com/QvhGpkj.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/scurrg/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/base_diffuse.jpg",
     cost = 16,
     aliases = {'Scurrg H-6 Bombers', "Scurrg H-6", "Scurrg"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(scurrg, REBEL_SQUAD, {
 	name = "Nym",
-    front = "https://i.imgur.com/vfrMC1z.png",
-    mesh = "http://paste.ee/r/96QNu",
-    diffuse = "http://i.imgur.com/QAaYYfU.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/scurrg/nym_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/scurrg/bo_gr_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 21
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(scurrg, REBEL_SQUAD, {
 	name = "Malee Hurra",
-    front = "https://i.imgur.com/JmifVSX.png",
-    mesh = "http://paste.ee/r/96QNu",
-    diffuse = "http://i.imgur.com/QAaYYfU.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/scurrg/malee_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/unique_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/scurrg/bo_gr_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 26
 })
-ship = {
-    mesh = "http://paste.ee/p/ZHpHT",
-    diffuse = "http://i.imgur.com/zYmUqph.png",
+z95 = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/z95/sw_model.obj",
     health = 3,
     move = 3,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(z95, REBEL_SQUAD, {
 	name = "Z-95 Headhunter Squadron",
-    front = "https://i.imgur.com/o3ydY6G.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/z95/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/z95/base_diffuse.jpg",
     cost = 7,
     aliases = {'Z-95 Headhunter Squadrons', "Z-95 Headhunter", "Z-95"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(z95, REBEL_SQUAD, {
 	name = "Lieutenant Blount",
-    front = "https://i.imgur.com/dlts7hE.png",
-    diffuse = "http://i.imgur.com/aTuRbPL.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/z95/blount_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/z95/unique_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 14
 })
-ship = {
-    mesh = "http://paste.ee/p/ElhHc",
-    diffuse = "http://i.imgur.com/X9E1n2M.png",
+ewing = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/ewing/bo_sn_model.obj",
     health = 5,
     move = 4,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ewing, REBEL_SQUAD, {
 	name = "E-wing Squadron",
-    front = "https://i.imgur.com/iDlDpb3.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/ewing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ewing/base_diffuse.jpg",
     cost = 15,
     aliases = {'E-wing Squadrons', "E-wing"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(ewing, REBEL_SQUAD, {
 	name = "Corran Horn",
-    front = "https://i.imgur.com/r9KN0kh.png",
-    mesh = "http://paste.ee/p/r2fsB",
-    diffuse = "http://i.imgur.com/3uSFKMb.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/ewing/corran_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/ewing/ace_diffuse.jpg",
+        mesh =      ASSETS_ROOT.."squadrons/rebel/ewing/bo_ro_sn_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 22
 })
-ship = {
-    mesh = "http://paste.ee/p/3QIXa",
-    diffuse = "http://i.imgur.com/5UVGuIg.png",
+vcx = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/vcx/he_re_st_model.obj",
     health = 8,
     move = 3,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(vcx, REBEL_SQUAD, {
 	name = "VCX-100 Freighter",
-    front = "https://i.imgur.com/CmvkFAq.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/vcx/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/vcx/base_diffuse.jpg",
     cost = 15,
     aliases = {'VCX-100 Freighters', "VCX-100"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(vcx, REBEL_SQUAD, {
 	name = "Hera Syndulla",
-    front = "https://i.imgur.com/b5rhKSS.png",
-    mesh = "http://paste.ee/p/3NpiT",
-    diffuse = "http://i.imgur.com/wPzX0MW.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/vcx/hera_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/vcx/ace_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/rebel/vcx/gr_ro_model.obj",
     defense_tokens = {DEF_BRACE},
     cost = 28,
     aliases = {'Hera Syndulla (Ghost)'}
 })
-ship = {
-    mesh = "http://paste.ee/p/L9ygS",
-    diffuse = "http://i.imgur.com/CZ3eF4M.png",
+lancer = {
+    mesh =      ASSETS_ROOT.."squadrons/rebel/lancer/bo_gr_ro_model.obj",
     health = 4,
     move = 4,
     defense_tokens = {}}
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(lancer, REBEL_SQUAD, {
 	name = "Lancer-class Pursuit Craft",
-    front = "https://i.imgur.com/qDSMy7N.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/lancer/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/lancer/base_diffuse.jpg",
     cost = 15,
     aliases = {"Lancer Pursuit Craft","Lancer Pursuit Crafts","Lancer-class Pursuit Crafts","Lancer"}
 })
-Squadron:new(ship, REBEL_SQUAD, {
+Squadron:new(lancer, REBEL_SQUAD, {
 	name = "Ketsu Onyo",
-    front = "https://i.imgur.com/97603QH.png",
-    diffuse = "http://i.imgur.com/eJxMrk2.png",
+    front =     ASSETS_ROOT.."squadrons/rebel/lancer/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/lancer/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 22
 })

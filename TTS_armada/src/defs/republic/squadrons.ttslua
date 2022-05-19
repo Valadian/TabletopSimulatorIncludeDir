@@ -1,144 +1,143 @@
 REPUBLIC_SQUAD = {
-    back = "https://i.imgur.com/8s63Ngl.png",
+    back =      ASSETS_ROOT.."ships/republic/card_back.jpg", --TODO: Replace Long Ship version
     faction = "Republic"
 }
-ship = {
-    mesh = "http://paste.ee/r/BcONh",
-    diffuse = "http://i.imgur.com/P0IPxg5.jpeg",
+v19 = {
+    mesh =      ASSETS_ROOT.."squadrons/republic/v19/es_sw_model.obj",
     health = 5,
     move = 3,
     defense_tokens = {}}
 -- Escort, Swarm
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(v19, REPUBLIC_SQUAD, {
 	name = "V-19 Torrent Squadron",
-    front = "https://i.imgur.com/aiyBkpn.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/v19/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/v19/base_diffuse.jpg",
     cost = 12,
     aliases = {'V-19 Torrent Squadrons', "V-19", "V-19 Torrent"}
 })
-
-ship.diffuse = "http://i.imgur.com/OTeOC0F.jpeg"
-
 -- Escort, Swarm
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(v19, REPUBLIC_SQUAD, {
 	name = '\"Axe\"',
-    front = "https://i.imgur.com/h9d4P44.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/v19/axe_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/v19/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
     cost = 17,
     aliases = {"Axe"}
 })
 
 -- Escort, Swarm
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(v19, REPUBLIC_SQUAD, {
 	name = '\"Kickback\"',
-    front = "https://i.imgur.com/crnCDLq.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/v19/kickback_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/v19/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 16,
     aliases = {"Kickback"}
 })
 
-ship = {
-    mesh = "http://paste.ee/r/hBJ41",
-    diffuse = "http://i.imgur.com/HCmh3Dw.jpg",
+delta = {
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_do_model.obj",
     health = 4,
     move = 4,
     defense_tokens = {}}
 -- Adept, Counter, Dodge
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Delta-7 Aethersprite Squadron",
-    front = "https://i.imgur.com/huDC10s.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/base_diffuse.jpg",
     cost = 17,
     aliases = {'Delta-7 Aethersprite Squadrons', "Delta-7 Aethersprite", "Delta-7"}
 })
 -- ship.diffuse = ""
 -- Adept, Counter, Grit
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Ahsoka Tano",
-    front = "https://i.imgur.com/W0HDKSn.jpg",
-    mesh = "http://paste.ee/r/AFr6l",
-    diffuse = "http://i.imgur.com/9TnSFSZ.jpg",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/ahsoka_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/ahsoka_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_gr_model.obj",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 23
 })
 -- Adept, Counter
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Luminara Unduli",
-    front = "https://i.imgur.com/hjjJXia.jpeg",
-    mesh = "http://paste.ee/r/kfzQY",
-    diffuse = "http://i.imgur.com/E6gsfFM.jpg",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/luminara_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/luminara_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_model.obj",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 23
 })
 -- Adept, Counter, Intel
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Kit Fisto",
-    front = "https://i.imgur.com/gpGELBf.jpeg",
-    mesh = "http://paste.ee/r/eQa85",
-    diffuse = "http://i.imgur.com/uS5J8ju.jpg",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/kit_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/kit_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_in_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 26
 })
 -- Adept, Counter
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Plo Koon",
-    front = "https://i.imgur.com/iqalHXV.jpeg",
-    mesh = "http://paste.ee/r/kfzQY",
-    diffuse = "http://i.imgur.com/HWWjWBB.jpg",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/plo_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/plo_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_model.obj",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 24
 })
 --Adept, Counter 2, Dodge 1
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(delta, REPUBLIC_SQUAD, {
 	name = "Anakin Skywalker",
-    front = "https://i.imgur.com/qkQ5nYn.png",
-    mesh = "https://paste.ee/r/Ngu79",
-    diffuse = "https://i.imgur.com/PMrNdgs.png",
+    front =     ASSETS_ROOT.."squadrons/republic/delta/anakin_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/delta/anakin_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/delta/ad_co_do_model.obj",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 24,
     aliases = {'Anakin Skywalker (delta)', 'Anakin Skywalker (Delta-7)'}
 })
 
-ship = {
-    mesh = "http://paste.ee/r/EQXUg",
-    diffuse = "http://i.imgur.com/8mPf6Jb.jpeg",
+ywing = {
+    mesh =      ASSETS_ROOT.."squadrons/republic/ywing/bo_he_model.obj",
     health = 6,
     move = 3,
     defense_tokens = {}}
 -- Bomber, Heavy
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ywing, REPUBLIC_SQUAD, {
 	name = "BTL-B Y-Wing Squadron",
-    front = "https://i.imgur.com/qvyTtNf.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/ywing/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/base_diffuse.jpg",
     cost = 10,
     aliases = {'BTL-B Y-Wing Squadrons', "BTL-B Y-Wing",'BLT-B Y-Wing Squadrons'}
 })
 -- Adept, Bomber, Heavy
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(ywing, REPUBLIC_SQUAD, {
 	name = "Anakin Skywalker",
-    front = "https://i.imgur.com/zsDolt7.jpeg",
-    diffuse = "http://i.imgur.com/B8UeUf1.jpg",
-    mesh = "http://paste.ee/r/QVTLs",
+    front =     ASSETS_ROOT.."squadrons/republic/ywing/anakin_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/anakin_diffuse.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/republic/ywing/ad_bo_he_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19,
     aliases = {'Anakin Skywalker (BTL-B)'}
 })
 
-ship = {
-    mesh = "http://paste.ee/r/bSJoI",
-    diffuse = "http://i.imgur.com/R0d4QEm.jpg",
+arc = {
+    mesh =      ASSETS_ROOT.."squadrons/republic/arc/bo_co_model.obj",
     health = 7,
     move = 2,
     defense_tokens = {}}
 -- Bomber, Counter
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(arc, REPUBLIC_SQUAD, {
 	name = "ARC-170 Starfighter Squadron",
-    front = "https://i.imgur.com/ggkaXOF.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/arc/base_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/arc/base_diffuse.jpg",
     cost = 15,
     aliases = {'ARC-170 Starfighter Squadrons', "ARC-170 Starfighter", "ARC-170"}
 })
 -- Bomber, Counter
-Squadron:new(ship, REPUBLIC_SQUAD, {
+Squadron:new(arc, REPUBLIC_SQUAD, {
 	name = '\"Odd Ball\"',
-    front = "https://i.imgur.com/JVuBlg2.jpeg",
-    diffuse = "http://i.imgur.com/eUN2Zsl.jpeg",
+    front =     ASSETS_ROOT.."squadrons/republic/arc/oddball_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/arc/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
     cost = 23,
     aliases = {"Odd Ball", "Oddball"}

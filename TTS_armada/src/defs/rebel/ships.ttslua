@@ -1,13 +1,13 @@
 REBEL_SHIP = {
-    back = "https://i.imgur.com/vUaQViH.png",
+    back =      ASSETS_ROOT.."ships/rebel/card_back.jpg",
     faction = "Rebellion"
 }
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "GR-75 Medium Transports",
-    front = "https://i.imgur.com/vMgbQB3.png",
-    mesh = "http://paste.ee/p/XZLIh",
-    diffuse = "http://i.imgur.com/2A2pAEI.png",
-    ruler = "http://paste.ee/r/FSip2",
+    front =     ASSETS_ROOT.."ships/rebel/gr75/transport_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/gr75/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/gr75/transport_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/gr75/ruler.obj",
     maneuver = {{"II"},{"I","II"},{"-","I","II"}},
     defense_tokens = {DEF_SCATTER, DEF_EVADE},
     shields = {1,1,1,1},
@@ -17,10 +17,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "GR-75 Combat Retrofits",
-    front = "https://i.imgur.com/GmEEfVA.png",
-    mesh = "http://paste.ee/p/XZLIh",
-    diffuse = "http://i.imgur.com/dO7rAWL.png",
-    ruler = "http://paste.ee/r/FSip2",
+    front =     ASSETS_ROOT.."ships/rebel/gr75/combat_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/gr75/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/gr75/combat_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/gr75/ruler.obj",
     maneuver = {{"II"},{"I","II"},{"-","I","II"}},
     defense_tokens = {DEF_SCATTER, DEF_EVADE},
     shields = {1,1,1,1},
@@ -30,10 +30,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "CR90 Corvette A",
-    front = "https://i.imgur.com/bobtrD0.png",
-    mesh = "http://paste.ee/r/ciL22",
-    diffuse = "http://i.imgur.com/0kAY3h2.png",
-    ruler = "http://paste.ee/r/H13ZL",
+    front =     ASSETS_ROOT.."ships/rebel/cr90/A_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/cr90/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/cr90/A_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/cr90/ruler.obj",
     maneuver = {{"II"},{"I","II"},{"-","I","II"},{"-","I","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT},
     shields = {2,2,2,1},
@@ -43,10 +43,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "CR90 Corvette B",
-    front = "https://i.imgur.com/ff7qkS5.png",
-    mesh = "http://paste.ee/r/ciL22",
-    diffuse = "http://i.imgur.com/k7I0BOQ.png",
-    ruler = "http://paste.ee/r/H13ZL",
+    front =     ASSETS_ROOT.."ships/rebel/cr90/B_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/cr90/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/cr90/B_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/cr90/ruler.obj",
     maneuver = {{"II"},{"I","II"},{"-","I","II"},{"-","I","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT},
     shields = {2,2,2,1},
@@ -56,10 +56,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Nebulon-B Support Refit",
-    front = "https://i.imgur.com/Htpwn5Q.png",
-    mesh = "http://paste.ee/r/5jlFC",
-    diffuse = "http://i.imgur.com/4LZROT5.png",
-    ruler = "http://paste.ee/r/xI908",
+    front =     ASSETS_ROOT.."ships/rebel/nebulon/support_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/nebulon/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/nebulon/support_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/nebulon/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
     shields = {3,1,1,2},
@@ -69,10 +69,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Nebulon-B Escort Frigate",
-    front = "https://i.imgur.com/hnEKY1U.png",
-    mesh = "http://paste.ee/r/5jlFC",
-    diffuse = "http://i.imgur.com/avcsD9I.png",
-    ruler = "http://paste.ee/r/xI908",
+    front =     ASSETS_ROOT.."ships/rebel/nebulon/escort_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/nebulon/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/nebulon/escort_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/nebulon/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","II"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_BRACE},
     shields = {3,1,1,2},
@@ -82,10 +82,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "MC30c Scout Frigate",
-    front = "https://i.imgur.com/L3532U9.png",
-    mesh = "http://paste.ee/r/DGrIr",
-    diffuse = "http://i.imgur.com/nxIAPfN.jpg",
-    ruler = "http://paste.ee/r/g71A1",
+    front =     ASSETS_ROOT.."ships/rebel/mc30/scout_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc30/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc30/scout_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc30/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","II"},{"-","I","I","-"}},
     defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT, DEF_REDIRECT},
     shields = {3,3,3,2},
@@ -95,10 +95,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "MC30c Torpedo Frigate",
-    front = "https://i.imgur.com/RG0ttdp.png",
-    mesh = "http://paste.ee/r/DGrIr",
-    diffuse = "http://i.imgur.com/GOBHwVr.jpg",
-    ruler = "http://paste.ee/r/g71A1",
+    front =     ASSETS_ROOT.."ships/rebel/mc30/torpedo_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc30/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc30/torpedo_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc30/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","II"},{"-","I","I","-"}},
     defense_tokens = {DEF_EVADE, DEF_EVADE, DEF_REDIRECT, DEF_REDIRECT},
     shields = {3,3,3,2},
@@ -108,10 +108,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Modified Pelta-class Command Ship",
-    front = "https://i.imgur.com/x6gMgaX.png",
-    mesh = "https://paste.ee/p/4QYyI",
-    diffuse = "http://i.imgur.com/aiGsc3c.jpg",
-    ruler = "http://paste.ee/p/RDjaZ",
+    front =     ASSETS_ROOT.."ships/rebel/pelta/command_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/pelta/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/pelta/command_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/pelta/ruler.obj",
     maneuver = {{"II"},{"I","I"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {3,2,2,1},
@@ -121,10 +121,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Modified Pelta-class Assault Ship",
-    front = "https://i.imgur.com/fw4TbCR.png",
-    mesh = "https://paste.ee/p/4QYyI",
-    diffuse = "http://i.imgur.com/wIVRRW3.jpg",
-    ruler = "http://paste.ee/p/RDjaZ",
+    front =     ASSETS_ROOT.."ships/rebel/pelta/assault_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/pelta/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/pelta/assault_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/pelta/ruler.obj",
     maneuver = {{"II"},{"I","I"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {3,2,2,1},
@@ -135,10 +135,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Hammerhead Scout Corvette",
-    front = "https://i.imgur.com/QcTmlXq.png",
-    mesh = "http://paste.ee/r/jI2Qo",
-    diffuse = "http://i.imgur.com/cxOtWAb.jpg",
-    ruler = "http://paste.ee/p/DA9vu",
+    front =     ASSETS_ROOT.."ships/rebel/hammerhead/scout_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/hammerhead/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/hammerhead/scout_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/hammerhead/ruler.obj",
     maneuver = {{"II"},{"II","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,1,1,1},
@@ -148,10 +148,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 })
 Ship:new(SmallShip,REBEL_SHIP,{
 	name = "Hammerhead Torpedo Corvette",
-    front = "https://i.imgur.com/h8DWzpu.png",
-    mesh = "http://paste.ee/r/jI2Qo",
-    diffuse = "http://i.imgur.com/v3KSaTf.jpg",
-    ruler = "http://paste.ee/p/DA9vu",
+    front =     ASSETS_ROOT.."ships/rebel/hammerhead/torpedo_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/hammerhead/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/hammerhead/torpedo_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/hammerhead/ruler.obj",
     maneuver = {{"II"},{"II","I"},{"I","I","-"}},
     defense_tokens = {DEF_EVADE, DEF_REDIRECT, DEF_CONTAIN},
     shields = {2,1,1,1},
@@ -162,10 +162,10 @@ Ship:new(SmallShip,REBEL_SHIP,{
 
 Ship:new(MediumShip,REBEL_SHIP,{
 	name = "Assault Frigate Mark II A",
-    front = "https://i.imgur.com/XXIO5qw.png",
-    mesh = "http://paste.ee/r/zNWBM",
-    diffuse = "http://i.imgur.com/vreFbKa.jpg",
-    ruler = "http://paste.ee/r/kmnpd",
+    front =     ASSETS_ROOT.."ships/rebel/afm2/A_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/afm2/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/afm2/A_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/afm2/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {4,3,3,2},
@@ -175,10 +175,10 @@ Ship:new(MediumShip,REBEL_SHIP,{
 })
 Ship:new(MediumShip,REBEL_SHIP,{
 	name = "Assault Frigate Mark II B",
-    front = "https://i.imgur.com/LsxALho.png",
-    mesh = "http://paste.ee/r/zNWBM",
-    diffuse = "http://i.imgur.com/l2L9TXv.jpg",
-    ruler = "http://paste.ee/r/kmnpd",
+    front =     ASSETS_ROOT.."ships/rebel/afm2/B_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/afm2/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/afm2/B_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/afm2/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_EVADE, DEF_BRACE, DEF_REDIRECT},
     shields = {4,3,3,2},
@@ -188,10 +188,10 @@ Ship:new(MediumShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Command Cruiser",
-    front = "https://i.imgur.com/zJfyMXV.png",
-    mesh = "http://paste.ee/r/am8JC",
-    diffuse = "http://i.imgur.com/pW1iM1a.png",
-    ruler = "http://paste.ee/r/YcTl3",
+    front =     ASSETS_ROOT.."ships/rebel/mc80/command_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc80/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc80/command_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc80/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_REDIRECT, DEF_CONTAIN},
     shields = {4,4,4,3},
@@ -200,10 +200,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Assault Cruiser",
-    front = "https://i.imgur.com/vC6SfGR.png",
-    mesh = "http://paste.ee/r/am8JC",
-    diffuse = "http://i.imgur.com/xklILcW.png",
-    ruler = "http://paste.ee/r/YcTl3",
+    front =     ASSETS_ROOT.."ships/rebel/mc80/assault_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc80/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc80/assault_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc80/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_REDIRECT, DEF_CONTAIN},
     shields = {4,4,4,3},
@@ -213,10 +213,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Star Cruiser",
-    front = "https://i.imgur.com/bEDTEFP.png",
-    mesh = "http://paste.ee/r/eEzbI",
-    diffuse = "http://i.imgur.com/Cb3Nexq.png",
-    ruler = "http://paste.ee/r/XjDg0",
+    front =     ASSETS_ROOT.."ships/rebel/mc80l/star_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc80l/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc80l/star_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc80l/ruler.obj",
     maneuver = {{"I"},{"I","-"},{"I","-","I"}},
     defense_tokens = {DEF_BRACE, DEF_BRACE, DEF_REDIRECT},
     shields = {5,2,2,2},
@@ -226,10 +226,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC80 Battle Cruiser",
-    front = "https://i.imgur.com/Xij4Ufr.png",
-    mesh = "http://paste.ee/r/eEzbI",
-    diffuse = "http://i.imgur.com/DHGrZcJ.png",
-    ruler = "http://paste.ee/r/XjDg0",
+    front =     ASSETS_ROOT.."ships/rebel/mc80l/battle_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc80l/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc80l/battle_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc80l/ruler.obj",
     maneuver = {{"I"},{"I","-"},{"I","-","I"}},
     defense_tokens = {DEF_BRACE, DEF_BRACE, DEF_REDIRECT},
     shields = {5,2,2,2},
@@ -239,10 +239,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC75 Ordnance Cruiser",
-    front = "https://i.imgur.com/L9piyH4.png",
-    mesh = "http://paste.ee/r/tdeQQ",
-    diffuse = "http://i.imgur.com/ijSlgsR.jpg",
-    ruler = "http://paste.ee/r/qw6fH",
+    front =     ASSETS_ROOT.."ships/rebel/mc75/ordnance_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc75/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc75/ordnance_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc75/ruler.obj",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_CONTAIN},
     shields = {4,3,3,3},
@@ -252,10 +252,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "MC75 Armored Cruiser",
-    front = "https://i.imgur.com/sLecO5b.png",
-    mesh = "http://paste.ee/r/tdeQQ",
-    diffuse = "http://i.imgur.com/lLjEVbO.jpg",
-    ruler = "http://paste.ee/r/qw6fH",
+    front =     ASSETS_ROOT.."ships/rebel/mc75/armored_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/mc75/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/mc75/armored_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/mc75/ruler.obj",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_CONTAIN},
     shields = {4,3,3,3},
@@ -265,10 +265,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "Starhawk-class Battleship Mark I",
-    front = "https://i.imgur.com/xJIm5pQ.png",
-    mesh = "http://paste.ee/p/70TGL",
-    diffuse = "http://i.imgur.com/15ng8Hn.jpg",
-    ruler = "http://paste.ee/p/TFbWH",
+    front =     ASSETS_ROOT.."ships/rebel/starhawk/I_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/starhawk/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/starhawk/I_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/starhawk/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
     shields = {6,4,4,2},
@@ -278,10 +278,10 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "Starhawk-class Battleship Mark II",
-    front = "https://i.imgur.com/VZFlC1M.png",
-    mesh = "http://paste.ee/p/70TGL",
-    diffuse = "http://i.imgur.com/e61Q601.jpg",
-    ruler = "http://paste.ee/p/TFbWH",
+    front =     ASSETS_ROOT.."ships/rebel/starhawk/II_card.jpg",
+    mesh =      ASSETS_ROOT.."ships/rebel/starhawk/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/starhawk/II_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/rebel/starhawk/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_CONTAIN, DEF_SALVO},
     shields = {6,4,4,2},
@@ -291,11 +291,11 @@ Ship:new(LargeShip,REBEL_SHIP,{
 })
 Ship:new(LargeShip,REBEL_SHIP,{
 	name = "Providence-class Carrier",
-    front = "https://i.imgur.com/qIVHR6a.png",
-    back = "https://i.imgur.com/nOWf8m2.png",
-    mesh = "https://paste.ee/r/ywEMf",
-    diffuse = "https://i.imgur.com/dPWMa6R.png",
-    ruler = "http://paste.ee/r/YcTl3",
+    front =     ASSETS_ROOT.."ships/rebel/providence/carrier_card.jpg",
+    -- back =      ASSETS_ROOT.."ships/rebel/providence/carrier_card_orig_back.jpg",
+    mesh =      ASSETS_ROOT.."ships/republic/providence/mesh.obj",
+    diffuse =   ASSETS_ROOT.."ships/rebel/providence/carrier_diffuse.jpg",
+    ruler =     ASSETS_ROOT.."ships/republic/providence/ruler.obj",
     maneuver = {{"I"},{"I","-"}},
     defense_tokens = {DEF_BRACE,DEF_REDIRECT,DEF_SALVO,DEF_EVADE},
     shields = {5,3,3,2},

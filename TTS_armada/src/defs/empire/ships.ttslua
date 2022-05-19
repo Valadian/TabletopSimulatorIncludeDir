@@ -31,7 +31,7 @@ Ship:new(SmallShip,EMPIRE_SHIP,{
 Ship:new(SmallShip,EMPIRE_SHIP,{
 	name = "Raider I-class Corvette",
     front =     ASSETS_ROOT.."ships/empire/raider/I_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/raider/diffuse.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/raider/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/raider/I_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/raider/ruler.obj",
     maneuver = {{"II"},{"II","II"},{"-","I","I"},{"-","I","I","I"}},
@@ -44,7 +44,7 @@ Ship:new(SmallShip,EMPIRE_SHIP,{
 Ship:new(SmallShip,EMPIRE_SHIP,{
 	name = "Raider II-class Corvette",
     front =     ASSETS_ROOT.."ships/empire/raider/II_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/raider/diffuse.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/raider/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/raider/II_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/raider/ruler.obj",
     maneuver = {{"II"},{"II","II"},{"-","I","I"},{"-","I","I","I"}},
@@ -324,8 +324,7 @@ Ship:new(LargeShip,EMPIRE_SHIP,{
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Venator II-class Star Destroyer (imp)",
     front =     ASSETS_ROOT.."ships/empire/venator/II_card.jpg",
-    -- back = "https://i.imgur.com/Q9Vdi1p.png",
-    mesh =      ASSETS_ROOT.."ships/republic/venator/model.obj",
+    mesh =      ASSETS_ROOT.."ships/republic/venator/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/venator/II_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/republic/venator/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"-","I","-"}},
