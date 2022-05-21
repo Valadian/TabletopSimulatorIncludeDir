@@ -456,7 +456,7 @@ function spawnDataCard(fleet, pos, rot, name)
     local custom = {}
     -- custom.image = "http://i.imgur.com/EUi3Wog.png"
     -- custom.stackable = true
-    custom.mesh = "http://paste.ee/r/uY3YX"
+    custom.mesh = ASSETS_ROOT.."misc/datacard.obj"
     custom.diffuse = "http://i.imgur.com/EUi3Wog.png"
     custom.type = 0 --generic
     custom.material = 3 --cardboard

@@ -13,6 +13,7 @@
 -- squadron cardboard = 1.219
 
 
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 Obstacle = {
     name = "",
     collider = "",
@@ -55,13 +56,13 @@ end
 function loadAsteroidDefs()
 Obstacle:new({
     name = "Asteroid 1", --Eclair
-    colliders = {"http://paste.ee/r/Ul5Zt","http://paste.ee/r/u960L"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/asteroid1/mesh.obj","http://paste.ee/r/Ul5Zt","http://paste.ee/r/u960L"},
     rulers = {
-        "http://paste.ee/r/0I8WT",
-        "http://paste.ee/r/vchJj",
-        "http://paste.ee/r/DEvyk",
-        "http://paste.ee/r/daV0g",
-        "http://paste.ee/r/bEE1A"
+        ASSETS_ROOT.."misc/obstacles/asteroid1/1.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid1/2.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid1/3.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid1/4.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid1/5.obj"
     }
     --      measured (ingame) = ratio (ingame scale) = blender scale
     --length = 2.695 (2.77) = 0.9729 * 0.83 = 0.8075
@@ -70,13 +71,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Debris 2", --Chicken leg
-    colliders = {"http://paste.ee/r/Fk1So","http://paste.ee/r/xJ3Vm"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/debris2/mesh.obj","http://paste.ee/r/Fk1So","http://paste.ee/r/xJ3Vm"},
     rulers = {
-        "http://paste.ee/r/WAySf",
-        "http://paste.ee/r/qTWTp",
-        "http://paste.ee/r/NEJ2Y",
-        "http://paste.ee/r/6YkTz",
-        "http://paste.ee/r/lQyez"
+        ASSETS_ROOT.."misc/obstacles/debris2/1.obj",
+        ASSETS_ROOT.."misc/obstacles/debris2/2.obj",
+        ASSETS_ROOT.."misc/obstacles/debris2/3.obj",
+        ASSETS_ROOT.."misc/obstacles/debris2/4.obj",
+        ASSETS_ROOT.."misc/obstacles/debris2/5.obj"
     }
     --length = 3.3165 (3.46) = 0.9585 * 0.73 = 0.7 (thigh to tip of drumstick)
     --width = 2.183 (across thigh) (2.3) = 0.9491 * 0.73 = 0.6928
@@ -84,13 +85,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Debris 3", --muffin
-    colliders = {"http://paste.ee/r/FJVoR","http://paste.ee/r/WUL3V"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/debris3/mesh.obj","http://paste.ee/r/FJVoR","http://paste.ee/r/WUL3V"},
     rulers = {
-        "http://paste.ee/r/vM2oD",
-        "http://paste.ee/r/tFdE0",
-        "http://paste.ee/r/0DG3h",
-        "http://paste.ee/r/syykM",
-        "http://paste.ee/r/tlxRq"
+        ASSETS_ROOT.."misc/obstacles/debris3/1.obj",
+        ASSETS_ROOT.."misc/obstacles/debris3/2.obj",
+        ASSETS_ROOT.."misc/obstacles/debris3/3.obj",
+        ASSETS_ROOT.."misc/obstacles/debris3/4.obj",
+        ASSETS_ROOT.."misc/obstacles/debris3/5.obj"
     }
     --length = 2.71 (2.6) = 1.0425 * 0.75 = 0.7817
     --width = 2.647 (across top) (2.55) = 1.038 * 0.75 = 0.7785
@@ -98,13 +99,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Asteroid 4", --sharktooth
-    colliders = {"http://paste.ee/r/sgn4L","http://paste.ee/r/JZSVK"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/asteroid4/mesh.obj","http://paste.ee/r/sgn4L","http://paste.ee/r/JZSVK"},
     rulers = {
-        "http://paste.ee/r/S0kIT",
-        "http://paste.ee/r/aRBJY",
-        "http://paste.ee/r/5yt3v",
-        "http://paste.ee/r/ooAMz",
-        "http://paste.ee/r/tymlw"
+        ASSETS_ROOT.."misc/obstacles/asteroid4/1.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid4/2.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid4/3.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid4/4.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid4/5.obj"
     }
     -- 2.492
     --length =  2.15 (2.15) = 80
@@ -113,13 +114,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Asteroid 5", --tornado
-    colliders = {"http://paste.ee/r/t10DL","http://paste.ee/r/n43Kl"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/asteroid5/mesh.obj","http://paste.ee/r/t10DL","http://paste.ee/r/n43Kl"},
     rulers = {
-        "http://paste.ee/r/2UGUR",
-        "http://paste.ee/r/rAQce",
-        "http://paste.ee/r/zi2UB",
-        "http://paste.ee/r/z2ZI9",
-        "http://paste.ee/r/eAApc"
+        ASSETS_ROOT.."misc/obstacles/asteroid5/1.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid5/2.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid5/3.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid5/4.obj",
+        ASSETS_ROOT.."misc/obstacles/asteroid5/5.obj"
 
     }
     --length = 2.383 (2.3) = 1.036 *0.75 = 0.777
@@ -129,13 +130,13 @@ Obstacle:new({
 
 Obstacle:new({
     name = "Station",
-    colliders = {"http://paste.ee/r/Hm8Hf","http://paste.ee/r/2r7bq"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/station/mesh.obj","http://paste.ee/r/Hm8Hf","http://paste.ee/r/2r7bq"},
     rulers = {
-        "http://paste.ee/r/h79JB",
-        "http://paste.ee/r/h770l",
-        "http://paste.ee/r/ncC9e",
-        "http://paste.ee/r/2lgWl",
-        "http://paste.ee/r/H8e4u"
+        ASSETS_ROOT.."misc/obstacles/station/1.obj",
+        ASSETS_ROOT.."misc/obstacles/station/2.obj",
+        ASSETS_ROOT.."misc/obstacles/station/3.obj",
+        ASSETS_ROOT.."misc/obstacles/station/4.obj",
+        ASSETS_ROOT.."misc/obstacles/station/5.obj"
     }
     --length = 3.3 (3.39) = 0.97 * 0.8 = .7787
     --width =3.488 (3.46) = 1.008 *0.8 = 0.8065
@@ -144,13 +145,13 @@ Obstacle:new({
 
 Obstacle:new({
     name = "Gas Cloud 1", --double bump?
-    colliders = {"http://paste.ee/r/CGICy","http://paste.ee/r/oEuEI"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/gascloud1/mesh.obj","http://paste.ee/r/CGICy","http://paste.ee/r/oEuEI"},
     rulers = {
-        "http://paste.ee/r/vmniW",
-        "http://paste.ee/r/aaObV",
-        "http://paste.ee/r/5SyMS",
-        "http://paste.ee/r/yyhIh",
-        "http://paste.ee/r/sowxu",
+        ASSETS_ROOT.."misc/obstacles/gascloud1/1.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud1/2.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud1/3.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud1/4.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud1/5.obj"
     }
     --length = 5.227 (5.01) = 1.0433
     --width = 1.526 (1.48) = 1.031
@@ -158,13 +159,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Gas Cloud 2",
-    colliders = {"http://paste.ee/r/N9UN7","http://paste.ee/r/DmDpr"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/gascloud2/mesh.obj","http://paste.ee/r/N9UN7","http://paste.ee/r/DmDpr"},
     rulers = {
-        "http://paste.ee/r/ysaqI",
-        "http://paste.ee/r/ERhup",
-        "http://paste.ee/r/7sTsO",
-        "http://paste.ee/r/audzv",
-        "http://paste.ee/r/qjtRe"
+        ASSETS_ROOT.."misc/obstacles/gascloud2/1.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud2/2.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud2/3.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud2/4.obj",
+        ASSETS_ROOT.."misc/obstacles/gascloud2/5.obj"
 
     }
     --length = 5.175 (4.99) = 1.037
@@ -173,13 +174,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Gravity Rift",
-    colliders = {"http://paste.ee/r/DpEzj","http://paste.ee/r/Vtola"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/rift/mesh.obj","http://paste.ee/r/DpEzj","http://paste.ee/r/Vtola"},
     rulers = {
-        "http://paste.ee/r/2Fsao",
-        "http://paste.ee/r/gPUKr",
-        "http://paste.ee/r/sywSF",
-        "http://paste.ee/r/2ZTU9",
-        "http://paste.ee/r/ymePC"
+        ASSETS_ROOT.."misc/obstacles/rift/1.obj",
+        ASSETS_ROOT.."misc/obstacles/rift/2.obj",
+        ASSETS_ROOT.."misc/obstacles/rift/3.obj",
+        ASSETS_ROOT.."misc/obstacles/rift/4.obj",
+        ASSETS_ROOT.."misc/obstacles/rift/5.obj"
     },
     default = 2
     --length = 3.9175 (3.75) = 1.04467
@@ -188,13 +189,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Exogorth 1",
-    colliders = {"http://paste.ee/r/GJm0K","http://paste.ee/r/X9TRv"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/exogorth1/mesh.obj","http://paste.ee/r/GJm0K","http://paste.ee/r/X9TRv"},
     rulers = {
-        "http://paste.ee/r/e5du8",
-        "http://paste.ee/r/2l8Y5",
-        "http://paste.ee/r/va4n4",
-        "http://paste.ee/r/GKp7a",
-        "http://paste.ee/r/c2jfY"
+        ASSETS_ROOT.."misc/obstacles/exogorth1/1.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth1/2.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth1/3.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth1/4.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth1/5.obj"
     }
     --length = 2.277 (2.18) = 1.044
     --width = 1.6055 (1.54) = 1.0425
@@ -202,13 +203,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Exogorth 2", --hook?
-    colliders = {"http://paste.ee/r/I3IZm","http://paste.ee/r/UfCaR"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/exogorth2/mesh.obj","http://paste.ee/r/I3IZm","http://paste.ee/r/UfCaR"},
     rulers = {
-        "http://paste.ee/r/87QKX",
-        "http://paste.ee/r/gcy3y",
-        "http://paste.ee/r/xlnOQ",
-        "http://paste.ee/r/8kb35",
-        "http://paste.ee/r/PrYWk"
+        ASSETS_ROOT.."misc/obstacles/exogorth2/1.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth2/2.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth2/3.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth2/4.obj",
+        ASSETS_ROOT.."misc/obstacles/exogorth2/5.obj"
     }
     --length 2.222 (2.13) = 1.043
     --width 1.52 (1.43) = 1.063
@@ -216,13 +217,13 @@ Obstacle:new({
 })
 Obstacle:new({
     name = "Purrgil 1", --open mouth (hump tail)
-    colliders = {"http://paste.ee/r/HRGiE","http://paste.ee/r/SQ4Pt"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/purrgil1/mesh.obj","http://paste.ee/r/HRGiE","http://paste.ee/r/SQ4Pt"},
     rulers = {
-        "http://paste.ee/r/DJ0EM",
-        "http://paste.ee/r/DnkHS",
-        "http://paste.ee/r/1P3jR",
-        "http://paste.ee/r/C3bnB",
-        "http://paste.ee/r/2X7fr"
+        ASSETS_ROOT.."misc/obstacles/purrgil1/1.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil1/2.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil1/3.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil1/4.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil1/5.obj"
     }
     --length = 4.164 (3.98) = 1.046   1.297
     --width = 1.65 (1.57) = 1.051
@@ -230,13 +231,13 @@ Obstacle:new({
 })
 Obstacle:new({ --TODO: Move within 2
     name = "Purrgil 2",
-    colliders = {"http://paste.ee/r/4QT4q","http://paste.ee/r/TTaOC"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/purrgil2/mesh.obj","http://paste.ee/r/4QT4q","http://paste.ee/r/TTaOC"},
     rulers = {
-        "http://paste.ee/r/vddgi",
-        "http://paste.ee/r/yq43j",
-        "http://paste.ee/r/v13Cm",
-        "http://paste.ee/r/0NY6g",
-        "http://paste.ee/r/hEEDS"
+        ASSETS_ROOT.."misc/obstacles/purrgil2/1.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil2/2.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil2/3.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil2/4.obj",
+        ASSETS_ROOT.."misc/obstacles/purrgil2/5.obj"
     }
     --length = 4.157 (3.99) = 1.042
     --width = 1.484 (1.43) = 1.0378
@@ -244,34 +245,34 @@ Obstacle:new({ --TODO: Move within 2
 })
 Obstacle:new({
     name = "Objective Token",
-    colliders = {"http://paste.ee/r/9DQmH"},
+    colliders = {ASSETS_ROOT.."misc/obstacles/tokens/objective.obj","http://paste.ee/r/9DQmH"},
     rulers = {
-        "http://paste.ee/r/OpxJX",
-        "http://paste.ee/r/IltC6",
-        "http://paste.ee/r/SCNHl",
-        "http://paste.ee/r/oo1VP",
-        "http://paste.ee/r/aJ8y6"
+        ASSETS_ROOT.."misc/obstacles/tokens/1.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/2.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/3.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/4.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/5.obj"
     },
     scale = 0.5
 })
 Obstacle:new({
     name = "Gravity Well",
-    colliders = {"http://paste.ee/r/AZMeZ"}, --"http://paste.ee/r/FcelK", --http://paste.ee/r/1KFnT",
+    colliders = {ASSETS_ROOT.."misc/obstacles/tokens/well.obj","http://paste.ee/r/AZMeZ"}, --"http://paste.ee/r/FcelK", --http://paste.ee/r/1KFnT",
     rulers = {
-        "http://paste.ee/r/OpxJX",
-        "http://paste.ee/r/IltC6",
-        "http://paste.ee/r/SCNHl",
-        "http://paste.ee/r/oo1VP",
-        "http://paste.ee/r/aJ8y6"
+        ASSETS_ROOT.."misc/obstacles/tokens/1.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/2.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/3.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/4.obj",
+        ASSETS_ROOT.."misc/obstacles/tokens/5.obj"
     },
     scale = 0.5,
     default = 3
 })
 Obstacle:new({
     name = "Targeting Token",
-    colliders = {"http://paste.ee/r/OGmMO"}, --"http://paste.ee/r/feeFX", --http://paste.ee/r/1pouf",
+    colliders = {ASSETS_ROOT.."misc/obstacles/tokens/ignition.obj","http://paste.ee/r/OGmMO"}, --"http://paste.ee/r/feeFX", --http://paste.ee/r/1pouf",
     rulers = {
-        "http://paste.ee/r/He0Vy"
+        ASSETS_ROOT.."misc/obstacles/tokens/close_med_long.obj"
     },
     scale = 0.5
 })

@@ -1,24 +1,25 @@
 --italia table: https://i.imgur.com/ZH3BOIY.jpg
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 local SQUAD_MOVE_RULER = 1
 local SQUAD_ATTACK_RULER = 2
 local SQUAD_ATTACK_CLOSE_RULER = 3
 local SQUAD_RULERS = {
-    'http://paste.ee/p/wJNgc', --'http://pastebin.com/raw/QspzqNUx',
-    'http://paste.ee/p/nhteg', -- 'http://pastebin.com/raw/v9PG9iFC'
-    'http://paste.ee/p/ZLGDu'
+    ASSETS_ROOT..'misc/rulers/squad/5.obj', --'http://pastebin.com/raw/QspzqNUx',
+    ASSETS_ROOT..'misc/rulers/squad/1.obj', -- 'http://pastebin.com/raw/v9PG9iFC'
+    ASSETS_ROOT..'misc/rulers/squad/close.obj'
 }
 local SQUAD_SPEED_RULERS = {
-    'http://paste.ee/p/nhteg',
-    'http://paste.ee/p/PJ46a',
-    'http://paste.ee/p/IThnr',
-    'http://paste.ee/p/8bBxJ',
-    'http://paste.ee/p/7IG7T'
+    ASSETS_ROOT..'misc/rulers/squad/1.obj',
+    ASSETS_ROOT..'misc/rulers/squad/2.obj',
+    ASSETS_ROOT..'misc/rulers/squad/3.obj',
+    ASSETS_ROOT..'misc/rulers/squad/4.obj',
+    ASSETS_ROOT..'misc/rulers/squad/5.obj'
 }
 local SHIPS = {
-    "http://paste.ee/r/eDbf1",
-    "http://paste.ee/r/6LYTT",
-    "http://paste.ee/r/a7mfW",
-    "http://paste.ee/r/ClCL3"}
+    {ASSETS_ROOT..'misc/bases/small.obj',"http://paste.ee/r/eDbf1"},
+    {ASSETS_ROOT..'misc/bases/medium.obj',"http://paste.ee/r/6LYTT"},
+    {ASSETS_ROOT..'misc/bases/large.obj',"http://paste.ee/r/a7mfW"},
+    {ASSETS_ROOT..'misc/bases/huge.obj',"http://paste.ee/r/ClCL3"}}
     -- "https://paste.ee/r/eDbf1",
     -- "https://paste.ee/r/6LYTT",
     -- "https://paste.ee/r/a7mfW",
@@ -45,9 +46,9 @@ CMD_COLORS["http://i.imgur.com/XbJbScU.jpg"] = {0.8,0.4,0.8} --squadron
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
-local SQUAD_COLLIDERS = {"http://paste.ee/r/nAMCQ", "https://paste.ee/r/nAMCQ", "http://paste.ee/r/ZKM7E", "https://paste.ee/r/ZKM7E"}
-local SQUAD = "http://paste.ee/r/ZKM7E"--"http://paste.ee/r/nAMCQ"
-local SQUAD_HTTPS = "https://paste.ee/r/ZKM7E" --"https://paste.ee/r/nAMCQ"
+local SQUAD_COLLIDERS = {ASSETS_ROOT.."misc/bases/squad.obj","http://paste.ee/r/nAMCQ", "https://paste.ee/r/nAMCQ", "http://paste.ee/r/ZKM7E", "https://paste.ee/r/ZKM7E"}
+-- local SQUAD = "http://paste.ee/r/ZKM7E"--"http://paste.ee/r/nAMCQ"
+-- local SQUAD_HTTPS = "https://paste.ee/r/ZKM7E" --"https://paste.ee/r/nAMCQ"
 local A_COLOR = {0,0.5,1.0 }
 local B_COLOR = {1.0,0.25,0}
 --local A_SECONDARY_COLOR = {0.5,0,1.0 }
@@ -152,7 +153,7 @@ function onload(save_string)
 end
 function isDatacard(object)
     custom = object.getCustomObject()
-    return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
+    return custom ~= nil and (custom.mesh == ASSETS_ROOT.."misc/datacard.obj" or custom.mesh == "http://paste.ee/r/uY3YX")
 end
 function drawDatacardButtons(obj)
     Wait.time(|| delayed_drawDatacardButtons(obj), 1, 0)
@@ -742,16 +743,16 @@ function Action_shields(ship)
     drawShipButtons(ship)
 end
 ATTACK_RULERS = {
-    "http://paste.ee/r/b5yCa",
-    "http://paste.ee/r/Gwytv",
-    "http://paste.ee/r/yBgAR",
-    "http://paste.ee/r/yBgAR"
+    ASSETS_ROOT.."misc/rulers/ship/small/collider.obj",
+    ASSETS_ROOT.."misc/rulers/ship/medium/collider.obj",
+    ASSETS_ROOT.."misc/rulers/ship/large/collider.obj",
+    ASSETS_ROOT.."misc/rulers/ship/huge/collider.obj"
 }
 RANGE_RULER_MESH = {
-    "http://paste.ee/p/zS6HS",
-    "http://paste.ee/p/j8OxD",
-    "http://paste.ee/p/ayQRT",
-    "http://paste.ee/p/qk78n"
+    ASSETS_ROOT.."misc/rulers/ship/small/mesh.obj",
+    ASSETS_ROOT.."misc/rulers/ship/medium/mesh.obj",
+    ASSETS_ROOT.."misc/rulers/ship/large/mesh.obj",
+    ASSETS_ROOT.."misc/rulers/ship/huge/mesh.obj"
 }
 function Action_cmds(ship)
     printCmds(ship)
@@ -822,16 +823,17 @@ function getSize(ship)
     local index
     local ship_collider = ship.getCustomObject().collider
     --printToAll("Ship Collider: '"..ship_collider.."'",{1,1,1})
-    for i,collider in ipairs(SHIPS) do
-        --printToAll(tostring(i)..") '"..collider.."'",{1,1,1})
-        if collider==ship_collider then
-            index=i
-            break
+    for i,collider_group in ipairs(SHIPS) do
+        for j,collider in ipairs(collider_group) do
+            --printToAll(tostring(i)..") '"..collider.."'",{1,1,1})
+            if collider==ship_collider then
+                return i
+            end
         end
     end
     --ship.setVar('size',index)
     -- printToAll('size for '..ship.getName()..' is '..tostring(index),{0,1,1})
-    return index
+    return nil
 --    local sizes = {S=1,M=2,L=3,SR=4,MR=5,LR=6 }
 --    local sizeFromName = ship.getName():match "%s(%u%u?)$"
 --    local size
@@ -909,7 +911,12 @@ function Action_Attack(squad)
     spawnSquadRuler(squad,SQUAD_ATTACK_RULER)
 end
 function isShip(ship)
-    return table.contains(SHIPS,ship.getCustomObject().collider)
+    for i,collider_group in ipairs(SHIPS) do
+        if table.contains(collider_group,ship.getCustomObject().collider) do
+            return true
+        end
+    end
+    return false
 --    local name = ship.getName()
 --    return ship.tag == "Figurine" and (name:match " S$" or name:match " M$" or name:match " L$"
 --        or name:match " SR$" or name:match " MR$" or name:match " LR$")
@@ -947,8 +954,8 @@ function Action_ToggleRhymerAttack(squad, player)
     ruler.destruct()
     spawnSquadRuler(squad,SQUAD_ATTACK_RULER)
 end
-SQUADRON_STATIC_COLLIDER = 'http://paste.ee/r/eQsOn'
-SQUADRON_MOVING_COLLIDER = 'https://paste.ee/r/aWUGS'
+SQUADRON_STATIC_COLLIDER = ASSETS_ROOT..'misc/squad_static_collider.obj'
+SQUADRON_MOVING_COLLIDER = ASSETS_ROOT..'misc/squad_moving_collider.obj'
 function spawnSquadRuler(squadron,type)
     clearButtons(squadron)
     btn_y = 1.5
@@ -1232,13 +1239,13 @@ function Action_ruler_token(token)
         local newruler = spawnObject(obj_parameters)
         local custom = {}
         if token.getDescription()=="R,C-L" then
-            custom.mesh = 'http://paste.ee/p/EyvUW'
+            custom.mesh = ASSETS_ROOT..'misc/obstacles/tokens/close_med_long.obj' --'http://paste.ee/p/EyvUW'
         elseif token.getDescription()=="D,3" then
-            custom.mesh = 'http://paste.ee/p/LSrUO'
+            custom.mesh = ASSETS_ROOT..'misc/obstacles/tokens/3.obj' --'http://paste.ee/p/LSrUO'
         elseif token.getDescription()=="D,1" then
-            custom.mesh= 'http://paste.ee/p/veBPe'
+            custom.mesh= ASSETS_ROOT..'misc/obstacles/tokens/1.obj' --'http://paste.ee/p/veBPe'
         end
-        custom.collider = 'http://paste.ee/p/B97T2'
+        custom.collider = ASSETS_ROOT..'misc/obstacles/tokens/ruler_collider.obj' --'http://paste.ee/p/B97T2'
         custom.material = 3
         newruler.setCustomObject(custom)
         newruler.lock()
@@ -1267,7 +1274,7 @@ function findShip(position)
     return nil
 end
 function findCommandBase(position)
-    COMMAND_BASE_COLLIDER = "http://paste.ee/r/wGvIm"
+    COMMAND_BASE_COLLIDER = ASSETS_ROOT.."misc/command_base_collider.obj"
     for i,base in ipairs(getAllObjects()) do
         if base.tag == "Figurine" then
             local offset = vector.sub(position,base.getPosition())

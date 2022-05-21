@@ -70,6 +70,7 @@ function onload()
 end
 
 -- DO NOT MODIFY CODE BELOW THIS, OR MOD DB MAY NOT WORK!
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 function table.copy(orig)
     local orig_type = type(orig)
     local copy
@@ -115,11 +116,11 @@ function Ship:new (...)
     end
     return o
 end
-SmallShip = { collider = "http://paste.ee/r/eDbf1" }
-MediumShip = { collider = "http://paste.ee/r/6LYTT" }
-LargeShip = { collider = "http://paste.ee/r/a7mfW" }
-HugeShip = { collider = "http://paste.ee/r/ClCL3" }
-Squadron = { collider = "http://paste.ee/r/ZKM7E", convex = false, type = 1, --http://paste.ee/r/nAMCQ
+SmallShip = { collider = ASSETS_ROOT..'misc/bases/small.obj' } --"http://paste.ee/r/eDbf1"
+MediumShip = { collider = ASSETS_ROOT..'misc/bases/medium.obj' } --"http://paste.ee/r/6LYTT"
+LargeShip = { collider = ASSETS_ROOT..'misc/bases/large.obj'} --"http://paste.ee/r/a7mfW"
+HugeShip = { collider = ASSETS_ROOT..'misc/bases/huge.obj' } --"http://paste.ee/r/ClCL3"
+Squadron = { collider = ASSETS_ROOT..'misc/bases/squad.obj', convex = false, type = 1, --"http://paste.ee/r/ZKM7E" --http://paste.ee/r/nAMCQ
     material = 1, health = 0, move = 0, defense_tokens = {}, cost = 0,
     name = "", front = "", back = "", aliases = {}, faction = "" }
 DefaultSquad = table.copy(Squadron)

@@ -1,5 +1,7 @@
 #include ui/fleetSpawner
 
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
+
 DEF_BRACE = '79d121'
 DEF_CONTAIN = '68abfc'
 DEF_EVADE = 'c09d88'
@@ -80,19 +82,19 @@ function Ship:new (o,...)
     return o
 end
 SmallShip = {
-    collider = "http://paste.ee/r/eDbf1"
+    collider = ASSETS_ROOT..'misc/bases/small.obj'
 }
 MediumShip = {
-    collider = "http://paste.ee/r/6LYTT"
+    collider = ASSETS_ROOT..'misc/bases/medium.obj'
 }
 LargeShip = {
-    collider = "http://paste.ee/r/a7mfW"
+    collider = ASSETS_ROOT..'misc/bases/large.obj'
 }
 HugeShip = {
-    collider = "http://paste.ee/r/ClCL3"
+    collider = ASSETS_ROOT..'misc/bases/huge.obj'
 }
 Squadron = {
-    collider = "http://paste.ee/r/ZKM7E", --"http://paste.ee/r/nAMCQ",
+    collider = ASSETS_ROOT..'misc/bases/squad.obj', --"http://paste.ee/r/nAMCQ",
     convex = false,
     type = 1,
     material = 1,
@@ -532,7 +534,7 @@ function createSpawnButtons(object)
                 diffuse = string.strip(model_data[4]),
                 health =  string.strip(model_data[5]),
                 move = string.strip(model_data[6]),
-                collider = "http://paste.ee/r/ZKM7E", -- "http://paste.ee/r/nAMCQ",
+                collider = ASSETS_ROOT..'misc/bases/squad.obj', -- "http://paste.ee/r/ZKM7E", -- "http://paste.ee/r/nAMCQ",
                 convex = false,
                 type = 1,
                 material = 1,
@@ -555,7 +557,6 @@ end
 function onload()
     self.interactable = false
 
-ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 #include defs/rebel/ships
 #include defs/empire/ships
     local ship = nil
@@ -677,7 +678,7 @@ function clearSpawnArea(listSpawner)
 end
 function isDatacard(object)
     custom = object.getCustomObject()
-    return custom ~= nil and custom.mesh == "http://paste.ee/r/uY3YX"
+    return custom ~= nil and (custom.mesh == ASSETS_ROOT.."misc/datacard.obj" or custom.mesh == "http://paste.ee/r/uY3YX")
 end
 function Action_SpawnListSpawner(player, _, idValue) --listSpawner
     print(player.color)
@@ -1205,8 +1206,8 @@ function spawnDefinition(ship_def, name, pos,count,y_rotation, card)
             local custom = {}
             local base = spawnObject(obj_parameters)
             base.setColorTint({0,0,0})
-            custom.mesh = "http://paste.ee/r/k758j"
-            custom.collider = "http://paste.ee/r/wGvIm"
+            custom.mesh = ASSETS_ROOT.."misc/command_base.obj"
+            custom.collider = ASSETS_ROOT.."misc/command_base_collider.obj"
             custom.convex = true
             custom.type = 1
             custom.material = 2 --metal?

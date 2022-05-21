@@ -12,9 +12,6 @@
 
     <VerticalLayout id="helpPage0" padding="50 20 0 20">
         <Text fontStyle="bold" fontSize="24" alignment="MiddleLeft" color="yellow" padding="20 20 3 3"> Need Help? </Text>
-        <HorizontalLayout preferredHeight="40" padding="20 0 0 0">
-            <Text alignment="MiddleLeft"> Getting "<textcolor color="red">Model not found</textcolor>" errors? Have Malwarebytes installed? <textcolor color="teal">Add paste.ee as an allowed host</textcolor> </Text>
-        </HorizontalLayout>
         <HorizontalLayout preferredHeight="20" padding="20 0 0 0">
             <Text alignment="MiddleLeft"> Click the page numbers below to explore recent features </Text>
         </HorizontalLayout>

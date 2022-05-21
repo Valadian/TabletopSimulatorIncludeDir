@@ -1,21 +1,22 @@
+ASSETS_ROOT = 'https://raw.githubusercontent.com/valadian/TabletopSimulatorIncludeDir/master/TTS_armada/assets/'
 rulers = {}
 cmds = {}
 last_rot = 0
 target_rot = 0
 cmd_dir = 0
 stable_count = 0
-local ASTEROIDS = {
-    "http://pastebin.com/raw/SWhJfkwB",
-    "http://pastebin.com/raw/dJTxnY50",
-    "http://pastebin.com/raw/zSSXLYZ5",
-    "http://pastebin.com/raw/z4DDMq9f",
-    "http://pastebin.com/raw/j0Xr1xsQ",
-    "http://pastebin.com/raw/ZUZuC55E"
-}
-local ASTEROID_TOKENS = {
-    "http://i.imgur.com/KWkWB6p.png",
-    "http://i.imgur.com/Zdz7dZF.png"
-}
+-- local ASTEROIDS = {
+--     "http://pastebin.com/raw/SWhJfkwB",
+--     "http://pastebin.com/raw/dJTxnY50",
+--     "http://pastebin.com/raw/zSSXLYZ5",
+--     "http://pastebin.com/raw/z4DDMq9f",
+--     "http://pastebin.com/raw/j0Xr1xsQ",
+--     "http://pastebin.com/raw/ZUZuC55E"
+-- }
+-- local ASTEROID_TOKENS = {
+--     "http://i.imgur.com/KWkWB6p.png",
+--     "http://i.imgur.com/Zdz7dZF.png"
+-- }
 --real_rot = 0
 function onload()
     self.interactable = false
@@ -510,9 +511,9 @@ function isCmd(cmd)
     return table.contains({-2,-1,0,1,2},dir)
 end
 diffuse = "http://i.imgur.com/YNFhQi0.png"
-start_model = "http://paste.ee/r/twGGH"
-mid_model = "http://paste.ee/r/UqKXw"
-end_model = "http://paste.ee/r/NyJut"
+start_model = ASSETS_ROOT.."misc/navruler/start.obj"
+mid_model = ASSETS_ROOT.."misc/navruler/mid.obj"
+end_model = ASSETS_ROOT.."misc/navruler/end.obj"
 ruler_diffuse = {
     'http://i.imgur.com/Y8LTHC2.png',
     'http://i.imgur.com/PbrGnQm.png',
