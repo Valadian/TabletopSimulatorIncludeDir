@@ -122,7 +122,7 @@ Ship:new(SmallShip,SEPARATIST_SHIP,{
 	name = "Gozanti-class Cruisers",
     front =     ASSETS_ROOT.."ships/separatist/gozanti/cruiser_card.jpg",
     -- back =      ASSETS_ROOT.."ships/separatist/gozanti/cruiser_card_orig_back.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/gozanti/mesh.obj",
+    mesh =      ASSETS_ROOT.."ships/separatist/gozanti/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/separatist/gozanti/cruiser_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/gozanti/ruler.obj",
     maneuver = {{"II"},{"I","I"},{"I","I","-"}},

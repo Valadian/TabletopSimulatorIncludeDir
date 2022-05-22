@@ -15,7 +15,7 @@ Squadron:new(vulture, SEPARATISTS_SQUAD, {
     cost = 8,
     aliases = {'Vulture-class Droid Fighter Squadrons', 'Vulture Droid Fighter Squadron', 'Vulture Droid Fighter Squadrons', "Vultere Droid Fighter", "Vulture", 'Vulture Droid Squadron'}
 })
-vulture.diffuse = ASSETS_ROOT.."squadrons/separatist/vulture/ace_diffuse.jpg",
+vulture.diffuse = ASSETS_ROOT.."squadrons/separatist/vulture/ace_diffuse.jpg"
 vulture.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 -- AI: Anti-Squadron, Swarm
 Squadron:new(vulture, SEPARATISTS_SQUAD, {
@@ -45,7 +45,7 @@ Squadron:new(hyena, SEPARATISTS_SQUAD, {
     aliases = {'Hyena-class Droid Bomber Squadrons','Hyena Droid Bomber Squadron','Hyena Droid Bomber Squadrons', 'Hyena Droid Bomber', 'Hyena','Hyena Bomber Squadron'}
 })
 --ALIAS
-hyena.diffuse = ASSETS_ROOT.."squadrons/separatist/hyena/ace_diffuse.jpg",
+hyena.diffuse = ASSETS_ROOT.."squadrons/separatist/hyena/ace_diffuse.jpg"
 hyena.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  AI: Battery, Bomber, Heavy
 Squadron:new(hyena, SEPARATISTS_SQUAD, {
@@ -63,7 +63,7 @@ Squadron:new(hyena, SEPARATISTS_SQUAD, {
 
 tri = {
     diffuse =   ASSETS_ROOT.."squadrons/separatist/tri/base_diffuse.jpg",
-    mesh =      ASSETS_ROOT.."squadrons/separatist/tri/ai_co_sw_model.obj"
+    mesh =      ASSETS_ROOT.."squadrons/separatist/tri/ai_co_sw_model.obj",
     health = 3,
     move = 5,
     defense_tokens = {}}
@@ -74,25 +74,25 @@ Squadron:new(tri, SEPARATISTS_SQUAD, {
     cost = 11,
     aliases = {'Droid Tri-Fighter Squadrons', "Droid Tri-Fighter", "Tri-Fighter"}
 })
-tri.diffuse =   ASSETS_ROOT.."squadrons/separatist/tri/ace_diffuse.jpg",
+tri.diffuse =   ASSETS_ROOT.."squadrons/separatist/tri/ace_diffuse.jpg"
 tri.defense_tokens = {DEF_BRACE,DEF_SCATTER}
 --  Counter, Swarm, AI:Anti-squadron
 Squadron:new(tri, SEPARATISTS_SQUAD, {
 	name = "Phlac-Arphocc Prototypes",
-    front =     ASSETS_ROOT.."squadrons/separatist/hyena/phlacc_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/separatist/tri/phlacc_card.jpg",
     cost = 19
 })
 --  Counter, Swarm, AI:Anti-squadron, snipe 3
 Squadron:new(tri, SEPARATISTS_SQUAD, {
 	name = "DIS-T81",
-    front =     ASSETS_ROOT.."squadrons/separatist/hyena/dis_card.jpg",
-    mesh =      ASSETS_ROOT.."squadrons/separatist/tri/ai_co_sn_sw_model.obj"
+    front =     ASSETS_ROOT.."squadrons/separatist/tri/dis_card.jpg",
+    mesh =      ASSETS_ROOT.."squadrons/separatist/tri/ai_co_sn_sw_model.obj",
     cost = 17
 })
 
 belbullab = {
     diffuse =   ASSETS_ROOT.."squadrons/separatist/belbullab/base_diffuse.jpg",
-    mesh =      ASSETS_ROOT.."squadrons/separatist/belbullab/re_sc_model.obj"
+    mesh =      ASSETS_ROOT.."squadrons/separatist/belbullab/re_sc_model.obj",
     health = 5,
     move = 4,
     defense_tokens = {}}

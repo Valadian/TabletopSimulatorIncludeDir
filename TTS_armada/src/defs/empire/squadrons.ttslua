@@ -303,7 +303,7 @@ Squadron:new(defender, EMPIRE_SQUAD, {
     mesh =      ASSETS_ROOT.."squadrons/empire/def/ad_bo_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
     cost = 25,
-    aliases = {'Darth Vader (defender)'}
+    aliases = {'Darth Vader (defender)','Darth Vader (TIE Defender)'}
 })
 lambda = {
     mesh =      ASSETS_ROOT.."squadrons/empire/lambda/he_re_st_model.obj",

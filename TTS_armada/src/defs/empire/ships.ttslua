@@ -110,7 +110,7 @@ Ship:new(SmallShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Victory I-class Star Destroyer",
     front =     ASSETS_ROOT.."ships/empire/victory/I_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/victory/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/victory/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/victory/I_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/victory/ruler.obj",
     maneuver = {{"I"},{"-","I"}},
@@ -123,7 +123,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Victory II-class Star Destroyer",
     front =     ASSETS_ROOT.."ships/empire/victory/II_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/victory/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/victory/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/victory/II_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/victory/ruler.obj",
     maneuver = {{"I"},{"-","I"}},
@@ -136,7 +136,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Interdictor Suppression Refit",
     front =     ASSETS_ROOT.."ships/empire/interdictor/suppression_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/interdictor/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/interdictor/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/interdictor/suppression_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/interdictor/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
@@ -149,7 +149,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Interdictor Combat Refit",
     front =     ASSETS_ROOT.."ships/empire/interdictor/combat_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/interdictor/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/interdictor/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/interdictor/combat_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/interdictor/ruler.obj",
     maneuver = {{"I"},{"I","I"}},
@@ -162,7 +162,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Quasar Fire I-class Cruiser-Carrier",
     front =     ASSETS_ROOT.."ships/empire/quasar/I_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/quasar/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/quasar/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/quasar/I_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/quasar/ruler.obj",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
@@ -175,7 +175,7 @@ Ship:new(MediumShip,EMPIRE_SHIP,{
 Ship:new(MediumShip,EMPIRE_SHIP,{
 	name = "Quasar Fire II-class Cruiser-Carrier",
     front =     ASSETS_ROOT.."ships/empire/quasar/II_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/quasar/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/quasar/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/quasar/II_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/quasar/ruler.obj",
     maneuver = {{"II"},{"I","I"},{"-","I","I"}},
@@ -298,7 +298,7 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Onager-class Testbed",
     front =     ASSETS_ROOT.."ships/empire/onager/testbed_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/onager/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/onager/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/onager/testbed_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/onager/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
@@ -311,7 +311,7 @@ Ship:new(LargeShip,EMPIRE_SHIP,{
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Onager-class Star Destroyer",
     front =     ASSETS_ROOT.."ships/empire/onager/sd_card.jpg",
-    mesh =      ASSETS_ROOT.."ships/empire/onager/model.obj",
+    mesh =      ASSETS_ROOT.."ships/empire/onager/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/onager/sd_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/onager/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},

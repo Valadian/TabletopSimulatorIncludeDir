@@ -167,7 +167,7 @@ Squadron:new(yt2400, REBEL_SQUAD, {
 Squadron:new(yt2400, REBEL_SQUAD, {
 	name = "Dash Rendar",
     front =     ASSETS_ROOT.."squadrons/rebel/yt2400/dash_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/yt2400/bo_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 24
@@ -175,7 +175,7 @@ Squadron:new(yt2400, REBEL_SQUAD, {
 Squadron:new(yt2400, REBEL_SQUAD, {
 	name = "Mart Mattin",
     front =     ASSETS_ROOT.."squadrons/rebel/yt2400/mart_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt2400/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/yt2400/gr_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 22
@@ -195,7 +195,7 @@ Squadron:new(yt1300, REBEL_SQUAD, {
 Squadron:new(yt1300, REBEL_SQUAD, {
 	name = "Han Solo",
     front =     ASSETS_ROOT.."squadrons/rebel/yt1300/han_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/yt1300/gr_ro_model.obj",
     move = 3,
     defense_tokens = {DEF_BRACE,DEF_BRACE},
@@ -204,7 +204,7 @@ Squadron:new(yt1300, REBEL_SQUAD, {
 Squadron:new(yt1300, REBEL_SQUAD, {
 	name = "Lando Calrissian",
     front =     ASSETS_ROOT.."squadrons/rebel/yt1300/lando_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/yt1300/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/yt1300/gr_ro_model.obj",
     move = 3,
     defense_tokens = {DEF_BRACE,DEF_BRACE},
@@ -225,14 +225,14 @@ Squadron:new(hwk, REBEL_SQUAD, {
 Squadron:new(hwk, REBEL_SQUAD, {
 	name = "Jan Ors",
     front =     ASSETS_ROOT.."squadrons/rebel/hwk/jan_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
 })
 Squadron:new(hwk, REBEL_SQUAD, {
 	name = "Kanan Jarrus",
     front =     ASSETS_ROOT.."squadrons/rebel/hwk/kanan_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/hwk/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/hwk/as_cl_ro_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19
@@ -251,7 +251,7 @@ Squadron:new(scurrg, REBEL_SQUAD, {
 Squadron:new(scurrg, REBEL_SQUAD, {
 	name = "Nym",
     front =     ASSETS_ROOT.."squadrons/rebel/scurrg/nym_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/scurrg/bo_gr_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 21
@@ -259,7 +259,7 @@ Squadron:new(scurrg, REBEL_SQUAD, {
 Squadron:new(scurrg, REBEL_SQUAD, {
 	name = "Malee Hurra",
     front =     ASSETS_ROOT.."squadrons/rebel/scurrg/malee_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/scurrg/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/rebel/scurrg/bo_gr_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 26
@@ -279,9 +279,10 @@ Squadron:new(z95, REBEL_SQUAD, {
 Squadron:new(z95, REBEL_SQUAD, {
 	name = "Lieutenant Blount",
     front =     ASSETS_ROOT.."squadrons/rebel/z95/blount_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/rebel/z95/unique_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/rebel/z95/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
-    cost = 14
+    cost = 14,
+    aliases = {'Lietenant Blount'}
 })
 ewing = {
     mesh =      ASSETS_ROOT.."squadrons/rebel/ewing/bo_sn_model.obj",

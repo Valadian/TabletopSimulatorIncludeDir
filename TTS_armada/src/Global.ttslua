@@ -25,24 +25,24 @@ local SHIPS = {
     -- "https://paste.ee/r/a7mfW",
     -- "https://paste.ee/r/ClCL3"}
 local CMD_MESHES = {
-    "http://i.imgur.com/IHXy7k7.jpg", --repair
-    "http://i.imgur.com/ip3tJaN.jpg", --concentrate
-    "http://i.imgur.com/hGXCVQo.jpg", --navigate
-    "http://i.imgur.com/XbJbScU.jpg"} --squadron
+    ASSETS_ROOT.."misc/command_dials/eng.jpg", --repair
+    ASSETS_ROOT.."misc/command_dials/confire.jpg", --concentrate
+    ASSETS_ROOT.."misc/command_dials/nav.jpg", --navigate
+    ASSETS_ROOT.."misc/command_dials/squad.jpg"} --squadron
 local CMD_NAMES = {}
-CMD_NAMES["http://i.imgur.com/IHXy7k7.jpg"] = "Repair" --repair
-CMD_NAMES["http://i.imgur.com/ip3tJaN.jpg"] = "Concentrate Fire" --concentrate
-CMD_NAMES["http://i.imgur.com/hGXCVQo.jpg"] = "Navigate" --navigate
-CMD_NAMES["http://i.imgur.com/XbJbScU.jpg"] = "Squadron" --squadron
+CMD_NAMES[ASSETS_ROOT.."misc/command_dials/eng.jpg"] = "Repair" --repair
+CMD_NAMES[ASSETS_ROOT.."misc/command_dials/confire.jpg"] = "Concentrate Fire" --concentrate
+CMD_NAMES[ASSETS_ROOT.."misc/command_dials/nav.jpg"] = "Navigate" --navigate
+CMD_NAMES[ASSETS_ROOT.."misc/command_dials/squad.jpg"] = "Squadron" --squadron
 local CMD_COLORS = {}
 -- CMD_COLORS["http://i.imgur.com/IHXy7k7.jpg"] = {0,0.8,0} --repair
 -- CMD_COLORS["http://i.imgur.com/ip3tJaN.jpg"] = {0.8,0,0} --concentrate
 -- CMD_COLORS["http://i.imgur.com/hGXCVQo.jpg"] = {0, 0.2, 0.8} --navigate
 -- CMD_COLORS["http://i.imgur.com/XbJbScU.jpg"] = {0.5,0,0.5} --squadron
-CMD_COLORS["http://i.imgur.com/IHXy7k7.jpg"] = {0.4,0.8,0.4} --repair
-CMD_COLORS["http://i.imgur.com/ip3tJaN.jpg"] = {0.8,0.4,0.4} --concentrate
-CMD_COLORS["http://i.imgur.com/hGXCVQo.jpg"] = {0.2, 0.4, 0.8} --navigate
-CMD_COLORS["http://i.imgur.com/XbJbScU.jpg"] = {0.8,0.4,0.8} --squadron
+CMD_COLORS[ASSETS_ROOT.."misc/command_dials/eng.jpg"] = {0.4,0.8,0.4} --repair
+CMD_COLORS[ASSETS_ROOT.."misc/command_dials/confire.jpg"] = {0.8,0.4,0.4} --concentrate
+CMD_COLORS[ASSETS_ROOT.."misc/command_dials/nav.jpg"] = {0.2, 0.4, 0.8} --navigate
+CMD_COLORS[ASSETS_ROOT.."misc/command_dials/squad.jpg"] = {0.8,0.4,0.8} --squadron
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
@@ -912,7 +912,7 @@ function Action_Attack(squad)
 end
 function isShip(ship)
     for i,collider_group in ipairs(SHIPS) do
-        if table.contains(collider_group,ship.getCustomObject().collider) do
+        if table.contains(collider_group,ship.getCustomObject().collider) then
             return true
         end
     end

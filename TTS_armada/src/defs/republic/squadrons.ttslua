@@ -113,7 +113,7 @@ Squadron:new(ywing, REPUBLIC_SQUAD, {
 Squadron:new(ywing, REPUBLIC_SQUAD, {
 	name = "Anakin Skywalker",
     front =     ASSETS_ROOT.."squadrons/republic/ywing/anakin_card.jpg",
-    diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/anakin_diffuse.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/republic/ywing/ad_bo_he_model.obj",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
     cost = 19,
