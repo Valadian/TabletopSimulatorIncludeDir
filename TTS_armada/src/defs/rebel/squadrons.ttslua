@@ -339,7 +339,7 @@ Squadron:new(lancer, REBEL_SQUAD, {
 })
 Squadron:new(lancer, REBEL_SQUAD, {
 	name = "Ketsu Onyo",
-    front =     ASSETS_ROOT.."squadrons/rebel/lancer/base_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/rebel/lancer/ketsu_card.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/rebel/lancer/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_SCATTER},
     cost = 22

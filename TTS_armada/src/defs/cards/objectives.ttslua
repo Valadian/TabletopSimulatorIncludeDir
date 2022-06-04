@@ -14,6 +14,7 @@ Card:new(Assault, Objective, {name="Opening Salvo", front="https://i.imgur.com/m
 Card:new(Assault, Objective, {name="Precision Strike", front="https://i.imgur.com/5PrHKKV.png", victory=15})
 Card:new(Assault, Objective, {name="Rift Assault", front="https://i.imgur.com/h0sCMti.png", victory=10})
 Card:new(Assault, Objective, {name="Station Assault", front="https://i.imgur.com/RZQ6WiC.png", victory=40})
+Card:new(Assault, Objective, {name="[Ship Card] Unarmed Station", front="https://i.imgur.com/pr34PEA.jpeg"})
 Card:new(Assault, Objective, {name="Surprise Attack", front="https://i.imgur.com/WAg0yAC.png"})
 Card:new(Assault, Objective, {name="Targeting Beacons", front="https://i.imgur.com/hkF4kTT.png"})
 
@@ -47,6 +48,7 @@ Card:new(Navigation, Objective, {name="Volatile Deposits", front="https://i.imgu
 
 Special = { category = "Special" }
 Card:new(Special, Objective, {name="Base Defense: Armed Station", front="https://i.imgur.com/uuS6Bgr.png"})
+Card:new(Special, Objective, {name="[Ship Card] Armed Station", front="https://i.imgur.com/8bxI1du.jpeg"})
 Card:new(Special, Objective, {name="Base Defense: Fighter Wing", front="https://i.imgur.com/HSGDnta.png"})
 Card:new(Special, Objective, {name="Base Defense: Ion Cannon", front="https://i.imgur.com/qpZfp8c.png"})
 Card:new(Special, Objective, {name="Hyperlane Raid", front="https://i.imgur.com/vqS5veh.png", victory=15})
@@ -64,3 +66,7 @@ Card:new(Special, Objective, {name="Prototype Recovery", front="https://i.imgur.
 Card:new(Special, Objective, {name="Recruit Allies", front="https://i.imgur.com/9PqROM7.png"})
 Card:new(Special, Objective, {name="Steal Supplies", front="https://i.imgur.com/ytyYixO.png", victory=15})
 Card:new(Special, Objective, {name="Volatile Cargo", front="https://i.imgur.com/N0MR24N.png", victory=15})
+
+Card:new(Special, Objective, {name="Low Fuel", front="https://i.imgur.com/L5Vpk1x.jpeg"})
+Card:new(Special, Objective, {name="Low Morale", front="https://i.imgur.com/pVL0ttA.jpeg"})
+Card:new(Special, Objective, {name="Low Supplies", front="https://i.imgur.com/TdrrOqs.jpeg"})
