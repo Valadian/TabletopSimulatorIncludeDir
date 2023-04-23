@@ -71,6 +71,13 @@ Squadron:new(int, EMPIRE_SQUAD, {
     cost = 17
 })
 Squadron:new(int, EMPIRE_SQUAD, {
+	name = "Vult Skerris",
+    front =     ASSETS_ROOT.."squadrons/empire/int/vult_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/empire/int/ace_diffuse.jpg",
+    defense_tokens = {DEF_SCATTER,DEF_EVADE},
+    cost = 18
+})
+Squadron:new(int, EMPIRE_SQUAD, {
 	name = "Saber Squadron",
     front =     ASSETS_ROOT.."squadrons/empire/int/saber_card.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/empire/int/unique_diffuse.jpg",

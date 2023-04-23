@@ -119,6 +119,15 @@ Squadron:new(ywing, REPUBLIC_SQUAD, {
     cost = 19,
     aliases = {'Anakin Skywalker (BTL-B)'}
 })
+-- Bomber, Heavy
+Squadron:new(ywing, REPUBLIC_SQUAD, {
+	name = "Matchstick",
+    front =     ASSETS_ROOT.."squadrons/republic/ywing/matchstick_card.jpg",
+    diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/ace_diffuse.jpg",
+    defense_tokens = {DEF_BRACE,DEF_BRACE},
+    cost = 14,
+    aliases = {'\"Matchstick\"'}
+})
 
 arc = {
     mesh =      ASSETS_ROOT.."squadrons/republic/arc/bo_co_model.obj",

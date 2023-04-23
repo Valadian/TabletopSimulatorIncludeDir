@@ -17,6 +17,7 @@ Card:new(Commander,Rebel,{name="General Rieekan",  front="http://i.imgur.com/Q6p
 Card:new(Commander,Rebel,{name="Kyrsta Agate",  front="http://i.imgur.com/CdWKsAz.jpg", cost=20})
 Card:new(Commander,Rebel,{name="Leia Organa",  front="http://i.imgur.com/Xsqh5f0.jpg", cost=28})
 Card:new(Commander,Rebel,{name="Mon Mothma",  front="http://i.imgur.com/ZK3rQeb.jpg", cost=27})
+Card:new(Commander,Rebel,{name="General Draven",  front=ASSETS_ROOT.."cards/commanders/general_draven.jpg", cost=28})
 
 Empire = {
     factions={"Empire"}
@@ -46,6 +47,7 @@ Card:new(Commander,Republic,{name="Luminara Unduli",  front="https://i.imgur.com
 Card:new(Commander,Republic,{name="Admiral Tarkin",  front="https://i.imgur.com/mJplVe5.png", cost=30})
 Card:new(Commander,Republic,{name="Admiral Yularen", front="https://i.imgur.com/QloblZJ.jpeg", cost=24})
 Card:new(Commander,Republic,{name="Plo Koon", front="https://i.imgur.com/RY01HsT.jpg", cost=26})
+Card:new(Commander,Republic,{name="Anakin Skywalker",  front=ASSETS_ROOT.."cards/commanders/anakin_skywalker.jpg", cost=29})
 
 Separatist = {
     factions={"Separatist"}
