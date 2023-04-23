@@ -43,6 +43,9 @@ CMD_COLORS[ASSETS_ROOT.."misc/command_dials/eng.jpg"] = {0.4,0.8,0.4} --repair
 CMD_COLORS[ASSETS_ROOT.."misc/command_dials/confire.jpg"] = {0.8,0.4,0.4} --concentrate
 CMD_COLORS[ASSETS_ROOT.."misc/command_dials/nav.jpg"] = {0.2, 0.4, 0.8} --navigate
 CMD_COLORS[ASSETS_ROOT.."misc/command_dials/squad.jpg"] = {0.8,0.4,0.8} --squadron
+SUMMA_IMG = "https://i.imgur.com/nhLQ82T.png"
+SUMMA_MESH = "https://pastebin.com/raw/vsufjyT7"
+SUMMA_RULER = "https://pastebin.com/raw/aTRg2KcU"
 local TARGETING_MESHES = {
     "http://i.imgur.com/mFwOs6T.jpg"
 }
@@ -277,6 +280,9 @@ function redraw_ships()
         if isShip(ship) then
             drawShipButtons(ship)
         end
+        if isSumma(ship) then
+            drawSummaButtons(ship)
+        end
         if isSquad(ship) then
             updateSquadButtons(ship)
         end
@@ -341,6 +347,11 @@ function onSave()
 end
 function update()
     for _,ship in ipairs(getAllObjects()) do
+        -- if ship.getName() == 'Summa' then
+        --     if not ship.getVar('init') then
+        --         Initialize(ship)
+        --     end
+        -- end
         if ship.tag == 'Figurine' and ship.name ~= '' then
             local cmd = ship.getDescription()
             local oldName = ship.getVar('oldName')
@@ -623,6 +634,10 @@ function Initialize(ship)
         ship.setVar('init',true)
         ship.setVar('size',getSize(ship))
         drawShipButtons(ship)
+    elseif isSumma(ship) then
+        ship.setVar('init',true)
+        ship.setVar('size',1) --SMALL
+        drawSummaButtons(ship)
     elseif isSquad(ship) then
         ship.setVar('init',true)
         --printToAll(vector.tostring(ship.getColorTint()),{0,1,1})
@@ -708,6 +723,29 @@ end
 --              {-0.85,0.5,1.7},
 --              {-1.4,0.5,2.5},
 --              {-1.8,0.5,3.3}}
+function drawSummaButtons(ship)
+    ship.setVar('size',1)
+    ship.setTable('maneuver',{{"I"},{"I","-"}})
+    local index = 1
+    clearButtons(ship)
+    local left_pos = vector.add(vector.scale(ship_size[index],vector.onedividedby(ship.getScale())),{-0.3,0.4,-0.3})
+    local right_pos = vector.scale(left_pos, {-1,1,1})
+    local back_left_pos = {left_pos[1],0.4,-left_pos[3]}
+    -- local front_pos = vector.scale(left_pos, {0,1,1})
+    local left_rev_pos = vector.add({0,0,-.4}, left_pos)
+    local right_rev_pos = vector.add({0,0,-.4}, right_pos)
+    ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_left",position=left_pos,tooltip="Notch Maneuvering\nRuler on Left"},ship_button_def))
+    ship.createButton(buildRelativeButton(ship, "M",{click_function="Action_ruler_right",position=right_pos,tooltip="Notch Maneuvering\nRuler on Right"},ship_button_def))
+    -- ship.createButton(buildRelativeButton(ship, "V",{click_function="Action_summa_reverse",position=front_pos,tooltip="Flip Direction"},ship_button_def))
+    ship.createButton(buildRelativeButton(ship, "W",{click_function="Action_ruler_left_rev",position=left_rev_pos,tooltip="Notch Maneuvering\nRuler on Left"},ship_button_def))
+    ship.createButton(buildRelativeButton(ship, "W",{click_function="Action_ruler_right_rev",position=right_rev_pos,tooltip="Notch Maneuvering\nRuler on Right"},ship_button_def))
+    ship.createButton(buildRelativeButton(ship, "R",{click_function="Action_toggle_summa_ruler",position=back_left_pos,tooltip="Toggle Range Ruler"},ship_button_def))
+end
+function Action_summa_reverse(ship)
+    ship.setPosition(vector.add(vector.rotate({0,0,2.10},ship.getRotation()[2]),ship.getPosition()))
+    local rot = ship.getRotation()
+    ship.setRotation({rot[1],rot[2]+180,rot[3]})
+end
 function drawShipButtons(ship)
     --printToAll('drawShipButtons for '..ship.getName(),{0,1,1})
     local name = ship.getName()
@@ -721,7 +759,7 @@ function drawShipButtons(ship)
 --    if name:match " LR$" then index = 6 ship.setVar('size',6) end
     if index~=nil then
         clearButtons(ship)
-        local left_pos = vector.add(vector.scale(ship_size[index],vector.onedividedby(ship.getScale())),{-0.2,0.6,-0.3})
+        local left_pos = vector.add(vector.scale(ship_size[index],vector.onedividedby(ship.getScale())),{-0.3,0.6,-0.3})
         local right_pos = vector.scale(left_pos, {-1,1,1})
         local back_left_pos = {left_pos[1],0.6,-left_pos[3]}
         local back_right_pos = {-left_pos[1],0.6,-left_pos[3]}
@@ -756,6 +794,31 @@ RANGE_RULER_MESH = {
 }
 function Action_cmds(ship)
     printCmds(ship)
+end
+function Action_toggle_summa_ruler(ship)
+    local ruler = ship.getVar('ruler')
+    if ruler == nil then
+        --12 range ruler
+        ship.lock()
+        --local mesh = ship.getVar("rulerMesh")
+        local obj_parameters = {}
+        obj_parameters.type = 'Custom_Model'
+        local rot = {0,ship.getRotation()[2],0}
+        obj_parameters.position = ship.getPosition()
+        obj_parameters.rotation = rot
+        obj_parameters.scale = {1,0.5,1}
+        local newruler = spawnObject(obj_parameters)
+        local custom = {}
+        custom.mesh = SUMMA_RULER
+        custom.collider = ATTACK_RULERS[1]
+        newruler.setCustomObject(custom)
+        newruler.lock()
+        Wait.time(|| newruler~=nil and newruler.setRotation(rot),1,0)
+        ship.setVar('ruler',newruler)
+    else
+        ruler.destruct()
+        ship.setVar('ruler',nil)
+    end
 end
 function Action_toggle_ruler(ship)
     local ruler = ship.getVar('ruler')
@@ -920,6 +983,12 @@ function isShip(ship)
 --    local name = ship.getName()
 --    return ship.tag == "Figurine" and (name:match " S$" or name:match " M$" or name:match " L$"
 --        or name:match " SR$" or name:match " MR$" or name:match " LR$")
+end
+function isSumma(obj)
+    if obj.getCustomObject().mesh==SUMMA_MESH then
+      return true
+    end
+    return false
 end
 function isSquad(ship)
     return table.contains(SQUAD_COLLIDERS, ship.getCustomObject().collider) --SQUAD ==ship.getCustomObject().collider or SQUAD_HTTPS ==ship.getCustomObject().collider
@@ -1311,7 +1380,13 @@ function Action_ruler_right(ship, player_clicker_color, alt_click)
 
     moveRuler(ship, 1, player_clicker_color)
 end
-function moveRuler(ship, direction, player_clicker_color)
+function Action_ruler_left_rev(ship, player_clicker_color, alt_click)
+    moveRuler(ship, -1, player_clicker_color,true)
+end
+function Action_ruler_right_rev(ship, player_clicker_color, alt_click)
+    moveRuler(ship, 1, player_clicker_color,true)
+end
+function moveRuler(ship, direction, player_clicker_color,reversed)
     ship.lock()
     local size = ship.getVar('size')
     if size==nil then
@@ -1321,6 +1396,11 @@ function moveRuler(ship, direction, player_clicker_color)
     end
     local b_pos = ship_size[size]
     local pos = vector.add({b_pos[1]*direction,0,b_pos[3]},{0.32*direction,0,-0.78})
+    local rotation_offset = 0
+    if reversed then
+        rotation_offset = 180
+        pos = vector.add(pos,{0,0,0.87})
+    end
     local rot = ship.getRotation()[2]
     local rotated = vector.rotate(pos, rot)
     --if size>3 then rot=rot+180 end
@@ -1331,7 +1411,7 @@ function moveRuler(ship, direction, player_clicker_color)
     myruler = rulers[player_clicker_color]
     myruler.lock()
     myruler.setPositionSmooth(vector.add(ship.getPosition(),rotated),false,true)
-    myruler.setRotationSmooth({0,rot,0 },false,true)
+    myruler.setRotationSmooth({0,rot + rotation_offset,0 },false,true)
     myruler.setVar('ship',ship)
     if ship.getTable('maneuver')==nil or #ship.getTable('maneuver')==0 then
         printToAll("Warning: Ship has no maneuver table: "..ship.getName(),{1,1,0})
@@ -1339,7 +1419,7 @@ function moveRuler(ship, direction, player_clicker_color)
     end
     myruler.setTable('maneuver',ship.getTable('maneuver'))
 end
-ship_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 300,width = 300,font_size = 200, font_color={1,1,1,1.11}, color={0,0,0,0.90}}
+ship_button_def = {position = {0,0.3,0},rotation = {0,180,0},height = 250,width = 250,font_size = 160, font_color={1,1,1,1.11}, color={0,0,0,0.90}}
 squad_button_def = {position = {0,0.17,0},rotation = {0,0,0},height = 150,width = 125,font_size = 150, font_color={1,1,1,1.25}, color={0,0,0,0.80}}
 function buildRelativeButton(object, label, def, defaults)
     local scale = object.getScale()[1]
