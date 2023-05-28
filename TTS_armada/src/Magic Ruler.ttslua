@@ -284,7 +284,8 @@ function Action_Move()
     end
     local yRot = lastRuler.getRotation()[2] - ship.getRotation()[2]
     local yRotForOffset = yRot
-    local reversed = math.abs(ship.getRotation()[2]-self.getRotation()[2])>160
+    local delta = math.abs(ship.getRotation()[2]-self.getRotation()[2])
+    local reversed = delta>160 and delta<200
     if reversed then
         offset = vector.add(offset, vector.rotate({0,0,2.10},ship.getRotation()[2]))
         yRotForOffset = yRotForOffset - 180
