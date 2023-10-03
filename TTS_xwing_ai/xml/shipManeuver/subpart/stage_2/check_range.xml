@@ -1,3 +1,0 @@
-<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
-    <Text alignment="MiddleLeft" rectAlignment="UpperLeft" preferredHeight="60" verticalOverflow="Overflow">Check Target&#39;s Range <![CDATA[&]]> Direction, Roll on the matching table</Text>
-</HorizontalLayout>

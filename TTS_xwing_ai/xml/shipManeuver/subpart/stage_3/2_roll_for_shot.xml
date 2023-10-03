@@ -1,5 +1,0 @@
-<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
-    <Text verticalOverflow="Overflow">2)</Text>
-    <Image preferredWidth="18" class="icon" image="roll"/>
-    <Text verticalOverflow="Overflow">to get a shot</Text>
-</HorizontalLayout>

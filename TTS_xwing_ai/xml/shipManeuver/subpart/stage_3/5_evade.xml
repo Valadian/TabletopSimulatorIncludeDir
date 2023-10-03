@@ -1,4 +1,0 @@
-<HorizontalLayout class="row" preferredHeight="20" childAlignment="MiddleLeft">
-    <Text verticalOverflow="Overflow">5) </Text>
-    <Image preferredWidth="18" class="icon" image="evade"/>
-</HorizontalLayout>

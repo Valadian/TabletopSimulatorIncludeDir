@@ -1,5 +1,0 @@
-<HorizontalLayout class="row">
-    <Text verticalOverflow="Overflow">1)</Text>
-    <Text verticalOverflow="Overflow">Remove Stress or Resolve</Text>
-    <Image preferredWidth="18" class="icon" image="crit"/>
-</HorizontalLayout>
