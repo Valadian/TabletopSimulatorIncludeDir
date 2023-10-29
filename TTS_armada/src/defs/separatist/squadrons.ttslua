@@ -70,7 +70,7 @@ tri = {
 --  Counter, Swarm, AI:Anti-squadron
 Squadron:new(tri, SEPARATISTS_SQUAD, {
 	name = "Droid Tri-Fighter Squadron",
-    front =     ASSETS_ROOT.."squadrons/separatist/hyena/base_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/separatist/tri/base_card.jpg",
     cost = 11,
     aliases = {'Droid Tri-Fighter Squadrons', "Droid Tri-Fighter", "Tri-Fighter"}
 })
