@@ -277,12 +277,20 @@ function Action_Move()
         ship = findNearestShip(self.getPosition(),self.getRotation()[2])
     end
     local offset = vector.sub(ship.getPosition(),self.getPosition())
+    -- Handle Summa Reverse Move
     local lastRuler = self
     if #rulers>0 then
         lastRuler = rulers[#rulers]
     end
     local yRot = lastRuler.getRotation()[2] - ship.getRotation()[2]
-    local rotatedOffset = vector.rotate(offset,yRot)
+    local yRotForOffset = yRot
+    local delta = math.abs(ship.getRotation()[2]-self.getRotation()[2])
+    local reversed = delta>160 and delta<200
+    if reversed then
+        offset = vector.add(offset, vector.rotate({0,0,2.10},ship.getRotation()[2]))
+        yRotForOffset = yRotForOffset - 180
+    end
+    local rotatedOffset = vector.rotate(offset,yRotForOffset)
     last_pos = ship.getPosition()
     last_rot = ship.getRotation()
     local new_pos = vector.add(lastRuler.getPosition(),rotatedOffset)

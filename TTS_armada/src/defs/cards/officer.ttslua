@@ -45,6 +45,7 @@ Card:new(Officer,Empire,{name="Reeva Demesne", front="https://i.imgur.com/hPWCUb
 Card:new(Officer,Empire,{name="Taskmaster Grint", front="https://i.imgur.com/9U4hKcc.jpg", cost=5})
 Card:new(Officer,Empire,{name="The Grand Inquisitor", front="https://i.imgur.com/xzcI49o.jpg", cost=4})
 Card:new(Officer,Empire,{name="Wulff Yularen", front="https://i.imgur.com/dvWsOm8.jpg", cost=7})
+Card:new(Officer,Empire,{name="Governor Pryce", front=ASSETS_ROOT.."cards/officers/governor_pryce.jpg", cost=7})
 
 --republic
 Card:new(Officer,Republic,{name="Clone Captain Zak", front="https://i.imgur.com/A1FePh3.jpeg", cost=5})
@@ -64,6 +65,7 @@ Card:new(Officer,Separatist,{name="TI-99", front="https://i.imgur.com/V9CYOEU.pn
 Card:new(Officer,Separatist,{name="Tikkes", front="https://i.imgur.com/l7G05tI.png", cost=2})
 Card:new(Officer,Separatist,{name="San Hill", front="https://i.imgur.com/AcVqv40.png", cost=3})
 Card:new(Officer,Separatist,{name="Passel Argente", front="https://i.imgur.com/fVSYbCJ.png", cost=6})
+Card:new(Officer,Separatist,{name="Asajj Ventress", front=ASSETS_ROOT.."cards/officers/asajj_ventress.jpg", cost=4})
 
 --generic
 Card:new(Officer,{name="Chart Officer", front="https://i.imgur.com/HVWr1Ru.jpg", cost=2})
