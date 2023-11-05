@@ -72,9 +72,9 @@ Squadron:new(int, EMPIRE_SQUAD, {
 })
 Squadron:new(int, EMPIRE_SQUAD, {
 	name = "Vult Skerris",
-    front =     ASSETS_ROOT.."squadrons/empire/int/vult_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/empire/int/vult_card_v2_1.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/empire/int/ace_diffuse.jpg",
-    defense_tokens = {DEF_SCATTER,DEF_EVADE},
+    defense_tokens = {DEF_SCATTER,DEF_BRACE},
     cost = 18
 })
 Squadron:new(int, EMPIRE_SQUAD, {

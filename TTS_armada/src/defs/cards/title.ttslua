@@ -111,6 +111,6 @@ Card:new(Title,Separatist,{name="Gilded Aegis", front="https://i.imgur.com/wbFFU
 Card:new(Title,Republic,{name="TB-73", front="https://i.imgur.com/IONCQi6.png", cost=5})
 Card:new(Title,Republic,{name="FB-88", front="https://i.imgur.com/l5LNFSR.png", cost=4})
 
-Card:new(Title,Republic,{name="Tranquility", front="https://i.imgur.com/GiYVWvE.png", cost=3})
+Card:new(Title,Republic,{name="Tranquility", front=ASSETS_ROOT.."cards/titles/tranquility_v2_1.jpg", cost=7})
 Card:new(Title,Republic,{name="Triumphant", front="https://i.imgur.com/OTgslNK.png", cost=5})
 Card:new(Title,Republic,{name="Resolute", front="https://i.imgur.com/TVoRURO.png", cost=6})

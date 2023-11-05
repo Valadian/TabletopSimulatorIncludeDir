@@ -58,14 +58,14 @@ Card:new(Officer,Republic,{name="Ahsoka Tano", front="https://i.imgur.com/SVAWnr
 
 --separatist
 Card:new(Officer,Separatist,{name="Rune Haako", front="https://i.imgur.com/aEgMSwp.jpg", cost=4})
-Card:new(Officer,Separatist,{name="Wat Tambor", front="https://i.imgur.com/MYpNhXT.jpeg", cost=5})
+Card:new(Officer,Separatist,{name="Wat Tambor", front=ASSETS_ROOT.."cards/officers/wat_tambor_v2_1.jpg", cost=9})
 Card:new(Officer,Separatist,{name="T-Series Tactical Droid", front="https://i.imgur.com/8H1wATK.jpeg", cost=4})
 Card:new(Officer,Separatist,{name="Shu Mai", front="https://i.imgur.com/8dG1YpO.png", cost=4})
 Card:new(Officer,Separatist,{name="TI-99", front="https://i.imgur.com/V9CYOEU.png", cost=4})
 Card:new(Officer,Separatist,{name="Tikkes", front="https://i.imgur.com/l7G05tI.png", cost=2})
 Card:new(Officer,Separatist,{name="San Hill", front="https://i.imgur.com/AcVqv40.png", cost=3})
 Card:new(Officer,Separatist,{name="Passel Argente", front="https://i.imgur.com/fVSYbCJ.png", cost=6})
-Card:new(Officer,Separatist,{name="Asajj Ventress", front=ASSETS_ROOT.."cards/officers/asajj_ventress.jpg", cost=4})
+Card:new(Officer,Separatist,{name="Asajj Ventress", front=ASSETS_ROOT.."cards/officers/asajj_ventress_v2_1.jpg", cost=4})
 
 --generic
 Card:new(Officer,{name="Chart Officer", front="https://i.imgur.com/HVWr1Ru.jpg", cost=2})

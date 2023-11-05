@@ -114,9 +114,9 @@ Squadron:new(belbullab, SEPARATISTS_SQUAD, {
 --Escort, Relay, Screen
 Squadron:new(belbullab, SEPARATISTS_SQUAD, {
 	name = "Wat Tambor",
-    front =     ASSETS_ROOT.."squadrons/separatist/belbullab/wat_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/separatist/belbullab/wat_card_v2_1.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/separatist/belbullab/ace_diffuse.jpg",
     mesh =      ASSETS_ROOT.."squadrons/separatist/belbullab/es_re_sc_model.obj",
     defense_tokens = {DEF_BRACE,DEF_EVADE},
-    cost = 20
+    cost = 18
 })

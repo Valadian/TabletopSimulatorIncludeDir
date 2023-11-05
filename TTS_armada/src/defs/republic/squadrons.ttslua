@@ -122,10 +122,10 @@ Squadron:new(ywing, REPUBLIC_SQUAD, {
 -- Bomber, Heavy
 Squadron:new(ywing, REPUBLIC_SQUAD, {
 	name = "Matchstick",
-    front =     ASSETS_ROOT.."squadrons/republic/ywing/matchstick_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/republic/ywing/matchstick_card_v2_1.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/republic/ywing/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE,DEF_BRACE},
-    cost = 14,
+    cost = 16,
     aliases = {'\"Matchstick\"'}
 })
 

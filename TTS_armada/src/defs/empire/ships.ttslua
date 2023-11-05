@@ -297,27 +297,27 @@ Ship:new(HugeShip,EMPIRE_SHIP,{
 })
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Onager-class Testbed",
-    front =     ASSETS_ROOT.."ships/empire/onager/testbed_card.jpg",
+    front =     ASSETS_ROOT.."ships/empire/onager/testbed_card_v2_1.jpg",
     mesh =      ASSETS_ROOT.."ships/empire/onager/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/onager/testbed_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/onager/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
     shields = {5,2,2,1},
-    cost = 96,
+    cost = 116,
     aliases = {"Onager Testbed"},
     command = 3
 })
 Ship:new(LargeShip,EMPIRE_SHIP,{
 	name = "Onager-class Star Destroyer",
-    front =     ASSETS_ROOT.."ships/empire/onager/sd_card.jpg",
+    front =     ASSETS_ROOT.."ships/empire/onager/sd_card_v2_1.jpg",
     mesh =      ASSETS_ROOT.."ships/empire/onager/mesh.obj",
     diffuse =   ASSETS_ROOT.."ships/empire/onager/sd_diffuse.jpg",
     ruler =     ASSETS_ROOT.."ships/empire/onager/ruler.obj",
     maneuver = {{"I"},{"I","I"},{"I","I",'-'}},
     defense_tokens = {DEF_BRACE, DEF_REDIRECT, DEF_SALVO},
     shields = {5,2,2,1},
-    cost = 110,
+    cost = 120,
     aliases = {"Onager Star Destroyer"},
     command = 3
 })

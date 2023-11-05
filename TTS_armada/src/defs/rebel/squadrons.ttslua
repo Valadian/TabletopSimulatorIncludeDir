@@ -352,7 +352,7 @@ gauntlet = {
     defense_tokens = {}}
 Squadron:new(gauntlet, REBEL_SQUAD, {
 	name = 'Fenn Rau',
-    front =     ASSETS_ROOT.."squadrons/rebel/guantlet/fenn_card.jpg",
+    front =     ASSETS_ROOT.."squadrons/rebel/guantlet/fenn_card_v2_1.jpg",
     diffuse =   ASSETS_ROOT.."squadrons/rebel/guantlet/ace_diffuse.jpg",
     defense_tokens = {DEF_BRACE},
     cost = 24
